@@ -146,8 +146,11 @@ function findDiffStart$1(a, b, pos) {
         if (!childA.sameMarkup(childB))
             return pos;
         if (childA.isText && childA.text != childB.text) {
-            for (let j = 0; childA.text[j] == childB.text[j]; j++)
+            let tA = childA.text, tB = childB.text, j = 0;
+            for (; tA[j] == tB[j]; j++)
                 pos++;
+            if (j && j < tA.length && j < tB.length && surrogateHigh(tA.charCodeAt(j - 1)) && surrogateLow(tA.charCodeAt(j)))
+                pos--;
             return pos;
         }
         if (childA.content.size || childB.content.size) {
@@ -171,11 +174,16 @@ function findDiffEnd$1(a, b, posA, posB) {
         if (!childA.sameMarkup(childB))
             return { a: posA, b: posB };
         if (childA.isText && childA.text != childB.text) {
-            let same = 0, minSize = Math.min(childA.text.length, childB.text.length);
-            while (same < minSize && childA.text[childA.text.length - same - 1] == childB.text[childB.text.length - same - 1]) {
-                same++;
+            let tA = childA.text, tB = childB.text, iA = tA.length, iB = tB.length;
+            while (iA > 0 && iB > 0 && tA[iA - 1] == tB[iB - 1]) {
+                iA--;
+                iB--;
                 posA--;
                 posB--;
+            }
+            if (iA && iB && iA < tA.length && surrogateHigh(tA.charCodeAt(iA - 1)) && surrogateLow(tA.charCodeAt(iA))) {
+                posA++;
+                posB++;
             }
             return { a: posA, b: posB };
         }
@@ -188,6 +196,8 @@ function findDiffEnd$1(a, b, posA, posB) {
         posB -= size;
     }
 }
+function surrogateLow(ch) { return ch >= 0xDC00 && ch < 0xE000; }
+function surrogateHigh(ch) { return ch >= 0xD800 && ch < 0xDC00; }
 
 /**
 A fragment represents a node's collection of child nodes.
@@ -868,7 +878,8 @@ function addRange($start, $end, depth, target) {
         addNode($end.nodeBefore, target);
 }
 function close(node, content) {
-    node.type.checkContent(content);
+    if (!node.type.validContent(content))
+        throw new ReplaceError$1("Invalid content for node " + node.type.name);
     return node.copy(content);
 }
 function replaceThreeWay($from, $start, $end, $to, depth) {
@@ -2179,13 +2190,12 @@ function computeAttrs(attrs, value) {
     return built;
 }
 function checkAttrs(attrs, values, type, name) {
-    for (let name in values)
-        if (!(name in attrs))
-            throw new RangeError(`Unsupported attribute ${name} for ${type} of type ${name}`);
-    for (let name in attrs) {
-        let attr = attrs[name];
-        if (attr.validate)
-            attr.validate(values[name]);
+    for (let attr in values)
+        if (!(attr in attrs))
+            throw new RangeError(`Unsupported attribute ${attr} for ${type} of type ${name}`);
+    for (let attr in attrs) {
+        if (attrs[attr].validate)
+            attrs[attr].validate(values[attr]);
     }
 }
 function initAttrs(typeName, attrs) {
@@ -2532,7 +2542,7 @@ creating and deserializing such documents.
 When given, the type parameters provide the names of the nodes and
 marks in this schema.
 */
-let Schema$1 = class Schema {
+let Schema$2 = class Schema {
     /**
     Construct a schema from a schema [specification](https://prosemirror.net/docs/ref/#model.SchemaSpec).
     */
@@ -3391,7 +3401,7 @@ class DOMSerializer {
     */
     serializeFragment(fragment, options = {}, target) {
         if (!target)
-            target = doc$2(options).createDocumentFragment();
+            target = doc$3(options).createDocumentFragment();
         let top = target, active = [];
         fragment.forEach(node => {
             if (active.length || node.marks.length) {
@@ -3428,8 +3438,8 @@ class DOMSerializer {
     */
     serializeNodeInner(node, options) {
         if (node.isText)
-            return doc$2(options).createTextNode(node.text);
-        let { dom, contentDOM } = renderSpec(doc$2(options), this.nodes[node.type.name](node), null, node.attrs);
+            return doc$3(options).createTextNode(node.text);
+        let { dom, contentDOM } = renderSpec(doc$3(options), this.nodes[node.type.name](node), null, node.attrs);
         if (contentDOM) {
             if (node.isLeaf)
                 throw new RangeError("Content hole not allowed in a leaf node spec");
@@ -3460,7 +3470,7 @@ class DOMSerializer {
     */
     serializeMark(mark, inline, options = {}) {
         let toDOM = this.marks[mark.type.name];
-        return toDOM && renderSpec(doc$2(options), toDOM(mark, inline), null, mark.attrs);
+        return toDOM && renderSpec(doc$3(options), toDOM(mark, inline), null, mark.attrs);
     }
     static renderSpec(doc, structure, xmlNS = null, blockArraysIn) {
         // Kludge for backwards-compatibility with accidental original behavious
@@ -3502,7 +3512,7 @@ function gatherToDOM(obj) {
     }
     return result;
 }
-function doc$2(options) {
+function doc$3(options) {
     return options.document || window.document;
 }
 const suspiciousAttributeCache = new WeakMap();
@@ -6768,11 +6778,11 @@ class Plugin {
     */
     getState(state) { return state[this.key]; }
 }
-const keys$1 = Object.create(null);
+const keys$2 = Object.create(null);
 function createKey(name) {
-    if (name in keys$1)
-        return name + "$" + ++keys$1[name];
-    keys$1[name] = 0;
+    if (name in keys$2)
+        return name + "$" + ++keys$2[name];
+    keys$2[name] = 0;
     return name + "$";
 }
 /**
@@ -7757,7 +7767,7 @@ function caretFromPoint(doc, x, y) {
 }
 
 const nav = typeof navigator != "undefined" ? navigator : null;
-const doc$1 = typeof document != "undefined" ? document : null;
+const doc$2 = typeof document != "undefined" ? document : null;
 const agent = (nav && nav.userAgent) || "";
 const ie_edge = /Edge\/(\d+)/.exec(agent);
 const ie_upto10 = /MSIE \d/.exec(agent);
@@ -7775,7 +7785,7 @@ const ios = safari && (/Mobile\/\w+/.test(agent) || !!nav && nav.maxTouchPoints 
 const mac$2 = ios || (nav ? /Mac/.test(nav.platform) : false);
 const windows$1 = nav ? /Win/.test(nav.platform) : false;
 const android = /Android \d/.test(agent);
-const webkit = !!doc$1 && "webkitFontSmoothing" in doc$1.documentElement.style;
+const webkit = !!doc$2 && "webkitFontSmoothing" in doc$2.documentElement.style;
 const webkit_version = webkit ? +(/\bAppleWebKit\/(\d+)/.exec(navigator.userAgent) || [0, 0])[1] : 0;
 
 function windowRect(doc) {
@@ -9838,14 +9848,14 @@ function selectionToDOM(view, force = false) {
     syncNodeSelection(view, sel);
     if (!editorOwnsSelection(view))
         return;
-    // The delayed drag selection causes issues with Cell Selections
-    // in Safari. And the drag selection delay is to workarond issues
-    // which only present in Chrome.
-    if (!force && view.input.mouseDown && view.input.mouseDown.allowDefault && chrome) {
+    // Need to delay selection normalization during a native selection
+    // drag on Chrome, or it will cause further dragging to glitch.
+    let mouseDown = view.input.mouseDown;
+    if (!force && chrome && mouseDown) {
         let domSel = view.domSelectionRange(), curSel = view.domObserver.currentSelection;
         if (domSel.anchorNode && curSel.anchorNode &&
-            isEquivalentPosition(domSel.anchorNode, domSel.anchorOffset, curSel.anchorNode, curSel.anchorOffset)) {
-            view.input.mouseDown.delayedSelectionSync = true;
+            isEquivalentPosition(domSel.anchorNode, domSel.anchorOffset, curSel.anchorNode, curSel.anchorOffset) &&
+            mouseDown.delaySelUpdate()) {
             view.domObserver.setCurSelection();
             return;
         }
@@ -10697,6 +10707,8 @@ function setSelectionOrigin(view, origin) {
     view.input.lastSelectionTime = Date.now();
 }
 function destroyInput(view) {
+    if (view.input.mouseDown)
+        view.input.mouseDown.done();
     view.domObserver.stop();
     for (let type in view.input.eventHandlers)
         view.dom.removeEventListener(type, view.input.eventHandlers[type]);
@@ -10735,7 +10747,7 @@ function dispatchEvent(view, event) {
 editHandlers.keydown = (view, _event) => {
     let event = _event;
     view.input.shiftKey = event.keyCode == 16 || event.shiftKey;
-    if (inOrNearComposition(view, event))
+    if (inOrNearComposition(view))
         return;
     view.input.lastKeyCode = event.keyCode;
     view.input.lastKeyCodeTime = Date.now();
@@ -10773,7 +10785,7 @@ editHandlers.keyup = (view, event) => {
 };
 editHandlers.keypress = (view, _event) => {
     let event = _event;
-    if (inOrNearComposition(view, event) || !event.charCode ||
+    if (inOrNearComposition(view) || !event.charCode ||
         event.ctrlKey && !event.altKey || mac$2 && event.metaKey)
         return;
     if (view.someProp("handleKeyPress", f => f(view, event))) {
@@ -10867,26 +10879,28 @@ function handleTripleClick(view, pos, inside, event) {
 function defaultTripleClick(view, inside, event) {
     if (event.button != 0)
         return false;
-    let doc = view.state.doc;
-    if (inside == -1) {
-        if (doc.inlineContent) {
-            updateSelection(view, TextSelection$1.create(doc, 0, doc.content.size));
-            return true;
-        }
+    let selection = selectionForTripleClick(view, inside, true), doc = view.state.doc;
+    if (!selection)
         return false;
-    }
+    updateSelection(view, selection);
+    if (selection instanceof TextSelection$1 && doc.eq(view.state.doc))
+        view.input.mouseDown = new TripleClickDrag(view, selection);
+    return true;
+}
+function selectionForTripleClick(view, inside, selectNodes) {
+    let doc = view.state.doc;
+    if (inside == -1)
+        return doc.inlineContent ? TextSelection$1.create(doc, 0, doc.content.size) : null;
     let $pos = doc.resolve(inside);
     for (let i = $pos.depth + 1; i > 0; i--) {
         let node = i > $pos.depth ? $pos.nodeAfter : $pos.node(i);
         let nodePos = $pos.before(i);
         if (node.inlineContent)
-            updateSelection(view, TextSelection$1.create(doc, nodePos + 1, nodePos + 1 + node.content.size));
-        else if (NodeSelection$1.isSelectable(node))
-            updateSelection(view, NodeSelection$1.create(doc, nodePos));
-        else
-            continue;
-        return true;
+            return TextSelection$1.create(doc, nodePos + 1, nodePos + 1 + node.content.size);
+        else if (selectNodes && NodeSelection$1.isSelectable(node))
+            return NodeSelection$1.create(doc, nodePos);
     }
+    return null;
 }
 function forceDOMFlush(view) {
     return endComposition(view);
@@ -10905,13 +10919,13 @@ handlers.mousedown = (view, _event) => {
             type = "tripleClick";
     }
     view.input.lastClick = { time: now, x: event.clientX, y: event.clientY, type, button: event.button };
+    if (view.input.mouseDown)
+        view.input.mouseDown.done();
     let pos = view.posAtCoords(eventCoords(event));
     if (!pos)
         return;
     if (type == "singleClick") {
-        if (view.input.mouseDown)
-            view.input.mouseDown.done();
-        view.input.mouseDown = new MouseDown(view, pos, event, !!flushed);
+        view.input.mouseDown = new LeftMouseDown(view, pos, event, !!flushed);
     }
     else if ((type == "doubleClick" ? handleDoubleClick : handleTripleClick)(view, pos.pos, pos.inside, event)) {
         event.preventDefault();
@@ -10921,13 +10935,34 @@ handlers.mousedown = (view, _event) => {
     }
 };
 class MouseDown {
-    constructor(view, pos, event, flushed) {
+    constructor(view) {
         this.view = view;
+        this.mightDrag = null;
+        view.root.addEventListener("mouseup", this.up = this.up.bind(this));
+        view.root.addEventListener("mousemove", this.move = this.move.bind(this));
+    }
+    up(event) {
+        this.done();
+    }
+    move(event) {
+        if (event.buttons == 0)
+            this.done();
+    }
+    done() {
+        this.view.root.removeEventListener("mouseup", this.up);
+        this.view.root.removeEventListener("mousemove", this.move);
+        if (this.view.input.mouseDown == this)
+            this.view.input.mouseDown = null;
+    }
+    delaySelUpdate() { return false; }
+}
+class LeftMouseDown extends MouseDown {
+    constructor(view, pos, event, flushed) {
+        super(view);
         this.pos = pos;
         this.event = event;
         this.flushed = flushed;
         this.delayedSelectionSync = false;
-        this.mightDrag = null;
         this.startDoc = view.state.doc;
         this.selectNode = !!event[selectNodeModifier];
         this.allowDefault = event.shiftKey;
@@ -10965,13 +11000,10 @@ class MouseDown {
                 }, 20);
             this.view.domObserver.start();
         }
-        view.root.addEventListener("mouseup", this.up = this.up.bind(this));
-        view.root.addEventListener("mousemove", this.move = this.move.bind(this));
         setSelectionOrigin(view, "pointer");
     }
     done() {
-        this.view.root.removeEventListener("mouseup", this.up);
-        this.view.root.removeEventListener("mousemove", this.move);
+        super.done();
         if (this.mightDrag && this.target) {
             this.view.domObserver.stop();
             if (this.mightDrag.addAttr)
@@ -10981,8 +11013,10 @@ class MouseDown {
             this.view.domObserver.start();
         }
         if (this.delayedSelectionSync)
-            setTimeout(() => selectionToDOM(this.view));
-        this.view.input.mouseDown = null;
+            setTimeout(() => {
+                if (!this.view.isDestroyed)
+                    selectionToDOM(this.view);
+            });
     }
     up(event) {
         this.done();
@@ -11021,13 +11055,40 @@ class MouseDown {
     move(event) {
         this.updateAllowDefault(event);
         setSelectionOrigin(this.view, "pointer");
-        if (event.buttons == 0)
-            this.done();
+        super.move(event);
     }
     updateAllowDefault(event) {
         if (!this.allowDefault && (Math.abs(this.event.x - event.clientX) > 4 ||
             Math.abs(this.event.y - event.clientY) > 4))
             this.allowDefault = true;
+    }
+    delaySelUpdate() {
+        if (!this.allowDefault)
+            return false;
+        this.delayedSelectionSync = true;
+        return true;
+    }
+}
+class TripleClickDrag extends MouseDown {
+    constructor(view, startSelection) {
+        super(view);
+        this.startSelection = startSelection;
+        this.startDoc = view.state.doc;
+    }
+    move(event) {
+        if (event.buttons == 0 || this.view.isDestroyed || !this.view.state.doc.eq(this.startDoc)) {
+            this.done();
+            return;
+        }
+        event.preventDefault();
+        setSelectionOrigin(this.view, "pointer");
+        let pos = this.view.posAtCoords(eventCoords(event));
+        let target = pos && selectionForTripleClick(this.view, pos.inside, false);
+        if (!target)
+            return;
+        let { doc } = this.view.state, start = this.startSelection;
+        let [anchor, head] = target.from < start.from ? [start.to, target.from] : [start.from, target.to];
+        updateSelection(this.view, TextSelection$1.create(doc, anchor, head));
     }
 }
 handlers.touchstart = view => {
@@ -11053,7 +11114,7 @@ function inOrNearComposition(view, event) {
     // This guards against the case where compositionend is triggered without the keyboard
     // (e.g. character confirmation may be done with the mouse), and keydown is triggered
     // afterwards- we wouldn't want to ignore the keydown event in this case.
-    if (safari && Math.abs(event.timeStamp - view.input.compositionEndedAt) < 500) {
+    if (safari && Math.abs(Date.now() - view.input.compositionEndedAt) < 500) {
         view.input.compositionEndedAt = -2e8;
         return true;
     }
@@ -11112,7 +11173,7 @@ function selectionBeforeUneditable(view) {
 editHandlers.compositionend = (view, event) => {
     if (view.composing) {
         view.input.composing = false;
-        view.input.compositionEndedAt = event.timeStamp;
+        view.input.compositionEndedAt = Date.now();
         view.input.compositionPendingChanges = view.domObserver.pendingRecords().length ? view.input.compositionID : 0;
         view.input.compositionNode = null;
         if (view.input.badSafariComposition)
@@ -11131,7 +11192,7 @@ function scheduleComposeEnd(view, delay) {
 function clearComposition(view) {
     if (view.composing) {
         view.input.composing = false;
-        view.input.compositionEndedAt = timestampFromCustomEvent();
+        view.input.compositionEndedAt = Date.now();
     }
     while (view.input.compositionNodes.length > 0)
         view.input.compositionNodes.pop().markParentsDirty();
@@ -11156,11 +11217,6 @@ function findCompositionNode(view) {
         }
     }
     return textBefore || textAfter;
-}
-function timestampFromCustomEvent() {
-    let event = document.createEvent("Event");
-    event.initEvent("event", true, true);
-    return event.timeStamp;
 }
 /**
 @internal
@@ -12318,7 +12374,10 @@ class DOMObserver {
                 }
             }
         }
-        if (added.some(n => n.nodeName == "BR") && (view.input.lastKeyCode == 8 || view.input.lastKeyCode == 46)) {
+        if (added.some(n => n.nodeName == "BR") &&
+            (view.input.lastKeyCode == 8 || view.input.lastKeyCode == 46 ||
+                chrome && (view.composing || view.input.compositionEndedAt > Date.now() - 50) &&
+                    mutations.some(m => m.type == "childList" && m.removedNodes.length))) {
             // Browsers sometimes insert a bogus break node if you
             // backspace out the last bit of text before an inline-flex node (#1552)
             for (let node of added)
@@ -12874,37 +12933,27 @@ function skipClosingAndOpening($pos, fromEnd, mayOpen) {
     return end;
 }
 function findDiff(a, b, pos, preferredPos, preferredSide) {
-    let start = a.findDiffStart(b, pos);
+    let start = a.findDiffStart(b, pos), lenA = pos + a.size, lenB = pos + b.size;
     if (start == null)
         return null;
-    let { a: endA, b: endB } = a.findDiffEnd(b, pos + a.size, pos + b.size);
+    let { a: endA, b: endB } = a.findDiffEnd(b, lenA, lenB);
     if (preferredSide == "end") {
         let adjust = Math.max(0, start - Math.min(endA, endB));
         preferredPos -= endA + adjust - start;
     }
-    if (endA < start && a.size < b.size) {
+    if (endA < start && lenA < lenB) {
         let move = preferredPos <= start && preferredPos >= endA ? start - preferredPos : 0;
         start -= move;
-        if (start && start < b.size && isSurrogatePair(b.textBetween(start - 1, start + 1)))
-            start += move ? 1 : -1;
         endB = start + (endB - endA);
         endA = start;
     }
     else if (endB < start) {
         let move = preferredPos <= start && preferredPos >= endB ? start - preferredPos : 0;
         start -= move;
-        if (start && start < a.size && isSurrogatePair(a.textBetween(start - 1, start + 1)))
-            start += move ? 1 : -1;
         endA = start + (endA - endB);
         endB = start;
     }
     return { start, endA, endB };
-}
-function isSurrogatePair(str) {
-    if (str.length != 2)
-        return false;
-    let a = str.charCodeAt(0), b = str.charCodeAt(1);
-    return a >= 0xDC00 && a <= 0xDFFF && b >= 0xD800 && b <= 0xDBFF;
 }
 /**
 An editor view manages the DOM structure that represents an
@@ -13097,9 +13146,10 @@ class EditorView {
             // a DOM selection change and the "selectionchange" event for it
             // can cause a spurious DOM selection update, disrupting mouse
             // drag selection.
+            let mouseDown = this.input.mouseDown;
             if (forceSelUpdate ||
-                !(this.input.mouseDown && this.domObserver.currentSelection.eq(this.domSelectionRange()) &&
-                    anchorInRightPlace(this))) {
+                !(mouseDown && this.domObserver.currentSelection.eq(this.domSelectionRange()) &&
+                    anchorInRightPlace(this) && mouseDown.delaySelUpdate())) {
                 selectionToDOM(this, forceSelUpdate);
             }
             else {
@@ -14396,7 +14446,7 @@ function createNodeFromContent(content, schema, options) {
     if (options.errorOnInvalidContent) {
       let hasInvalidContent = false;
       let invalidContent = "";
-      const contentCheckSchema = new Schema$1({
+      const contentCheckSchema = new Schema$2({
         topNode: schema.spec.topNode,
         marks: schema.spec.marks,
         // Prosemirror's schemas are executed such that: the last to execute, matches last
@@ -15437,7 +15487,7 @@ function getSchemaByResolvedExtensions(extensions, editor) {
       return [extension.name, schema];
     })
   );
-  return new Schema$1({
+  return new Schema$2({
     topNode,
     nodes,
     marks
@@ -16205,6 +16255,12 @@ var splitListItem = (typeOrName, overrideAttrs = {}) => ({ tr, state, dispatch, 
   }
   return true;
 };
+function normalizeListType(type) {
+  return !type || type === "1" ? null : type;
+}
+function areListTypesCompatible(typeA, typeB) {
+  return normalizeListType(typeA) === normalizeListType(typeB);
+}
 var joinListBackwards = (tr, listType) => {
   const list = findParentNode((node) => node.type === listType)(tr.selection);
   if (!list) {
@@ -16217,6 +16273,9 @@ var joinListBackwards = (tr, listType) => {
   const nodeBefore = tr.doc.nodeAt(before);
   const canJoinBackwards = list.node.type === (nodeBefore == null ? void 0 : nodeBefore.type) && canJoin(tr.doc, list.pos);
   if (!canJoinBackwards) {
+    return true;
+  }
+  if (!areListTypesCompatible(list.node.attrs.type, nodeBefore == null ? void 0 : nodeBefore.attrs.type)) {
     return true;
   }
   tr.join(list.pos);
@@ -16234,6 +16293,9 @@ var joinListForwards = (tr, listType) => {
   const nodeAfter = tr.doc.nodeAt(after);
   const canJoinForwards = list.node.type === (nodeAfter == null ? void 0 : nodeAfter.type) && canJoin(tr.doc, after);
   if (!canJoinForwards) {
+    return true;
+  }
+  if (!areListTypesCompatible(list.node.attrs.type, nodeAfter == null ? void 0 : nodeAfter.attrs.type)) {
     return true;
   }
   tr.join(after);
@@ -16605,6 +16667,616 @@ var EventEmitter = class {
     this.callbacks = {};
   }
 };
+function canInsertNode(state, nodeType) {
+  const { selection } = state;
+  const { $from } = selection;
+  if (selection instanceof NodeSelection$1) {
+    const index = $from.index();
+    const parent = $from.parent;
+    return parent.canReplaceWith(index, index + 1, nodeType);
+  }
+  let depth = $from.depth;
+  while (depth >= 0) {
+    const index = $from.index(depth);
+    const parent = $from.node(depth);
+    const match = parent.contentMatchAt(index);
+    if (match.matchType(nodeType)) {
+      return true;
+    }
+    depth -= 1;
+  }
+  return false;
+}
+
+// src/utilities/createStyleTag.ts
+function createStyleTag(style2, nonce, suffix) {
+  const tiptapStyleTag = document.querySelector(`style[data-tiptap-style${suffix ? `-${suffix}` : ""}]`);
+  if (tiptapStyleTag !== null) {
+    return tiptapStyleTag;
+  }
+  const styleNode = document.createElement("style");
+  if (nonce) {
+    styleNode.setAttribute("nonce", nonce);
+  }
+  styleNode.setAttribute(`data-tiptap-style${suffix ? `-${suffix}` : ""}`, "");
+  styleNode.innerHTML = style2;
+  document.getElementsByTagName("head")[0].appendChild(styleNode);
+  return styleNode;
+}
+
+// src/utilities/escapeForRegEx.ts
+function escapeForRegEx(string) {
+  return string.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+}
+
+// src/utilities/isFirefox.ts
+function isFirefox() {
+  return typeof navigator !== "undefined" ? /Firefox/.test(navigator.userAgent) : false;
+}
+
+// src/utilities/isNumber.ts
+function isNumber(value) {
+  return typeof value === "number";
+}
+
+// src/utilities/isPlainObject.ts
+function getType(value) {
+  return Object.prototype.toString.call(value).slice(8, -1);
+}
+function isPlainObject(value) {
+  if (getType(value) !== "Object") {
+    return false;
+  }
+  return value.constructor === Object && Object.getPrototypeOf(value) === Object.prototype;
+}
+
+// src/utilities/markdown/index.ts
+var markdown_exports = {};
+__export$1(markdown_exports, {
+  createAtomBlockMarkdownSpec: () => createAtomBlockMarkdownSpec,
+  createBlockMarkdownSpec: () => createBlockMarkdownSpec,
+  createInlineMarkdownSpec: () => createInlineMarkdownSpec,
+  parseAttributes: () => parseAttributes,
+  parseIndentedBlocks: () => parseIndentedBlocks,
+  renderNestedMarkdownContent: () => renderNestedMarkdownContent,
+  serializeAttributes: () => serializeAttributes
+});
+
+// src/utilities/markdown/attributeUtils.ts
+function parseAttributes(attrString) {
+  if (!(attrString == null ? void 0 : attrString.trim())) {
+    return {};
+  }
+  const attributes = {};
+  const quotedStrings = [];
+  const tempString = attrString.replace(/["']([^"']*)["']/g, (match) => {
+    quotedStrings.push(match);
+    return `__QUOTED_${quotedStrings.length - 1}__`;
+  });
+  const classMatches = tempString.match(/(?:^|\s)\.([\w-]+)/g);
+  if (classMatches) {
+    const classes = classMatches.map((match) => match.trim().slice(1));
+    attributes.class = classes.join(" ");
+  }
+  const idMatch = tempString.match(/(?:^|\s)#([\w-]+)/);
+  if (idMatch) {
+    attributes.id = idMatch[1];
+  }
+  const kvRegex = /([a-zA-Z][\w-]*)\s*=\s*(__QUOTED_\d+__)/g;
+  const kvMatches = Array.from(tempString.matchAll(kvRegex));
+  kvMatches.forEach(([, key, quotedRef]) => {
+    var _a;
+    const quotedIndex = parseInt(((_a = quotedRef.match(/__QUOTED_(\d+)__/)) == null ? void 0 : _a[1]) || "0", 10);
+    const quotedValue = quotedStrings[quotedIndex];
+    if (quotedValue) {
+      attributes[key] = quotedValue.slice(1, -1);
+    }
+  });
+  const cleanString = tempString.replace(/(?:^|\s)\.([\w-]+)/g, "").replace(/(?:^|\s)#([\w-]+)/g, "").replace(/([a-zA-Z][\w-]*)\s*=\s*__QUOTED_\d+__/g, "").trim();
+  if (cleanString) {
+    const booleanAttrs = cleanString.split(/\s+/).filter(Boolean);
+    booleanAttrs.forEach((attr) => {
+      if (attr.match(/^[a-zA-Z][\w-]*$/)) {
+        attributes[attr] = true;
+      }
+    });
+  }
+  return attributes;
+}
+function serializeAttributes(attributes) {
+  if (!attributes || Object.keys(attributes).length === 0) {
+    return "";
+  }
+  const parts = [];
+  if (attributes.class) {
+    const classes = String(attributes.class).split(/\s+/).filter(Boolean);
+    classes.forEach((cls) => parts.push(`.${cls}`));
+  }
+  if (attributes.id) {
+    parts.push(`#${attributes.id}`);
+  }
+  Object.entries(attributes).forEach(([key, value]) => {
+    if (key === "class" || key === "id") {
+      return;
+    }
+    if (value === true) {
+      parts.push(key);
+    } else if (value !== false && value != null) {
+      parts.push(`${key}="${String(value)}"`);
+    }
+  });
+  return parts.join(" ");
+}
+
+// src/utilities/markdown/createAtomBlockMarkdownSpec.ts
+function createAtomBlockMarkdownSpec(options) {
+  const {
+    nodeName,
+    name: markdownName,
+    parseAttributes: parseAttributes2 = parseAttributes,
+    serializeAttributes: serializeAttributes2 = serializeAttributes,
+    defaultAttributes = {},
+    requiredAttributes = [],
+    allowedAttributes
+  } = options;
+  const blockName = markdownName || nodeName;
+  const filterAttributes = (attrs) => {
+    if (!allowedAttributes) {
+      return attrs;
+    }
+    const filtered = {};
+    allowedAttributes.forEach((key) => {
+      if (key in attrs) {
+        filtered[key] = attrs[key];
+      }
+    });
+    return filtered;
+  };
+  return {
+    parseMarkdown: (token, h2) => {
+      const attrs = { ...defaultAttributes, ...token.attributes };
+      return h2.createNode(nodeName, attrs, []);
+    },
+    markdownTokenizer: {
+      name: nodeName,
+      level: "block",
+      start(src) {
+        var _a;
+        const regex = new RegExp(`^:::${blockName}(?:\\s|$)`, "m");
+        const index = (_a = src.match(regex)) == null ? void 0 : _a.index;
+        return index !== void 0 ? index : -1;
+      },
+      tokenize(src, _tokens, _lexer) {
+        const regex = new RegExp(`^:::${blockName}(?:\\s+\\{([^}]*)\\})?\\s*:::(?:\\n|$)`);
+        const match = src.match(regex);
+        if (!match) {
+          return void 0;
+        }
+        const attrString = match[1] || "";
+        const attributes = parseAttributes2(attrString);
+        const missingRequired = requiredAttributes.find((required) => !(required in attributes));
+        if (missingRequired) {
+          return void 0;
+        }
+        return {
+          type: nodeName,
+          raw: match[0],
+          attributes
+        };
+      }
+    },
+    renderMarkdown: (node) => {
+      const filteredAttrs = filterAttributes(node.attrs || {});
+      const attrs = serializeAttributes2(filteredAttrs);
+      const attrString = attrs ? ` {${attrs}}` : "";
+      return `:::${blockName}${attrString} :::`;
+    }
+  };
+}
+
+// src/utilities/markdown/createBlockMarkdownSpec.ts
+function createBlockMarkdownSpec(options) {
+  const {
+    nodeName,
+    name: markdownName,
+    getContent,
+    parseAttributes: parseAttributes2 = parseAttributes,
+    serializeAttributes: serializeAttributes2 = serializeAttributes,
+    defaultAttributes = {},
+    content = "block",
+    allowedAttributes
+  } = options;
+  const blockName = markdownName || nodeName;
+  const filterAttributes = (attrs) => {
+    if (!allowedAttributes) {
+      return attrs;
+    }
+    const filtered = {};
+    allowedAttributes.forEach((key) => {
+      if (key in attrs) {
+        filtered[key] = attrs[key];
+      }
+    });
+    return filtered;
+  };
+  return {
+    parseMarkdown: (token, h2) => {
+      let nodeContent;
+      if (getContent) {
+        const contentResult = getContent(token);
+        nodeContent = typeof contentResult === "string" ? [{ type: "text", text: contentResult }] : contentResult;
+      } else if (content === "block") {
+        nodeContent = h2.parseChildren(token.tokens || []);
+      } else {
+        nodeContent = h2.parseInline(token.tokens || []);
+      }
+      const attrs = { ...defaultAttributes, ...token.attributes };
+      return h2.createNode(nodeName, attrs, nodeContent);
+    },
+    markdownTokenizer: {
+      name: nodeName,
+      level: "block",
+      start(src) {
+        var _a;
+        const regex = new RegExp(`^:::${blockName}`, "m");
+        const index = (_a = src.match(regex)) == null ? void 0 : _a.index;
+        return index !== void 0 ? index : -1;
+      },
+      tokenize(src, _tokens, lexer) {
+        var _a;
+        const openingRegex = new RegExp(`^:::${blockName}(?:\\s+\\{([^}]*)\\})?\\s*\\n`);
+        const openingMatch = src.match(openingRegex);
+        if (!openingMatch) {
+          return void 0;
+        }
+        const [openingTag, attrString = ""] = openingMatch;
+        const attributes = parseAttributes2(attrString);
+        let level = 1;
+        const position = openingTag.length;
+        let matchedContent = "";
+        const blockPattern = /^:::([\w-]*)(\s.*)?/gm;
+        const remaining = src.slice(position);
+        blockPattern.lastIndex = 0;
+        for (; ; ) {
+          const match = blockPattern.exec(remaining);
+          if (match === null) {
+            break;
+          }
+          const matchPos = match.index;
+          const blockType = match[1];
+          if ((_a = match[2]) == null ? void 0 : _a.endsWith(":::")) {
+            continue;
+          }
+          if (blockType) {
+            level += 1;
+          } else {
+            level -= 1;
+            if (level === 0) {
+              const rawContent = remaining.slice(0, matchPos);
+              matchedContent = rawContent.trim();
+              const fullMatch = src.slice(0, position + matchPos + match[0].length);
+              let contentTokens = [];
+              if (matchedContent) {
+                if (content === "block") {
+                  contentTokens = lexer.blockTokens(rawContent);
+                  contentTokens.forEach((token) => {
+                    if (token.text && (!token.tokens || token.tokens.length === 0)) {
+                      token.tokens = lexer.inlineTokens(token.text);
+                    }
+                  });
+                  while (contentTokens.length > 0) {
+                    const lastToken = contentTokens[contentTokens.length - 1];
+                    if (lastToken.type === "paragraph" && (!lastToken.text || lastToken.text.trim() === "")) {
+                      contentTokens.pop();
+                    } else {
+                      break;
+                    }
+                  }
+                } else {
+                  contentTokens = lexer.inlineTokens(matchedContent);
+                }
+              }
+              return {
+                type: nodeName,
+                raw: fullMatch,
+                attributes,
+                content: matchedContent,
+                tokens: contentTokens
+              };
+            }
+          }
+        }
+        return void 0;
+      }
+    },
+    renderMarkdown: (node, h2) => {
+      const filteredAttrs = filterAttributes(node.attrs || {});
+      const attrs = serializeAttributes2(filteredAttrs);
+      const attrString = attrs ? ` {${attrs}}` : "";
+      const renderedContent = h2.renderChildren(node.content || [], "\n\n");
+      return `:::${blockName}${attrString}
+
+${renderedContent}
+
+:::`;
+    }
+  };
+}
+
+// src/utilities/markdown/createInlineMarkdownSpec.ts
+function parseShortcodeAttributes(attrString) {
+  if (!attrString.trim()) {
+    return {};
+  }
+  const attributes = {};
+  const regex = /(\w+)=(?:"([^"]*)"|'([^']*)')/g;
+  let match = regex.exec(attrString);
+  while (match !== null) {
+    const [, key, doubleQuoted, singleQuoted] = match;
+    attributes[key] = doubleQuoted || singleQuoted;
+    match = regex.exec(attrString);
+  }
+  return attributes;
+}
+function serializeShortcodeAttributes(attrs) {
+  return Object.entries(attrs).filter(([, value]) => value !== void 0 && value !== null).map(([key, value]) => `${key}="${value}"`).join(" ");
+}
+function createInlineMarkdownSpec(options) {
+  const {
+    nodeName,
+    name: shortcodeName,
+    getContent,
+    parseAttributes: parseAttributes2 = parseShortcodeAttributes,
+    serializeAttributes: serializeAttributes2 = serializeShortcodeAttributes,
+    defaultAttributes = {},
+    selfClosing = false,
+    allowedAttributes
+  } = options;
+  const shortcode = shortcodeName || nodeName;
+  const filterAttributes = (attrs) => {
+    if (!allowedAttributes) {
+      return attrs;
+    }
+    const filtered = {};
+    allowedAttributes.forEach((attr) => {
+      const attrName = typeof attr === "string" ? attr : attr.name;
+      const skipIfDefault = typeof attr === "string" ? void 0 : attr.skipIfDefault;
+      if (attrName in attrs) {
+        const value = attrs[attrName];
+        if (skipIfDefault !== void 0 && value === skipIfDefault) {
+          return;
+        }
+        filtered[attrName] = value;
+      }
+    });
+    return filtered;
+  };
+  const escapedShortcode = shortcode.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return {
+    parseMarkdown: (token, h2) => {
+      const attrs = { ...defaultAttributes, ...token.attributes };
+      if (selfClosing) {
+        return h2.createNode(nodeName, attrs);
+      }
+      const content = getContent ? getContent(token) : token.content || "";
+      if (content) {
+        return h2.createNode(nodeName, attrs, [h2.createTextNode(content)]);
+      }
+      return h2.createNode(nodeName, attrs, []);
+    },
+    markdownTokenizer: {
+      name: nodeName,
+      level: "inline",
+      start(src) {
+        const startPattern = selfClosing ? new RegExp(`\\[${escapedShortcode}\\s*[^\\]]*\\]`) : new RegExp(`\\[${escapedShortcode}\\s*[^\\]]*\\][\\s\\S]*?\\[\\/${escapedShortcode}\\]`);
+        const match = src.match(startPattern);
+        const index = match == null ? void 0 : match.index;
+        return index !== void 0 ? index : -1;
+      },
+      tokenize(src, _tokens, _lexer) {
+        const tokenPattern = selfClosing ? new RegExp(`^\\[${escapedShortcode}\\s*([^\\]]*)\\]`) : new RegExp(
+          `^\\[${escapedShortcode}\\s*([^\\]]*)\\]([\\s\\S]*?)\\[\\/${escapedShortcode}\\]`
+        );
+        const match = src.match(tokenPattern);
+        if (!match) {
+          return void 0;
+        }
+        let content = "";
+        let attrString = "";
+        if (selfClosing) {
+          const [, attrs] = match;
+          attrString = attrs;
+        } else {
+          const [, attrs, contentMatch] = match;
+          attrString = attrs;
+          content = contentMatch || "";
+        }
+        const attributes = parseAttributes2(attrString.trim());
+        return {
+          type: nodeName,
+          raw: match[0],
+          content: content.trim(),
+          attributes
+        };
+      }
+    },
+    renderMarkdown: (node) => {
+      let content = "";
+      if (getContent) {
+        content = getContent(node);
+      } else if (node.content && node.content.length > 0) {
+        content = node.content.filter((child) => child.type === "text").map((child) => child.text).join("");
+      }
+      const filteredAttrs = filterAttributes(node.attrs || {});
+      const attrs = serializeAttributes2(filteredAttrs);
+      const attrString = attrs ? ` ${attrs}` : "";
+      if (selfClosing) {
+        return `[${shortcode}${attrString}]`;
+      }
+      return `[${shortcode}${attrString}]${content}[/${shortcode}]`;
+    }
+  };
+}
+
+// src/utilities/markdown/parseIndentedBlocks.ts
+function parseIndentedBlocks(src, config, lexer) {
+  var _a, _b, _c, _d;
+  const lines = src.split("\n");
+  const items = [];
+  let totalRaw = "";
+  let i = 0;
+  const baseIndentSize = config.baseIndentSize || 2;
+  while (i < lines.length) {
+    const currentLine = lines[i];
+    const itemMatch = currentLine.match(config.itemPattern);
+    if (!itemMatch) {
+      if (items.length > 0) {
+        break;
+      } else if (currentLine.trim() === "") {
+        i += 1;
+        totalRaw = `${totalRaw}${currentLine}
+`;
+        continue;
+      } else {
+        return void 0;
+      }
+    }
+    const itemData = config.extractItemData(itemMatch);
+    const { indentLevel, mainContent } = itemData;
+    totalRaw = `${totalRaw}${currentLine}
+`;
+    const itemContent = [mainContent];
+    i += 1;
+    while (i < lines.length) {
+      const nextLine = lines[i];
+      if (nextLine.trim() === "") {
+        const nextNonEmptyIndex = lines.slice(i + 1).findIndex((l) => l.trim() !== "");
+        if (nextNonEmptyIndex === -1) {
+          break;
+        }
+        const nextNonEmpty = lines[i + 1 + nextNonEmptyIndex];
+        const nextIndent2 = ((_b = (_a = nextNonEmpty.match(/^(\s*)/)) == null ? void 0 : _a[1]) == null ? void 0 : _b.length) || 0;
+        if (nextIndent2 > indentLevel) {
+          itemContent.push(nextLine);
+          totalRaw = `${totalRaw}${nextLine}
+`;
+          i += 1;
+          continue;
+        } else {
+          break;
+        }
+      }
+      const nextIndent = ((_d = (_c = nextLine.match(/^(\s*)/)) == null ? void 0 : _c[1]) == null ? void 0 : _d.length) || 0;
+      if (nextIndent > indentLevel) {
+        itemContent.push(nextLine);
+        totalRaw = `${totalRaw}${nextLine}
+`;
+        i += 1;
+      } else {
+        break;
+      }
+    }
+    let nestedTokens;
+    const nestedContent = itemContent.slice(1);
+    if (nestedContent.length > 0) {
+      const dedentedNested = nestedContent.map((nestedLine) => nestedLine.slice(indentLevel + baseIndentSize)).join("\n");
+      if (dedentedNested.trim()) {
+        if (config.customNestedParser) {
+          nestedTokens = config.customNestedParser(dedentedNested);
+        } else {
+          nestedTokens = lexer.blockTokens(dedentedNested);
+        }
+      }
+    }
+    const token = config.createToken(itemData, nestedTokens);
+    items.push(token);
+  }
+  if (items.length === 0) {
+    return void 0;
+  }
+  return {
+    items,
+    raw: totalRaw
+  };
+}
+
+// src/utilities/markdown/renderNestedMarkdownContent.ts
+function renderNestedMarkdownContent(node, h2, prefixOrGenerator, ctx) {
+  if (!node || !Array.isArray(node.content)) {
+    return "";
+  }
+  const prefix = typeof prefixOrGenerator === "function" ? prefixOrGenerator(ctx) : prefixOrGenerator;
+  const [content, ...children] = node.content;
+  const mainContent = h2.renderChildren([content]);
+  let output = `${prefix}${mainContent}`;
+  if (children && children.length > 0) {
+    children.forEach((child, index) => {
+      var _a, _b;
+      const childContent = (_b = (_a = h2.renderChild) == null ? void 0 : _a.call(h2, child, index + 1)) != null ? _b : h2.renderChildren([child]);
+      if (childContent !== void 0 && childContent !== null) {
+        const indentedChild = childContent.split("\n").map((line) => line ? h2.indent(line) : h2.indent("")).join("\n");
+        output += child.type === "paragraph" ? `
+
+${indentedChild}` : `
+${indentedChild}`;
+      }
+    });
+  }
+  return output;
+}
+
+// src/utilities/mergeDeep.ts
+function mergeDeep(target, source) {
+  const output = { ...target };
+  if (isPlainObject(target) && isPlainObject(source)) {
+    Object.keys(source).forEach((key) => {
+      if (isPlainObject(source[key]) && isPlainObject(target[key])) {
+        output[key] = mergeDeep(target[key], source[key]);
+      } else {
+        output[key] = source[key];
+      }
+    });
+  }
+  return output;
+}
+
+// src/MarkView.ts
+function updateMarkViewAttributes(checkMark, editor, attrs = {}) {
+  const { state } = editor;
+  const { doc, tr } = state;
+  const thisMark = checkMark;
+  doc.descendants((node, pos) => {
+    const from = tr.mapping.map(pos);
+    const to = tr.mapping.map(pos) + node.nodeSize;
+    let foundMark = null;
+    node.marks.forEach((mark) => {
+      if (mark !== thisMark) {
+        return false;
+      }
+      foundMark = mark;
+    });
+    if (!foundMark) {
+      return;
+    }
+    let needsUpdate = false;
+    Object.keys(attrs).forEach((k) => {
+      if (attrs[k] !== foundMark.attrs[k]) {
+        needsUpdate = true;
+      }
+    });
+    if (needsUpdate) {
+      const updatedMark = checkMark.type.create({
+        ...checkMark.attrs,
+        ...attrs
+      });
+      tr.removeMark(from, to, checkMark.type);
+      tr.addMark(from, to, updatedMark);
+    }
+  });
+  if (tr.docChanged) {
+    editor.view.dispatch(tr);
+  }
+}
 var InputRule = class {
   constructor(config) {
     var _a;
@@ -16789,32 +17461,6 @@ function inputRulesPlugin(props) {
   return plugin;
 }
 
-// src/utilities/isPlainObject.ts
-function getType(value) {
-  return Object.prototype.toString.call(value).slice(8, -1);
-}
-function isPlainObject(value) {
-  if (getType(value) !== "Object") {
-    return false;
-  }
-  return value.constructor === Object && Object.getPrototypeOf(value) === Object.prototype;
-}
-
-// src/utilities/mergeDeep.ts
-function mergeDeep(target, source) {
-  const output = { ...target };
-  if (isPlainObject(target) && isPlainObject(source)) {
-    Object.keys(source).forEach((key) => {
-      if (isPlainObject(source[key]) && isPlainObject(target[key])) {
-        output[key] = mergeDeep(target[key], source[key]);
-      } else {
-        output[key] = source[key];
-      }
-    });
-  }
-  return output;
-}
-
 // src/Extendable.ts
 var Extendable = class {
   constructor(config = {}) {
@@ -16913,13 +17559,6 @@ var Mark = class _Mark extends Extendable {
     return super.extend(resolvedConfig);
   }
 };
-
-// src/utilities/isNumber.ts
-function isNumber(value) {
-  return typeof value === "number";
-}
-
-// src/PasteRule.ts
 var PasteRule = class {
   constructor(config) {
     this.find = config.find;
@@ -18232,22 +18871,6 @@ img.ProseMirror-separator {
   display: block;
 }`;
 
-// src/utilities/createStyleTag.ts
-function createStyleTag(style2, nonce, suffix) {
-  const tiptapStyleTag = document.querySelector(`style[data-tiptap-style${suffix ? `-${suffix}` : ""}]`);
-  if (tiptapStyleTag !== null) {
-    return tiptapStyleTag;
-  }
-  const styleNode = document.createElement("style");
-  if (nonce) {
-    styleNode.setAttribute("nonce", nonce);
-  }
-  styleNode.setAttribute(`data-tiptap-style${suffix ? `-${suffix}` : ""}`, "");
-  styleNode.innerHTML = style2;
-  document.getElementsByTagName("head")[0].appendChild(styleNode);
-  return styleNode;
-}
-
 // src/Editor.ts
 var Editor = class extends EventEmitter {
   constructor(options = {}) {
@@ -19543,569 +20166,6 @@ var ResizableNodeView = class {
     };
   }
 };
-function canInsertNode(state, nodeType) {
-  const { selection } = state;
-  const { $from } = selection;
-  if (selection instanceof NodeSelection$1) {
-    const index = $from.index();
-    const parent = $from.parent;
-    return parent.canReplaceWith(index, index + 1, nodeType);
-  }
-  let depth = $from.depth;
-  while (depth >= 0) {
-    const index = $from.index(depth);
-    const parent = $from.node(depth);
-    const match = parent.contentMatchAt(index);
-    if (match.matchType(nodeType)) {
-      return true;
-    }
-    depth -= 1;
-  }
-  return false;
-}
-
-// src/utilities/escapeForRegEx.ts
-function escapeForRegEx(string) {
-  return string.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-}
-
-// src/utilities/isFirefox.ts
-function isFirefox() {
-  return typeof navigator !== "undefined" ? /Firefox/.test(navigator.userAgent) : false;
-}
-
-// src/utilities/markdown/index.ts
-var markdown_exports = {};
-__export$1(markdown_exports, {
-  createAtomBlockMarkdownSpec: () => createAtomBlockMarkdownSpec,
-  createBlockMarkdownSpec: () => createBlockMarkdownSpec,
-  createInlineMarkdownSpec: () => createInlineMarkdownSpec,
-  parseAttributes: () => parseAttributes,
-  parseIndentedBlocks: () => parseIndentedBlocks,
-  renderNestedMarkdownContent: () => renderNestedMarkdownContent,
-  serializeAttributes: () => serializeAttributes
-});
-
-// src/utilities/markdown/attributeUtils.ts
-function parseAttributes(attrString) {
-  if (!(attrString == null ? void 0 : attrString.trim())) {
-    return {};
-  }
-  const attributes = {};
-  const quotedStrings = [];
-  const tempString = attrString.replace(/["']([^"']*)["']/g, (match) => {
-    quotedStrings.push(match);
-    return `__QUOTED_${quotedStrings.length - 1}__`;
-  });
-  const classMatches = tempString.match(/(?:^|\s)\.([a-zA-Z][\w-]*)/g);
-  if (classMatches) {
-    const classes = classMatches.map((match) => match.trim().slice(1));
-    attributes.class = classes.join(" ");
-  }
-  const idMatch = tempString.match(/(?:^|\s)#([a-zA-Z][\w-]*)/);
-  if (idMatch) {
-    attributes.id = idMatch[1];
-  }
-  const kvRegex = /([a-zA-Z][\w-]*)\s*=\s*(__QUOTED_\d+__)/g;
-  const kvMatches = Array.from(tempString.matchAll(kvRegex));
-  kvMatches.forEach(([, key, quotedRef]) => {
-    var _a;
-    const quotedIndex = parseInt(((_a = quotedRef.match(/__QUOTED_(\d+)__/)) == null ? void 0 : _a[1]) || "0", 10);
-    const quotedValue = quotedStrings[quotedIndex];
-    if (quotedValue) {
-      attributes[key] = quotedValue.slice(1, -1);
-    }
-  });
-  const cleanString = tempString.replace(/(?:^|\s)\.([a-zA-Z][\w-]*)/g, "").replace(/(?:^|\s)#([a-zA-Z][\w-]*)/g, "").replace(/([a-zA-Z][\w-]*)\s*=\s*__QUOTED_\d+__/g, "").trim();
-  if (cleanString) {
-    const booleanAttrs = cleanString.split(/\s+/).filter(Boolean);
-    booleanAttrs.forEach((attr) => {
-      if (attr.match(/^[a-zA-Z][\w-]*$/)) {
-        attributes[attr] = true;
-      }
-    });
-  }
-  return attributes;
-}
-function serializeAttributes(attributes) {
-  if (!attributes || Object.keys(attributes).length === 0) {
-    return "";
-  }
-  const parts = [];
-  if (attributes.class) {
-    const classes = String(attributes.class).split(/\s+/).filter(Boolean);
-    classes.forEach((cls) => parts.push(`.${cls}`));
-  }
-  if (attributes.id) {
-    parts.push(`#${attributes.id}`);
-  }
-  Object.entries(attributes).forEach(([key, value]) => {
-    if (key === "class" || key === "id") {
-      return;
-    }
-    if (value === true) {
-      parts.push(key);
-    } else if (value !== false && value != null) {
-      parts.push(`${key}="${String(value)}"`);
-    }
-  });
-  return parts.join(" ");
-}
-
-// src/utilities/markdown/createAtomBlockMarkdownSpec.ts
-function createAtomBlockMarkdownSpec(options) {
-  const {
-    nodeName,
-    name: markdownName,
-    parseAttributes: parseAttributes2 = parseAttributes,
-    serializeAttributes: serializeAttributes2 = serializeAttributes,
-    defaultAttributes = {},
-    requiredAttributes = [],
-    allowedAttributes
-  } = options;
-  const blockName = markdownName || nodeName;
-  const filterAttributes = (attrs) => {
-    if (!allowedAttributes) {
-      return attrs;
-    }
-    const filtered = {};
-    allowedAttributes.forEach((key) => {
-      if (key in attrs) {
-        filtered[key] = attrs[key];
-      }
-    });
-    return filtered;
-  };
-  return {
-    parseMarkdown: (token, h2) => {
-      const attrs = { ...defaultAttributes, ...token.attributes };
-      return h2.createNode(nodeName, attrs, []);
-    },
-    markdownTokenizer: {
-      name: nodeName,
-      level: "block",
-      start(src) {
-        var _a;
-        const regex = new RegExp(`^:::${blockName}(?:\\s|$)`, "m");
-        const index = (_a = src.match(regex)) == null ? void 0 : _a.index;
-        return index !== void 0 ? index : -1;
-      },
-      tokenize(src, _tokens, _lexer) {
-        const regex = new RegExp(`^:::${blockName}(?:\\s+\\{([^}]*)\\})?\\s*:::(?:\\n|$)`);
-        const match = src.match(regex);
-        if (!match) {
-          return void 0;
-        }
-        const attrString = match[1] || "";
-        const attributes = parseAttributes2(attrString);
-        const missingRequired = requiredAttributes.find((required) => !(required in attributes));
-        if (missingRequired) {
-          return void 0;
-        }
-        return {
-          type: nodeName,
-          raw: match[0],
-          attributes
-        };
-      }
-    },
-    renderMarkdown: (node) => {
-      const filteredAttrs = filterAttributes(node.attrs || {});
-      const attrs = serializeAttributes2(filteredAttrs);
-      const attrString = attrs ? ` {${attrs}}` : "";
-      return `:::${blockName}${attrString} :::`;
-    }
-  };
-}
-
-// src/utilities/markdown/createBlockMarkdownSpec.ts
-function createBlockMarkdownSpec(options) {
-  const {
-    nodeName,
-    name: markdownName,
-    getContent,
-    parseAttributes: parseAttributes2 = parseAttributes,
-    serializeAttributes: serializeAttributes2 = serializeAttributes,
-    defaultAttributes = {},
-    content = "block",
-    allowedAttributes
-  } = options;
-  const blockName = markdownName || nodeName;
-  const filterAttributes = (attrs) => {
-    if (!allowedAttributes) {
-      return attrs;
-    }
-    const filtered = {};
-    allowedAttributes.forEach((key) => {
-      if (key in attrs) {
-        filtered[key] = attrs[key];
-      }
-    });
-    return filtered;
-  };
-  return {
-    parseMarkdown: (token, h2) => {
-      let nodeContent;
-      if (getContent) {
-        const contentResult = getContent(token);
-        nodeContent = typeof contentResult === "string" ? [{ type: "text", text: contentResult }] : contentResult;
-      } else if (content === "block") {
-        nodeContent = h2.parseChildren(token.tokens || []);
-      } else {
-        nodeContent = h2.parseInline(token.tokens || []);
-      }
-      const attrs = { ...defaultAttributes, ...token.attributes };
-      return h2.createNode(nodeName, attrs, nodeContent);
-    },
-    markdownTokenizer: {
-      name: nodeName,
-      level: "block",
-      start(src) {
-        var _a;
-        const regex = new RegExp(`^:::${blockName}`, "m");
-        const index = (_a = src.match(regex)) == null ? void 0 : _a.index;
-        return index !== void 0 ? index : -1;
-      },
-      tokenize(src, _tokens, lexer) {
-        var _a;
-        const openingRegex = new RegExp(`^:::${blockName}(?:\\s+\\{([^}]*)\\})?\\s*\\n`);
-        const openingMatch = src.match(openingRegex);
-        if (!openingMatch) {
-          return void 0;
-        }
-        const [openingTag, attrString = ""] = openingMatch;
-        const attributes = parseAttributes2(attrString);
-        let level = 1;
-        const position = openingTag.length;
-        let matchedContent = "";
-        const blockPattern = /^:::([\w-]*)(\s.*)?/gm;
-        const remaining = src.slice(position);
-        blockPattern.lastIndex = 0;
-        for (; ; ) {
-          const match = blockPattern.exec(remaining);
-          if (match === null) {
-            break;
-          }
-          const matchPos = match.index;
-          const blockType = match[1];
-          if ((_a = match[2]) == null ? void 0 : _a.endsWith(":::")) {
-            continue;
-          }
-          if (blockType) {
-            level += 1;
-          } else {
-            level -= 1;
-            if (level === 0) {
-              const rawContent = remaining.slice(0, matchPos);
-              matchedContent = rawContent.trim();
-              const fullMatch = src.slice(0, position + matchPos + match[0].length);
-              let contentTokens = [];
-              if (matchedContent) {
-                if (content === "block") {
-                  contentTokens = lexer.blockTokens(rawContent);
-                  contentTokens.forEach((token) => {
-                    if (token.text && (!token.tokens || token.tokens.length === 0)) {
-                      token.tokens = lexer.inlineTokens(token.text);
-                    }
-                  });
-                  while (contentTokens.length > 0) {
-                    const lastToken = contentTokens[contentTokens.length - 1];
-                    if (lastToken.type === "paragraph" && (!lastToken.text || lastToken.text.trim() === "")) {
-                      contentTokens.pop();
-                    } else {
-                      break;
-                    }
-                  }
-                } else {
-                  contentTokens = lexer.inlineTokens(matchedContent);
-                }
-              }
-              return {
-                type: nodeName,
-                raw: fullMatch,
-                attributes,
-                content: matchedContent,
-                tokens: contentTokens
-              };
-            }
-          }
-        }
-        return void 0;
-      }
-    },
-    renderMarkdown: (node, h2) => {
-      const filteredAttrs = filterAttributes(node.attrs || {});
-      const attrs = serializeAttributes2(filteredAttrs);
-      const attrString = attrs ? ` {${attrs}}` : "";
-      const renderedContent = h2.renderChildren(node.content || [], "\n\n");
-      return `:::${blockName}${attrString}
-
-${renderedContent}
-
-:::`;
-    }
-  };
-}
-
-// src/utilities/markdown/createInlineMarkdownSpec.ts
-function parseShortcodeAttributes(attrString) {
-  if (!attrString.trim()) {
-    return {};
-  }
-  const attributes = {};
-  const regex = /(\w+)=(?:"([^"]*)"|'([^']*)')/g;
-  let match = regex.exec(attrString);
-  while (match !== null) {
-    const [, key, doubleQuoted, singleQuoted] = match;
-    attributes[key] = doubleQuoted || singleQuoted;
-    match = regex.exec(attrString);
-  }
-  return attributes;
-}
-function serializeShortcodeAttributes(attrs) {
-  return Object.entries(attrs).filter(([, value]) => value !== void 0 && value !== null).map(([key, value]) => `${key}="${value}"`).join(" ");
-}
-function createInlineMarkdownSpec(options) {
-  const {
-    nodeName,
-    name: shortcodeName,
-    getContent,
-    parseAttributes: parseAttributes2 = parseShortcodeAttributes,
-    serializeAttributes: serializeAttributes2 = serializeShortcodeAttributes,
-    defaultAttributes = {},
-    selfClosing = false,
-    allowedAttributes
-  } = options;
-  const shortcode = shortcodeName || nodeName;
-  const filterAttributes = (attrs) => {
-    if (!allowedAttributes) {
-      return attrs;
-    }
-    const filtered = {};
-    allowedAttributes.forEach((attr) => {
-      const attrName = typeof attr === "string" ? attr : attr.name;
-      const skipIfDefault = typeof attr === "string" ? void 0 : attr.skipIfDefault;
-      if (attrName in attrs) {
-        const value = attrs[attrName];
-        if (skipIfDefault !== void 0 && value === skipIfDefault) {
-          return;
-        }
-        filtered[attrName] = value;
-      }
-    });
-    return filtered;
-  };
-  const escapedShortcode = shortcode.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return {
-    parseMarkdown: (token, h2) => {
-      const attrs = { ...defaultAttributes, ...token.attributes };
-      if (selfClosing) {
-        return h2.createNode(nodeName, attrs);
-      }
-      const content = getContent ? getContent(token) : token.content || "";
-      if (content) {
-        return h2.createNode(nodeName, attrs, [h2.createTextNode(content)]);
-      }
-      return h2.createNode(nodeName, attrs, []);
-    },
-    markdownTokenizer: {
-      name: nodeName,
-      level: "inline",
-      start(src) {
-        const startPattern = selfClosing ? new RegExp(`\\[${escapedShortcode}\\s*[^\\]]*\\]`) : new RegExp(`\\[${escapedShortcode}\\s*[^\\]]*\\][\\s\\S]*?\\[\\/${escapedShortcode}\\]`);
-        const match = src.match(startPattern);
-        const index = match == null ? void 0 : match.index;
-        return index !== void 0 ? index : -1;
-      },
-      tokenize(src, _tokens, _lexer) {
-        const tokenPattern = selfClosing ? new RegExp(`^\\[${escapedShortcode}\\s*([^\\]]*)\\]`) : new RegExp(
-          `^\\[${escapedShortcode}\\s*([^\\]]*)\\]([\\s\\S]*?)\\[\\/${escapedShortcode}\\]`
-        );
-        const match = src.match(tokenPattern);
-        if (!match) {
-          return void 0;
-        }
-        let content = "";
-        let attrString = "";
-        if (selfClosing) {
-          const [, attrs] = match;
-          attrString = attrs;
-        } else {
-          const [, attrs, contentMatch] = match;
-          attrString = attrs;
-          content = contentMatch || "";
-        }
-        const attributes = parseAttributes2(attrString.trim());
-        return {
-          type: nodeName,
-          raw: match[0],
-          content: content.trim(),
-          attributes
-        };
-      }
-    },
-    renderMarkdown: (node) => {
-      let content = "";
-      if (getContent) {
-        content = getContent(node);
-      } else if (node.content && node.content.length > 0) {
-        content = node.content.filter((child) => child.type === "text").map((child) => child.text).join("");
-      }
-      const filteredAttrs = filterAttributes(node.attrs || {});
-      const attrs = serializeAttributes2(filteredAttrs);
-      const attrString = attrs ? ` ${attrs}` : "";
-      if (selfClosing) {
-        return `[${shortcode}${attrString}]`;
-      }
-      return `[${shortcode}${attrString}]${content}[/${shortcode}]`;
-    }
-  };
-}
-
-// src/utilities/markdown/parseIndentedBlocks.ts
-function parseIndentedBlocks(src, config, lexer) {
-  var _a, _b, _c, _d;
-  const lines = src.split("\n");
-  const items = [];
-  let totalRaw = "";
-  let i = 0;
-  const baseIndentSize = config.baseIndentSize || 2;
-  while (i < lines.length) {
-    const currentLine = lines[i];
-    const itemMatch = currentLine.match(config.itemPattern);
-    if (!itemMatch) {
-      if (items.length > 0) {
-        break;
-      } else if (currentLine.trim() === "") {
-        i += 1;
-        totalRaw = `${totalRaw}${currentLine}
-`;
-        continue;
-      } else {
-        return void 0;
-      }
-    }
-    const itemData = config.extractItemData(itemMatch);
-    const { indentLevel, mainContent } = itemData;
-    totalRaw = `${totalRaw}${currentLine}
-`;
-    const itemContent = [mainContent];
-    i += 1;
-    while (i < lines.length) {
-      const nextLine = lines[i];
-      if (nextLine.trim() === "") {
-        const nextNonEmptyIndex = lines.slice(i + 1).findIndex((l) => l.trim() !== "");
-        if (nextNonEmptyIndex === -1) {
-          break;
-        }
-        const nextNonEmpty = lines[i + 1 + nextNonEmptyIndex];
-        const nextIndent2 = ((_b = (_a = nextNonEmpty.match(/^(\s*)/)) == null ? void 0 : _a[1]) == null ? void 0 : _b.length) || 0;
-        if (nextIndent2 > indentLevel) {
-          itemContent.push(nextLine);
-          totalRaw = `${totalRaw}${nextLine}
-`;
-          i += 1;
-          continue;
-        } else {
-          break;
-        }
-      }
-      const nextIndent = ((_d = (_c = nextLine.match(/^(\s*)/)) == null ? void 0 : _c[1]) == null ? void 0 : _d.length) || 0;
-      if (nextIndent > indentLevel) {
-        itemContent.push(nextLine);
-        totalRaw = `${totalRaw}${nextLine}
-`;
-        i += 1;
-      } else {
-        break;
-      }
-    }
-    let nestedTokens;
-    const nestedContent = itemContent.slice(1);
-    if (nestedContent.length > 0) {
-      const dedentedNested = nestedContent.map((nestedLine) => nestedLine.slice(indentLevel + baseIndentSize)).join("\n");
-      if (dedentedNested.trim()) {
-        if (config.customNestedParser) {
-          nestedTokens = config.customNestedParser(dedentedNested);
-        } else {
-          nestedTokens = lexer.blockTokens(dedentedNested);
-        }
-      }
-    }
-    const token = config.createToken(itemData, nestedTokens);
-    items.push(token);
-  }
-  if (items.length === 0) {
-    return void 0;
-  }
-  return {
-    items,
-    raw: totalRaw
-  };
-}
-
-// src/utilities/markdown/renderNestedMarkdownContent.ts
-function renderNestedMarkdownContent(node, h2, prefixOrGenerator, ctx) {
-  if (!node || !Array.isArray(node.content)) {
-    return "";
-  }
-  const prefix = typeof prefixOrGenerator === "function" ? prefixOrGenerator(ctx) : prefixOrGenerator;
-  const [content, ...children] = node.content;
-  const mainContent = h2.renderChildren([content]);
-  let output = `${prefix}${mainContent}`;
-  if (children && children.length > 0) {
-    children.forEach((child, index) => {
-      var _a, _b;
-      const childContent = (_b = (_a = h2.renderChild) == null ? void 0 : _a.call(h2, child, index + 1)) != null ? _b : h2.renderChildren([child]);
-      if (childContent !== void 0 && childContent !== null) {
-        const indentedChild = childContent.split("\n").map((line) => line ? h2.indent(line) : h2.indent("")).join("\n");
-        output += child.type === "paragraph" ? `
-
-${indentedChild}` : `
-${indentedChild}`;
-      }
-    });
-  }
-  return output;
-}
-
-// src/MarkView.ts
-function updateMarkViewAttributes(checkMark, editor, attrs = {}) {
-  const { state } = editor;
-  const { doc, tr } = state;
-  const thisMark = checkMark;
-  doc.descendants((node, pos) => {
-    const from = tr.mapping.map(pos);
-    const to = tr.mapping.map(pos) + node.nodeSize;
-    let foundMark = null;
-    node.marks.forEach((mark) => {
-      if (mark !== thisMark) {
-        return false;
-      }
-      foundMark = mark;
-    });
-    if (!foundMark) {
-      return;
-    }
-    let needsUpdate = false;
-    Object.keys(attrs).forEach((k) => {
-      if (attrs[k] !== foundMark.attrs[k]) {
-        needsUpdate = true;
-      }
-    });
-    if (needsUpdate) {
-      const updatedMark = checkMark.type.create({
-        ...checkMark.attrs,
-        ...attrs
-      });
-      tr.removeMark(from, to, checkMark.type);
-      tr.addMark(from, to, updatedMark);
-    }
-  });
-  if (tr.docChanged) {
-    editor.view.dispatch(tr);
-  }
-}
 
 // src/Node.ts
 var Node3 = class _Node extends Extendable {
@@ -21502,25 +21562,38 @@ function getContainerRect(container) {
   return container.getBoundingClientRect();
 }
 function getViewportBoundaryPositions({
-  doc,
   view,
   scrollContainer
 }) {
   const editorRect = view.dom.getBoundingClientRect();
+  if (editorRect.width <= 0 || editorRect.height <= 0) {
+    return null;
+  }
   const containerRect = scrollContainer ? getContainerRect(scrollContainer) : { top: 0, bottom: window.innerHeight };
   const visibleTop = Math.max(editorRect.top, containerRect.top) - VIEWPORT_OVERSCAN_PX;
   const visibleBottom = Math.min(editorRect.bottom, containerRect.bottom) + VIEWPORT_OVERSCAN_PX;
   if (visibleTop >= visibleBottom) {
-    return { top: 0, bottom: doc.content.size };
+    return null;
+  }
+  const minX = editorRect.left + 1;
+  const maxX = editorRect.right - 1;
+  if (minX > maxX) {
+    return null;
   }
   const isRTL = getComputedStyle(view.dom).direction === "rtl";
-  const x = isRTL ? Math.max(editorRect.right - 2, editorRect.left + 2) : editorRect.left + 2;
-  const topPos = view.posAtCoords({ left: x, top: visibleTop + 2 });
-  const bottomPos = view.posAtCoords({ left: x, top: visibleBottom - 2 });
-  return {
-    top: topPos ? topPos.pos : 0,
-    bottom: bottomPos ? bottomPos.pos : doc.content.size
-  };
+  const targetX = isRTL ? editorRect.right - 2 : editorRect.left + 2;
+  const x = Math.min(Math.max(targetX, minX), maxX);
+  const probeTop = Math.max(visibleTop + 2, editorRect.top + 1);
+  const probeBottom = Math.min(visibleBottom - 2, editorRect.bottom - 1);
+  if (probeTop > probeBottom) {
+    return null;
+  }
+  const topPos = view.posAtCoords({ left: x, top: probeTop });
+  const bottomPos = view.posAtCoords({ left: x, top: probeBottom });
+  if (!topPos || !bottomPos) {
+    return null;
+  }
+  return { top: topPos.pos, bottom: bottomPos.pos };
 }
 
 // src/placeholder/utils/viewportTracking.ts
@@ -21557,9 +21630,11 @@ function createViewportPluginView(view) {
   const computeAndDispatch = () => {
     const positions = getViewportBoundaryPositions({
       view,
-      doc: view.state.doc,
       scrollContainer
     });
+    if (positions === null) {
+      return;
+    }
     const prev = PLUGIN_KEY.getState(view.state);
     if ((prev == null ? void 0 : prev.topPos) === positions.top && (prev == null ? void 0 : prev.bottomPos) === positions.bottom) {
       return;
@@ -21584,6 +21659,11 @@ function createViewportPluginView(view) {
     });
   };
   scrollContainer.addEventListener("scroll", scheduleFrame, { passive: true });
+  const resizeObserver = typeof ResizeObserver !== "undefined" ? new ResizeObserver(scheduleFrame) : null;
+  resizeObserver == null ? void 0 : resizeObserver.observe(view.dom);
+  const intersectionObserver = typeof IntersectionObserver !== "undefined" ? new IntersectionObserver(scheduleFrame) : null;
+  intersectionObserver == null ? void 0 : intersectionObserver.observe(view.dom);
+  view.dom.addEventListener("focus", scheduleFrame);
   computeAndDispatch();
   return {
     update(_view, prevState) {
@@ -21596,6 +21676,9 @@ function createViewportPluginView(view) {
         cancelAnimationFrame(frame);
       }
       scrollContainer.removeEventListener("scroll", scheduleFrame);
+      resizeObserver == null ? void 0 : resizeObserver.disconnect();
+      intersectionObserver == null ? void 0 : intersectionObserver.disconnect();
+      view.dom.removeEventListener("focus", scheduleFrame);
     }
   };
 }
@@ -26288,8 +26371,7 @@ function isAllowedUri(uri, protocols) {
   }
   return !uri || uri.replace(UNICODE_WHITESPACE_REGEX_GLOBAL, "").match(
     new RegExp(
-      // oxlint-disable-next-line no-useless-escape
-      `^(?:(?:${allowedProtocols.join("|")}):|[^a-z]|[a-z0-9+.-]+(?:[^a-z+.-:]|$))`,
+      `^(?:(?:${allowedProtocols.map((protocol) => protocol.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")).join("|")}):|[^a-z]|[a-z0-9+.\\-]+(?:[^a-z+.\\-:]|$))`,
       "i"
     )
   );
@@ -26710,6 +26792,194 @@ var createBranchingListDeleteKeymap = (itemName, wrapperNames) => {
   });
 };
 
+// src/ordered-list/roman.ts
+var ROMAN_NUMERALS = [
+  [1e3, "m"],
+  [900, "cm"],
+  [500, "d"],
+  [400, "cd"],
+  [100, "c"],
+  [90, "xc"],
+  [50, "l"],
+  [40, "xl"],
+  [10, "x"],
+  [9, "ix"],
+  [5, "v"],
+  [4, "iv"],
+  [1, "i"]
+];
+var ALPHA_NUMERALS = "abcdefghijklmnopqrstuvwxyz";
+var ORDERED_LIST_ALPHA_MARKER_PATTERN = "[a-zA-Z]{1,2}";
+var ORDERED_LIST_MARKER_PATTERN = String.raw`\d+|[ivxlcdmIVXLCDM]+|${ORDERED_LIST_ALPHA_MARKER_PATTERN}`;
+function toRoman(num) {
+  let remaining = num;
+  let result = "";
+  for (const [value, numeral] of ROMAN_NUMERALS) {
+    while (remaining >= value) {
+      result += numeral;
+      remaining -= value;
+    }
+  }
+  return result;
+}
+function toRomanUpper(num) {
+  return toRoman(num).toUpperCase();
+}
+function fromRoman(roman) {
+  const lower = roman.toLowerCase();
+  let index = 0;
+  let result = 0;
+  while (index < lower.length) {
+    let matched = false;
+    for (const [value, numeral] of ROMAN_NUMERALS) {
+      if (lower.startsWith(numeral, index)) {
+        result += value;
+        index += numeral.length;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      return 0;
+    }
+  }
+  return result;
+}
+function isValidRoman(marker) {
+  if (!/^[ivxlcdmIVXLCDM]+$/.test(marker)) {
+    return false;
+  }
+  const value = fromRoman(marker);
+  if (value <= 0) {
+    return false;
+  }
+  const expected = marker === marker.toLowerCase() ? toRoman(value) : toRomanUpper(value);
+  return expected === marker;
+}
+function fromAlpha(marker) {
+  const lower = marker.toLowerCase();
+  if (lower.length === 1) {
+    return lower.charCodeAt(0) - "a".charCodeAt(0) + 1;
+  }
+  if (lower.length === 2) {
+    const first = lower.charCodeAt(0) - "a".charCodeAt(0);
+    const second = lower.charCodeAt(1) - "a".charCodeAt(0);
+    return (first + 1) * 26 + second + 1;
+  }
+  return 0;
+}
+function toRomanAlpha(num) {
+  if (num <= 26) {
+    return ALPHA_NUMERALS[num - 1];
+  }
+  const first = Math.floor((num - 1) / 26) - 1;
+  const second = (num - 1) % 26;
+  if (first < 0) {
+    return ALPHA_NUMERALS[second];
+  }
+  return ALPHA_NUMERALS[first] + ALPHA_NUMERALS[second];
+}
+function detectMarkerType(marker) {
+  if (!marker || /^\d+$/.test(marker)) {
+    return void 0;
+  }
+  if (isValidRoman(marker)) {
+    return marker === marker.toLowerCase() ? "i" : "I";
+  }
+  if (/^[a-z]{1,2}$/.test(marker)) {
+    return "a";
+  }
+  if (/^[A-Z]{1,2}$/.test(marker)) {
+    return "A";
+  }
+  return void 0;
+}
+function markerToStart(marker) {
+  if (/^\d+$/.test(marker)) {
+    return parseInt(marker, 10);
+  }
+  const type = detectMarkerType(marker);
+  if (type === "i" || type === "I") {
+    return fromRoman(marker);
+  }
+  if (type === "a" || type === "A") {
+    const start = fromAlpha(marker);
+    return start > 0 ? start : 1;
+  }
+  const parsed = parseInt(marker, 10);
+  return Number.isNaN(parsed) ? 1 : parsed;
+}
+function startToMarker(type, start) {
+  if (type === "numeric") {
+    return String(start);
+  }
+  switch (type) {
+    case "a":
+      return toRomanAlpha(start);
+    case "A":
+      return toRomanAlpha(start).toUpperCase();
+    case "i":
+      return toRoman(start);
+    case "I":
+      return toRomanUpper(start);
+    default:
+      return String(start);
+  }
+}
+function areOrderedListMarkersSequential(markers) {
+  var _a;
+  if (markers.length === 0) {
+    return false;
+  }
+  const firstType = (_a = detectMarkerType(markers[0])) != null ? _a : "numeric";
+  const firstStart = markerToStart(markers[0]);
+  if (firstStart < 1) {
+    return false;
+  }
+  for (let i = 0; i < markers.length; i++) {
+    const expected = startToMarker(firstType, firstStart + i);
+    if (markers[i] !== expected) {
+      return false;
+    }
+  }
+  return true;
+}
+function parseListMarker(marker) {
+  return {
+    type: detectMarkerType(marker),
+    start: markerToStart(marker)
+  };
+}
+function buildOrderedListAttrsFromMarker(marker) {
+  const { type, start } = parseListMarker(marker);
+  const attrs = {};
+  if (type) {
+    attrs.type = type;
+  }
+  if (start !== 1) {
+    attrs.start = start;
+  }
+  return attrs;
+}
+function getListMarker(type, index, separator = ". ") {
+  const position = index + 1;
+  if (!type || type === "1") {
+    return `${position}${separator}`;
+  }
+  switch (type) {
+    case "a":
+      return `${toRomanAlpha(position)}${separator}`;
+    case "A":
+      return `${toRomanAlpha(position).toUpperCase()}${separator}`;
+    case "i":
+      return `${toRoman(position)}${separator}`;
+    case "I":
+      return `${toRomanUpper(position)}${separator}`;
+    default:
+      return `${position}${separator}`;
+  }
+}
+
 // src/item/list-item.ts
 function isSameLineOrderedListToken(token) {
   var _a, _b;
@@ -26812,13 +27082,15 @@ var ListItem = Node3.create({
       node,
       h,
       (context) => {
-        var _a, _b;
+        var _a, _b, _c, _d;
         if (context.parentType === "bulletList") {
           return "- ";
         }
         if (context.parentType === "orderedList") {
           const start = ((_b = (_a = context.meta) == null ? void 0 : _a.parentAttrs) == null ? void 0 : _b.start) || 1;
-          return `${start + context.index}. `;
+          const type = (_d = (_c = context.meta) == null ? void 0 : _c.parentAttrs) == null ? void 0 : _d.type;
+          const index = start - 1 + (context.index || 0);
+          return getListMarker(type, index, ". ");
         }
         return "- ";
       },
@@ -27091,14 +27363,21 @@ var ListKeymap = Extension.create({
 });
 
 // src/ordered-list/utils.ts
-var ORDERED_LIST_ITEM_REGEX = /^(\s*)(\d+)\.\s+(.*)$/;
+var ORDERED_LIST_ITEM_REGEX = new RegExp(
+  `^(\\s*)(${ORDERED_LIST_MARKER_PATTERN})([.)])\\s+(.*)$`
+);
+var ORDERED_LIST_LINE_START_REGEX = new RegExp(
+  `^(\\s*)(${ORDERED_LIST_MARKER_PATTERN})([.)])\\s+`
+);
 var INDENTED_LINE_REGEX = /^\s/;
+function isOrderedListMarkerLine(line) {
+  return ORDERED_LIST_ITEM_REGEX.test(line.trimStart());
+}
 function isBlockContentLine(line) {
   const trimmedLine = line.trimStart();
   return (
     // oxlint-disable-next-line prefer-string-starts-ends-with
-    /^[-+*]\s+/.test(trimmedLine) || // oxlint-disable-next-line prefer-string-starts-ends-with
-    /^\d+\.\s+/.test(trimmedLine) || // oxlint-disable-next-line prefer-string-starts-ends-with
+    /^[-+*]\s+/.test(trimmedLine) || isOrderedListMarkerLine(trimmedLine) || // oxlint-disable-next-line prefer-string-starts-ends-with
     /^>\s?/.test(trimmedLine) || // oxlint-disable-next-line prefer-string-starts-ends-with
     /^```/.test(trimmedLine) || // oxlint-disable-next-line prefer-string-starts-ends-with
     /^~~~/.test(trimmedLine)
@@ -27140,8 +27419,11 @@ function collectOrderedListItems(lines) {
     if (!match) {
       break;
     }
-    const [, indent, number, content] = match;
+    const [, indent, marker, _separator, content] = match;
     const indentLevel = indent.length;
+    const number = parseInt(marker, 10);
+    const markerType = isNaN(number) ? detectMarkerType(marker) : void 0;
+    const itemNumber = isNaN(number) ? markerToStart(marker) : number;
     const itemContentLines = [content];
     let nextLineIndex = currentLineIndex + 1;
     const itemLines = [line];
@@ -27158,8 +27440,10 @@ function collectOrderedListItems(lines) {
         sawBlankLine = true;
         nextLineIndex += 1;
       } else if (nextLine.match(INDENTED_LINE_REGEX)) {
+        const leadingWhitespace = nextLine.length - nextLine.trimStart().length;
+        const contentIndent = indentLevel + marker.length + 1;
         itemLines.push(nextLine);
-        itemContentLines.push(nextLine.slice(indentLevel + 2));
+        itemContentLines.push(nextLine.slice(Math.min(leadingWhitespace, contentIndent)));
         nextLineIndex += 1;
       } else {
         if (sawBlankLine) {
@@ -27172,7 +27456,8 @@ function collectOrderedListItems(lines) {
     }
     listItems.push({
       indent: indentLevel,
-      number: parseInt(number, 10),
+      number: itemNumber,
+      type: markerType,
       content: itemContentLines.join("\n").trim(),
       contentLines: itemContentLines,
       raw: itemLines.join("\n")
@@ -27181,6 +27466,44 @@ function collectOrderedListItems(lines) {
     currentLineIndex = nextLineIndex;
   }
   return [listItems, consumed];
+}
+var PLAIN_TEXT_ORDERED_LIST_LINE_REGEX = new RegExp(
+  `^(${ORDERED_LIST_MARKER_PATTERN})([.)])\\s+(.+)$`
+);
+function parsePlainTextOrderedListPaste(text) {
+  const lines = text.split("\n").filter((l) => l.trim().length > 0);
+  if (lines.length === 0) {
+    return null;
+  }
+  const parsedItems = [];
+  for (const line of lines) {
+    const match = line.trim().match(PLAIN_TEXT_ORDERED_LIST_LINE_REGEX);
+    if (!match) {
+      return null;
+    }
+    parsedItems.push({
+      marker: match[1],
+      content: match[3]
+    });
+  }
+  const markers = parsedItems.map((item) => item.marker);
+  if (!areOrderedListMarkersSequential(markers)) {
+    return null;
+  }
+  const attrs = buildOrderedListAttrsFromMarker(parsedItems[0].marker);
+  return {
+    type: "orderedList",
+    attrs,
+    content: parsedItems.map((item) => ({
+      type: "listItem",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: item.content }]
+        }
+      ]
+    }))
+  };
 }
 function buildNestedStructure(items, baseIndent, lexer) {
   const result = [];
@@ -27216,6 +27539,7 @@ function buildNestedStructure(items, baseIndent, lexer) {
           type: "list",
           ordered: true,
           start: nestedItems[0].number,
+          typeMarker: nestedItems[0].type,
           items: nestedListItems,
           raw: nestedItems.map((nestedItem) => nestedItem.raw).join("\n")
         });
@@ -27267,6 +27591,27 @@ function parseListItems(items, helpers) {
 var ListItemName2 = "listItem";
 var TextStyleName2 = "textStyle";
 var orderedListInputRegex = /^(\d+)\.\s$/;
+function cssListStyleTypeToHtmlType(style) {
+  const match = style.match(/list-style-type\s*:\s*([^;]+)/i);
+  if (!match) {
+    return null;
+  }
+  const cssValue = match[1].trim().toLowerCase();
+  switch (cssValue) {
+    case "upper-roman":
+      return "I";
+    case "lower-roman":
+      return "i";
+    case "upper-alpha":
+    case "upper-latin":
+      return "A";
+    case "lower-alpha":
+    case "lower-latin":
+      return "a";
+    default:
+      return null;
+  }
+}
 var OrderedList = Node3.create({
   name: "orderedList",
   addOptions() {
@@ -27291,7 +27636,30 @@ var OrderedList = Node3.create({
       },
       type: {
         default: null,
-        parseHTML: (element) => element.getAttribute("type")
+        parseHTML: (element) => {
+          const htmlType = element.getAttribute("type");
+          if (htmlType) {
+            return htmlType;
+          }
+          const style = element.getAttribute("style");
+          if (style) {
+            const mappedFromOl = cssListStyleTypeToHtmlType(style);
+            if (mappedFromOl) {
+              return mappedFromOl;
+            }
+          }
+          const firstLi = element.querySelector("li");
+          if (firstLi) {
+            const liStyle = firstLi.getAttribute("style");
+            if (liStyle) {
+              const mappedFromLi = cssListStyleTypeToHtmlType(liStyle);
+              if (mappedFromLi) {
+                return mappedFromLi;
+              }
+            }
+          }
+          return null;
+        }
       }
     };
   },
@@ -27303,8 +27671,15 @@ var OrderedList = Node3.create({
     ];
   },
   renderHTML({ HTMLAttributes }) {
-    const { start, ...attributesWithoutStart } = HTMLAttributes;
-    return start === 1 ? ["ol", mergeAttributes(this.options.HTMLAttributes, attributesWithoutStart), 0] : ["ol", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+    const { start, type, ...attributesWithoutType } = HTMLAttributes;
+    const attrs = mergeAttributes(this.options.HTMLAttributes, attributesWithoutType);
+    if (start !== 1) {
+      attrs.start = start;
+    }
+    if (type && type !== "1") {
+      attrs.type = type;
+    }
+    return ["ol", attrs, 0];
   },
   markdownTokenName: "list",
   parseMarkdown: (token, helpers) => {
@@ -27312,11 +27687,19 @@ var OrderedList = Node3.create({
       return [];
     }
     const startValue = token.start || 1;
+    const typeValue = token.typeMarker;
     const content = token.items ? parseListItems(token.items, helpers) : [];
+    const attrs = {};
     if (startValue !== 1) {
+      attrs.start = startValue;
+    }
+    if (typeValue) {
+      attrs.type = typeValue;
+    }
+    if (Object.keys(attrs).length > 0) {
       return {
         type: "orderedList",
-        attrs: { start: startValue },
+        attrs,
         content
       };
     }
@@ -27335,12 +27718,12 @@ var OrderedList = Node3.create({
     name: "orderedList",
     level: "block",
     start: (src) => {
-      const match = src.match(/^(\s*)(\d+)\.\s+/);
+      const match = src.match(ORDERED_LIST_LINE_START_REGEX);
       const index = match == null ? void 0 : match.index;
       return index !== void 0 ? index : -1;
     },
     tokenize: (src, _tokens, lexer) => {
-      var _a;
+      var _a, _b;
       const lines = src.split("\n");
       const [listItems, consumed] = collectOrderedListItems(lines);
       if (listItems.length === 0) {
@@ -27351,10 +27734,12 @@ var OrderedList = Node3.create({
         return void 0;
       }
       const startValue = ((_a = listItems[0]) == null ? void 0 : _a.number) || 1;
+      const typeMarker = (_b = listItems[0]) == null ? void 0 : _b.type;
       return {
         type: "list",
         ordered: true,
         start: startValue,
+        typeMarker,
         items,
         raw: lines.slice(0, consumed).join("\n")
       };
@@ -27378,12 +27763,47 @@ var OrderedList = Node3.create({
       "Mod-Shift-7": () => this.editor.commands.toggleOrderedList()
     };
   },
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        props: {
+          handlePaste: (view, event) => {
+            var _a, _b;
+            const html = (_a = event.clipboardData) == null ? void 0 : _a.getData("text/html");
+            if (html == null ? void 0 : html.trim()) {
+              return false;
+            }
+            const text = (_b = event.clipboardData) == null ? void 0 : _b.getData("text/plain");
+            if (!text) {
+              return false;
+            }
+            const orderedListContent = parsePlainTextOrderedListPaste(text);
+            if (!orderedListContent) {
+              return false;
+            }
+            try {
+              const orderedListNode = view.state.schema.nodeFromJSON(orderedListContent);
+              const tr = view.state.tr.replaceSelectionWith(orderedListNode);
+              view.dispatch(tr);
+              return true;
+            } catch {
+              return false;
+            }
+          }
+        }
+      })
+    ];
+  },
   addInputRules() {
+    const joinPredicate = (match, node) => {
+      const hasDefaultType = !node.attrs.type || node.attrs.type === "1";
+      return hasDefaultType && node.childCount + node.attrs.start === +match[1];
+    };
     let inputRule = wrappingInputRule({
       find: orderedListInputRegex,
       type: this.type,
       getAttributes: (match) => ({ start: +match[1] }),
-      joinPredicate: (match, node) => node.childCount + node.attrs.start === +match[1]
+      joinPredicate
     });
     if (this.options.keepMarks || this.options.keepAttributes) {
       inputRule = wrappingInputRule({
@@ -27392,7 +27812,7 @@ var OrderedList = Node3.create({
         keepMarks: this.options.keepMarks,
         keepAttributes: this.options.keepAttributes,
         getAttributes: (match) => ({ start: +match[1], ...this.editor.getAttributes(TextStyleName2) }),
-        joinPredicate: (match, node) => node.childCount + node.attrs.start === +match[1],
+        joinPredicate,
         editor: this.editor
       });
     }
@@ -28309,13 +28729,20 @@ var index_default$2 = FileHandler;
  * @see https://floating-ui.com/docs/virtual-elements
  */
 
-const min$1 = Math.min;
-const max$1 = Math.max;
+const min$2 = Math.min;
+const max$2 = Math.max;
 const round = Math.round;
+const floor$2 = Math.floor;
 const createCoords = v => ({
   x: v,
   y: v
 });
+const oppositeSideMap = {
+  left: 'right',
+  right: 'left',
+  bottom: 'top',
+  top: 'bottom'
+};
 function evaluate(value, param) {
   return typeof value === 'function' ? value(param) : value;
 }
@@ -28337,6 +28764,58 @@ function getSideAxis(placement) {
 }
 function getAlignmentAxis(placement) {
   return getOppositeAxis(getSideAxis(placement));
+}
+function getAlignmentSides(placement, rects, rtl) {
+  if (rtl === void 0) {
+    rtl = false;
+  }
+  const alignment = getAlignment(placement);
+  const alignmentAxis = getAlignmentAxis(placement);
+  const length = getAxisLength(alignmentAxis);
+  let mainAlignmentSide = alignmentAxis === 'x' ? alignment === (rtl ? 'end' : 'start') ? 'right' : 'left' : alignment === 'start' ? 'bottom' : 'top';
+  if (rects.reference[length] > rects.floating[length]) {
+    mainAlignmentSide = getOppositePlacement(mainAlignmentSide);
+  }
+  return [mainAlignmentSide, getOppositePlacement(mainAlignmentSide)];
+}
+function getExpandedPlacements(placement) {
+  const oppositePlacement = getOppositePlacement(placement);
+  return [getOppositeAlignmentPlacement(placement), oppositePlacement, getOppositeAlignmentPlacement(oppositePlacement)];
+}
+function getOppositeAlignmentPlacement(placement) {
+  return placement.includes('start') ? placement.replace('start', 'end') : placement.replace('end', 'start');
+}
+const lrPlacement = ['left', 'right'];
+const rlPlacement = ['right', 'left'];
+const tbPlacement = ['top', 'bottom'];
+const btPlacement = ['bottom', 'top'];
+function getSideList(side, isStart, rtl) {
+  switch (side) {
+    case 'top':
+    case 'bottom':
+      if (rtl) return isStart ? rlPlacement : lrPlacement;
+      return isStart ? lrPlacement : rlPlacement;
+    case 'left':
+    case 'right':
+      return isStart ? tbPlacement : btPlacement;
+    default:
+      return [];
+  }
+}
+function getOppositeAxisPlacements(placement, flipAlignment, direction, rtl) {
+  const alignment = getAlignment(placement);
+  let list = getSideList(getSide(placement), direction === 'start', rtl);
+  if (alignment) {
+    list = list.map(side => side + "-" + alignment);
+    if (flipAlignment) {
+      list = list.concat(list.map(getOppositeAlignmentPlacement));
+    }
+  }
+  return list;
+}
+function getOppositePlacement(placement) {
+  const side = getSide(placement);
+  return oppositeSideMap[side] + placement.slice(side.length);
 }
 function expandPaddingObject(padding) {
   return {
@@ -28593,11 +29072,229 @@ const computePosition$1 = async (reference, floating, config) => {
   };
 };
 
+/**
+ * Optimizes the visibility of the floating element by flipping the `placement`
+ * in order to keep it in view when the preferred placement(s) will overflow the
+ * clipping boundary. Alternative to `autoPlacement`.
+ * @see https://floating-ui.com/docs/flip
+ */
+const flip$1 = function (options) {
+  if (options === void 0) {
+    options = {};
+  }
+  return {
+    name: 'flip',
+    options,
+    async fn(state) {
+      var _middlewareData$arrow, _middlewareData$flip;
+      const {
+        placement,
+        middlewareData,
+        rects,
+        initialPlacement,
+        platform,
+        elements
+      } = state;
+      const {
+        mainAxis: checkMainAxis = true,
+        crossAxis: checkCrossAxis = true,
+        fallbackPlacements: specifiedFallbackPlacements,
+        fallbackStrategy = 'bestFit',
+        fallbackAxisSideDirection = 'none',
+        flipAlignment = true,
+        ...detectOverflowOptions
+      } = evaluate(options, state);
+
+      // If a reset by the arrow was caused due to an alignment offset being
+      // added, we should skip any logic now since `flip()` has already done its
+      // work.
+      // https://github.com/floating-ui/floating-ui/issues/2549#issuecomment-1719601643
+      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      const side = getSide(placement);
+      const initialSideAxis = getSideAxis(initialPlacement);
+      const isBasePlacement = getSide(initialPlacement) === initialPlacement;
+      const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating));
+      const fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipAlignment ? [getOppositePlacement(initialPlacement)] : getExpandedPlacements(initialPlacement));
+      const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== 'none';
+      if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection) {
+        fallbackPlacements.push(...getOppositeAxisPlacements(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl));
+      }
+      const placements = [initialPlacement, ...fallbackPlacements];
+      const overflow = await platform.detectOverflow(state, detectOverflowOptions);
+      const overflows = [];
+      let overflowsData = ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) || [];
+      if (checkMainAxis) {
+        overflows.push(overflow[side]);
+      }
+      if (checkCrossAxis) {
+        const sides = getAlignmentSides(placement, rects, rtl);
+        overflows.push(overflow[sides[0]], overflow[sides[1]]);
+      }
+      overflowsData = [...overflowsData, {
+        placement,
+        overflows
+      }];
+
+      // One or more sides is overflowing.
+      if (!overflows.every(side => side <= 0)) {
+        var _middlewareData$flip2, _overflowsData$filter;
+        const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
+        const nextPlacement = placements[nextIndex];
+        if (nextPlacement) {
+          const ignoreCrossAxisOverflow = checkCrossAxis === 'alignment' ? initialSideAxis !== getSideAxis(nextPlacement) : false;
+          if (!ignoreCrossAxisOverflow ||
+          // We leave the current main axis only if every placement on that axis
+          // overflows the main axis.
+          overflowsData.every(d => getSideAxis(d.placement) === initialSideAxis ? d.overflows[0] > 0 : true)) {
+            // Try next placement and re-run the lifecycle.
+            return {
+              data: {
+                index: nextIndex,
+                overflows: overflowsData
+              },
+              reset: {
+                placement: nextPlacement
+              }
+            };
+          }
+        }
+
+        // First, find the candidates that fit on the mainAxis side of overflow,
+        // then find the placement that fits the best on the main crossAxis side.
+        let resetPlacement = (_overflowsData$filter = overflowsData.filter(d => d.overflows[0] <= 0).sort((a, b) => a.overflows[1] - b.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
+
+        // Otherwise fallback.
+        if (!resetPlacement) {
+          switch (fallbackStrategy) {
+            case 'bestFit':
+              {
+                var _overflowsData$filter2;
+                const placement = (_overflowsData$filter2 = overflowsData.filter(d => {
+                  if (hasFallbackAxisSideDirection) {
+                    const currentSideAxis = getSideAxis(d.placement);
+                    return currentSideAxis === initialSideAxis ||
+                    // Create a bias to the `y` side axis due to horizontal
+                    // reading directions favoring greater width.
+                    currentSideAxis === 'y';
+                  }
+                  return true;
+                }).map(d => [d.placement, d.overflows.filter(overflow => overflow > 0).reduce((acc, overflow) => acc + overflow, 0)]).sort((a, b) => a[1] - b[1])[0]) == null ? void 0 : _overflowsData$filter2[0];
+                if (placement) {
+                  resetPlacement = placement;
+                }
+                break;
+              }
+            case 'initialPlacement':
+              resetPlacement = initialPlacement;
+              break;
+          }
+        }
+        if (placement !== resetPlacement) {
+          return {
+            reset: {
+              placement: resetPlacement
+            }
+          };
+        }
+      }
+      return {};
+    }
+  };
+};
+
+const originSides = /*#__PURE__*/new Set(['left', 'top']);
+
+// For type backwards-compatibility, the `OffsetOptions` type was also
+// Derivable.
+
+async function convertValueToCoords(state, options) {
+  const {
+    placement,
+    platform,
+    elements
+  } = state;
+  const rtl = await (platform.isRTL == null ? void 0 : platform.isRTL(elements.floating));
+  const side = getSide(placement);
+  const alignment = getAlignment(placement);
+  const isVertical = getSideAxis(placement) === 'y';
+  const mainAxisMulti = originSides.has(side) ? -1 : 1;
+  const crossAxisMulti = rtl && isVertical ? -1 : 1;
+  const rawValue = evaluate(options, state);
+
+  // eslint-disable-next-line prefer-const
+  let {
+    mainAxis,
+    crossAxis,
+    alignmentAxis
+  } = typeof rawValue === 'number' ? {
+    mainAxis: rawValue,
+    crossAxis: 0,
+    alignmentAxis: null
+  } : {
+    mainAxis: rawValue.mainAxis || 0,
+    crossAxis: rawValue.crossAxis || 0,
+    alignmentAxis: rawValue.alignmentAxis
+  };
+  if (alignment && typeof alignmentAxis === 'number') {
+    crossAxis = alignment === 'end' ? alignmentAxis * -1 : alignmentAxis;
+  }
+  return isVertical ? {
+    x: crossAxis * crossAxisMulti,
+    y: mainAxis * mainAxisMulti
+  } : {
+    x: mainAxis * mainAxisMulti,
+    y: crossAxis * crossAxisMulti
+  };
+}
+
+/**
+ * Modifies the placement by translating the floating element along the
+ * specified axes.
+ * A number (shorthand for `mainAxis` or distance), or an axes configuration
+ * object may be passed.
+ * @see https://floating-ui.com/docs/offset
+ */
+const offset$1 = function (options) {
+  if (options === void 0) {
+    options = 0;
+  }
+  return {
+    name: 'offset',
+    options,
+    async fn(state) {
+      var _middlewareData$offse, _middlewareData$arrow;
+      const {
+        x,
+        y,
+        placement,
+        middlewareData
+      } = state;
+      const diffCoords = await convertValueToCoords(state, options);
+
+      // If the placement is the same and the arrow caused an alignment offset
+      // then we don't need to change the positioning coordinates.
+      if (placement === ((_middlewareData$offse = middlewareData.offset) == null ? void 0 : _middlewareData$offse.placement) && (_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset) {
+        return {};
+      }
+      return {
+        x: x + diffCoords.x,
+        y: y + diffCoords.y,
+        data: {
+          ...diffCoords,
+          placement
+        }
+      };
+    }
+  };
+};
+
 function hasWindow() {
   return typeof window !== 'undefined';
 }
 function getNodeName(node) {
-  if (isNode$1(node)) {
+  if (isNode$2(node)) {
     return (node.nodeName || '').toLowerCase();
   }
   // Mocked nodes in testing environments may not be instances of Node. By
@@ -28611,9 +29308,9 @@ function getWindow(node) {
 }
 function getDocumentElement(node) {
   var _ref;
-  return (_ref = (isNode$1(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
+  return (_ref = (isNode$2(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
 }
-function isNode$1(value) {
+function isNode$2(value) {
   if (!hasWindow()) {
     return false;
   }
@@ -28740,14 +29437,17 @@ function getOverflowAncestors(node, list, traverseIframes) {
   if (list === void 0) {
     list = [];
   }
+  if (traverseIframes === void 0) {
+    traverseIframes = true;
+  }
   const scrollableAncestor = getNearestOverflowAncestor(node);
   const isBody = scrollableAncestor === ((_node$ownerDocument2 = node.ownerDocument) == null ? void 0 : _node$ownerDocument2.body);
   const win = getWindow(scrollableAncestor);
   if (isBody) {
-    getFrameElement(win);
-    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], []);
+    const frameElement = getFrameElement(win);
+    return list.concat(win, win.visualViewport || [], isOverflowElement(scrollableAncestor) ? scrollableAncestor : [], frameElement && traverseIframes ? getOverflowAncestors(frameElement) : []);
   } else {
-    return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, []));
+    return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
   }
 }
 function getFrameElement(win) {
@@ -28951,12 +29651,12 @@ function getDocumentRect(element) {
   const html = getDocumentElement(element);
   const scroll = getNodeScroll(element);
   const body = element.ownerDocument.body;
-  const width = max$1(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
-  const height = max$1(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
+  const width = max$2(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
+  const height = max$2(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
   let x = -scroll.scrollLeft + getWindowScrollBarX(element);
   const y = -scroll.scrollTop;
   if (getComputedStyle$1(body).direction === 'rtl') {
-    x += max$1(html.clientWidth, body.clientWidth) - width;
+    x += max$2(html.clientWidth, body.clientWidth) - width;
   }
   return {
     width,
@@ -29065,7 +29765,7 @@ function getClippingElementAncestors(element, cache) {
   if (cachedResult) {
     return cachedResult;
   }
-  let result = getOverflowAncestors(element, []).filter(el => isElement(el) && getNodeName(el) !== 'body');
+  let result = getOverflowAncestors(element, [], false).filter(el => isElement(el) && getNodeName(el) !== 'body');
   let currentContainingBlockComputedStyle = null;
   const elementIsFixed = getComputedStyle$1(element).position === 'fixed';
   let currentNode = elementIsFixed ? getParentNode(element) : element;
@@ -29109,10 +29809,10 @@ function getClippingRect(_ref) {
   let left = firstRect.left;
   for (let i = 1; i < clippingAncestors.length; i++) {
     const rect = getClientRectFromClippingAncestor(element, clippingAncestors[i], strategy);
-    top = max$1(rect.top, top);
-    right = min$1(rect.right, right);
-    bottom = min$1(rect.bottom, bottom);
-    left = max$1(rect.left, left);
+    top = max$2(rect.top, top);
+    right = min$2(rect.right, right);
+    bottom = min$2(rect.bottom, bottom);
+    left = max$2(rect.left, left);
   }
   return {
     width: right - left,
@@ -29257,6 +29957,196 @@ const platform = {
   isRTL
 };
 
+function rectsAreEqual(a, b) {
+  return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
+}
+
+// https://samthor.au/2021/observing-dom/
+function observeMove(element, onMove) {
+  let io = null;
+  let timeoutId;
+  const root = getDocumentElement(element);
+  function cleanup() {
+    var _io;
+    clearTimeout(timeoutId);
+    (_io = io) == null || _io.disconnect();
+    io = null;
+  }
+  function refresh(skip, threshold) {
+    if (skip === void 0) {
+      skip = false;
+    }
+    if (threshold === void 0) {
+      threshold = 1;
+    }
+    cleanup();
+    const elementRectForRootMargin = element.getBoundingClientRect();
+    const {
+      left,
+      top,
+      width,
+      height
+    } = elementRectForRootMargin;
+    if (!skip) {
+      onMove();
+    }
+    if (!width || !height) {
+      return;
+    }
+    const insetTop = floor$2(top);
+    const insetRight = floor$2(root.clientWidth - (left + width));
+    const insetBottom = floor$2(root.clientHeight - (top + height));
+    const insetLeft = floor$2(left);
+    const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
+    const options = {
+      rootMargin,
+      threshold: max$2(0, min$2(1, threshold)) || 1
+    };
+    let isFirstUpdate = true;
+    function handleObserve(entries) {
+      const ratio = entries[0].intersectionRatio;
+      if (ratio !== threshold) {
+        if (!isFirstUpdate) {
+          return refresh();
+        }
+        if (!ratio) {
+          // If the reference is clipped, the ratio is 0. Throttle the refresh
+          // to prevent an infinite loop of updates.
+          timeoutId = setTimeout(() => {
+            refresh(false, 1e-7);
+          }, 1000);
+        } else {
+          refresh(false, ratio);
+        }
+      }
+      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
+        // It's possible that even though the ratio is reported as 1, the
+        // element is not actually fully within the IntersectionObserver's root
+        // area anymore. This can happen under performance constraints. This may
+        // be a bug in the browser's IntersectionObserver implementation. To
+        // work around this, we compare the element's bounding rect now with
+        // what it was at the time we created the IntersectionObserver. If they
+        // are not equal then the element moved, so we refresh.
+        refresh();
+      }
+      isFirstUpdate = false;
+    }
+
+    // Older browsers don't support a `document` as the root and will throw an
+    // error.
+    try {
+      io = new IntersectionObserver(handleObserve, {
+        ...options,
+        // Handle <iframe>s
+        root: root.ownerDocument
+      });
+    } catch (_e) {
+      io = new IntersectionObserver(handleObserve, options);
+    }
+    io.observe(element);
+  }
+  refresh(true);
+  return cleanup;
+}
+
+/**
+ * Automatically updates the position of the floating element when necessary.
+ * Should only be called when the floating element is mounted on the DOM or
+ * visible on the screen.
+ * @returns cleanup function that should be invoked when the floating element is
+ * removed from the DOM or hidden from the screen.
+ * @see https://floating-ui.com/docs/autoUpdate
+ */
+function autoUpdate(reference, floating, update, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  const {
+    ancestorScroll = true,
+    ancestorResize = true,
+    elementResize = typeof ResizeObserver === 'function',
+    layoutShift = typeof IntersectionObserver === 'function',
+    animationFrame = false
+  } = options;
+  const referenceEl = unwrapElement(reference);
+  const ancestors = ancestorScroll || ancestorResize ? [...(referenceEl ? getOverflowAncestors(referenceEl) : []), ...(floating ? getOverflowAncestors(floating) : [])] : [];
+  ancestors.forEach(ancestor => {
+    ancestorScroll && ancestor.addEventListener('scroll', update, {
+      passive: true
+    });
+    ancestorResize && ancestor.addEventListener('resize', update);
+  });
+  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update) : null;
+  let reobserveFrame = -1;
+  let resizeObserver = null;
+  if (elementResize) {
+    resizeObserver = new ResizeObserver(_ref => {
+      let [firstEntry] = _ref;
+      if (firstEntry && firstEntry.target === referenceEl && resizeObserver && floating) {
+        // Prevent update loops when using the `size` middleware.
+        // https://github.com/floating-ui/floating-ui/issues/1740
+        resizeObserver.unobserve(floating);
+        cancelAnimationFrame(reobserveFrame);
+        reobserveFrame = requestAnimationFrame(() => {
+          var _resizeObserver;
+          (_resizeObserver = resizeObserver) == null || _resizeObserver.observe(floating);
+        });
+      }
+      update();
+    });
+    if (referenceEl && !animationFrame) {
+      resizeObserver.observe(referenceEl);
+    }
+    if (floating) {
+      resizeObserver.observe(floating);
+    }
+  }
+  let frameId;
+  let prevRefRect = animationFrame ? getBoundingClientRect(reference) : null;
+  if (animationFrame) {
+    frameLoop();
+  }
+  function frameLoop() {
+    const nextRefRect = getBoundingClientRect(reference);
+    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
+      update();
+    }
+    prevRefRect = nextRefRect;
+    frameId = requestAnimationFrame(frameLoop);
+  }
+  update();
+  return () => {
+    var _resizeObserver2;
+    ancestors.forEach(ancestor => {
+      ancestorScroll && ancestor.removeEventListener('scroll', update);
+      ancestorResize && ancestor.removeEventListener('resize', update);
+    });
+    cleanupIo == null || cleanupIo();
+    (_resizeObserver2 = resizeObserver) == null || _resizeObserver2.disconnect();
+    resizeObserver = null;
+    if (animationFrame) {
+      cancelAnimationFrame(frameId);
+    }
+  };
+}
+
+/**
+ * Modifies the placement by translating the floating element along the
+ * specified axes.
+ * A number (shorthand for `mainAxis` or distance), or an axes configuration
+ * object may be passed.
+ * @see https://floating-ui.com/docs/offset
+ */
+const offset = offset$1;
+
+/**
+ * Optimizes the visibility of the floating element by flipping the `placement`
+ * in order to keep it in view when the preferred placement(s) will overflow the
+ * clipping boundary. Alternative to `autoPlacement`.
+ * @see https://floating-ui.com/docs/flip
+ */
+const flip = flip$1;
+
 /**
  * Computes the `x` and `y` coordinates that will place the floating element
  * next to a given reference element.
@@ -29300,7 +30190,7 @@ const computePosition = (reference, floating, options) => {
  *
  * @function
  */
-const create$5 = () => new Map();
+const create$8 = () => new Map();
 
 /**
  * Copy a Map object into a fresh Map object.
@@ -29311,7 +30201,7 @@ const create$5 = () => new Map();
  * @return {Map<K,V>}
  */
 const copy = m => {
-  const r = create$5();
+  const r = create$8();
   m.forEach((v, k) => { r.set(k, v); });
   return r
 };
@@ -29332,7 +30222,7 @@ const copy = m => {
  * @param {CF} createT
  * @return {ReturnType<CF>}
  */
-const setIfUndefined = (map, key, createT) => {
+const setIfUndefined$1 = (map, key, createT) => {
   let set = map.get(key);
   if (set === undefined) {
     map.set(key, set = createT());
@@ -29386,7 +30276,7 @@ const any = (m, f) => {
  * @module set
  */
 
-const create$4 = () => new Set();
+const create$7 = () => new Set();
 
 /**
  * Utility module to work with Arrays.
@@ -29437,7 +30327,7 @@ const from = Array.from;
  * @param {ARR extends ArrayLike<infer S> ? ((value:S, index:number, arr:ARR) => boolean) : any} f
  * @return {boolean}
  */
-const every$1 = (arr, f) => {
+const every$3 = (arr, f) => {
   for (let i = 0; i < arr.length; i++) {
     if (!f(arr[i], i, arr)) {
       return false
@@ -29456,7 +30346,7 @@ const every$1 = (arr, f) => {
  * @param {ARR extends ArrayLike<infer S> ? ((value:S, index:number, arr:ARR) => boolean) : never} f
  * @return {boolean}
  */
-const some = (arr, f) => {
+const some$1 = (arr, f) => {
   for (let i = 0; i < arr.length; i++) {
     if (f(arr[i], i, arr)) {
       return true
@@ -29471,7 +30361,7 @@ const some = (arr, f) => {
  * @param {function(number, Array<T>):T} f
  * @return {Array<T>}
  */
-const unfold = (len, f) => {
+const unfold$1 = (len, f) => {
   const array = new Array(len);
   for (let i = 0; i < len; i++) {
     array[i] = f(i, array);
@@ -29479,7 +30369,7 @@ const unfold = (len, f) => {
   return array
 };
 
-const isArray = Array.isArray;
+const isArray$1 = Array.isArray;
 
 /**
  * Observable class prototype.
@@ -29503,7 +30393,7 @@ class ObservableV2 {
      * Some desc.
      * @type {Map<string, Set<any>>}
      */
-    this._observers = create$5();
+    this._observers = create$8();
   }
 
   /**
@@ -29512,7 +30402,7 @@ class ObservableV2 {
    * @param {EVENTS[NAME]} f
    */
   on (name, f) {
-    setIfUndefined(this._observers, /** @type {string} */ (name), create$4).add(f);
+    setIfUndefined$1(this._observers, /** @type {string} */ (name), create$7).add(f);
     return f
   }
 
@@ -29559,11 +30449,11 @@ class ObservableV2 {
    */
   emit (name, args) {
     // copy all listeners to an array first to make sure that no event is emitted to listeners that are subscribed while the event handler is called.
-    return from((this._observers.get(name) || create$5()).values()).forEach(f => f(...args))
+    return from((this._observers.get(name) || create$8()).values()).forEach(f => f(...args))
   }
 
   destroy () {
-    this._observers = create$5();
+    this._observers = create$8();
   }
 }
 /* c8 ignore end */
@@ -29574,8 +30464,8 @@ class ObservableV2 {
  * @module math
  */
 
-const floor = Math.floor;
-const abs = Math.abs;
+const floor$1 = Math.floor;
+const abs$1 = Math.abs;
 
 /**
  * @function
@@ -29583,7 +30473,7 @@ const abs = Math.abs;
  * @param {number} b
  * @return {number} The smaller element of a and b
  */
-const min = (a, b) => a < b ? a : b;
+const min$1 = (a, b) => a < b ? a : b;
 
 /**
  * @function
@@ -29591,7 +30481,7 @@ const min = (a, b) => a < b ? a : b;
  * @param {number} b
  * @return {number} The bigger element of a and b
  */
-const max = (a, b) => a > b ? a : b;
+const max$1 = (a, b) => a > b ? a : b;
 
 /**
  * Check whether n is negative, while considering the -0 edge case. While `-0 < 0` is false, this
@@ -29599,7 +30489,7 @@ const max = (a, b) => a > b ? a : b;
  * @param {number} n
  * @return {boolean} Wether n is negative. This function also distinguishes between -0 and +0
  */
-const isNegativeZero = n => n !== 0 ? n < 0 : 1 / n < 0;
+const isNegativeZero$1 = n => n !== 0 ? n < 0 : 1 / n < 0;
 
 /* eslint-env browser */
 
@@ -29619,16 +30509,15 @@ const BIT2 = 2;
 const BIT3 = 4;
 const BIT4 = 8;
 const BIT6 = 32;
-const BIT7 = 64;
-const BIT8 = 128;
-const BIT30 = 1 << 29;
+const BIT7$1 = 64;
+const BIT8$1 = 128;
 const BITS5 = 31;
-const BITS6 = 63;
-const BITS7 = 127;
+const BITS6$1 = 63;
+const BITS7$1 = 127;
 /**
  * @type {number}
  */
-const BITS31 = 0x7FFFFFFF;
+const BITS31$1 = 0x7FFFFFFF;
 
 /**
  * Utility helpers for working with numbers.
@@ -29637,11 +30526,11 @@ const BITS31 = 0x7FFFFFFF;
  */
 
 
-const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER;
-const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER;
+const MAX_SAFE_INTEGER$1 = Number.MAX_SAFE_INTEGER;
+const MIN_SAFE_INTEGER$1 = Number.MIN_SAFE_INTEGER;
 
 /* c8 ignore next */
-const isInteger = Number.isInteger || (num => typeof num === 'number' && isFinite(num) && floor(num) === num);
+const isInteger$1 = Number.isInteger || (num => typeof num === 'number' && isFinite(num) && floor$1(num) === num);
 
 /**
  * Utility module to work with strings.
@@ -29649,36 +30538,36 @@ const isInteger = Number.isInteger || (num => typeof num === 'number' && isFinit
  * @module string
  */
 
-const fromCharCode = String.fromCharCode;
+const fromCharCode$1 = String.fromCharCode;
 
 /**
  * @param {string} s
  * @return {string}
  */
-const toLowerCase = s => s.toLowerCase();
+const toLowerCase$1 = s => s.toLowerCase();
 
-const trimLeftRegex = /^\s*/g;
+const trimLeftRegex$1 = /^\s*/g;
 
 /**
  * @param {string} s
  * @return {string}
  */
-const trimLeft = s => s.replace(trimLeftRegex, '');
+const trimLeft$1 = s => s.replace(trimLeftRegex$1, '');
 
-const fromCamelCaseRegex = /([A-Z])/g;
+const fromCamelCaseRegex$1 = /([A-Z])/g;
 
 /**
  * @param {string} s
  * @param {string} separator
  * @return {string}
  */
-const fromCamelCase = (s, separator) => trimLeft(s.replace(fromCamelCaseRegex, match => `${separator}${toLowerCase(match)}`));
+const fromCamelCase$1 = (s, separator) => trimLeft$1(s.replace(fromCamelCaseRegex$1, match => `${separator}${toLowerCase$1(match)}`));
 
 /**
  * @param {string} str
  * @return {Uint8Array<ArrayBuffer>}
  */
-const _encodeUtf8Polyfill = str => {
+const _encodeUtf8Polyfill$1 = str => {
   const encodedString = unescape(encodeURIComponent(str));
   const len = encodedString.length;
   const buf = new Uint8Array(len);
@@ -29689,40 +30578,40 @@ const _encodeUtf8Polyfill = str => {
 };
 
 /* c8 ignore next */
-const utf8TextEncoder = /** @type {TextEncoder} */ (typeof TextEncoder !== 'undefined' ? new TextEncoder() : null);
+const utf8TextEncoder$1 = /** @type {TextEncoder} */ (typeof TextEncoder !== 'undefined' ? new TextEncoder() : null);
 
 /**
  * @param {string} str
  * @return {Uint8Array<ArrayBuffer>}
  */
-const _encodeUtf8Native = str => utf8TextEncoder.encode(str);
+const _encodeUtf8Native$1 = str => utf8TextEncoder$1.encode(str);
 
 /**
  * @param {string} str
  * @return {Uint8Array}
  */
 /* c8 ignore next */
-const encodeUtf8 = utf8TextEncoder ? _encodeUtf8Native : _encodeUtf8Polyfill;
+const encodeUtf8$1 = utf8TextEncoder$1 ? _encodeUtf8Native$1 : _encodeUtf8Polyfill$1;
 
 /* c8 ignore next */
-let utf8TextDecoder = typeof TextDecoder === 'undefined' ? null : new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
+let utf8TextDecoder$1 = typeof TextDecoder === 'undefined' ? null : new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
 
 /* c8 ignore start */
-if (utf8TextDecoder && utf8TextDecoder.decode(new Uint8Array()).length === 1) {
+if (utf8TextDecoder$1 && utf8TextDecoder$1.decode(new Uint8Array()).length === 1) {
   // Safari doesn't handle BOM correctly.
   // This fixes a bug in Safari 13.0.5 where it produces a BOM the first time it is called.
   // utf8TextDecoder.decode(new Uint8Array()).length === 1 on the first call and
   // utf8TextDecoder.decode(new Uint8Array()).length === 1 on the second call
   // Another issue is that from then on no BOM chars are recognized anymore
   /* c8 ignore next */
-  utf8TextDecoder = null;
+  utf8TextDecoder$1 = null;
 }
 
 /**
  * @param {string} source
  * @param {number} n
  */
-const repeat = (source, n) => unfold(n, () => source).join('');
+const repeat$1 = (source, n) => unfold$1(n, () => source).join('');
 
 /**
  * Efficient schema-less binary encoding with support for variable length encoding.
@@ -29756,7 +30645,7 @@ const repeat = (source, n) => unfold(n, () => source).join('');
 /**
  * A BinaryEncoder handles the encoding to an Uint8Array.
  */
-class Encoder {
+let Encoder$1 = class Encoder {
   constructor () {
     this.cpos = 0;
     this.cbuf = new Uint8Array(100);
@@ -29765,22 +30654,13 @@ class Encoder {
      */
     this.bufs = [];
   }
-}
+};
 
 /**
  * @function
  * @return {Encoder}
  */
-const createEncoder = () => new Encoder();
-
-/**
- * @param {function(Encoder):void} f
- */
-const encode = (f) => {
-  const encoder = createEncoder();
-  f(encoder);
-  return toUint8Array(encoder)
-};
+const createEncoder$1 = () => new Encoder$1();
 
 /**
  * The current length of the encoded data.
@@ -29789,7 +30669,7 @@ const encode = (f) => {
  * @param {Encoder} encoder
  * @return {number}
  */
-const length = encoder => {
+const length$1 = encoder => {
   let len = encoder.cpos;
   for (let i = 0; i < encoder.bufs.length; i++) {
     len += encoder.bufs[i].length;
@@ -29804,8 +30684,8 @@ const length = encoder => {
  * @param {Encoder} encoder
  * @return {Uint8Array<ArrayBuffer>} The created ArrayBuffer.
  */
-const toUint8Array = encoder => {
-  const uint8arr = new Uint8Array(length(encoder));
+const toUint8Array$1 = encoder => {
+  const uint8arr = new Uint8Array(length$1(encoder));
   let curPos = 0;
   for (let i = 0; i < encoder.bufs.length; i++) {
     const d = encoder.bufs[i];
@@ -29823,11 +30703,11 @@ const toUint8Array = encoder => {
  * @param {Encoder} encoder
  * @param {number} len
  */
-const verifyLen = (encoder, len) => {
+const verifyLen$1 = (encoder, len) => {
   const bufferLen = encoder.cbuf.length;
   if (bufferLen - encoder.cpos < len) {
     encoder.bufs.push(new Uint8Array(encoder.cbuf.buffer, 0, encoder.cpos));
-    encoder.cbuf = new Uint8Array(max(bufferLen, len) * 2);
+    encoder.cbuf = new Uint8Array(max$1(bufferLen, len) * 2);
     encoder.cpos = 0;
   }
 };
@@ -29839,7 +30719,7 @@ const verifyLen = (encoder, len) => {
  * @param {Encoder} encoder
  * @param {number} num The byte that is to be encoded.
  */
-const write = (encoder, num) => {
+const write$1 = (encoder, num) => {
   const bufferLen = encoder.cbuf.length;
   if (encoder.cpos === bufferLen) {
     encoder.bufs.push(encoder.cbuf);
@@ -29856,7 +30736,7 @@ const write = (encoder, num) => {
  * @param {Encoder} encoder
  * @param {number} num The number that is to be encoded.
  */
-const writeUint8 = write;
+const writeUint8 = write$1;
 
 /**
  * Write a variable length unsigned integer. Max encodable integer is 2^53.
@@ -29865,12 +30745,12 @@ const writeUint8 = write;
  * @param {Encoder} encoder
  * @param {number} num The number that is to be encoded.
  */
-const writeVarUint = (encoder, num) => {
-  while (num > BITS7) {
-    write(encoder, BIT8 | (BITS7 & num));
-    num = floor(num / 128); // shift >>> 7
+const writeVarUint$1 = (encoder, num) => {
+  while (num > BITS7$1) {
+    write$1(encoder, BIT8$1 | (BITS7$1 & num));
+    num = floor$1(num / 128); // shift >>> 7
   }
-  write(encoder, BITS7 & num);
+  write$1(encoder, BITS7$1 & num);
 };
 
 /**
@@ -29882,27 +30762,27 @@ const writeVarUint = (encoder, num) => {
  * @param {Encoder} encoder
  * @param {number} num The number that is to be encoded.
  */
-const writeVarInt = (encoder, num) => {
-  const isNegative = isNegativeZero(num);
+const writeVarInt$1 = (encoder, num) => {
+  const isNegative = isNegativeZero$1(num);
   if (isNegative) {
     num = -num;
   }
   //             |- whether to continue reading         |- whether is negative     |- number
-  write(encoder, (num > BITS6 ? BIT8 : 0) | (isNegative ? BIT7 : 0) | (BITS6 & num));
-  num = floor(num / 64); // shift >>> 6
+  write$1(encoder, (num > BITS6$1 ? BIT8$1 : 0) | (isNegative ? BIT7$1 : 0) | (BITS6$1 & num));
+  num = floor$1(num / 64); // shift >>> 6
   // We don't need to consider the case of num === 0 so we can use a different
   // pattern here than above.
   while (num > 0) {
-    write(encoder, (num > BITS7 ? BIT8 : 0) | (BITS7 & num));
-    num = floor(num / 128); // shift >>> 7
+    write$1(encoder, (num > BITS7$1 ? BIT8$1 : 0) | (BITS7$1 & num));
+    num = floor$1(num / 128); // shift >>> 7
   }
 };
 
 /**
  * A cache to store strings temporarily
  */
-const _strBuffer = new Uint8Array(30000);
-const _maxStrBSize = _strBuffer.length / 3;
+const _strBuffer$1 = new Uint8Array(30000);
+const _maxStrBSize$1 = _strBuffer$1.length / 3;
 
 /**
  * Write a variable length string.
@@ -29911,17 +30791,17 @@ const _maxStrBSize = _strBuffer.length / 3;
  * @param {Encoder} encoder
  * @param {String} str The string that is to be encoded.
  */
-const _writeVarStringNative = (encoder, str) => {
-  if (str.length < _maxStrBSize) {
+const _writeVarStringNative$1 = (encoder, str) => {
+  if (str.length < _maxStrBSize$1) {
     // We can encode the string into the existing buffer
     /* c8 ignore next */
-    const written = utf8TextEncoder.encodeInto(str, _strBuffer).written || 0;
-    writeVarUint(encoder, written);
+    const written = utf8TextEncoder$1.encodeInto(str, _strBuffer$1).written || 0;
+    writeVarUint$1(encoder, written);
     for (let i = 0; i < written; i++) {
-      write(encoder, _strBuffer[i]);
+      write$1(encoder, _strBuffer$1[i]);
     }
   } else {
-    writeVarUint8Array(encoder, encodeUtf8(str));
+    writeVarUint8Array$1(encoder, encodeUtf8$1(str));
   }
 };
 
@@ -29932,12 +30812,12 @@ const _writeVarStringNative = (encoder, str) => {
  * @param {Encoder} encoder
  * @param {String} str The string that is to be encoded.
  */
-const _writeVarStringPolyfill = (encoder, str) => {
+const _writeVarStringPolyfill$1 = (encoder, str) => {
   const encodedString = unescape(encodeURIComponent(str));
   const len = encodedString.length;
-  writeVarUint(encoder, len);
+  writeVarUint$1(encoder, len);
   for (let i = 0; i < len; i++) {
-    write(encoder, /** @type {number} */ (encodedString.codePointAt(i)));
+    write$1(encoder, /** @type {number} */ (encodedString.codePointAt(i)));
   }
 };
 
@@ -29949,7 +30829,7 @@ const _writeVarStringPolyfill = (encoder, str) => {
  * @param {String} str The string that is to be encoded.
  */
 /* c8 ignore next */
-const writeVarString = (utf8TextEncoder && /** @type {any} */ (utf8TextEncoder).encodeInto) ? _writeVarStringNative : _writeVarStringPolyfill;
+const writeVarString$1 = (utf8TextEncoder$1 && /** @type {any} */ (utf8TextEncoder$1).encodeInto) ? _writeVarStringNative$1 : _writeVarStringPolyfill$1;
 
 /**
  * Append fixed-length Uint8Array to the encoder.
@@ -29958,10 +30838,10 @@ const writeVarString = (utf8TextEncoder && /** @type {any} */ (utf8TextEncoder).
  * @param {Encoder} encoder
  * @param {Uint8Array} uint8Array
  */
-const writeUint8Array = (encoder, uint8Array) => {
+const writeUint8Array$1 = (encoder, uint8Array) => {
   const bufferLen = encoder.cbuf.length;
   const cpos = encoder.cpos;
-  const leftCopyLen = min(bufferLen - cpos, uint8Array.length);
+  const leftCopyLen = min$1(bufferLen - cpos, uint8Array.length);
   const rightCopyLen = uint8Array.length - leftCopyLen;
   encoder.cbuf.set(uint8Array.subarray(0, leftCopyLen), cpos);
   encoder.cpos += leftCopyLen;
@@ -29970,7 +30850,7 @@ const writeUint8Array = (encoder, uint8Array) => {
     // Append new buffer
     encoder.bufs.push(encoder.cbuf);
     // must have at least size of remaining buffer
-    encoder.cbuf = new Uint8Array(max(bufferLen * 2, rightCopyLen));
+    encoder.cbuf = new Uint8Array(max$1(bufferLen * 2, rightCopyLen));
     // copy array
     encoder.cbuf.set(uint8Array.subarray(leftCopyLen));
     encoder.cpos = rightCopyLen;
@@ -29984,9 +30864,9 @@ const writeUint8Array = (encoder, uint8Array) => {
  * @param {Encoder} encoder
  * @param {Uint8Array} uint8Array
  */
-const writeVarUint8Array = (encoder, uint8Array) => {
-  writeVarUint(encoder, uint8Array.byteLength);
-  writeUint8Array(encoder, uint8Array);
+const writeVarUint8Array$1 = (encoder, uint8Array) => {
+  writeVarUint$1(encoder, uint8Array.byteLength);
+  writeUint8Array$1(encoder, uint8Array);
 };
 
 /**
@@ -30006,8 +30886,8 @@ const writeVarUint8Array = (encoder, uint8Array) => {
  * @param {number} len
  * @return {DataView}
  */
-const writeOnDataView = (encoder, len) => {
-  verifyLen(encoder, len);
+const writeOnDataView$1 = (encoder, len) => {
+  verifyLen$1(encoder, len);
   const dview = new DataView(encoder.cbuf.buffer, encoder.cpos, len);
   encoder.cpos += len;
   return dview
@@ -30017,30 +30897,30 @@ const writeOnDataView = (encoder, len) => {
  * @param {Encoder} encoder
  * @param {number} num
  */
-const writeFloat32 = (encoder, num) => writeOnDataView(encoder, 4).setFloat32(0, num, false);
+const writeFloat32$1 = (encoder, num) => writeOnDataView$1(encoder, 4).setFloat32(0, num, false);
 
 /**
  * @param {Encoder} encoder
  * @param {number} num
  */
-const writeFloat64 = (encoder, num) => writeOnDataView(encoder, 8).setFloat64(0, num, false);
+const writeFloat64$1 = (encoder, num) => writeOnDataView$1(encoder, 8).setFloat64(0, num, false);
 
 /**
  * @param {Encoder} encoder
  * @param {bigint} num
  */
-const writeBigInt64 = (encoder, num) => /** @type {any} */ (writeOnDataView(encoder, 8)).setBigInt64(0, num, false);
+const writeBigInt64$1 = (encoder, num) => /** @type {any} */ (writeOnDataView$1(encoder, 8)).setBigInt64(0, num, false);
 
-const floatTestBed = new DataView(new ArrayBuffer(4));
+const floatTestBed$1 = new DataView(new ArrayBuffer(4));
 /**
  * Check if a number can be encoded as a 32 bit float.
  *
  * @param {number} num
  * @return {boolean}
  */
-const isFloat32 = num => {
-  floatTestBed.setFloat32(0, num);
-  return floatTestBed.getFloat32(0) === num
+const isFloat32$1 = num => {
+  floatTestBed$1.setFloat32(0, num);
+  return floatTestBed$1.getFloat32(0) === num
 };
 
 /**
@@ -30088,67 +30968,67 @@ const isFloat32 = num => {
  * @param {Encoder} encoder
  * @param {AnyEncodable} data
  */
-const writeAny = (encoder, data) => {
+const writeAny$1 = (encoder, data) => {
   switch (typeof data) {
     case 'string':
       // TYPE 119: STRING
-      write(encoder, 119);
-      writeVarString(encoder, data);
+      write$1(encoder, 119);
+      writeVarString$1(encoder, data);
       break
     case 'number':
-      if (isInteger(data) && abs(data) <= BITS31) {
+      if (isInteger$1(data) && abs$1(data) <= BITS31$1) {
         // TYPE 125: INTEGER
-        write(encoder, 125);
-        writeVarInt(encoder, data);
-      } else if (isFloat32(data)) {
+        write$1(encoder, 125);
+        writeVarInt$1(encoder, data);
+      } else if (isFloat32$1(data)) {
         // TYPE 124: FLOAT32
-        write(encoder, 124);
-        writeFloat32(encoder, data);
+        write$1(encoder, 124);
+        writeFloat32$1(encoder, data);
       } else {
         // TYPE 123: FLOAT64
-        write(encoder, 123);
-        writeFloat64(encoder, data);
+        write$1(encoder, 123);
+        writeFloat64$1(encoder, data);
       }
       break
     case 'bigint':
       // TYPE 122: BigInt
-      write(encoder, 122);
-      writeBigInt64(encoder, data);
+      write$1(encoder, 122);
+      writeBigInt64$1(encoder, data);
       break
     case 'object':
       if (data === null) {
         // TYPE 126: null
-        write(encoder, 126);
-      } else if (isArray(data)) {
+        write$1(encoder, 126);
+      } else if (isArray$1(data)) {
         // TYPE 117: Array
-        write(encoder, 117);
-        writeVarUint(encoder, data.length);
+        write$1(encoder, 117);
+        writeVarUint$1(encoder, data.length);
         for (let i = 0; i < data.length; i++) {
-          writeAny(encoder, data[i]);
+          writeAny$1(encoder, data[i]);
         }
       } else if (data instanceof Uint8Array) {
         // TYPE 116: ArrayBuffer
-        write(encoder, 116);
-        writeVarUint8Array(encoder, data);
+        write$1(encoder, 116);
+        writeVarUint8Array$1(encoder, data);
       } else {
         // TYPE 118: Object
-        write(encoder, 118);
+        write$1(encoder, 118);
         const keys = Object.keys(data);
-        writeVarUint(encoder, keys.length);
+        writeVarUint$1(encoder, keys.length);
         for (let i = 0; i < keys.length; i++) {
           const key = keys[i];
-          writeVarString(encoder, key);
-          writeAny(encoder, data[key]);
+          writeVarString$1(encoder, key);
+          writeAny$1(encoder, data[key]);
         }
       }
       break
     case 'boolean':
       // TYPE 120/121: boolean (true/false)
-      write(encoder, data ? 120 : 121);
+      write$1(encoder, data ? 120 : 121);
       break
     default:
       // TYPE 127: undefined
-      write(encoder, 127);
+      write$1(encoder, 127);
   }
 };
 
@@ -30167,7 +31047,7 @@ const writeAny = (encoder, data) => {
  *
  * @template T
  */
-class RleEncoder extends Encoder {
+class RleEncoder extends Encoder$1 {
   /**
    * @param {function(Encoder, T):void} writer
    */
@@ -30194,7 +31074,7 @@ class RleEncoder extends Encoder {
     } else {
       if (this.count > 0) {
         // flush counter, unless this is the first value (count = 0)
-        writeVarUint(this, this.count - 1); // since count is always > 0, we can decrement by one. non-standard encoding ftw
+        writeVarUint$1(this, this.count - 1); // since count is always > 0, we can decrement by one. non-standard encoding ftw
       }
       this.count = 1;
       // write first value
@@ -30212,9 +31092,9 @@ const flushUintOptRleEncoder = encoder => {
     // flush counter, unless this is the first value (count = 0)
     // case 1: just a single value. set sign to positive
     // case 2: write several values. set sign to negative to indicate that there is a length coming
-    writeVarInt(encoder.encoder, encoder.count === 1 ? encoder.s : -encoder.s);
+    writeVarInt$1(encoder.encoder, encoder.count === 1 ? encoder.s : -encoder.s);
     if (encoder.count > 1) {
-      writeVarUint(encoder.encoder, encoder.count - 2); // since count is always > 1, we can decrement by one. non-standard encoding ftw
+      writeVarUint$1(encoder.encoder, encoder.count - 2); // since count is always > 1, we can decrement by one. non-standard encoding ftw
     }
   }
 };
@@ -30229,7 +31109,7 @@ const flushUintOptRleEncoder = encoder => {
  */
 class UintOptRleEncoder {
   constructor () {
-    this.encoder = new Encoder();
+    this.encoder = new Encoder$1();
     /**
      * @type {number}
      */
@@ -30257,7 +31137,7 @@ class UintOptRleEncoder {
    */
   toUint8Array () {
     flushUintOptRleEncoder(this);
-    return toUint8Array(this.encoder)
+    return toUint8Array$1(this.encoder)
   }
 }
 
@@ -30272,9 +31152,9 @@ const flushIntDiffOptRleEncoder = encoder => {
     // flush counter, unless this is the first value (count = 0)
     // case 1: just a single value. set first bit to positive
     // case 2: write several values. set first bit to negative to indicate that there is a length coming
-    writeVarInt(encoder.encoder, encodedDiff);
+    writeVarInt$1(encoder.encoder, encodedDiff);
     if (encoder.count > 1) {
-      writeVarUint(encoder.encoder, encoder.count - 2); // since count is always > 1, we can decrement by one. non-standard encoding ftw
+      writeVarUint$1(encoder.encoder, encoder.count - 2); // since count is always > 1, we can decrement by one. non-standard encoding ftw
     }
   }
 };
@@ -30298,7 +31178,7 @@ const flushIntDiffOptRleEncoder = encoder => {
  */
 class IntDiffOptRleEncoder {
   constructor () {
-    this.encoder = new Encoder();
+    this.encoder = new Encoder$1();
     /**
      * @type {number}
      */
@@ -30329,7 +31209,7 @@ class IntDiffOptRleEncoder {
    */
   toUint8Array () {
     flushIntDiffOptRleEncoder(this);
-    return toUint8Array(this.encoder)
+    return toUint8Array$1(this.encoder)
   }
 }
 
@@ -30366,12 +31246,12 @@ class StringEncoder {
   }
 
   toUint8Array () {
-    const encoder = new Encoder();
+    const encoder = new Encoder$1();
     this.sarr.push(this.s);
     this.s = '';
-    writeVarString(encoder, this.sarr.join(''));
-    writeUint8Array(encoder, this.lensE.toUint8Array());
-    return toUint8Array(encoder)
+    writeVarString$1(encoder, this.sarr.join(''));
+    writeUint8Array$1(encoder, this.lensE.toUint8Array());
+    return toUint8Array$1(encoder)
   }
 }
 
@@ -30386,15 +31266,15 @@ class StringEncoder {
  * @return {Error}
  */
 /* c8 ignore next */
-const create$3 = s => new Error(s);
+const create$6 = s => new Error(s);
 
 /**
  * @throws {Error}
  * @return {never}
  */
 /* c8 ignore next 3 */
-const methodUnimplemented = () => {
-  throw create$3('Method unimplemented')
+const methodUnimplemented$1 = () => {
+  throw create$6('Method unimplemented')
 };
 
 /**
@@ -30402,8 +31282,8 @@ const methodUnimplemented = () => {
  * @return {never}
  */
 /* c8 ignore next 3 */
-const unexpectedCase = () => {
-  throw create$3('Unexpected case')
+const unexpectedCase$1 = () => {
+  throw create$6('Unexpected case')
 };
 
 /**
@@ -30435,8 +31315,8 @@ const unexpectedCase = () => {
  */
 
 
-const errorUnexpectedEndOfArray = create$3('Unexpected end of array');
-const errorIntegerOutOfRange = create$3('Integer out of Range');
+const errorUnexpectedEndOfArray = create$6('Unexpected end of array');
+const errorIntegerOutOfRange = create$6('Integer out of Range');
 
 /**
  * A Decoder handles the decoding of an Uint8Array.
@@ -30533,13 +31413,13 @@ const readVarUint = decoder => {
   while (decoder.pos < len) {
     const r = decoder.arr[decoder.pos++];
     // num = num | ((r & binary.BITS7) << len)
-    num = num + (r & BITS7) * mult; // shift $r << (7*#iterations) and add it to num
+    num = num + (r & BITS7$1) * mult; // shift $r << (7*#iterations) and add it to num
     mult *= 128; // next iteration, shift 7 "more" to the left
-    if (r < BIT8) {
+    if (r < BIT8$1) {
       return num
     }
     /* c8 ignore start */
-    if (num > MAX_SAFE_INTEGER) {
+    if (num > MAX_SAFE_INTEGER$1) {
       throw errorIntegerOutOfRange
     }
     /* c8 ignore stop */
@@ -30560,10 +31440,10 @@ const readVarUint = decoder => {
  */
 const readVarInt = decoder => {
   let r = decoder.arr[decoder.pos++];
-  let num = r & BITS6;
+  let num = r & BITS6$1;
   let mult = 64;
-  const sign = (r & BIT7) > 0 ? -1 : 1;
-  if ((r & BIT8) === 0) {
+  const sign = (r & BIT7$1) > 0 ? -1 : 1;
+  if ((r & BIT8$1) === 0) {
     // don't continue reading
     return sign * num
   }
@@ -30571,13 +31451,13 @@ const readVarInt = decoder => {
   while (decoder.pos < len) {
     r = decoder.arr[decoder.pos++];
     // num = num | ((r & binary.BITS7) << len)
-    num = num + (r & BITS7) * mult;
+    num = num + (r & BITS7$1) * mult;
     mult *= 128;
-    if (r < BIT8) {
+    if (r < BIT8$1) {
       return sign * num
     }
     /* c8 ignore start */
-    if (num > MAX_SAFE_INTEGER) {
+    if (num > MAX_SAFE_INTEGER$1) {
       throw errorIntegerOutOfRange
     }
     /* c8 ignore stop */
@@ -30631,7 +31511,7 @@ const _readVarStringPolyfill = decoder => {
  * @return {String} The read String
  */
 const _readVarStringNative = decoder =>
-  /** @type any */ (utf8TextDecoder).decode(readVarUint8Array(decoder));
+  /** @type any */ (utf8TextDecoder$1).decode(readVarUint8Array(decoder));
 
 /**
  * Read string of variable length
@@ -30643,7 +31523,7 @@ const _readVarStringNative = decoder =>
  *
  */
 /* c8 ignore next */
-const readVarString = utf8TextDecoder ? _readVarStringNative : _readVarStringPolyfill;
+const readVarString = utf8TextDecoder$1 ? _readVarStringNative : _readVarStringPolyfill;
 
 /**
  * @param {Decoder} decoder
@@ -30767,7 +31647,7 @@ class UintOptRleDecoder extends Decoder {
     if (this.count === 0) {
       this.s = readVarInt(this);
       // if the sign is negative, we read the count too, otherwise count is 1
-      const isNegative = isNegativeZero(this.s);
+      const isNegative = isNegativeZero$1(this.s);
       this.count = 1;
       if (isNegative) {
         this.s = -this.s;
@@ -30801,7 +31681,7 @@ class IntDiffOptRleDecoder extends Decoder {
       const diff = readVarInt(this);
       // if the first bit is set, we read more data
       const hasCount = diff & 1;
-      this.diff = floor(diff / 2); // shift >> 1
+      this.diff = floor$1(diff / 2); // shift >> 1
       this.count = 1;
       if (hasCount) {
         this.count = readVarUint(this) + 2;
@@ -30850,16 +31730,7 @@ const getRandomValues = crypto.getRandomValues.bind(crypto);
  */
 
 
-const rand = Math.random;
-
 const uint32 = () => getRandomValues(new Uint32Array(1))[0];
-
-/**
- * @template T
- * @param {Array<T>} arr
- * @return {T}
- */
-const oneOf$1 = arr => arr[floor(rand() * arr.length)];
 
 // @ts-ignore
 const uuidv4Template = [1e7] + -1e3 + -4e3 + -8e3 + -1e11;
@@ -30903,7 +31774,7 @@ const getUnixTime = Date.now;
  * @param {function(PromiseResolve<T>,function(Error):void):any} f
  * @return {Promise<T>}
  */
-const create$2 = f => /** @type {Promise<T>} */ (new Promise(f));
+const create$5 = f => /** @type {Promise<T>} */ (new Promise(f));
 
 /**
  * `Promise.all` wait for all promises in the array to resolve and return the result
@@ -30926,7 +31797,7 @@ Promise.all.bind(Promise);
  * @return {T|null}
  */
 /* c8 ignore next */
-const undefinedToNull = v => v === undefined ? null : v;
+const undefinedToNull$1 = v => v === undefined ? null : v;
 
 /* eslint-env browser */
 
@@ -30939,7 +31810,7 @@ const undefinedToNull = v => v === undefined ? null : v;
  */
 
 /* c8 ignore start */
-class VarStoragePolyfill {
+let VarStoragePolyfill$1 = class VarStoragePolyfill {
   constructor () {
     this.map = new Map();
   }
@@ -30958,21 +31829,21 @@ class VarStoragePolyfill {
   getItem (key) {
     return this.map.get(key)
   }
-}
+};
 /* c8 ignore stop */
 
 /**
  * @type {any}
  */
-let _localStorage = new VarStoragePolyfill();
-let usePolyfill = true;
+let _localStorage$1 = new VarStoragePolyfill$1();
+let usePolyfill$1 = true;
 
 /* c8 ignore start */
 try {
   // if the same-origin rule is violated, accessing localStorage might thrown an error
   if (typeof localStorage !== 'undefined' && localStorage) {
-    _localStorage = localStorage;
-    usePolyfill = false;
+    _localStorage$1 = localStorage;
+    usePolyfill$1 = false;
   }
 } catch (e) { }
 /* c8 ignore stop */
@@ -30981,9 +31852,9 @@ try {
  * This is basically localStorage in browser, or a polyfill in nodejs
  */
 /* c8 ignore next */
-const varStorage = _localStorage;
+const varStorage$1 = _localStorage$1;
 
-const EqualityTraitSymbol = Symbol('Equality');
+const EqualityTraitSymbol$1 = Symbol('Equality');
 
 /**
  * @typedef {{ [EqualityTraitSymbol]:(other:EqualityTrait)=>boolean }} EqualityTrait
@@ -31008,13 +31879,13 @@ const EqualityTraitSymbol = Symbol('Equality');
  * @param {T} b
  * @return {boolean}
  */
-const equals = (a, b) => a === b || !!a?.[EqualityTraitSymbol]?.(b) || false;
+const equals$1 = (a, b) => a === b || !!a?.[EqualityTraitSymbol$1]?.(b) || false;
 
 /**
  * @param {any} o
  * @return {o is { [k:string]:any }}
  */
-const isObject$1 = o => typeof o === 'object';
+const isObject$2 = o => typeof o === 'object';
 
 /**
  * Object.assign
@@ -31024,7 +31895,7 @@ const assign = Object.assign;
 /**
  * @param {Object<string,any>} obj
  */
-const keys = Object.keys;
+const keys$1 = Object.keys;
 
 /**
  * @template V
@@ -31041,7 +31912,7 @@ const forEach = (obj, f) => {
  * @param {Object<string,any>} obj
  * @return {number}
  */
-const size = obj => keys(obj).length;
+const size$1 = obj => keys$1(obj).length;
 
 /**
  * @param {Object|null|undefined} obj
@@ -31060,7 +31931,7 @@ const isEmpty = obj => {
  * @param {(v:T[keyof T],k:keyof T)=>boolean} f
  * @return {boolean}
  */
-const every = (obj, f) => {
+const every$2 = (obj, f) => {
   for (const key in obj) {
     if (!f(obj[key], key)) {
       return false
@@ -31076,14 +31947,14 @@ const every = (obj, f) => {
  * @param {string|number|symbol} key
  * @return {boolean}
  */
-const hasProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+const hasProperty$1 = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
 /**
  * @param {Object<string,any>} a
  * @param {Object<string,any>} b
  * @return {boolean}
  */
-const equalFlat = (a, b) => a === b || (size(a) === size(b) && every(a, (val, key) => (val !== undefined || hasProperty(b, key)) && equals(b[key], val)));
+const equalFlat = (a, b) => a === b || (size$1(a) === size$1(b) && every$2(a, (val, key) => (val !== undefined || hasProperty$1(b, key)) && equals$1(b[key], val)));
 
 /**
  * Make an object immutable. This hurts performance and is usually not needed if you perform good
@@ -31141,15 +32012,15 @@ const callAll = (fs, args, i = 0) => {
  * @param {any} b
  * @return {boolean}
  */
-const equalityDeep = (a, b) => {
+const equalityDeep$1 = (a, b) => {
   if (a === b) {
     return true
   }
   if (a == null || b == null || (a.constructor !== b.constructor && (a.constructor || Object) !== (b.constructor || Object))) {
     return false
   }
-  if (a[EqualityTraitSymbol] != null) {
-    return a[EqualityTraitSymbol](b)
+  if (a[EqualityTraitSymbol$1] != null) {
+    return a[EqualityTraitSymbol$1](b)
   }
   switch (a.constructor) {
     case ArrayBuffer:
@@ -31183,7 +32054,7 @@ const equalityDeep = (a, b) => {
         return false
       }
       for (const key of a.keys()) {
-        if (!b.has(key) || !equalityDeep(a.get(key), b.get(key))) {
+        if (!b.has(key) || !equalityDeep$1(a.get(key), b.get(key))) {
           return false
         }
       }
@@ -31191,11 +32062,11 @@ const equalityDeep = (a, b) => {
     }
     case undefined:
     case Object:
-      if (size(a) !== size(b)) {
+      if (size$1(a) !== size$1(b)) {
         return false
       }
       for (const key in a) {
-        if (!hasProperty(a, key) || !equalityDeep(a[key], b[key])) {
+        if (!hasProperty$1(a, key) || !equalityDeep$1(a[key], b[key])) {
           return false
         }
       }
@@ -31205,7 +32076,7 @@ const equalityDeep = (a, b) => {
         return false
       }
       for (let i = 0; i < a.length; i++) {
-        if (!equalityDeep(a[i], b[i])) {
+        if (!equalityDeep$1(a[i], b[i])) {
           return false
         }
       }
@@ -31224,7 +32095,7 @@ const equalityDeep = (a, b) => {
  * @param {Array<OPTS>} options
  */
 // @ts-ignore
-const isOneOf = (value, options) => options.includes(value);
+const isOneOf$1 = (value, options) => options.includes(value);
 
 /**
  * Isomorphic module to work access the environment (query params, env variables).
@@ -31235,55 +32106,52 @@ const isOneOf = (value, options) => options.includes(value);
 
 /* c8 ignore next 2 */
 // @ts-ignore
-const isNode = typeof process !== 'undefined' && process.release && /node|io\.js/.test(process.release.name) && Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]';
-
-/* c8 ignore next */
-const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && !isNode;
+const isNode$1 = typeof process !== 'undefined' && process.release && /node|io\.js/.test(process.release.name) && Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]';
 
 /**
  * @type {Map<string,string>}
  */
-let params;
+let params$1;
 
 /* c8 ignore start */
-const computeParams = () => {
-  if (params === undefined) {
-    if (isNode) {
-      params = create$5();
+const computeParams$1 = () => {
+  if (params$1 === undefined) {
+    if (isNode$1) {
+      params$1 = create$8();
       const pargs = process.argv;
       let currParamName = null;
       for (let i = 0; i < pargs.length; i++) {
         const parg = pargs[i];
         if (parg[0] === '-') {
           if (currParamName !== null) {
-            params.set(currParamName, '');
+            params$1.set(currParamName, '');
           }
           currParamName = parg;
         } else {
           if (currParamName !== null) {
-            params.set(currParamName, parg);
+            params$1.set(currParamName, parg);
             currParamName = null;
           }
         }
       }
       if (currParamName !== null) {
-        params.set(currParamName, '');
+        params$1.set(currParamName, '');
       }
       // in ReactNative for example this would not be true (unless connected to the Remote Debugger)
     } else if (typeof location === 'object') {
-      params = create$5(); // eslint-disable-next-line no-undef
+      params$1 = create$8(); // eslint-disable-next-line no-undef
       (location.search || '?').slice(1).split('&').forEach((kv) => {
         if (kv.length !== 0) {
           const [key, value] = kv.split('=');
-          params.set(`--${fromCamelCase(key, '-')}`, value);
-          params.set(`-${fromCamelCase(key, '-')}`, value);
+          params$1.set(`--${fromCamelCase$1(key, '-')}`, value);
+          params$1.set(`-${fromCamelCase$1(key, '-')}`, value);
         }
       });
     } else {
-      params = create$5();
+      params$1 = create$8();
     }
   }
-  return params
+  return params$1
 };
 /* c8 ignore stop */
 
@@ -31292,32 +32160,32 @@ const computeParams = () => {
  * @return {boolean}
  */
 /* c8 ignore next */
-const hasParam = (name) => computeParams().has(name);
+const hasParam$1 = (name) => computeParams$1().has(name);
 
 /**
  * @param {string} name
  * @return {string|null}
  */
 /* c8 ignore next 4 */
-const getVariable = (name) =>
-  isNode
-    ? undefinedToNull(process.env[name.toUpperCase().replaceAll('-', '_')])
-    : undefinedToNull(varStorage.getItem(name));
+const getVariable$1 = (name) =>
+  isNode$1
+    ? undefinedToNull$1(process.env[name.toUpperCase().replaceAll('-', '_')])
+    : undefinedToNull$1(varStorage$1.getItem(name));
 
 /**
  * @param {string} name
  * @return {boolean}
  */
 /* c8 ignore next 2 */
-const hasConf = (name) =>
-  hasParam('--' + name) || getVariable(name) !== null;
+const hasConf$1 = (name) =>
+  hasParam$1('--' + name) || getVariable$1(name) !== null;
 
 /* c8 ignore next */
-const production = hasConf('production');
+const production$1 = hasConf$1('production');
 
 /* c8 ignore next 2 */
-const forceColor = isNode &&
-  isOneOf(process.env.FORCE_COLOR, ['true', '1', '2']);
+const forceColor$1 = isNode$1 &&
+  isOneOf$1(process.env.FORCE_COLOR, ['true', '1', '2']);
 
 /* c8 ignore start */
 /**
@@ -31327,58 +32195,17 @@ const forceColor = isNode &&
  * Disable color using `--no-color` parameter or using `NO_COLOR=1` environment variable.
  * `FORCE_COLOR=1` enables color and takes precedence over all.
  */
-const supportsColor = forceColor || (
-  !hasParam('--no-colors') && // @todo deprecate --no-colors
-  !hasConf('no-color') &&
-  (!isNode || process.stdout.isTTY) && (
-    !isNode ||
-    hasParam('--color') ||
-    getVariable('COLORTERM') !== null ||
-    (getVariable('TERM') || '').includes('color')
+const supportsColor = forceColor$1 || (
+  !hasParam$1('--no-colors') && // @todo deprecate --no-colors
+  !hasConf$1('no-color') &&
+  (!isNode$1 || process.stdout.isTTY) && (
+    !isNode$1 ||
+    hasParam$1('--color') ||
+    getVariable$1('COLORTERM') !== null ||
+    (getVariable$1('TERM') || '').includes('color')
   )
 );
 /* c8 ignore stop */
-
-/**
- * Utility functions to work with buffers (Uint8Array).
- *
- * @module buffer
- */
-
-
-/* c8 ignore start */
-/**
- * @param {Uint8Array} bytes
- * @return {string}
- */
-const toBase64Browser = bytes => {
-  let s = '';
-  for (let i = 0; i < bytes.byteLength; i++) {
-    s += fromCharCode(bytes[i]);
-  }
-  // eslint-disable-next-line no-undef
-  return btoa(s)
-};
-/* c8 ignore stop */
-
-/**
- * @param {Uint8Array} bytes
- * @return {string}
- */
-const toBase64Node = bytes => Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString('base64');
-
-/* c8 ignore next */
-const toBase64 = isBrowser ? toBase64Browser : toBase64Node;
-
-/**
- * Encode anything as a UInt8Array. It's a pun on typescripts's `any` type.
- * See encoding.writeAny for more information.
- *
- * @param {any} data
- * @return {Uint8Array}
- */
-const encodeAny = data =>
-  encode(encoder => writeAny(encoder, data));
 
 /**
  * Working with value pairs.
@@ -31406,7 +32233,7 @@ class Pair {
  * @param {R} right
  * @return {Pair<L,R>}
  */
-const create$1 = (left, right) => new Pair(left, right);
+const create$4 = (left, right) => new Pair(left, right);
 
 /**
  * Fast Pseudo Random Number Generators.
@@ -31424,7 +32251,7 @@ const create$1 = (left, right) => new Pair(left, right);
  * @param {PRNG} gen A random number generator.
  * @return {Boolean} A random boolean
  */
-const bool = gen => (gen.next() >= 0.5);
+const bool$1 = gen => (gen.next() >= 0.5);
 
 /**
  * Generates a random integer with 53 bit resolution.
@@ -31434,7 +32261,7 @@ const bool = gen => (gen.next() >= 0.5);
  * @param {Number} max The upper bound of the allowed return values (inclusive).
  * @return {Number} A random integer on [min, max]
  */
-const int53 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
+const int53$1 = (gen, min, max) => floor$1(gen.next() * (max + 1 - min) + min);
 
 /**
  * Generates a random integer with 32 bit resolution.
@@ -31444,7 +32271,7 @@ const int53 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
  * @param {Number} max The upper bound of the allowed return values (inclusive).
  * @return {Number} A random integer on [min, max]
  */
-const int32 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
+const int32$1 = (gen, min, max) => floor$1(gen.next() * (max + 1 - min) + min);
 
 /**
  * @deprecated
@@ -31456,13 +32283,13 @@ const int32 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
  * @param {Number} max The upper bound of the allowed return values (inclusive). The max inclusive number is `binary.BITS31-1`
  * @return {Number} A random integer on [min, max]
  */
-const int31 = (gen, min, max) => int32(gen, min, max);
+const int31$1 = (gen, min, max) => int32$1(gen, min, max);
 
 /**
  * @param {PRNG} gen
  * @return {string} A single letter (a-z)
  */
-const letter = gen => fromCharCode(int31(gen, 97, 122));
+const letter$1 = gen => fromCharCode$1(int31$1(gen, 97, 122));
 
 /**
  * @param {PRNG} gen
@@ -31470,11 +32297,11 @@ const letter = gen => fromCharCode(int31(gen, 97, 122));
  * @param {number} [maxLen=20]
  * @return {string} A random word (0-20 characters) without spaces consisting of letters (a-z)
  */
-const word = (gen, minLen = 0, maxLen = 20) => {
-  const len = int31(gen, minLen, maxLen);
+const word$1 = (gen, minLen = 0, maxLen = 20) => {
+  const len = int31$1(gen, minLen, maxLen);
   let str = '';
   for (let i = 0; i < len; i++) {
-    str += letter(gen);
+    str += letter$1(gen);
   }
   return str
 };
@@ -31487,7 +32314,7 @@ const word = (gen, minLen = 0, maxLen = 20) => {
  * @return {T} One of the values of the supplied Array.
  * @template T
  */
-const oneOf = (gen, array) => array[int31(gen, 0, array.length - 1)];
+const oneOf$2 = (gen, array) => array[int31$1(gen, 0, array.length - 1)];
 /* c8 ignore stop */
 
 /**
@@ -31547,9 +32374,9 @@ const oneOf = (gen, array) => array[int31(gen, 0, array.length - 1)];
  * } Intersect
  */
 
-const schemaSymbol = Symbol('0schema');
+const schemaSymbol$1 = Symbol('0schema');
 
-class ValidationError {
+let ValidationError$1 = class ValidationError {
   constructor () {
     /**
      * Reverse errors
@@ -31573,28 +32400,28 @@ class ValidationError {
     for (let i = this._rerrs.length - 1; i > 0; i--) {
       const r = this._rerrs[i];
       /* c8 ignore next */
-      s.push(repeat(' ', (this._rerrs.length - i) * 2) + `${r.path != null ? `[${r.path}] ` : ''}${r.has} doesn't match ${r.expected}. ${r.message}`);
+      s.push(repeat$1(' ', (this._rerrs.length - i) * 2) + `${r.path != null ? `[${r.path}] ` : ''}${r.has} doesn't match ${r.expected}. ${r.message}`);
     }
     return s.join('\n')
   }
-}
+};
 
 /**
  * @param {any} a
  * @param {any} b
  * @return {boolean}
  */
-const shapeExtends = (a, b) => {
+const shapeExtends$1 = (a, b) => {
   if (a === b) return true
   if (a == null || b == null || a.constructor !== b.constructor) return false
-  if (a[EqualityTraitSymbol]) return equals(a, b) // last resort: check equality (do this before array and obj check which don't implement the equality trait)
-  if (isArray(a)) {
-    return every$1(a, aitem =>
-      some(b, bitem => shapeExtends(aitem, bitem))
+  if (a[EqualityTraitSymbol$1]) return equals$1(a, b) // last resort: check equality (do this before array and obj check which don't implement the equality trait)
+  if (isArray$1(a)) {
+    return every$3(a, aitem =>
+      some$1(b, bitem => shapeExtends$1(aitem, bitem))
     )
-  } else if (isObject$1(a)) {
-    return every(a, (aitem, akey) =>
-      shapeExtends(aitem, b[akey])
+  } else if (isObject$2(a)) {
+    return every$2(a, (aitem, akey) =>
+      shapeExtends$1(aitem, b[akey])
     )
   }
   /* c8 ignore next */
@@ -31605,7 +32432,7 @@ const shapeExtends = (a, b) => {
  * @template T
  * @implements {equalityTraits.EqualityTrait}
  */
-class Schema {
+let Schema$1 = class Schema {
   // this.shape must not be defined on Schema. Otherwise typecheck on metatypes (e.g. $$object) won't work as expected anymore
   /**
    * If true, the more things are added to the shape the more objects this schema will accept (e.g.
@@ -31620,7 +32447,7 @@ class Schema {
   extends (other) {
     let [a, b] = [/** @type {any} */(this).shape, /** @type {any} */ (other).shape];
     if (/** @type {typeof Schema<any>} */ (this.constructor)._dilutes) [b, a] = [a, b];
-    return shapeExtends(a, b)
+    return shapeExtends$1(a, b)
   }
 
   /**
@@ -31630,15 +32457,15 @@ class Schema {
    */
   equals (other) {
     // @ts-ignore
-    return this.constructor === other.constructor && equalityDeep(this.shape, other.shape)
+    return this.constructor === other.constructor && equalityDeep$1(this.shape, other.shape)
   }
 
-  [schemaSymbol] () { return true }
+  [schemaSymbol$1] () { return true }
 
   /**
    * @param {object} other
    */
-  [EqualityTraitSymbol] (other) {
+  [EqualityTraitSymbol$1] (other) {
     return this.equals(/** @type {any} */ (other))
   }
 
@@ -31663,7 +32490,7 @@ class Schema {
    * @return {_o is T}
    */
   check (_o, _err) {
-    methodUnimplemented();
+    methodUnimplemented$1();
   }
   /* c8 ignore stop */
 
@@ -31672,14 +32499,14 @@ class Schema {
    */
   get nullable () {
     // @ts-ignore
-    return $union(this, $null)
+    return $union$1(this, $null$1)
   }
 
   /**
    * @type {$Optional<Schema<T>>}
    */
   get optional () {
-    return new $Optional(/** @type {Schema<T>} */ (this))
+    return new $Optional$1(/** @type {Schema<T>} */ (this))
   }
 
   /**
@@ -31695,7 +32522,7 @@ class Schema {
    * @return {Extract<OO, T> extends never ? T : (OO extends Array<never> ? T : Extract<OO,T>)}
    */
   cast (o) {
-    assert(o, this);
+    assert$1(o, this);
     return /** @type {any} */ (o)
   }
 
@@ -31719,10 +32546,10 @@ class Schema {
    * @return {o extends T ? T : never}
    */
   expect (o) {
-    assert(o, this);
+    assert$1(o, this);
     return o
   }
-}
+};
 
 /**
  * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} Constr
@@ -31733,7 +32560,7 @@ class Schema {
  * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} C
  * @extends {Schema<Instance<C>>}
  */
-class $ConstructedBy extends Schema {
+let $ConstructedBy$1 = class $ConstructedBy extends Schema$1 {
   /**
    * @param {C} c
    * @param {((o:Instance<C>)=>boolean)|null} check
@@ -31755,7 +32582,7 @@ class $ConstructedBy extends Schema {
     !c && err?.extend(null, this.shape.name, o?.constructor.name, o?.constructor !== this.shape ? 'Constructor match failed' : 'Check failed');
     return c
   }
-}
+};
 
 /**
  * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} C
@@ -31763,15 +32590,15 @@ class $ConstructedBy extends Schema {
  * @param {((o:Instance<C>) => boolean)|null} check
  * @return {CastToSchema<$ConstructedBy<C>>}
  */
-const $constructedBy = (c, check = null) => new $ConstructedBy(c, check);
-$constructedBy($ConstructedBy);
+const $constructedBy$1 = (c, check = null) => new $ConstructedBy$1(c, check);
+$constructedBy$1($ConstructedBy$1);
 
 /**
  * Check custom properties on any object. You may want to overwrite the generated Schema<any>.
  *
  * @extends {Schema<any>}
  */
-class $Custom extends Schema {
+let $Custom$1 = class $Custom extends Schema$1 {
   /**
    * @param {(o:any) => boolean} check
    */
@@ -31794,20 +32621,20 @@ class $Custom extends Schema {
     !c && err?.extend(null, 'custom prop', o?.constructor.name, 'failed to check custom prop');
     return c
   }
-}
+};
 
 /**
  * @param {(o:any) => boolean} check
  * @return {Schema<any>}
  */
-const $custom = (check) => new $Custom(check);
-$constructedBy($Custom);
+const $custom$1 = (check) => new $Custom$1(check);
+$constructedBy$1($Custom$1);
 
 /**
  * @template {Primitive} T
  * @extends {Schema<T>}
  */
-class $Literal extends Schema {
+let $Literal$1 = class $Literal extends Schema$1 {
   /**
    * @param {Array<T>} literals
    */
@@ -31828,15 +32655,15 @@ class $Literal extends Schema {
     !c && err?.extend(null, this.shape.join(' | '), o.toString());
     return c
   }
-}
+};
 
 /**
  * @template {Primitive[]} T
  * @param {T} literals
  * @return {CastToSchema<$Literal<T[number]>>}
  */
-const $literal = (...literals) => new $Literal(literals);
-const $$literal = $constructedBy($Literal);
+const $literal$1 = (...literals) => new $Literal$1(literals);
+const $$literal$1 = $constructedBy$1($Literal$1);
 
 /**
  * @template {Array<string|Schema<string|number>>} Ts
@@ -31847,7 +32674,7 @@ const $$literal = $constructedBy($Literal);
  * @param {string} str
  * @return {string}
  */
-const _regexEscape = /** @type {any} */ (RegExp).escape || /** @type {(str:string) => string} */ (str =>
+const _regexEscape$1 = /** @type {any} */ (RegExp).escape || /** @type {(str:string) => string} */ (str =>
   str.replace(/[().|&,$^[\]]/g, s => '\\' + s)
 );
 
@@ -31855,39 +32682,39 @@ const _regexEscape = /** @type {any} */ (RegExp).escape || /** @type {(str:strin
  * @param {string|Schema<any>} s
  * @return {string[]}
  */
-const _schemaStringTemplateToRegex = s => {
-  if ($string.check(s)) {
-    return [_regexEscape(s)]
+const _schemaStringTemplateToRegex$1 = s => {
+  if ($string$1.check(s)) {
+    return [_regexEscape$1(s)]
   }
-  if ($$literal.check(s)) {
+  if ($$literal$1.check(s)) {
     return /** @type {Array<string|number>} */ (s.shape).map(v => v + '')
   }
-  if ($$number.check(s)) {
+  if ($$number$1.check(s)) {
     return ['[+-]?\\d+.?\\d*']
   }
-  if ($$string.check(s)) {
+  if ($$string$1.check(s)) {
     return ['.*']
   }
-  if ($$union.check(s)) {
-    return s.shape.map(_schemaStringTemplateToRegex).flat(1)
+  if ($$union$1.check(s)) {
+    return s.shape.map(_schemaStringTemplateToRegex$1).flat(1)
   }
   /* c8 ignore next 2 */
   // unexpected schema structure (only supports unions and string in literal types)
-  unexpectedCase();
+  unexpectedCase$1();
 };
 
 /**
  * @template {Array<string|Schema<string|number>>} T
  * @extends {Schema<CastStringTemplateArgsToTemplate<T>>}
  */
-class $StringTemplate extends Schema {
+let $StringTemplate$1 = class $StringTemplate extends Schema$1 {
   /**
    * @param {T} shape
    */
   constructor (shape) {
     super();
     this.shape = shape;
-    this._r = new RegExp('^' + shape.map(_schemaStringTemplateToRegex).map(opts => `(${opts.join('|')})`).join('') + '$');
+    this._r = new RegExp('^' + shape.map(_schemaStringTemplateToRegex$1).map(opts => `(${opts.join('|')})`).join('') + '$');
   }
 
   /**
@@ -31901,15 +32728,15 @@ class $StringTemplate extends Schema {
     !c && err?.extend(null, this._r.toString(), o.toString(), 'String doesn\'t match string template.');
     return c
   }
-}
-$constructedBy($StringTemplate);
+};
+$constructedBy$1($StringTemplate$1);
 
-const isOptionalSymbol = Symbol('optional');
+const isOptionalSymbol$1 = Symbol('optional');
 /**
  * @template {Schema<any>} S
  * @extends Schema<Unwrap<S>|undefined>
  */
-class $Optional extends Schema {
+let $Optional$1 = class $Optional extends Schema$1 {
   /**
    * @param {S} shape
    */
@@ -31930,14 +32757,14 @@ class $Optional extends Schema {
     return c
   }
 
-  get [isOptionalSymbol] () { return true }
-}
-const $$optional = $constructedBy($Optional);
+  get [isOptionalSymbol$1] () { return true }
+};
+const $$optional$1 = $constructedBy$1($Optional$1);
 
 /**
  * @extends Schema<never>
  */
-class $Never extends Schema {
+let $Never$1 = class $Never extends Schema$1 {
   /**
    * @param {any} _o
    * @param {ValidationError} [err]
@@ -31948,8 +32775,8 @@ class $Never extends Schema {
     err?.extend(null, 'never', typeof _o);
     return false
   }
-}
-$constructedBy($Never);
+};
+$constructedBy$1($Never$1);
 
 /**
  * @template {{ [key: string|symbol|number]: Schema<any> }} S
@@ -31960,7 +32787,7 @@ $constructedBy($Never);
  * @template {{[key:string|symbol|number]: Schema<any>}} S
  * @extends {Schema<$ObjectToType<S>>}
  */
-class $Object extends Schema {
+let $Object$1 = class $Object extends Schema$1 {
   /**
    * @param {S} shape
    * @param {boolean} partial
@@ -31994,13 +32821,13 @@ class $Object extends Schema {
       err?.extend(null, 'object', 'null');
       return false
     }
-    return every(this.shape, (vv, vk) => {
-      const c = (this._isPartial && !hasProperty(o, vk)) || vv.check(o[vk], err);
+    return every$2(this.shape, (vv, vk) => {
+      const c = (this._isPartial && !hasProperty$1(o, vk)) || vv.check(o[vk], err);
       !c && err?.extend(vk.toString(), vv.toString(), typeof o[vk], 'Object property does not match');
       return c
     })
   }
-}
+};
 
 /**
  * @template S
@@ -32014,19 +32841,19 @@ class $Object extends Schema {
  * @param {S} def
  * @return {_ObjectDefToSchema<S> extends Schema<infer S> ? Schema<{ [K in keyof S]: S[K] }> : never}
  */
-const $object = def => /** @type {any} */ (new $Object(def));
-const $$object = $constructedBy($Object);
+const $object$1 = def => /** @type {any} */ (new $Object$1(def));
+const $$object$1 = $constructedBy$1($Object$1);
 /**
  * @type {Schema<{[key:string]: any}>}
  */
-const $objectAny = $custom(o => o != null && (o.constructor === Object || o.constructor == null));
+const $objectAny$1 = $custom$1(o => o != null && (o.constructor === Object || o.constructor == null));
 
 /**
  * @template {Schema<string|number|symbol>} Keys
  * @template {Schema<any>} Values
  * @extends {Schema<{ [key in Unwrap<Keys>]: Unwrap<Values> }>}
  */
-class $Record extends Schema {
+let $Record$1 = class $Record extends Schema$1 {
   /**
    * @param {Keys} keys
    * @param {Values} values
@@ -32044,14 +32871,14 @@ class $Record extends Schema {
    * @return {o is { [key in Unwrap<Keys>]: Unwrap<Values> }}
    */
   check (o, err) {
-    return o != null && every(o, (vv, vk) => {
+    return o != null && every$2(o, (vv, vk) => {
       const ck = this.shape.keys.check(vk, err);
       /* c8 ignore next */
       !ck && err?.extend(vk + '', 'Record', typeof o, ck ? 'Key doesn\'t match schema' : 'Value doesn\'t match value');
       return ck && this.shape.values.check(vv, err)
     })
   }
-}
+};
 
 /**
  * @template {Schema<string|number|symbol>} Keys
@@ -32060,14 +32887,14 @@ class $Record extends Schema {
  * @param {Values} values
  * @return {CastToSchema<$Record<Keys,Values>>}
  */
-const $record = (keys, values) => new $Record(keys, values);
-const $$record = $constructedBy($Record);
+const $record$1 = (keys, values) => new $Record$1(keys, values);
+const $$record$1 = $constructedBy$1($Record$1);
 
 /**
  * @template {Schema<any>[]} S
  * @extends {Schema<{ [Key in keyof S]: S[Key] extends Schema<infer Type> ? Type : never }>}
  */
-class $Tuple extends Schema {
+let $Tuple$1 = class $Tuple extends Schema$1 {
   /**
    * @param {S} shape
    */
@@ -32082,28 +32909,28 @@ class $Tuple extends Schema {
    * @return {o is { [K in keyof S]: S[K] extends Schema<infer Type> ? Type : never }}
    */
   check (o, err) {
-    return o != null && every(this.shape, (vv, vk) => {
+    return o != null && every$2(this.shape, (vv, vk) => {
       const c = /** @type {Schema<any>} */ (vv).check(o[vk], err);
       /* c8 ignore next */
       !c && err?.extend(vk.toString(), 'Tuple', typeof vv);
       return c
     })
   }
-}
+};
 
 /**
  * @template {Array<Schema<any>>} T
  * @param {T} def
  * @return {CastToSchema<$Tuple<T>>}
  */
-const $tuple = (...def) => new $Tuple(def);
-$constructedBy($Tuple);
+const $tuple$1 = (...def) => new $Tuple$1(def);
+$constructedBy$1($Tuple$1);
 
 /**
  * @template {Schema<any>} S
  * @extends {Schema<Array<S extends Schema<infer T> ? T : never>>}
  */
-class $Array extends Schema {
+let $Array$1 = class $Array extends Schema$1 {
   /**
    * @param {Array<S>} v
    */
@@ -32112,7 +32939,7 @@ class $Array extends Schema {
     /**
      * @type {Schema<S extends Schema<infer T> ? T : never>}
      */
-    this.shape = v.length === 1 ? v[0] : new $Union(v);
+    this.shape = v.length === 1 ? v[0] : new $Union$1(v);
   }
 
   /**
@@ -32121,30 +32948,30 @@ class $Array extends Schema {
    * @return {o is Array<S extends Schema<infer T> ? T : never>} o
    */
   check (o, err) {
-    const c = isArray(o) && every$1(o, oi => this.shape.check(oi));
+    const c = isArray$1(o) && every$3(o, oi => this.shape.check(oi));
     /* c8 ignore next */
     !c && err?.extend(null, 'Array', '');
     return c
   }
-}
+};
 
 /**
  * @template {Array<Schema<any>>} T
  * @param {T} def
  * @return {Schema<Array<T extends Array<Schema<infer S>> ? S : never>>}
  */
-const $array = (...def) => new $Array(def);
-const $$array = $constructedBy($Array);
+const $array$1 = (...def) => new $Array$1(def);
+const $$array$1 = $constructedBy$1($Array$1);
 /**
  * @type {Schema<Array<any>>}
  */
-const $arrayAny = $custom(o => isArray(o));
+const $arrayAny$1 = $custom$1(o => isArray$1(o));
 
 /**
  * @template T
  * @extends {Schema<T>}
  */
-class $InstanceOf extends Schema {
+let $InstanceOf$1 = class $InstanceOf extends Schema$1 {
   /**
    * @param {new (...args:any) => T} constructor
    * @param {((o:T) => boolean)|null} check
@@ -32166,7 +32993,7 @@ class $InstanceOf extends Schema {
     !c && err?.extend(null, this.shape.name, o?.constructor.name);
     return c
   }
-}
+};
 
 /**
  * @template T
@@ -32174,10 +33001,10 @@ class $InstanceOf extends Schema {
  * @param {((o:T) => boolean)|null} check
  * @return {Schema<T>}
  */
-const $instanceOf = (c, check = null) => new $InstanceOf(c, check);
-$constructedBy($InstanceOf);
+const $instanceOf$1 = (c, check = null) => new $InstanceOf$1(c, check);
+$constructedBy$1($InstanceOf$1);
 
-const $$schema = $instanceOf(Schema);
+const $$schema$1 = $instanceOf$1(Schema$1);
 
 /**
  * @template {Schema<any>[]} Args
@@ -32188,14 +33015,14 @@ const $$schema = $instanceOf(Schema);
  * @template {Array<Schema<any>>} Args
  * @extends {Schema<_LArgsToLambdaDef<Args>>}
  */
-class $Lambda extends Schema {
+let $Lambda$1 = class $Lambda extends Schema$1 {
   /**
    * @param {Args} args
    */
   constructor (args) {
     super();
     this.len = args.length - 1;
-    this.args = $tuple(...args.slice(-1));
+    this.args = $tuple$1(...args.slice(-1));
     this.res = args[this.len];
   }
 
@@ -32210,19 +33037,19 @@ class $Lambda extends Schema {
     !c && err?.extend(null, 'function', typeof f);
     return c
   }
-}
-const $$lambda = $constructedBy($Lambda);
+};
+const $$lambda$1 = $constructedBy$1($Lambda$1);
 
 /**
  * @type {Schema<Function>}
  */
-const $function = $custom(o => typeof o === 'function');
+const $function$1 = $custom$1(o => typeof o === 'function');
 
 /**
  * @template {Array<Schema<any>>} T
  * @extends {Schema<Intersect<UnwrapArray<T>>>}
  */
-class $Intersection extends Schema {
+let $Intersection$1 = class $Intersection extends Schema$1 {
   /**
    * @param {T} v
    */
@@ -32241,19 +33068,19 @@ class $Intersection extends Schema {
    */
   check (o, err) {
     // @ts-ignore
-    const c = every$1(this.shape, check => check.check(o, err));
+    const c = every$3(this.shape, check => check.check(o, err));
     /* c8 ignore next */
     !c && err?.extend(null, 'Intersectinon', typeof o);
     return c
   }
-}
-$constructedBy($Intersection, o => o.shape.length > 0); // Intersection with length=0 is considered "any"
+};
+$constructedBy$1($Intersection$1, o => o.shape.length > 0); // Intersection with length=0 is considered "any"
 
 /**
  * @template S
  * @extends {Schema<S>}
  */
-class $Union extends Schema {
+let $Union$1 = class $Union extends Schema$1 {
   static _dilutes = true
 
   /**
@@ -32270,82 +33097,82 @@ class $Union extends Schema {
    * @return {o is S}
    */
   check (o, err) {
-    const c = some(this.shape, (vv) => vv.check(o, err));
+    const c = some$1(this.shape, (vv) => vv.check(o, err));
     err?.extend(null, 'Union', typeof o);
     return c
   }
-}
+};
 
 /**
  * @template {Array<any>} T
  * @param {T} schemas
  * @return {CastToSchema<$Union<Unwrap<ReadSchema<T>>>>}
  */
-const $union = (...schemas) => schemas.findIndex($s => $$union.check($s)) >= 0
-  ? $union(...schemas.map($s => $$1($s)).map($s => $$union.check($s) ? $s.shape : [$s]).flat(1))
+const $union$1 = (...schemas) => schemas.findIndex($s => $$union$1.check($s)) >= 0
+  ? $union$1(...schemas.map($s => $$2($s)).map($s => $$union$1.check($s) ? $s.shape : [$s]).flat(1))
   : (schemas.length === 1
       ? schemas[0]
-      : new $Union(schemas));
-const $$union = /** @type {Schema<$Union<any>>} */ ($constructedBy($Union));
+      : new $Union$1(schemas));
+const $$union$1 = /** @type {Schema<$Union<any>>} */ ($constructedBy$1($Union$1));
 
-const _t = () => true;
+const _t$1 = () => true;
 /**
  * @type {Schema<any>}
  */
-const $any = $custom(_t);
-const $$any = /** @type {Schema<Schema<any>>} */ ($constructedBy($Custom, o => o.shape === _t));
+const $any$1 = $custom$1(_t$1);
+const $$any$1 = /** @type {Schema<Schema<any>>} */ ($constructedBy$1($Custom$1, o => o.shape === _t$1));
 
 /**
  * @type {Schema<bigint>}
  */
-const $bigint = $custom(o => typeof o === 'bigint');
-const $$bigint = /** @type {Schema<Schema<BigInt>>} */ ($custom(o => o === $bigint));
+const $bigint$1 = $custom$1(o => typeof o === 'bigint');
+const $$bigint$1 = /** @type {Schema<Schema<BigInt>>} */ ($custom$1(o => o === $bigint$1));
 
 /**
  * @type {Schema<symbol>}
  */
-const $symbol = $custom(o => typeof o === 'symbol');
-/** @type {Schema<Schema<Symbol>>} */ ($custom(o => o === $symbol));
+const $symbol$1 = $custom$1(o => typeof o === 'symbol');
+/** @type {Schema<Schema<Symbol>>} */ ($custom$1(o => o === $symbol$1));
 
 /**
  * @type {Schema<number>}
  */
-const $number = $custom(o => typeof o === 'number');
-const $$number = /** @type {Schema<Schema<number>>} */ ($custom(o => o === $number));
+const $number$1 = $custom$1(o => typeof o === 'number');
+const $$number$1 = /** @type {Schema<Schema<number>>} */ ($custom$1(o => o === $number$1));
 
 /**
  * @type {Schema<string>}
  */
-const $string = $custom(o => typeof o === 'string');
-const $$string = /** @type {Schema<Schema<string>>} */ ($custom(o => o === $string));
+const $string$1 = $custom$1(o => typeof o === 'string');
+const $$string$1 = /** @type {Schema<Schema<string>>} */ ($custom$1(o => o === $string$1));
 
 /**
  * @type {Schema<boolean>}
  */
-const $boolean = $custom(o => typeof o === 'boolean');
-const $$boolean = /** @type {Schema<Schema<Boolean>>} */ ($custom(o => o === $boolean));
+const $boolean$1 = $custom$1(o => typeof o === 'boolean');
+const $$boolean$1 = /** @type {Schema<Schema<Boolean>>} */ ($custom$1(o => o === $boolean$1));
 
 /**
  * @type {Schema<undefined>}
  */
-const $undefined = $literal(undefined);
-/** @type {Schema<Schema<undefined>>} */ ($constructedBy($Literal, o => o.shape.length === 1 && o.shape[0] === undefined));
+const $undefined$1 = $literal$1(undefined);
+/** @type {Schema<Schema<undefined>>} */ ($constructedBy$1($Literal$1, o => o.shape.length === 1 && o.shape[0] === undefined));
 
 /**
  * @type {Schema<void>}
  */
-$literal(undefined);
+$literal$1(undefined);
 
-const $null = $literal(null);
-const $$null = /** @type {Schema<Schema<null>>} */ ($constructedBy($Literal, o => o.shape.length === 1 && o.shape[0] === null));
+const $null$1 = $literal$1(null);
+const $$null$1 = /** @type {Schema<Schema<null>>} */ ($constructedBy$1($Literal$1, o => o.shape.length === 1 && o.shape[0] === null));
 
-$constructedBy(Uint8Array);
-/** @type {Schema<Schema<Uint8Array>>} */ ($constructedBy($ConstructedBy, o => o.shape === Uint8Array));
+$constructedBy$1(Uint8Array);
+/** @type {Schema<Schema<Uint8Array>>} */ ($constructedBy$1($ConstructedBy$1, o => o.shape === Uint8Array));
 
 /**
  * @type {Schema<Primitive>}
  */
-const $primitive = $union($number, $string, $null, $undefined, $bigint, $boolean, $symbol);
+const $primitive$1 = $union$1($number$1, $string$1, $null$1, $undefined$1, $bigint$1, $boolean$1, $symbol$1);
 
 /**
  * @typedef {JSON[]} JSONArray
@@ -32357,9 +33184,9 @@ const $primitive = $union($number, $string, $null, $undefined, $bigint, $boolean
  * @type {Schema<null|number|string|boolean|JSON[]|{[key:string]:JSON}>}
  */
 (() => {
-  const $jsonArr = /** @type {$Array<$any>} */ ($array($any));
-  const $jsonRecord = /** @type {$Record<$string,$any>} */ ($record($string, $any));
-  const $json = $union($number, $string, $null, $boolean, $jsonArr, $jsonRecord);
+  const $jsonArr = /** @type {$Array<$any>} */ ($array$1($any$1));
+  const $jsonRecord = /** @type {$Record<$string,$any>} */ ($record$1($string$1, $any$1));
+  const $json = $union$1($number$1, $string$1, $null$1, $boolean$1, $jsonArr, $jsonRecord);
   $jsonArr.shape = $json;
   $jsonRecord.shape.values = $json;
   return $json
@@ -32401,27 +33228,27 @@ const $primitive = $union($number, $string, $null, $undefined, $bigint, $boolean
  * @param {IN} o
  * @return {ReadSchema<IN>}
  */
-const $$1 = o => {
-  if ($$schema.check(o)) {
+const $$2 = o => {
+  if ($$schema$1.check(o)) {
     return /** @type {any} */ (o)
-  } else if ($objectAny.check(o)) {
+  } else if ($objectAny$1.check(o)) {
     /**
      * @type {any}
      */
     const o2 = {};
     for (const k in o) {
-      o2[k] = $$1(o[k]);
+      o2[k] = $$2(o[k]);
     }
-    return /** @type {any} */ ($object(o2))
-  } else if ($arrayAny.check(o)) {
-    return /** @type {any} */ ($union(...o.map($$1)))
-  } else if ($primitive.check(o)) {
-    return /** @type {any} */ ($literal(o))
-  } else if ($function.check(o)) {
-    return /** @type {any} */ ($constructedBy(/** @type {any} */ (o)))
+    return /** @type {any} */ ($object$1(o2))
+  } else if ($arrayAny$1.check(o)) {
+    return /** @type {any} */ ($union$1(...o.map($$2)))
+  } else if ($primitive$1.check(o)) {
+    return /** @type {any} */ ($literal$1(o))
+  } else if ($function$1.check(o)) {
+    return /** @type {any} */ ($constructedBy$1(/** @type {any} */ (o)))
   }
   /* c8 ignore next */
-  unexpectedCase();
+  unexpectedCase$1();
 };
 
 /* c8 ignore start */
@@ -32431,12 +33258,12 @@ const $$1 = o => {
  *
  * @type {<T>(o:any,schema:Schema<T>) => asserts o is T}
  */
-const assert = production
+const assert$1 = production$1
   ? () => {}
   : (o, schema) => {
-      const err = new ValidationError();
+      const err = new ValidationError$1();
       if (!schema.check(o, err)) {
-        throw create$3(`Expected value to be of type ${schema.constructor.name}.\n${err.toString()}`)
+        throw create$6(`Expected value to be of type ${schema.constructor.name}.\n${err.toString()}`)
       }
     };
 /* c8 ignore end */
@@ -32458,7 +33285,7 @@ const assert = production
  * @template {any} [State=undefined]
  * @template {Pattern<any,any>} [Patterns=never]
  */
-class PatternMatcher {
+let PatternMatcher$1 = class PatternMatcher {
   /**
    * @param {Schema<State>} [$state]
    */
@@ -32479,7 +33306,7 @@ class PatternMatcher {
    */
   if (pattern, handler) {
     // @ts-ignore
-    this.patterns.push({ if: $$1(pattern), h: handler });
+    this.patterns.push({ if: $$2(pattern), h: handler });
     // @ts-ignore
     return this
   }
@@ -32489,7 +33316,7 @@ class PatternMatcher {
    * @param {(o:any,s:State)=>R} h
    */
   else (h) {
-    return this.if($any, h)
+    return this.if($any$1, h)
   }
 
   /**
@@ -32507,76 +33334,76 @@ class PatternMatcher {
           return p.h(o, s)
         }
       }
-      throw create$3('Unhandled pattern')
+      throw create$6('Unhandled pattern')
     }
   }
-}
+};
 
 /**
  * @template [State=undefined]
  * @param {State} [state]
  * @return {PatternMatcher<State extends undefined ? undefined : Unwrap<ReadSchema<State>>>}
  */
-const match = state => new PatternMatcher(/** @type {any} */ (state));
+const match$1 = state => new PatternMatcher$1(/** @type {any} */ (state));
 
 /**
  * Helper function to generate a (non-exhaustive) sample set from a gives schema.
  *
  * @type {<T>(o:T,gen:prng.PRNG)=>T}
  */
-const _random = /** @type {any} */ (match(/** @type {Schema<prng.PRNG>} */ ($any))
-  .if($$number, (_o, gen) => int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER))
-  .if($$string, (_o, gen) => word(gen))
-  .if($$boolean, (_o, gen) => bool(gen))
-  .if($$bigint, (_o, gen) => BigInt(int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER)))
-  .if($$union, (o, gen) => random(gen, oneOf(gen, o.shape)))
-  .if($$object, (o, gen) => {
+const _random$1 = /** @type {any} */ (match$1(/** @type {Schema<prng.PRNG>} */ ($any$1))
+  .if($$number$1, (_o, gen) => int53$1(gen, MIN_SAFE_INTEGER$1, MAX_SAFE_INTEGER$1))
+  .if($$string$1, (_o, gen) => word$1(gen))
+  .if($$boolean$1, (_o, gen) => bool$1(gen))
+  .if($$bigint$1, (_o, gen) => BigInt(int53$1(gen, MIN_SAFE_INTEGER$1, MAX_SAFE_INTEGER$1)))
+  .if($$union$1, (o, gen) => random$1(gen, oneOf$2(gen, o.shape)))
+  .if($$object$1, (o, gen) => {
     /**
      * @type {any}
      */
     const res = {};
     for (const k in o.shape) {
       let prop = o.shape[k];
-      if ($$optional.check(prop)) {
-        if (bool(gen)) { continue }
+      if ($$optional$1.check(prop)) {
+        if (bool$1(gen)) { continue }
         prop = prop.shape;
       }
-      res[k] = _random(prop, gen);
+      res[k] = _random$1(prop, gen);
     }
     return res
   })
-  .if($$array, (o, gen) => {
+  .if($$array$1, (o, gen) => {
     const arr = [];
-    const n = int32(gen, 0, 42);
+    const n = int32$1(gen, 0, 42);
     for (let i = 0; i < n; i++) {
-      arr.push(random(gen, o.shape));
+      arr.push(random$1(gen, o.shape));
     }
     return arr
   })
-  .if($$literal, (o, gen) => {
-    return oneOf(gen, o.shape)
+  .if($$literal$1, (o, gen) => {
+    return oneOf$2(gen, o.shape)
   })
-  .if($$null, (o, gen) => {
+  .if($$null$1, (o, gen) => {
     return null
   })
-  .if($$lambda, (o, gen) => {
-    const res = random(gen, o.res);
+  .if($$lambda$1, (o, gen) => {
+    const res = random$1(gen, o.res);
     return () => res
   })
-  .if($$any, (o, gen) => random(gen, oneOf(gen, [
-    $number, $string, $null, $undefined, $bigint, $boolean,
-    $array($number),
-    $record($union('a', 'b', 'c'), $number)
+  .if($$any$1, (o, gen) => random$1(gen, oneOf$2(gen, [
+    $number$1, $string$1, $null$1, $undefined$1, $bigint$1, $boolean$1,
+    $array$1($number$1),
+    $record$1($union$1('a', 'b', 'c'), $number$1)
   ])))
-  .if($$record, (o, gen) => {
+  .if($$record$1, (o, gen) => {
     /**
      * @type {any}
      */
     const res = {};
-    const keysN = int53(gen, 0, 3);
+    const keysN = int53$1(gen, 0, 3);
     for (let i = 0; i < keysN; i++) {
-      const key = random(gen, o.shape.keys);
-      const val = random(gen, o.shape.values);
+      const key = random$1(gen, o.shape.keys);
+      const val = random$1(gen, o.shape.values);
       res[key] = val;
     }
     return res
@@ -32589,7 +33416,7 @@ const _random = /** @type {any} */ (match(/** @type {Schema<prng.PRNG>} */ ($any
  * @param {S} schema
  * @return {Unwrap<ReadSchema<S>>}
  */
-const random = (gen, schema) => /** @type {any} */ (_random($$1(schema), gen));
+const random$1 = (gen, schema) => /** @type {any} */ (_random$1($$2(schema), gen));
 
 /* eslint-env browser */
 
@@ -32598,24 +33425,24 @@ const random = (gen, schema) => /** @type {any} */ (_random($$1(schema), gen));
 /**
  * @type {Document}
  */
-const doc = /** @type {Document} */ (typeof document !== 'undefined' ? document : {});
+const doc$1 = /** @type {Document} */ (typeof document !== 'undefined' ? document : {});
 
 /**
  * @type {$.Schema<DocumentFragment>}
  */
-$custom(el => el.nodeType === DOCUMENT_FRAGMENT_NODE);
+$custom$1(el => el.nodeType === DOCUMENT_FRAGMENT_NODE$1);
 
 /** @type {DOMParser} */ (typeof DOMParser !== 'undefined' ? new DOMParser() : null);
 
 /**
  * @type {$.Schema<Element>}
  */
-$custom(el => el.nodeType === ELEMENT_NODE);
+$custom$1(el => el.nodeType === ELEMENT_NODE$1);
 
 /**
  * @type {$.Schema<Text>}
  */
-$custom(el => el.nodeType === TEXT_NODE);
+$custom$1(el => el.nodeType === TEXT_NODE$1);
 
 /**
  * @param {Map<string,string>} m
@@ -32623,49 +33450,16 @@ $custom(el => el.nodeType === TEXT_NODE);
  */
 const mapToStyleString = m => map(m, (value, key) => `${key}:${value};`).join('');
 
-const ELEMENT_NODE = doc.ELEMENT_NODE;
-const TEXT_NODE = doc.TEXT_NODE;
-const DOCUMENT_NODE = doc.DOCUMENT_NODE;
-const DOCUMENT_FRAGMENT_NODE = doc.DOCUMENT_FRAGMENT_NODE;
+const ELEMENT_NODE$1 = doc$1.ELEMENT_NODE;
+const TEXT_NODE$1 = doc$1.TEXT_NODE;
+const DOCUMENT_NODE$1 = doc$1.DOCUMENT_NODE;
+const DOCUMENT_FRAGMENT_NODE$1 = doc$1.DOCUMENT_FRAGMENT_NODE;
 
 /**
  * @type {$.Schema<Node>}
  */
-$custom(el => el.nodeType === DOCUMENT_NODE);
+$custom$1(el => el.nodeType === DOCUMENT_NODE$1);
 /* c8 ignore stop */
-
-/* global requestIdleCallback, requestAnimationFrame, cancelIdleCallback, cancelAnimationFrame */
-
-
-/**
- * @typedef {Object} TimeoutObject
- * @property {function} TimeoutObject.destroy
- */
-
-/**
- * @param {function(number):void} clearFunction
- */
-const createTimeoutClass = clearFunction => class TT {
-  /**
-   * @param {number} timeoutId
-   */
-  constructor (timeoutId) {
-    this._ = timeoutId;
-  }
-
-  destroy () {
-    clearFunction(this._);
-  }
-};
-
-const Timeout = createTimeoutClass(clearTimeout);
-
-/**
- * @param {number} timeout
- * @param {function} callback
- * @return {TimeoutObject}
- */
-const timeout = (timeout, callback) => new Timeout(setTimeout(callback, timeout));
 
 /**
  * Utility module to work with EcmaScript Symbols.
@@ -32676,17 +33470,17 @@ const timeout = (timeout, callback) => new Timeout(setTimeout(callback, timeout)
 /**
  * Return fresh symbol.
  */
-const create = Symbol;
+const create$3 = Symbol;
 
-const BOLD = create();
-const UNBOLD = create();
-const BLUE = create();
-const GREY = create();
-const GREEN = create();
-const RED = create();
-const PURPLE = create();
-const ORANGE = create();
-const UNCOLOR = create();
+const BOLD = create$3();
+const UNBOLD = create$3();
+const BLUE = create$3();
+const GREY = create$3();
+const GREEN = create$3();
+const RED = create$3();
+const PURPLE = create$3();
+const ORANGE = create$3();
+const UNCOLOR = create$3();
 
 /* c8 ignore start */
 /**
@@ -32737,15 +33531,15 @@ const computeNoColorLoggingArgs = args => {
  * @type {Object<Symbol,pair.Pair<string,string>>}
  */
 const _browserStyleMap = {
-  [BOLD]: create$1('font-weight', 'bold'),
-  [UNBOLD]: create$1('font-weight', 'normal'),
-  [BLUE]: create$1('color', 'blue'),
-  [GREEN]: create$1('color', 'green'),
-  [GREY]: create$1('color', 'grey'),
-  [RED]: create$1('color', 'red'),
-  [PURPLE]: create$1('color', 'purple'),
-  [ORANGE]: create$1('color', 'orange'), // not well supported in chrome when debugging node with inspector - TODO: deprecate
-  [UNCOLOR]: create$1('color', 'black')
+  [BOLD]: create$4('font-weight', 'bold'),
+  [UNBOLD]: create$4('font-weight', 'normal'),
+  [BLUE]: create$4('color', 'blue'),
+  [GREEN]: create$4('color', 'green'),
+  [GREY]: create$4('color', 'grey'),
+  [RED]: create$4('color', 'red'),
+  [PURPLE]: create$4('color', 'purple'),
+  [ORANGE]: create$4('color', 'orange'), // not well supported in chrome when debugging node with inspector - TODO: deprecate
+  [UNCOLOR]: create$4('color', 'black')
 };
 
 /**
@@ -32759,7 +33553,7 @@ const computeBrowserLoggingArgs = (args) => {
   }
   const strBuilder = [];
   const styles = [];
-  const currentStyle = create$5();
+  const currentStyle = create$8();
   /**
    * @type {Array<string|Object|number>}
    */
@@ -32830,7 +33624,7 @@ const warn = (...args) => {
   vconsoles.forEach((vc) => vc.print(args));
 };
 
-const vconsoles = create$4();
+const vconsoles = create$7();
 
 /**
  * Utility module to create and manipulate Iterators.
@@ -32944,7 +33738,7 @@ const findIndexDS = (dis, clock) => {
   let left = 0;
   let right = dis.length - 1;
   while (left <= right) {
-    const midindex = floor((left + right) / 2);
+    const midindex = floor$1((left + right) / 2);
     const mid = dis[midindex];
     const midclock = mid.clock;
     if (midclock <= clock) {
@@ -32990,7 +33784,7 @@ const sortAndMergeDeleteSet = ds => {
       const left = dels[j - 1];
       const right = dels[i];
       if (left.clock + left.len >= right.clock) {
-        dels[j - 1] = new DeleteItem(left.clock, max(left.len, right.clock + right.len - left.clock));
+        dels[j - 1] = new DeleteItem(left.clock, max$1(left.len, right.clock + right.len - left.clock));
       } else {
         if (j < i) {
           dels[j] = right;
@@ -33038,7 +33832,7 @@ const mergeDeleteSets = dss => {
  * @function
  */
 const addToDeleteSet = (ds, client, clock, length) => {
-  setIfUndefined(ds.clients, client, () => /** @type {Array<DeleteItem>} */ ([])).push(new DeleteItem(clock, length));
+  setIfUndefined$1(ds.clients, client, () => /** @type {Array<DeleteItem>} */ ([])).push(new DeleteItem(clock, length));
 };
 
 const createDeleteSet = () => new DeleteSet();
@@ -33085,16 +33879,16 @@ const createDeleteSetFromStructStore = ss => {
  * @function
  */
 const writeDeleteSet = (encoder, ds) => {
-  writeVarUint(encoder.restEncoder, ds.clients.size);
+  writeVarUint$1(encoder.restEncoder, ds.clients.size);
 
   // Ensure that the delete set is written in a deterministic order
   from(ds.clients.entries())
     .sort((a, b) => b[0] - a[0])
     .forEach(([client, dsitems]) => {
       encoder.resetDsCurVal();
-      writeVarUint(encoder.restEncoder, client);
+      writeVarUint$1(encoder.restEncoder, client);
       const len = dsitems.length;
-      writeVarUint(encoder.restEncoder, len);
+      writeVarUint$1(encoder.restEncoder, len);
       for (let i = 0; i < len; i++) {
         const item = dsitems[i];
         encoder.writeDsClock(item.clock);
@@ -33118,7 +33912,7 @@ const readDeleteSet = decoder => {
     const client = readVarUint(decoder.restDecoder);
     const numberOfDeletes = readVarUint(decoder.restDecoder);
     if (numberOfDeletes > 0) {
-      const dsField = setIfUndefined(ds.clients, client, () => /** @type {Array<DeleteItem>} */ ([]));
+      const dsField = setIfUndefined$1(ds.clients, client, () => /** @type {Array<DeleteItem>} */ ([]));
       for (let i = 0; i < numberOfDeletes; i++) {
         dsField.push(new DeleteItem(decoder.readDsClock(), decoder.readDsLen()));
       }
@@ -33189,7 +33983,7 @@ const readAndApplyDeleteSet = (decoder, transaction, store) => {
   }
   if (unappliedDS.clients.size > 0) {
     const ds = new UpdateEncoderV2();
-    writeVarUint(ds.restEncoder, 0); // encode 0 structs
+    writeVarUint$1(ds.restEncoder, 0); // encode 0 structs
     writeDeleteSet(ds, unappliedDS);
     return ds.toUint8Array()
   }
@@ -33289,13 +34083,13 @@ class Doc extends ObservableV2 {
     /**
      * Promise that resolves once the document has been loaded from a persistence provider.
      */
-    this.whenLoaded = create$2(resolve => {
+    this.whenLoaded = create$5(resolve => {
       this.on('load', () => {
         this.isLoaded = true;
         resolve(this);
       });
     });
-    const provideSyncedPromise = () => create$2(resolve => {
+    const provideSyncedPromise = () => create$5(resolve => {
       /**
        * @param {boolean} isSynced
        */
@@ -33394,7 +34188,7 @@ class Doc extends ObservableV2 {
    * @public
    */
   get (name, TypeConstructor = /** @type {any} */ (AbstractType)) {
-    const type = setIfUndefined(this.share, name, () => {
+    const type = setIfUndefined$1(this.share, name, () => {
       // @ts-ignore
       const t = new TypeConstructor();
       t._integrate(this, null);
@@ -33687,11 +34481,11 @@ class UpdateDecoderV2 extends DSDecoderV2 {
 
 class DSEncoderV1 {
   constructor () {
-    this.restEncoder = createEncoder();
+    this.restEncoder = createEncoder$1();
   }
 
   toUint8Array () {
-    return toUint8Array(this.restEncoder)
+    return toUint8Array$1(this.restEncoder)
   }
 
   resetDsCurVal () {
@@ -33702,14 +34496,14 @@ class DSEncoderV1 {
    * @param {number} clock
    */
   writeDsClock (clock) {
-    writeVarUint(this.restEncoder, clock);
+    writeVarUint$1(this.restEncoder, clock);
   }
 
   /**
    * @param {number} len
    */
   writeDsLen (len) {
-    writeVarUint(this.restEncoder, len);
+    writeVarUint$1(this.restEncoder, len);
   }
 }
 
@@ -33718,16 +34512,16 @@ class UpdateEncoderV1 extends DSEncoderV1 {
    * @param {ID} id
    */
   writeLeftID (id) {
-    writeVarUint(this.restEncoder, id.client);
-    writeVarUint(this.restEncoder, id.clock);
+    writeVarUint$1(this.restEncoder, id.client);
+    writeVarUint$1(this.restEncoder, id.clock);
   }
 
   /**
    * @param {ID} id
    */
   writeRightID (id) {
-    writeVarUint(this.restEncoder, id.client);
-    writeVarUint(this.restEncoder, id.clock);
+    writeVarUint$1(this.restEncoder, id.client);
+    writeVarUint$1(this.restEncoder, id.clock);
   }
 
   /**
@@ -33735,7 +34529,7 @@ class UpdateEncoderV1 extends DSEncoderV1 {
    * @param {number} client
    */
   writeClient (client) {
-    writeVarUint(this.restEncoder, client);
+    writeVarUint$1(this.restEncoder, client);
   }
 
   /**
@@ -33749,21 +34543,21 @@ class UpdateEncoderV1 extends DSEncoderV1 {
    * @param {string} s
    */
   writeString (s) {
-    writeVarString(this.restEncoder, s);
+    writeVarString$1(this.restEncoder, s);
   }
 
   /**
    * @param {boolean} isYKey
    */
   writeParentInfo (isYKey) {
-    writeVarUint(this.restEncoder, isYKey ? 1 : 0);
+    writeVarUint$1(this.restEncoder, isYKey ? 1 : 0);
   }
 
   /**
    * @param {number} info An unsigned 8-bit integer
    */
   writeTypeRef (info) {
-    writeVarUint(this.restEncoder, info);
+    writeVarUint$1(this.restEncoder, info);
   }
 
   /**
@@ -33772,46 +34566,46 @@ class UpdateEncoderV1 extends DSEncoderV1 {
    * @param {number} len
    */
   writeLen (len) {
-    writeVarUint(this.restEncoder, len);
+    writeVarUint$1(this.restEncoder, len);
   }
 
   /**
    * @param {any} any
    */
   writeAny (any) {
-    writeAny(this.restEncoder, any);
+    writeAny$1(this.restEncoder, any);
   }
 
   /**
    * @param {Uint8Array} buf
    */
   writeBuf (buf) {
-    writeVarUint8Array(this.restEncoder, buf);
+    writeVarUint8Array$1(this.restEncoder, buf);
   }
 
   /**
    * @param {any} embed
    */
   writeJSON (embed) {
-    writeVarString(this.restEncoder, JSON.stringify(embed));
+    writeVarString$1(this.restEncoder, JSON.stringify(embed));
   }
 
   /**
    * @param {string} key
    */
   writeKey (key) {
-    writeVarString(this.restEncoder, key);
+    writeVarString$1(this.restEncoder, key);
   }
 }
 
 class DSEncoderV2 {
   constructor () {
-    this.restEncoder = createEncoder(); // encodes all the rest / non-optimized
+    this.restEncoder = createEncoder$1(); // encodes all the rest / non-optimized
     this.dsCurrVal = 0;
   }
 
   toUint8Array () {
-    return toUint8Array(this.restEncoder)
+    return toUint8Array$1(this.restEncoder)
   }
 
   resetDsCurVal () {
@@ -33824,7 +34618,7 @@ class DSEncoderV2 {
   writeDsClock (clock) {
     const diff = clock - this.dsCurrVal;
     this.dsCurrVal = clock;
-    writeVarUint(this.restEncoder, diff);
+    writeVarUint$1(this.restEncoder, diff);
   }
 
   /**
@@ -33832,9 +34626,9 @@ class DSEncoderV2 {
    */
   writeDsLen (len) {
     if (len === 0) {
-      unexpectedCase();
+      unexpectedCase$1();
     }
-    writeVarUint(this.restEncoder, len - 1);
+    writeVarUint$1(this.restEncoder, len - 1);
     this.dsCurrVal += len;
   }
 }
@@ -33865,20 +34659,20 @@ class UpdateEncoderV2 extends DSEncoderV2 {
   }
 
   toUint8Array () {
-    const encoder = createEncoder();
-    writeVarUint(encoder, 0); // this is a feature flag that we might use in the future
-    writeVarUint8Array(encoder, this.keyClockEncoder.toUint8Array());
-    writeVarUint8Array(encoder, this.clientEncoder.toUint8Array());
-    writeVarUint8Array(encoder, this.leftClockEncoder.toUint8Array());
-    writeVarUint8Array(encoder, this.rightClockEncoder.toUint8Array());
-    writeVarUint8Array(encoder, toUint8Array(this.infoEncoder));
-    writeVarUint8Array(encoder, this.stringEncoder.toUint8Array());
-    writeVarUint8Array(encoder, toUint8Array(this.parentInfoEncoder));
-    writeVarUint8Array(encoder, this.typeRefEncoder.toUint8Array());
-    writeVarUint8Array(encoder, this.lenEncoder.toUint8Array());
+    const encoder = createEncoder$1();
+    writeVarUint$1(encoder, 0); // this is a feature flag that we might use in the future
+    writeVarUint8Array$1(encoder, this.keyClockEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, this.clientEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, this.leftClockEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, this.rightClockEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, toUint8Array$1(this.infoEncoder));
+    writeVarUint8Array$1(encoder, this.stringEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, toUint8Array$1(this.parentInfoEncoder));
+    writeVarUint8Array$1(encoder, this.typeRefEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, this.lenEncoder.toUint8Array());
     // @note The rest encoder is appended! (note the missing var)
-    writeUint8Array(encoder, toUint8Array(this.restEncoder));
-    return toUint8Array(encoder)
+    writeUint8Array$1(encoder, toUint8Array$1(this.restEncoder));
+    return toUint8Array$1(encoder)
   }
 
   /**
@@ -33945,14 +34739,14 @@ class UpdateEncoderV2 extends DSEncoderV2 {
    * @param {any} any
    */
   writeAny (any) {
-    writeAny(this.restEncoder, any);
+    writeAny$1(this.restEncoder, any);
   }
 
   /**
    * @param {Uint8Array} buf
    */
   writeBuf (buf) {
-    writeVarUint8Array(this.restEncoder, buf);
+    writeVarUint8Array$1(this.restEncoder, buf);
   }
 
   /**
@@ -33963,7 +34757,7 @@ class UpdateEncoderV2 extends DSEncoderV2 {
    * @param {any} embed
    */
   writeJSON (embed) {
-    writeAny(this.restEncoder, embed);
+    writeAny$1(this.restEncoder, embed);
   }
 
   /**
@@ -34026,12 +34820,12 @@ class UpdateEncoderV2 extends DSEncoderV2 {
  */
 const writeStructs = (encoder, structs, client, clock) => {
   // write first id
-  clock = max(clock, structs[0].id.clock); // make sure the first id exists
+  clock = max$1(clock, structs[0].id.clock); // make sure the first id exists
   const startNewStructs = findIndexSS(structs, clock);
   // write # encoded structs
-  writeVarUint(encoder.restEncoder, structs.length - startNewStructs);
+  writeVarUint$1(encoder.restEncoder, structs.length - startNewStructs);
   encoder.writeClient(client);
-  writeVarUint(encoder.restEncoder, clock);
+  writeVarUint$1(encoder.restEncoder, clock);
   const firstStruct = structs[startNewStructs];
   // write first struct with an offset
   firstStruct.write(encoder, clock - firstStruct.id.clock);
@@ -34063,7 +34857,7 @@ const writeClientsStructs = (encoder, store, _sm) => {
     }
   });
   // write # states that were updated
-  writeVarUint(encoder.restEncoder, sm.size);
+  writeVarUint$1(encoder.restEncoder, sm.size);
   // Write items with higher client ids first
   // This heavily improves the conflict algorithm.
   from(sm.entries()).sort((a, b) => b[0] - a[0]).forEach(([client, clock]) => {
@@ -34083,7 +34877,7 @@ const readClientsStructRefs = (decoder, doc) => {
   /**
    * @type {Map<number, { i: number, refs: Array<Item | GC> }>}
    */
-  const clientRefs = create$5();
+  const clientRefs = create$8();
   const numOfStateUpdates = readVarUint(decoder.restDecoder);
   for (let i = 0; i < numOfStateUpdates; i++) {
     const numberOfStructs = readVarUint(decoder.restDecoder);
@@ -34117,7 +34911,7 @@ const readClientsStructRefs = (decoder, doc) => {
            * Below a non-optimized version is shown that implements the basic algorithm with
            * a few comments
            */
-          const cantCopyParentInfo = (info & (BIT7 | BIT8)) === 0;
+          const cantCopyParentInfo = (info & (BIT7$1 | BIT8$1)) === 0;
           // If parent = null and neither left nor right are defined, then we know that `parent` is child of `y`
           // and we read the next string as parentYKey.
           // It indicates how we store/retrieve parent from `y.share`
@@ -34125,9 +34919,9 @@ const readClientsStructRefs = (decoder, doc) => {
           const struct = new Item(
             createID(client, clock),
             null, // left
-            (info & BIT8) === BIT8 ? decoder.readLeftID() : null, // origin
+            (info & BIT8$1) === BIT8$1 ? decoder.readLeftID() : null, // origin
             null, // right
-            (info & BIT7) === BIT7 ? decoder.readRightID() : null, // right origin
+            (info & BIT7$1) === BIT7$1 ? decoder.readRightID() : null, // right origin
             cantCopyParentInfo ? (decoder.readParentInfo() ? doc.get(decoder.readString()) : decoder.readLeftID()) : null, // parent
             cantCopyParentInfo && (info & BIT6) === BIT6 ? decoder.readString() : null, // parentSub
             readItemContent(decoder, info) // item content
@@ -34270,7 +35064,7 @@ const integrateStructs = (transaction, store, clientsStructRefs) => {
   // iterate over all struct readers until we are done
   while (true) {
     if (stackHead.constructor !== Skip) {
-      const localClock = setIfUndefined(state, stackHead.id.client, () => getState(store, stackHead.id.client));
+      const localClock = setIfUndefined$1(state, stackHead.id.client, () => getState(store, stackHead.id.client));
       const offset = localClock - stackHead.id.clock;
       if (offset < 0) {
         // update from the same client is missing
@@ -34322,7 +35116,7 @@ const integrateStructs = (transaction, store, clientsStructRefs) => {
     writeClientsStructs(encoder, restStructs, new Map());
     // write empty deleteset
     // writeDeleteSet(encoder, new DeleteSet())
-    writeVarUint(encoder.restEncoder, 0); // => no need for an extra function call, just write 0 deletes
+    writeVarUint$1(encoder.restEncoder, 0); // => no need for an extra function call, just write 0 deletes
     return { missing: missingSV, update: encoder.toUint8Array() }
   }
   return null
@@ -34564,7 +35358,7 @@ const findRootTypeKey = type => {
       return key
     }
   }
-  throw unexpectedCase()
+  throw unexpectedCase$1()
 };
 
 /**
@@ -34802,7 +35596,7 @@ const createAbsolutePositionFromRelativePosition = (rpos, doc, followUndoneDelet
         return null
       }
     } else {
-      throw unexpectedCase()
+      throw unexpectedCase$1()
     }
     if (assoc >= 0) {
       index = type._length;
@@ -34860,7 +35654,7 @@ const isVisible$1 = (item, snapshot) => snapshot === undefined
  * @param {Snapshot} snapshot
  */
 const splitSnapshotAffectedStructs = (transaction, snapshot) => {
-  const meta = setIfUndefined(transaction.meta, splitSnapshotAffectedStructs, create$4);
+  const meta = setIfUndefined$1(transaction.meta, splitSnapshotAffectedStructs, create$7);
   const store = transaction.doc.store;
   // check if we already split for this snapshot
   if (!meta.has(snapshot)) {
@@ -34942,7 +35736,7 @@ const addStruct = (store, struct) => {
   } else {
     const lastStruct = structs[structs.length - 1];
     if (lastStruct.id.clock + lastStruct.length !== struct.id.clock) {
-      throw unexpectedCase()
+      throw unexpectedCase$1()
     }
   }
   structs.push(struct);
@@ -34968,7 +35762,7 @@ const findIndexSS = (structs, clock) => {
   // @todo does it even make sense to pivot the search?
   // If a good split misses, it might actually increase the time to find the correct item.
   // Currently, the only advantage is that search with pivoting might find the item on the first try.
-  let midindex = floor((clock / (midclock + mid.length - 1)) * right); // pivoting the search
+  let midindex = floor$1((clock / (midclock + mid.length - 1)) * right); // pivoting the search
   while (left <= right) {
     mid = structs[midindex];
     midclock = mid.id.clock;
@@ -34980,11 +35774,11 @@ const findIndexSS = (structs, clock) => {
     } else {
       right = midindex - 1;
     }
-    midindex = floor((left + right) / 2);
+    midindex = floor$1((left + right) / 2);
   }
   // Always check state before looking for a struct in StructStore
   // Therefore the case of not finding a struct is unexpected
-  throw unexpectedCase()
+  throw unexpectedCase$1()
 };
 
 /**
@@ -35237,7 +36031,7 @@ const writeUpdateMessageFromTransaction = (encoder, transaction) => {
 const addChangedTypeToTransaction = (transaction, type, parentSub) => {
   const item = type._item;
   if (item === null || (item.id.clock < (transaction.beforeState.get(item.id.client) || 0) && !item.deleted)) {
-    setIfUndefined(transaction.changed, type, create$4).add(parentSub);
+    setIfUndefined$1(transaction.changed, type, create$7).add(parentSub);
   }
 };
 
@@ -35309,7 +36103,7 @@ const tryMergeDeleteSet = (ds, store) => {
     for (let di = deleteItems.length - 1; di >= 0; di--) {
       const deleteItem = deleteItems[di];
       // start with merging the item next to the last deleted item
-      const mostRightIndexToCheck = min(structs.length - 1, 1 + findIndexSS(structs, deleteItem.clock + deleteItem.len - 1));
+      const mostRightIndexToCheck = min$1(structs.length - 1, 1 + findIndexSS(structs, deleteItem.clock + deleteItem.len - 1));
       for (
         let si = mostRightIndexToCheck, struct = structs[si];
         si > 0 && struct.id.clock >= deleteItem.clock;
@@ -35400,7 +36194,7 @@ const cleanupTransactions = (transactionCleanups, i) => {
         if (beforeClock !== clock) {
           const structs = /** @type {Array<GC|Item>} */ (store.clients.get(client));
           // we iterate from right to left so we can safely remove entries
-          const firstChangePos = max(findIndexSS(structs, beforeClock), 1);
+          const firstChangePos = max$1(findIndexSS(structs, beforeClock), 1);
           for (let i = structs.length - 1; i >= firstChangePos;) {
             i -= 1 + tryToMergeWithLefts(structs, i);
           }
@@ -35665,7 +36459,7 @@ class UndoManager extends ObservableV2 {
     deleteFilter = () => true,
     trackedOrigins = new Set([null]),
     ignoreRemoteMapChanges = false,
-    doc = /** @type {Doc} */ (isArray(typeScope) ? typeScope[0].doc : typeScope instanceof Doc ? typeScope : typeScope.doc)
+    doc = /** @type {Doc} */ (isArray$1(typeScope) ? typeScope[0].doc : typeScope instanceof Doc ? typeScope : typeScope.doc)
   } = {}) {
     super();
     /**
@@ -35775,7 +36569,7 @@ class UndoManager extends ObservableV2 {
    */
   addToScope (ytypes) {
     const tmpSet = new Set(this.scope);
-    ytypes = isArray(ytypes) ? ytypes : [ytypes];
+    ytypes = isArray$1(ytypes) ? ytypes : [ytypes];
     ytypes.forEach(ytype => {
       if (!tmpSet.has(ytype)) {
         tmpSet.add(ytype);
@@ -35913,7 +36707,7 @@ function * lazyStructReaderGenerator (decoder) {
         yield new Skip(createID(client, clock), len);
         clock += len;
       } else if ((BITS5 & info) !== 0) {
-        const cantCopyParentInfo = (info & (BIT7 | BIT8)) === 0;
+        const cantCopyParentInfo = (info & (BIT7$1 | BIT8$1)) === 0;
         // If parent = null and neither left nor right are defined, then we know that `parent` is child of `y`
         // and we read the next string as parentYKey.
         // It indicates how we store/retrieve parent from `y.share`
@@ -35921,9 +36715,9 @@ function * lazyStructReaderGenerator (decoder) {
         const struct = new Item(
           createID(client, clock),
           null, // left
-          (info & BIT8) === BIT8 ? decoder.readLeftID() : null, // origin
+          (info & BIT8$1) === BIT8$1 ? decoder.readLeftID() : null, // origin
           null, // right
-          (info & BIT7) === BIT7 ? decoder.readRightID() : null, // right origin
+          (info & BIT7$1) === BIT7$1 ? decoder.readRightID() : null, // right origin
           // @ts-ignore Force writing a string here.
           cantCopyParentInfo ? (decoder.readParentInfo() ? decoder.readString() : decoder.readLeftID()) : null, // parent
           cantCopyParentInfo && (info & BIT6) === BIT6 ? decoder.readString() : null, // parentSub
@@ -36164,8 +36958,8 @@ const mergeUpdatesV2 = (updates, YDecoder = UpdateDecoderV2, YEncoder = UpdateEn
  */
 const flushLazyStructWriter = lazyWriter => {
   if (lazyWriter.written > 0) {
-    lazyWriter.clientStructs.push({ written: lazyWriter.written, restEncoder: toUint8Array(lazyWriter.encoder.restEncoder) });
-    lazyWriter.encoder.restEncoder = createEncoder();
+    lazyWriter.clientStructs.push({ written: lazyWriter.written, restEncoder: toUint8Array$1(lazyWriter.encoder.restEncoder) });
+    lazyWriter.encoder.restEncoder = createEncoder$1();
     lazyWriter.written = 0;
   }
 };
@@ -36185,7 +36979,7 @@ const writeStructToLazyStructWriter = (lazyWriter, struct, offset) => {
     // write next client
     lazyWriter.encoder.writeClient(struct.id.client);
     // write startClock
-    writeVarUint(lazyWriter.encoder.restEncoder, struct.id.clock + offset);
+    writeVarUint$1(lazyWriter.encoder.restEncoder, struct.id.clock + offset);
   }
   struct.write(lazyWriter.encoder, offset);
   lazyWriter.written++;
@@ -36209,7 +37003,7 @@ const finishLazyStructWriting = (lazyWriter) => {
    */
 
   // write # states that were updated - i.e. the clients
-  writeVarUint(restEncoder, lazyWriter.clientStructs.length);
+  writeVarUint$1(restEncoder, lazyWriter.clientStructs.length);
 
   for (let i = 0; i < lazyWriter.clientStructs.length; i++) {
     const partStructs = lazyWriter.clientStructs[i];
@@ -36217,9 +37011,9 @@ const finishLazyStructWriting = (lazyWriter) => {
      * Works similarly to `writeStructs`
      */
     // write # encoded structs
-    writeVarUint(restEncoder, partStructs.written);
+    writeVarUint$1(restEncoder, partStructs.written);
     // write the rest of the fragment
-    writeUint8Array(restEncoder, partStructs.restEncoder);
+    writeUint8Array$1(restEncoder, partStructs.restEncoder);
   }
 };
 
@@ -36303,7 +37097,7 @@ class YEvent {
   get keys () {
     if (this._keys === null) {
       if (this.transaction.doc._transactionCleanups.length === 0) {
-        throw create$3(errorComputeChanges)
+        throw create$6(errorComputeChanges)
       }
       const keys = new Map();
       const target = this.target;
@@ -36389,11 +37183,11 @@ class YEvent {
     let changes = this._changes;
     if (changes === null) {
       if (this.transaction.doc._transactionCleanups.length === 0) {
-        throw create$3(errorComputeChanges)
+        throw create$6(errorComputeChanges)
       }
       const target = this.target;
-      const added = create$4();
-      const deleted = create$4();
+      const added = create$7();
+      const deleted = create$7();
       /**
        * @type {Array<{insert:Array<any>}|{delete:number}|{retain:number}>}
        */
@@ -36576,7 +37370,7 @@ const findMarker = (yarray, index) => {
   if (yarray._start === null || index === 0 || yarray._searchMarker === null) {
     return null
   }
-  const marker = yarray._searchMarker.length === 0 ? null : yarray._searchMarker.reduce((a, b) => abs(index - a.index) < abs(index - b.index) ? a : b);
+  const marker = yarray._searchMarker.length === 0 ? null : yarray._searchMarker.reduce((a, b) => abs$1(index - a.index) < abs$1(index - b.index) ? a : b);
   let p = yarray._start;
   let pindex = 0;
   if (marker !== null) {
@@ -36635,7 +37429,7 @@ const findMarker = (yarray, index) => {
   //   window.lengths.push(marker.index - pindex)
   //   console.log('distance', marker.index - pindex, 'len', p && p.parent.length)
   // }
-  if (marker !== null && abs(marker.index - pindex) < /** @type {YText|YArray<any>} */ (p.parent).length / maxSearchMarker) {
+  if (marker !== null && abs$1(marker.index - pindex) < /** @type {YText|YArray<any>} */ (p.parent).length / maxSearchMarker) {
     // adjust existing marker
     overwriteMarker(marker, p, pindex);
     return marker
@@ -36682,7 +37476,7 @@ const updateMarkerChanges = (searchMarker, index, len) => {
       p.marker = true;
     }
     if (index < m.index || (len > 0 && index === m.index)) { // a simple index <= m.index check would actually suffice
-      m.index = max(index, m.index + len);
+      m.index = max$1(index, m.index + len);
     }
   }
 };
@@ -36701,7 +37495,7 @@ const callTypeObservers = (type, transaction, event) => {
   const changedParentTypes = transaction.changedParentTypes;
   while (true) {
     // @ts-ignore
-    setIfUndefined(changedParentTypes, type, () => []).push(event);
+    setIfUndefined$1(changedParentTypes, type, () => []).push(event);
     if (type._item === null) {
       break
     }
@@ -36775,7 +37569,7 @@ class AbstractType {
    * @return {AbstractType<EventType>}
    */
   _copy () {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -36786,7 +37580,7 @@ class AbstractType {
    * @return {AbstractType<EventType>}
    */
   clone () {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -37128,7 +37922,7 @@ const typeListInsertGenericsAfter = (transaction, parent, referenceItem, content
   packJsonContent();
 };
 
-const lengthExceeded = () => create$3('Length exceeded!');
+const lengthExceeded = () => create$6('Length exceeded!');
 
 /**
  * @param {Transaction} transaction
@@ -37952,7 +38746,7 @@ class ItemTextListPosition {
    */
   forward () {
     if (this.right === null) {
-      unexpectedCase();
+      unexpectedCase$1();
     }
     switch (this.right.content.constructor) {
       case ContentFormat:
@@ -38261,7 +39055,7 @@ const cleanupFormattingGap = (transaction, start, curr, startAttributes, currAtt
   /**
    * @type {Map<string,ContentFormat>}
    */
-  const endFormats = create$5();
+  const endFormats = create$8();
   while (end && (!end.countable || end.deleted)) {
     if (!end.deleted && end.content.constructor === ContentFormat) {
       const cf = /** @type {ContentFormat} */ (end.content);
@@ -38346,7 +39140,7 @@ const cleanupYTextFormatting = type => {
   transact(/** @type {Doc} */ (type.doc), transaction => {
     let start = /** @type {Item} */ (type._start);
     let end = type._start;
-    let startAttributes = create$5();
+    let startAttributes = create$8();
     const currentAttributes = copy(startAttributes);
     while (end) {
       if (end.deleted === false) {
@@ -39513,7 +40307,7 @@ class YXmlFragment extends AbstractType {
       const pc = /** @type {Array<any>} */ (this._prelimContent);
       const index = ref === null ? 0 : pc.findIndex(el => el === ref) + 1;
       if (index === 0 && ref !== null) {
-        throw create$3('Reference item not found')
+        throw create$6('Reference item not found')
       }
       pc.splice(index, 0, ...content);
     }
@@ -40122,7 +40916,7 @@ class AbstractStruct {
    * @type {boolean}
    */
   get deleted () {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -40142,7 +40936,7 @@ class AbstractStruct {
    * @param {number} encodingRef
    */
   write (encoder, offset, encodingRef) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -40150,7 +40944,7 @@ class AbstractStruct {
    * @param {number} offset
    */
   integrate (transaction, offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 }
 
@@ -40250,7 +41044,7 @@ class ContentBinary {
    * @return {ContentBinary}
    */
   splice (offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -40462,7 +41256,7 @@ class ContentDoc {
    * @return {ContentDoc}
    */
   splice (offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -40571,7 +41365,7 @@ class ContentEmbed {
    * @return {ContentEmbed}
    */
   splice (offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -40665,7 +41459,7 @@ class ContentFormat {
    * @return {ContentFormat}
    */
   splice (_offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -40833,7 +41627,7 @@ const readContentJSON = decoder => {
   return new ContentJSON(cs)
 };
 
-const isDevMode = getVariable('node_env') === 'development';
+const isDevMode = getVariable$1('node_env') === 'development';
 
 class ContentAny {
   /**
@@ -41119,7 +41913,7 @@ class ContentType {
    * @return {ContentType}
    */
   splice (offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -41304,7 +42098,7 @@ const splitItem = (transaction, leftItem, diff) => {
  * @param {Array<StackItem>} stack
  * @param {ID} id
  */
-const isDeletedByUndoStack = (stack, id) => some(stack, /** @param {StackItem} s */ s => isDeleted(s.deletions, id));
+const isDeletedByUndoStack = (stack, id) => some$1(stack, /** @param {StackItem} s */ s => isDeleted(s.deletions, id));
 
 /**
  * Redoes the effect of this operation.
@@ -41813,7 +42607,7 @@ class Item extends AbstractStruct {
    */
   gc (store, parentGCd) {
     if (!this.deleted) {
-      throw unexpectedCase()
+      throw unexpectedCase$1()
     }
     this.content.gc(store);
     if (parentGCd) {
@@ -41837,8 +42631,8 @@ class Item extends AbstractStruct {
     const rightOrigin = this.rightOrigin;
     const parentSub = this.parentSub;
     const info = (this.content.getRef() & BITS5) |
-      (origin === null ? 0 : BIT8) | // origin is defined
-      (rightOrigin === null ? 0 : BIT7) | // right origin is defined
+      (origin === null ? 0 : BIT8$1) | // origin is defined
+      (rightOrigin === null ? 0 : BIT7$1) | // right origin is defined
       (parentSub === null ? 0 : BIT6); // parentSub is non-null
     encoder.writeInfo(info);
     if (origin !== null) {
@@ -41868,7 +42662,7 @@ class Item extends AbstractStruct {
         encoder.writeParentInfo(false); // write parent id
         encoder.writeLeftID(parent);
       } else {
-        unexpectedCase();
+        unexpectedCase$1();
       }
       if (parentSub !== null) {
         encoder.writeString(parentSub);
@@ -41890,7 +42684,7 @@ const readItemContent = (decoder, info) => contentRefs[info & BITS5](decoder);
  * @type {Array<function(UpdateDecoderV1 | UpdateDecoderV2):AbstractContent>}
  */
 const contentRefs = [
-  () => { unexpectedCase(); }, // GC is not ItemContent
+  () => { unexpectedCase$1(); }, // GC is not ItemContent
   readContentDeleted, // 1
   readContentJSON, // 2
   readContentBinary, // 3
@@ -41900,7 +42694,7 @@ const contentRefs = [
   readContentType, // 7
   readContentAny, // 8
   readContentDoc, // 9
-  () => { unexpectedCase(); } // 10 - Skip is not ItemContent
+  () => { unexpectedCase$1(); } // 10 - Skip is not ItemContent
 ];
 
 const structSkipRefNumber = 10;
@@ -41933,7 +42727,7 @@ class Skip extends AbstractStruct {
    */
   integrate (transaction, offset) {
     // skip structs cannot be integrated
-    unexpectedCase();
+    unexpectedCase$1();
   }
 
   /**
@@ -41943,7 +42737,7 @@ class Skip extends AbstractStruct {
   write (encoder, offset) {
     encoder.writeInfo(structSkipRefNumber);
     // write as VarUint because Skips can't make use of predictable length-encoding
-    writeVarUint(encoder.restEncoder, this.length - offset);
+    writeVarUint$1(encoder.restEncoder, this.length - offset);
   }
 
   /**
@@ -42032,6 +42826,275 @@ const createMutex = () => {
 };
 
 /**
+ * Common Math expressions.
+ *
+ * @module math
+ */
+
+const floor = Math.floor;
+const abs = Math.abs;
+
+/**
+ * @function
+ * @param {number} a
+ * @param {number} b
+ * @return {number} The smaller element of a and b
+ */
+const min = (a, b) => a < b ? a : b;
+
+/**
+ * @function
+ * @param {number} a
+ * @param {number} b
+ * @return {number} The bigger element of a and b
+ */
+const max = (a, b) => a > b ? a : b;
+
+/**
+ * Check whether n is negative, while considering the -0 edge case. While `-0 < 0` is false, this
+ * function returns true for -0,-1,,.. and returns false for 0,1,2,...
+ * @param {number} n
+ * @return {boolean} Wether n is negative. This function also distinguishes between -0 and +0
+ */
+const isNegativeZero = n => n !== 0 ? n < 0 : 1 / n < 0;
+
+const EqualityTraitSymbol = Symbol('Equality');
+
+/**
+ * @typedef {{ [EqualityTraitSymbol]:(other:EqualityTrait)=>boolean }} EqualityTrait
+ */
+
+/**
+ *
+ * Utility function to compare any two objects.
+ *
+ * Note that it is expected that the first parameter is more specific than the latter one.
+ *
+ * @example js
+ *     class X { [traits.EqualityTraitSymbol] (other) { return other === this }  }
+ *     class X2 { [traits.EqualityTraitSymbol] (other) { return other === this }, x2 () { return 2 }  }
+ *     // this is fine
+ *     traits.equals(new X2(), new X())
+ *     // this is not, because the left type is less specific than the right one
+ *     traits.equals(new X(), new X2())
+ *
+ * @template {EqualityTrait} T
+ * @param {NoInfer<T>} a
+ * @param {T} b
+ * @return {boolean}
+ */
+const equals = (a, b) => a === b || !!a?.[EqualityTraitSymbol]?.(b) || false;
+
+/**
+ * @param {any} o
+ * @return {o is { [k:string]:any }}
+ */
+const isObject$1 = o => typeof o === 'object';
+
+/**
+ * @param {Object<string,any>} obj
+ */
+const keys = Object.keys;
+
+/**
+ * @param {Object<string,any>} obj
+ * @return {number}
+ */
+const size = obj => keys(obj).length;
+
+/**
+ * @template {{ [key:string|number|symbol]: any }} T
+ * @param {T} obj
+ * @param {(v:T[keyof T],k:keyof T)=>boolean} f
+ * @return {boolean}
+ */
+const every$1 = (obj, f) => {
+  for (const key in obj) {
+    if (!f(obj[key], key)) {
+      return false
+    }
+  }
+  return true
+};
+
+/**
+ * Calls `Object.prototype.hasOwnProperty`.
+ *
+ * @param {any} obj
+ * @param {string|number|symbol} key
+ * @return {boolean}
+ */
+const hasProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+/**
+ * Utility module to work with sets.
+ *
+ * @module set
+ */
+
+const create$2 = () => new Set();
+
+/**
+ * Utility module to work with Arrays.
+ *
+ * @module array
+ */
+
+
+/**
+ * True iff condition holds on every element in the Array.
+ *
+ * @function
+ * @template {ArrayLike<any>} ARR
+ *
+ * @param {ARR} arr
+ * @param {ARR extends ArrayLike<infer S> ? ((value:S, index:number, arr:ARR) => boolean) : any} f
+ * @return {boolean}
+ */
+const every = (arr, f) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (!f(arr[i], i, arr)) {
+      return false
+    }
+  }
+  return true
+};
+
+/**
+ * True iff condition holds on some element in the Array.
+ *
+ * @function
+ * @template {ArrayLike<any>} ARR
+ *
+ * @param {ARR} arr
+ * @param {ARR extends ArrayLike<infer S> ? ((value:S, index:number, arr:ARR) => boolean) : never} f
+ * @return {boolean}
+ */
+const some = (arr, f) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (f(arr[i], i, arr)) {
+      return true
+    }
+  }
+  return false
+};
+
+/**
+ * @template T
+ * @param {number} len
+ * @param {function(number, Array<T>):T} f
+ * @return {Array<T>}
+ */
+const unfold = (len, f) => {
+  const array = new Array(len);
+  for (let i = 0; i < len; i++) {
+    array[i] = f(i, array);
+  }
+  return array
+};
+
+const isArray = Array.isArray;
+
+/**
+ * Common functions and function call helpers.
+ *
+ * @module function
+ */
+
+
+/* c8 ignore start */
+
+/**
+ * @param {any} a
+ * @param {any} b
+ * @return {boolean}
+ */
+const equalityDeep = (a, b) => {
+  if (a === b) {
+    return true
+  }
+  if (a == null || b == null || (a.constructor !== b.constructor && (a.constructor || Object) !== (b.constructor || Object))) {
+    return false
+  }
+  if (a[EqualityTraitSymbol] != null) {
+    return a[EqualityTraitSymbol](b)
+  }
+  switch (a.constructor) {
+    case ArrayBuffer:
+      a = new Uint8Array(a);
+      b = new Uint8Array(b);
+    // eslint-disable-next-line no-fallthrough
+    case Uint8Array: {
+      if (a.byteLength !== b.byteLength) {
+        return false
+      }
+      for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) {
+          return false
+        }
+      }
+      break
+    }
+    case Set: {
+      if (a.size !== b.size) {
+        return false
+      }
+      for (const value of a) {
+        if (!b.has(value)) {
+          return false
+        }
+      }
+      break
+    }
+    case Map: {
+      if (a.size !== b.size) {
+        return false
+      }
+      for (const key of a.keys()) {
+        if (!b.has(key) || !equalityDeep(a.get(key), b.get(key))) {
+          return false
+        }
+      }
+      break
+    }
+    case undefined:
+    case Object:
+      if (size(a) !== size(b)) {
+        return false
+      }
+      for (const key in a) {
+        if (!hasProperty(a, key) || !equalityDeep(a[key], b[key])) {
+          return false
+        }
+      }
+      break
+    case Array:
+      if (a.length !== b.length) {
+        return false
+      }
+      for (let i = 0; i < a.length; i++) {
+        if (!equalityDeep(a[i], b[i])) {
+          return false
+        }
+      }
+      break
+    default:
+      return false
+  }
+  return true
+};
+
+/**
+ * @template V
+ * @template {V} OPTS
+ *
+ * @param {V} value
+ * @param {Array<OPTS>} options
+ */
+// @ts-ignore
+const isOneOf = (value, options) => options.includes(value);
+
+/**
  * Efficient diffs.
  *
  * @module diff
@@ -42096,6 +43159,2106 @@ const simpleDiffString = (a, b) => {
  * @deprecated
  */
 const simpleDiff = simpleDiffString;
+
+/**
+ * Error helpers.
+ *
+ * @module error
+ */
+
+/**
+ * @param {string} s
+ * @return {Error}
+ */
+/* c8 ignore next */
+const create$1 = s => new Error(s);
+
+/**
+ * @throws {Error}
+ * @return {never}
+ */
+/* c8 ignore next 3 */
+const methodUnimplemented = () => {
+  throw create$1('Method unimplemented')
+};
+
+/**
+ * @throws {Error}
+ * @return {never}
+ */
+/* c8 ignore next 3 */
+const unexpectedCase = () => {
+  throw create$1('Unexpected case')
+};
+
+/* eslint-env browser */
+
+const BIT7 = 64;
+const BIT8 = 128;
+const BIT30 = 1 << 29;
+const BITS6 = 63;
+const BITS7 = 127;
+/**
+ * @type {number}
+ */
+const BITS31 = 0x7FFFFFFF;
+
+/* eslint-env browser */
+
+crypto.getRandomValues.bind(crypto);
+
+/**
+ * Isomorphic module for true random numbers / buffers / uuids.
+ *
+ * Attention: falls back to Math.random if the browser does not support crypto.
+ *
+ * @module random
+ */
+
+
+const rand = Math.random;
+
+/**
+ * @template T
+ * @param {Array<T>} arr
+ * @return {T}
+ */
+const oneOf$1 = arr => arr[floor(rand() * arr.length)];
+
+/**
+ * Utility module to work with key-value stores.
+ *
+ * @module map
+ */
+
+/**
+ * @template K
+ * @template V
+ * @typedef {Map<K,V>} GlobalMap
+ */
+
+/**
+ * Creates a new Map instance.
+ *
+ * @function
+ * @return {Map<any, any>}
+ *
+ * @function
+ */
+const create = () => new Map();
+
+/**
+ * Get map property. Create T if property is undefined and set T on map.
+ *
+ * ```js
+ * const listeners = map.setIfUndefined(events, 'eventName', set.create)
+ * listeners.add(listener)
+ * ```
+ *
+ * @function
+ * @template {Map<any, any>} MAP
+ * @template {MAP extends Map<any,infer V> ? function():V : unknown} CF
+ * @param {MAP} map
+ * @param {MAP extends Map<infer K,any> ? K : unknown} key
+ * @param {CF} createT
+ * @return {ReturnType<CF>}
+ */
+const setIfUndefined = (map, key, createT) => {
+  let set = map.get(key);
+  if (set === undefined) {
+    map.set(key, set = createT());
+  }
+  return set
+};
+
+/**
+ * Utility module to work with strings.
+ *
+ * @module string
+ */
+
+const fromCharCode = String.fromCharCode;
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+const toLowerCase = s => s.toLowerCase();
+
+const trimLeftRegex = /^\s*/g;
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+const trimLeft = s => s.replace(trimLeftRegex, '');
+
+const fromCamelCaseRegex = /([A-Z])/g;
+
+/**
+ * @param {string} s
+ * @param {string} separator
+ * @return {string}
+ */
+const fromCamelCase = (s, separator) => trimLeft(s.replace(fromCamelCaseRegex, match => `${separator}${toLowerCase(match)}`));
+
+/**
+ * @param {string} str
+ * @return {Uint8Array<ArrayBuffer>}
+ */
+const _encodeUtf8Polyfill = str => {
+  const encodedString = unescape(encodeURIComponent(str));
+  const len = encodedString.length;
+  const buf = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    buf[i] = /** @type {number} */ (encodedString.codePointAt(i));
+  }
+  return buf
+};
+
+/* c8 ignore next */
+const utf8TextEncoder = /** @type {TextEncoder} */ (typeof TextEncoder !== 'undefined' ? new TextEncoder() : null);
+
+/**
+ * @param {string} str
+ * @return {Uint8Array<ArrayBuffer>}
+ */
+const _encodeUtf8Native = str => utf8TextEncoder.encode(str);
+
+/**
+ * @param {string} str
+ * @return {Uint8Array}
+ */
+/* c8 ignore next */
+const encodeUtf8 = utf8TextEncoder ? _encodeUtf8Native : _encodeUtf8Polyfill;
+
+/* c8 ignore next */
+let utf8TextDecoder = typeof TextDecoder === 'undefined' ? null : new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
+
+/* c8 ignore start */
+if (utf8TextDecoder && utf8TextDecoder.decode(new Uint8Array()).length === 1) {
+  // Safari doesn't handle BOM correctly.
+  // This fixes a bug in Safari 13.0.5 where it produces a BOM the first time it is called.
+  // utf8TextDecoder.decode(new Uint8Array()).length === 1 on the first call and
+  // utf8TextDecoder.decode(new Uint8Array()).length === 1 on the second call
+  // Another issue is that from then on no BOM chars are recognized anymore
+  /* c8 ignore next */
+  utf8TextDecoder = null;
+}
+
+/**
+ * @param {string} source
+ * @param {number} n
+ */
+const repeat = (source, n) => unfold(n, () => source).join('');
+
+/**
+ * Often used conditions.
+ *
+ * @module conditions
+ */
+
+/**
+ * @template T
+ * @param {T|null|undefined} v
+ * @return {T|null}
+ */
+/* c8 ignore next */
+const undefinedToNull = v => v === undefined ? null : v;
+
+/* eslint-env browser */
+
+/**
+ * Isomorphic variable storage.
+ *
+ * Uses LocalStorage in the browser and falls back to in-memory storage.
+ *
+ * @module storage
+ */
+
+/* c8 ignore start */
+class VarStoragePolyfill {
+  constructor () {
+    this.map = new Map();
+  }
+
+  /**
+   * @param {string} key
+   * @param {any} newValue
+   */
+  setItem (key, newValue) {
+    this.map.set(key, newValue);
+  }
+
+  /**
+   * @param {string} key
+   */
+  getItem (key) {
+    return this.map.get(key)
+  }
+}
+/* c8 ignore stop */
+
+/**
+ * @type {any}
+ */
+let _localStorage = new VarStoragePolyfill();
+let usePolyfill = true;
+
+/* c8 ignore start */
+try {
+  // if the same-origin rule is violated, accessing localStorage might thrown an error
+  if (typeof localStorage !== 'undefined' && localStorage) {
+    _localStorage = localStorage;
+    usePolyfill = false;
+  }
+} catch (e) { }
+/* c8 ignore stop */
+
+/**
+ * This is basically localStorage in browser, or a polyfill in nodejs
+ */
+/* c8 ignore next */
+const varStorage = _localStorage;
+
+/**
+ * Isomorphic module to work access the environment (query params, env variables).
+ *
+ * @module environment
+ */
+
+
+/* c8 ignore next 2 */
+// @ts-ignore
+const isNode = typeof process !== 'undefined' && process.release && /node|io\.js/.test(process.release.name) && Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]';
+
+/* c8 ignore next */
+const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && !isNode;
+
+/**
+ * @type {Map<string,string>}
+ */
+let params;
+
+/* c8 ignore start */
+const computeParams = () => {
+  if (params === undefined) {
+    if (isNode) {
+      params = create();
+      const pargs = process.argv;
+      let currParamName = null;
+      for (let i = 0; i < pargs.length; i++) {
+        const parg = pargs[i];
+        if (parg[0] === '-') {
+          if (currParamName !== null) {
+            params.set(currParamName, '');
+          }
+          currParamName = parg;
+        } else {
+          if (currParamName !== null) {
+            params.set(currParamName, parg);
+            currParamName = null;
+          }
+        }
+      }
+      if (currParamName !== null) {
+        params.set(currParamName, '');
+      }
+      // in ReactNative for example this would not be true (unless connected to the Remote Debugger)
+    } else if (typeof location === 'object') {
+      params = create(); // eslint-disable-next-line no-undef
+      (location.search || '?').slice(1).split('&').forEach((kv) => {
+        if (kv.length !== 0) {
+          const [key, value] = kv.split('=');
+          params.set(`--${fromCamelCase(key, '-')}`, value);
+          params.set(`-${fromCamelCase(key, '-')}`, value);
+        }
+      });
+    } else {
+      params = create();
+    }
+  }
+  return params
+};
+/* c8 ignore stop */
+
+/**
+ * @param {string} name
+ * @return {boolean}
+ */
+/* c8 ignore next */
+const hasParam = (name) => computeParams().has(name);
+
+/**
+ * @param {string} name
+ * @return {string|null}
+ */
+/* c8 ignore next 4 */
+const getVariable = (name) =>
+  isNode
+    ? undefinedToNull(process.env[name.toUpperCase().replaceAll('-', '_')])
+    : undefinedToNull(varStorage.getItem(name));
+
+/**
+ * @param {string} name
+ * @return {boolean}
+ */
+/* c8 ignore next 2 */
+const hasConf = (name) =>
+  hasParam('--' + name) || getVariable(name) !== null;
+
+/* c8 ignore next */
+const production = hasConf('production');
+
+/* c8 ignore next 2 */
+const forceColor = isNode &&
+  isOneOf(process.env.FORCE_COLOR, ['true', '1', '2']);
+
+/* c8 ignore start */
+/**
+ * Color is enabled by default if the terminal supports it.
+ *
+ * Explicitly enable color using `--color` parameter
+ * Disable color using `--no-color` parameter or using `NO_COLOR=1` environment variable.
+ * `FORCE_COLOR=1` enables color and takes precedence over all.
+ */
+forceColor || (
+  !hasParam('--no-colors') && // @todo deprecate --no-colors
+  !hasConf('no-color') &&
+  (!isNode || process.stdout.isTTY) && (
+    !isNode ||
+    hasParam('--color') ||
+    getVariable('COLORTERM') !== null ||
+    (getVariable('TERM') || '').includes('color')
+  )
+);
+/* c8 ignore stop */
+
+/**
+ * Utility helpers for working with numbers.
+ *
+ * @module number
+ */
+
+
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER;
+const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER;
+
+/* c8 ignore next */
+const isInteger = Number.isInteger || (num => typeof num === 'number' && isFinite(num) && floor(num) === num);
+
+/**
+ * Efficient schema-less binary encoding with support for variable length encoding.
+ *
+ * Use [lib0/encoding] with [lib0/decoding]. Every encoding function has a corresponding decoding function.
+ *
+ * Encodes numbers in little-endian order (least to most significant byte order)
+ * and is compatible with Golang's binary encoding (https://golang.org/pkg/encoding/binary/)
+ * which is also used in Protocol Buffers.
+ *
+ * ```js
+ * // encoding step
+ * const encoder = encoding.createEncoder()
+ * encoding.writeVarUint(encoder, 256)
+ * encoding.writeVarString(encoder, 'Hello world!')
+ * const buf = encoding.toUint8Array(encoder)
+ * ```
+ *
+ * ```js
+ * // decoding step
+ * const decoder = decoding.createDecoder(buf)
+ * decoding.readVarUint(decoder) // => 256
+ * decoding.readVarString(decoder) // => 'Hello world!'
+ * decoding.hasContent(decoder) // => false - all data is read
+ * ```
+ *
+ * @module encoding
+ */
+
+
+/**
+ * A BinaryEncoder handles the encoding to an Uint8Array.
+ */
+class Encoder {
+  constructor () {
+    this.cpos = 0;
+    this.cbuf = new Uint8Array(100);
+    /**
+     * @type {Array<Uint8Array>}
+     */
+    this.bufs = [];
+  }
+}
+
+/**
+ * @function
+ * @return {Encoder}
+ */
+const createEncoder = () => new Encoder();
+
+/**
+ * @param {function(Encoder):void} f
+ */
+const encode = (f) => {
+  const encoder = createEncoder();
+  f(encoder);
+  return toUint8Array(encoder)
+};
+
+/**
+ * The current length of the encoded data.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @return {number}
+ */
+const length = encoder => {
+  let len = encoder.cpos;
+  for (let i = 0; i < encoder.bufs.length; i++) {
+    len += encoder.bufs[i].length;
+  }
+  return len
+};
+
+/**
+ * Transform to Uint8Array.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @return {Uint8Array<ArrayBuffer>} The created ArrayBuffer.
+ */
+const toUint8Array = encoder => {
+  const uint8arr = new Uint8Array(length(encoder));
+  let curPos = 0;
+  for (let i = 0; i < encoder.bufs.length; i++) {
+    const d = encoder.bufs[i];
+    uint8arr.set(d, curPos);
+    curPos += d.length;
+  }
+  uint8arr.set(new Uint8Array(encoder.cbuf.buffer, 0, encoder.cpos), curPos);
+  return uint8arr
+};
+
+/**
+ * Verify that it is possible to write `len` bytes wtihout checking. If
+ * necessary, a new Buffer with the required length is attached.
+ *
+ * @param {Encoder} encoder
+ * @param {number} len
+ */
+const verifyLen = (encoder, len) => {
+  const bufferLen = encoder.cbuf.length;
+  if (bufferLen - encoder.cpos < len) {
+    encoder.bufs.push(new Uint8Array(encoder.cbuf.buffer, 0, encoder.cpos));
+    encoder.cbuf = new Uint8Array(max(bufferLen, len) * 2);
+    encoder.cpos = 0;
+  }
+};
+
+/**
+ * Write one byte to the encoder.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {number} num The byte that is to be encoded.
+ */
+const write = (encoder, num) => {
+  const bufferLen = encoder.cbuf.length;
+  if (encoder.cpos === bufferLen) {
+    encoder.bufs.push(encoder.cbuf);
+    encoder.cbuf = new Uint8Array(bufferLen * 2);
+    encoder.cpos = 0;
+  }
+  encoder.cbuf[encoder.cpos++] = num;
+};
+
+/**
+ * Write a variable length unsigned integer. Max encodable integer is 2^53.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {number} num The number that is to be encoded.
+ */
+const writeVarUint = (encoder, num) => {
+  while (num > BITS7) {
+    write(encoder, BIT8 | (BITS7 & num));
+    num = floor(num / 128); // shift >>> 7
+  }
+  write(encoder, BITS7 & num);
+};
+
+/**
+ * Write a variable length integer.
+ *
+ * We use the 7th bit instead for signaling that this is a negative number.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {number} num The number that is to be encoded.
+ */
+const writeVarInt = (encoder, num) => {
+  const isNegative = isNegativeZero(num);
+  if (isNegative) {
+    num = -num;
+  }
+  //             |- whether to continue reading         |- whether is negative     |- number
+  write(encoder, (num > BITS6 ? BIT8 : 0) | (isNegative ? BIT7 : 0) | (BITS6 & num));
+  num = floor(num / 64); // shift >>> 6
+  // We don't need to consider the case of num === 0 so we can use a different
+  // pattern here than above.
+  while (num > 0) {
+    write(encoder, (num > BITS7 ? BIT8 : 0) | (BITS7 & num));
+    num = floor(num / 128); // shift >>> 7
+  }
+};
+
+/**
+ * A cache to store strings temporarily
+ */
+const _strBuffer = new Uint8Array(30000);
+const _maxStrBSize = _strBuffer.length / 3;
+
+/**
+ * Write a variable length string.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {String} str The string that is to be encoded.
+ */
+const _writeVarStringNative = (encoder, str) => {
+  if (str.length < _maxStrBSize) {
+    // We can encode the string into the existing buffer
+    /* c8 ignore next */
+    const written = utf8TextEncoder.encodeInto(str, _strBuffer).written || 0;
+    writeVarUint(encoder, written);
+    for (let i = 0; i < written; i++) {
+      write(encoder, _strBuffer[i]);
+    }
+  } else {
+    writeVarUint8Array(encoder, encodeUtf8(str));
+  }
+};
+
+/**
+ * Write a variable length string.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {String} str The string that is to be encoded.
+ */
+const _writeVarStringPolyfill = (encoder, str) => {
+  const encodedString = unescape(encodeURIComponent(str));
+  const len = encodedString.length;
+  writeVarUint(encoder, len);
+  for (let i = 0; i < len; i++) {
+    write(encoder, /** @type {number} */ (encodedString.codePointAt(i)));
+  }
+};
+
+/**
+ * Write a variable length string.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {String} str The string that is to be encoded.
+ */
+/* c8 ignore next */
+const writeVarString = (utf8TextEncoder && /** @type {any} */ (utf8TextEncoder).encodeInto) ? _writeVarStringNative : _writeVarStringPolyfill;
+
+/**
+ * Append fixed-length Uint8Array to the encoder.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {Uint8Array} uint8Array
+ */
+const writeUint8Array = (encoder, uint8Array) => {
+  const bufferLen = encoder.cbuf.length;
+  const cpos = encoder.cpos;
+  const leftCopyLen = min(bufferLen - cpos, uint8Array.length);
+  const rightCopyLen = uint8Array.length - leftCopyLen;
+  encoder.cbuf.set(uint8Array.subarray(0, leftCopyLen), cpos);
+  encoder.cpos += leftCopyLen;
+  if (rightCopyLen > 0) {
+    // Still something to write, write right half..
+    // Append new buffer
+    encoder.bufs.push(encoder.cbuf);
+    // must have at least size of remaining buffer
+    encoder.cbuf = new Uint8Array(max(bufferLen * 2, rightCopyLen));
+    // copy array
+    encoder.cbuf.set(uint8Array.subarray(leftCopyLen));
+    encoder.cpos = rightCopyLen;
+  }
+};
+
+/**
+ * Append an Uint8Array to Encoder.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {Uint8Array} uint8Array
+ */
+const writeVarUint8Array = (encoder, uint8Array) => {
+  writeVarUint(encoder, uint8Array.byteLength);
+  writeUint8Array(encoder, uint8Array);
+};
+
+/**
+ * Create an DataView of the next `len` bytes. Use it to write data after
+ * calling this function.
+ *
+ * ```js
+ * // write float32 using DataView
+ * const dv = writeOnDataView(encoder, 4)
+ * dv.setFloat32(0, 1.1)
+ * // read float32 using DataView
+ * const dv = readFromDataView(encoder, 4)
+ * dv.getFloat32(0) // => 1.100000023841858 (leaving it to the reader to find out why this is the correct result)
+ * ```
+ *
+ * @param {Encoder} encoder
+ * @param {number} len
+ * @return {DataView}
+ */
+const writeOnDataView = (encoder, len) => {
+  verifyLen(encoder, len);
+  const dview = new DataView(encoder.cbuf.buffer, encoder.cpos, len);
+  encoder.cpos += len;
+  return dview
+};
+
+/**
+ * @param {Encoder} encoder
+ * @param {number} num
+ */
+const writeFloat32 = (encoder, num) => writeOnDataView(encoder, 4).setFloat32(0, num, false);
+
+/**
+ * @param {Encoder} encoder
+ * @param {number} num
+ */
+const writeFloat64 = (encoder, num) => writeOnDataView(encoder, 8).setFloat64(0, num, false);
+
+/**
+ * @param {Encoder} encoder
+ * @param {bigint} num
+ */
+const writeBigInt64 = (encoder, num) => /** @type {any} */ (writeOnDataView(encoder, 8)).setBigInt64(0, num, false);
+
+const floatTestBed = new DataView(new ArrayBuffer(4));
+/**
+ * Check if a number can be encoded as a 32 bit float.
+ *
+ * @param {number} num
+ * @return {boolean}
+ */
+const isFloat32 = num => {
+  floatTestBed.setFloat32(0, num);
+  return floatTestBed.getFloat32(0) === num
+};
+
+/**
+ * @typedef {Array<AnyEncodable>} AnyEncodableArray
+ */
+
+/**
+ * @typedef {undefined|null|number|bigint|boolean|string|{[k:string]:AnyEncodable}|AnyEncodableArray|Uint8Array} AnyEncodable
+ */
+
+/**
+ * Encode data with efficient binary format.
+ *
+ * Differences to JSON:
+ * • Transforms data to a binary format (not to a string)
+ * • Encodes undefined, NaN, and ArrayBuffer (these can't be represented in JSON)
+ * • Numbers are efficiently encoded either as a variable length integer, as a
+ *   32 bit float, as a 64 bit float, or as a 64 bit bigint.
+ *
+ * Encoding table:
+ *
+ * | Data Type           | Prefix   | Encoding Method    | Comment |
+ * | ------------------- | -------- | ------------------ | ------- |
+ * | undefined           | 127      |                    | Functions, symbol, and everything that cannot be identified is encoded as undefined |
+ * | null                | 126      |                    | |
+ * | integer             | 125      | writeVarInt        | Only encodes 32 bit signed integers |
+ * | float32             | 124      | writeFloat32       | |
+ * | float64             | 123      | writeFloat64       | |
+ * | bigint              | 122      | writeBigInt64      | |
+ * | boolean (false)     | 121      |                    | True and false are different data types so we save the following byte |
+ * | boolean (true)      | 120      |                    | - 0b01111000 so the last bit determines whether true or false |
+ * | string              | 119      | writeVarString     | |
+ * | object<string,any>  | 118      | custom             | Writes {length} then {length} key-value pairs |
+ * | array<any>          | 117      | custom             | Writes {length} then {length} json values |
+ * | Uint8Array          | 116      | writeVarUint8Array | We use Uint8Array for any kind of binary data |
+ *
+ * Reasons for the decreasing prefix:
+ * We need the first bit for extendability (later we may want to encode the
+ * prefix with writeVarUint). The remaining 7 bits are divided as follows:
+ * [0-30]   the beginning of the data range is used for custom purposes
+ *          (defined by the function that uses this library)
+ * [31-127] the end of the data range is used for data encoding by
+ *          lib0/encoding.js
+ *
+ * @param {Encoder} encoder
+ * @param {AnyEncodable} data
+ */
+const writeAny = (encoder, data) => {
+  switch (typeof data) {
+    case 'string':
+      // TYPE 119: STRING
+      write(encoder, 119);
+      writeVarString(encoder, data);
+      break
+    case 'number':
+      if (isInteger(data) && abs(data) <= BITS31) {
+        // TYPE 125: INTEGER
+        write(encoder, 125);
+        writeVarInt(encoder, data);
+      } else if (isFloat32(data)) {
+        // TYPE 124: FLOAT32
+        write(encoder, 124);
+        writeFloat32(encoder, data);
+      } else {
+        // TYPE 123: FLOAT64
+        write(encoder, 123);
+        writeFloat64(encoder, data);
+      }
+      break
+    case 'bigint':
+      // TYPE 122: BigInt
+      write(encoder, 122);
+      writeBigInt64(encoder, data);
+      break
+    case 'object':
+      if (data === null) {
+        // TYPE 126: null
+        write(encoder, 126);
+      } else if (isArray(data)) {
+        // TYPE 117: Array
+        write(encoder, 117);
+        writeVarUint(encoder, data.length);
+        for (let i = 0; i < data.length; i++) {
+          writeAny(encoder, data[i]);
+        }
+      } else if (data instanceof Uint8Array) {
+        // TYPE 116: ArrayBuffer
+        write(encoder, 116);
+        writeVarUint8Array(encoder, data);
+      } else {
+        // TYPE 118: Object
+        write(encoder, 118);
+        const keys = Object.keys(data);
+        writeVarUint(encoder, keys.length);
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          writeVarString(encoder, key);
+          writeAny(encoder, data[key]);
+        }
+      }
+      break
+    case 'boolean':
+      // TYPE 120/121: boolean (true/false)
+      write(encoder, data ? 120 : 121);
+      break
+    default:
+      // TYPE 127: undefined
+      write(encoder, 127);
+  }
+};
+
+/**
+ * Utility functions to work with buffers (Uint8Array).
+ *
+ * @module buffer
+ */
+
+
+/* c8 ignore start */
+/**
+ * @param {Uint8Array} bytes
+ * @return {string}
+ */
+const toBase64Browser = bytes => {
+  let s = '';
+  for (let i = 0; i < bytes.byteLength; i++) {
+    s += fromCharCode(bytes[i]);
+  }
+  // eslint-disable-next-line no-undef
+  return btoa(s)
+};
+/* c8 ignore stop */
+
+/**
+ * @param {Uint8Array} bytes
+ * @return {string}
+ */
+const toBase64Node = bytes => Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString('base64');
+
+/* c8 ignore next */
+const toBase64 = isBrowser ? toBase64Browser : toBase64Node;
+
+/**
+ * Encode anything as a UInt8Array. It's a pun on typescripts's `any` type.
+ * See encoding.writeAny for more information.
+ *
+ * @param {any} data
+ * @return {Uint8Array}
+ */
+const encodeAny = data =>
+  encode(encoder => writeAny(encoder, data));
+
+/**
+ * Fast Pseudo Random Number Generators.
+ *
+ * Given a seed a PRNG generates a sequence of numbers that cannot be reasonably predicted.
+ * Two PRNGs must generate the same random sequence of numbers if  given the same seed.
+ *
+ * @module prng
+ */
+
+
+/**
+ * Generates a single random bool.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @return {Boolean} A random boolean
+ */
+const bool = gen => (gen.next() >= 0.5);
+
+/**
+ * Generates a random integer with 53 bit resolution.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @param {Number} min The lower bound of the allowed return values (inclusive).
+ * @param {Number} max The upper bound of the allowed return values (inclusive).
+ * @return {Number} A random integer on [min, max]
+ */
+const int53 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
+
+/**
+ * Generates a random integer with 32 bit resolution.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @param {Number} min The lower bound of the allowed return values (inclusive).
+ * @param {Number} max The upper bound of the allowed return values (inclusive).
+ * @return {Number} A random integer on [min, max]
+ */
+const int32 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
+
+/**
+ * @deprecated
+ * Optimized version of prng.int32. It has the same precision as prng.int32, but should be preferred when
+ * openaring on smaller ranges.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @param {Number} min The lower bound of the allowed return values (inclusive).
+ * @param {Number} max The upper bound of the allowed return values (inclusive). The max inclusive number is `binary.BITS31-1`
+ * @return {Number} A random integer on [min, max]
+ */
+const int31 = (gen, min, max) => int32(gen, min, max);
+
+/**
+ * @param {PRNG} gen
+ * @return {string} A single letter (a-z)
+ */
+const letter = gen => fromCharCode(int31(gen, 97, 122));
+
+/**
+ * @param {PRNG} gen
+ * @param {number} [minLen=0]
+ * @param {number} [maxLen=20]
+ * @return {string} A random word (0-20 characters) without spaces consisting of letters (a-z)
+ */
+const word = (gen, minLen = 0, maxLen = 20) => {
+  const len = int31(gen, minLen, maxLen);
+  let str = '';
+  for (let i = 0; i < len; i++) {
+    str += letter(gen);
+  }
+  return str
+};
+
+/**
+ * Returns one element of a given array.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @param {Array<T>} array Non empty Array of possible values.
+ * @return {T} One of the values of the supplied Array.
+ * @template T
+ */
+const oneOf = (gen, array) => array[int31(gen, 0, array.length - 1)];
+/* c8 ignore stop */
+
+/**
+ * @experimental WIP
+ *
+ * Simple & efficient schemas for your data.
+ */
+
+
+/**
+ * @typedef {string|number|bigint|boolean|null|undefined|symbol} Primitive
+ */
+
+/**
+ * @typedef {{ [k:string|number|symbol]: any }} AnyObject
+ */
+
+/**
+ * @template T
+ * @typedef {T extends Schema<infer X> ? X : T} Unwrap
+ */
+
+/**
+ * @template T
+ * @typedef {T extends Schema<infer X> ? X : T} TypeOf
+ */
+
+/**
+ * @template {readonly unknown[]} T
+ * @typedef {T extends readonly [Schema<infer First>, ...infer Rest] ? [First, ...UnwrapArray<Rest>] : [] } UnwrapArray
+ */
+
+/**
+ * @template T
+ * @typedef {T extends Schema<infer S> ? Schema<S> : never} CastToSchema
+ */
+
+/**
+ * @template {unknown[]} Arr
+ * @typedef {Arr extends [...unknown[], infer L] ? L : never} TupleLast
+ */
+
+/**
+ * @template {unknown[]} Arr
+ * @typedef {Arr extends [...infer Fs, unknown] ? Fs : never} TuplePop
+ */
+
+/**
+ * @template {readonly unknown[]} T
+ * @typedef {T extends []
+ *   ? {}
+ *   : T extends [infer First]
+ *   ? First
+ *   : T extends [infer First, ...infer Rest]
+ *   ? First & Intersect<Rest>
+ *   : never
+ * } Intersect
+ */
+
+const schemaSymbol = Symbol('0schema');
+
+class ValidationError {
+  constructor () {
+    /**
+     * Reverse errors
+     * @type {Array<{ path: string?, expected: string, has: string, message: string? }>}
+     */
+    this._rerrs = [];
+  }
+
+  /**
+   * @param {string?} path
+   * @param {string} expected
+   * @param {string} has
+   * @param {string?} message
+   */
+  extend (path, expected, has, message = null) {
+    this._rerrs.push({ path, expected, has, message });
+  }
+
+  toString () {
+    const s = [];
+    for (let i = this._rerrs.length - 1; i > 0; i--) {
+      const r = this._rerrs[i];
+      /* c8 ignore next */
+      s.push(repeat(' ', (this._rerrs.length - i) * 2) + `${r.path != null ? `[${r.path}] ` : ''}${r.has} doesn't match ${r.expected}. ${r.message}`);
+    }
+    return s.join('\n')
+  }
+}
+
+/**
+ * @param {any} a
+ * @param {any} b
+ * @return {boolean}
+ */
+const shapeExtends = (a, b) => {
+  if (a === b) return true
+  if (a == null || b == null || a.constructor !== b.constructor) return false
+  if (a[EqualityTraitSymbol]) return equals(a, b) // last resort: check equality (do this before array and obj check which don't implement the equality trait)
+  if (isArray(a)) {
+    return every(a, aitem =>
+      some(b, bitem => shapeExtends(aitem, bitem))
+    )
+  } else if (isObject$1(a)) {
+    return every$1(a, (aitem, akey) =>
+      shapeExtends(aitem, b[akey])
+    )
+  }
+  /* c8 ignore next */
+  return false
+};
+
+/**
+ * @template T
+ * @implements {equalityTraits.EqualityTrait}
+ */
+class Schema {
+  // this.shape must not be defined on Schema. Otherwise typecheck on metatypes (e.g. $$object) won't work as expected anymore
+  /**
+   * If true, the more things are added to the shape the more objects this schema will accept (e.g.
+   * union). By default, the more objects are added, the the fewer objects this schema will accept.
+   * @protected
+   */
+  static _dilutes = false
+
+  /**
+   * @param {Schema<any>} other
+   */
+  extends (other) {
+    let [a, b] = [/** @type {any} */(this).shape, /** @type {any} */ (other).shape];
+    if (/** @type {typeof Schema<any>} */ (this.constructor)._dilutes) [b, a] = [a, b];
+    return shapeExtends(a, b)
+  }
+
+  /**
+   * Overwrite this when necessary. By default, we only check the `shape` property which every shape
+   * should have.
+   * @param {Schema<any>} other
+   */
+  equals (other) {
+    // @ts-ignore
+    return this.constructor === other.constructor && equalityDeep(this.shape, other.shape)
+  }
+
+  [schemaSymbol] () { return true }
+
+  /**
+   * @param {object} other
+   */
+  [EqualityTraitSymbol] (other) {
+    return this.equals(/** @type {any} */ (other))
+  }
+
+  /**
+   * Use `schema.validate(obj)` with a typed parameter that is already of typed to be an instance of
+   * Schema. Validate will check the structure of the parameter and return true iff the instance
+   * really is an instance of Schema.
+   *
+   * @param {T} o
+   * @return {boolean}
+   */
+  validate (o) {
+    return this.check(o)
+  }
+
+  /* c8 ignore start */
+  /**
+   * Similar to validate, but this method accepts untyped parameters.
+   *
+   * @param {any} _o
+   * @param {ValidationError} [_err]
+   * @return {_o is T}
+   */
+  check (_o, _err) {
+    methodUnimplemented();
+  }
+  /* c8 ignore stop */
+
+  /**
+   * @type {Schema<T?>}
+   */
+  get nullable () {
+    // @ts-ignore
+    return $union(this, $null)
+  }
+
+  /**
+   * @type {$Optional<Schema<T>>}
+   */
+  get optional () {
+    return new $Optional(/** @type {Schema<T>} */ (this))
+  }
+
+  /**
+   * Cast a variable to a specific type. Returns the casted value, or throws an exception otherwise.
+   * Use this if you know that the type is of a specific type and you just want to convince the type
+   * system.
+   *
+   * **Do not rely on these error messages!**
+   * Performs an assertion check only if not in a production environment.
+   *
+   * @template OO
+   * @param {OO} o
+   * @return {Extract<OO, T> extends never ? T : (OO extends Array<never> ? T : Extract<OO,T>)}
+   */
+  cast (o) {
+    assert(o, this);
+    return /** @type {any} */ (o)
+  }
+
+  /**
+   * EXPECTO PATRONUM!! 🪄
+   * This function protects against type errors. Though it may not work in the real world.
+   *
+   * "After all this time?"
+   * "Always." - Snape, talking about type safety
+   *
+   * Ensures that a variable is a a specific type. Returns the value, or throws an exception if the assertion check failed.
+   * Use this if you know that the type is of a specific type and you just want to convince the type
+   * system.
+   *
+   * Can be useful when defining lambdas: `s.lambda(s.$number, s.$void).expect((n) => n + 1)`
+   *
+   * **Do not rely on these error messages!**
+   * Performs an assertion check if not in a production environment.
+   *
+   * @param {T} o
+   * @return {o extends T ? T : never}
+   */
+  expect (o) {
+    assert(o, this);
+    return o
+  }
+}
+
+/**
+ * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} Constr
+ * @typedef {Constr extends ((...args:any[]) => infer T) ? T : (Constr extends (new (...args:any[]) => any) ? InstanceType<Constr> : never)} Instance
+ */
+
+/**
+ * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} C
+ * @extends {Schema<Instance<C>>}
+ */
+class $ConstructedBy extends Schema {
+  /**
+   * @param {C} c
+   * @param {((o:Instance<C>)=>boolean)|null} check
+   */
+  constructor (c, check) {
+    super();
+    this.shape = c;
+    this._c = check;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is C extends ((...args:any[]) => infer T) ? T : (C extends (new (...args:any[]) => any) ? InstanceType<C> : never)} o
+   */
+  check (o, err = undefined) {
+    const c = o?.constructor === this.shape && (this._c == null || this._c(o));
+    /* c8 ignore next */
+    !c && err?.extend(null, this.shape.name, o?.constructor.name, o?.constructor !== this.shape ? 'Constructor match failed' : 'Check failed');
+    return c
+  }
+}
+
+/**
+ * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} C
+ * @param {C} c
+ * @param {((o:Instance<C>) => boolean)|null} check
+ * @return {CastToSchema<$ConstructedBy<C>>}
+ */
+const $constructedBy = (c, check = null) => new $ConstructedBy(c, check);
+$constructedBy($ConstructedBy);
+
+/**
+ * Check custom properties on any object. You may want to overwrite the generated Schema<any>.
+ *
+ * @extends {Schema<any>}
+ */
+class $Custom extends Schema {
+  /**
+   * @param {(o:any) => boolean} check
+   */
+  constructor (check) {
+    super();
+    /**
+     * @type {(o:any) => boolean}
+     */
+    this.shape = check;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is any}
+   */
+  check (o, err) {
+    const c = this.shape(o);
+    /* c8 ignore next */
+    !c && err?.extend(null, 'custom prop', o?.constructor.name, 'failed to check custom prop');
+    return c
+  }
+}
+
+/**
+ * @param {(o:any) => boolean} check
+ * @return {Schema<any>}
+ */
+const $custom = (check) => new $Custom(check);
+$constructedBy($Custom);
+
+/**
+ * @template {Primitive} T
+ * @extends {Schema<T>}
+ */
+class $Literal extends Schema {
+  /**
+   * @param {Array<T>} literals
+   */
+  constructor (literals) {
+    super();
+    this.shape = literals;
+  }
+
+  /**
+   *
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is T}
+   */
+  check (o, err) {
+    const c = this.shape.some(a => a === o);
+    /* c8 ignore next */
+    !c && err?.extend(null, this.shape.join(' | '), o.toString());
+    return c
+  }
+}
+
+/**
+ * @template {Primitive[]} T
+ * @param {T} literals
+ * @return {CastToSchema<$Literal<T[number]>>}
+ */
+const $literal = (...literals) => new $Literal(literals);
+const $$literal = $constructedBy($Literal);
+
+/**
+ * @template {Array<string|Schema<string|number>>} Ts
+ * @typedef {Ts extends [] ? `` : (Ts extends [infer T] ? (Unwrap<T> extends (string|number) ? Unwrap<T> : never) : (Ts extends [infer T1, ...infer Rest] ? `${Unwrap<T1> extends (string|number) ? Unwrap<T1> : never}${Rest extends Array<string|Schema<string|number>> ? CastStringTemplateArgsToTemplate<Rest> : never}` : never))} CastStringTemplateArgsToTemplate
+ */
+
+/**
+ * @param {string} str
+ * @return {string}
+ */
+const _regexEscape = /** @type {any} */ (RegExp).escape || /** @type {(str:string) => string} */ (str =>
+  str.replace(/[().|&,$^[\]]/g, s => '\\' + s)
+);
+
+/**
+ * @param {string|Schema<any>} s
+ * @return {string[]}
+ */
+const _schemaStringTemplateToRegex = s => {
+  if ($string.check(s)) {
+    return [_regexEscape(s)]
+  }
+  if ($$literal.check(s)) {
+    return /** @type {Array<string|number>} */ (s.shape).map(v => v + '')
+  }
+  if ($$number.check(s)) {
+    return ['[+-]?\\d+.?\\d*']
+  }
+  if ($$string.check(s)) {
+    return ['.*']
+  }
+  if ($$union.check(s)) {
+    return s.shape.map(_schemaStringTemplateToRegex).flat(1)
+  }
+  /* c8 ignore next 2 */
+  // unexpected schema structure (only supports unions and string in literal types)
+  unexpectedCase();
+};
+
+/**
+ * @template {Array<string|Schema<string|number>>} T
+ * @extends {Schema<CastStringTemplateArgsToTemplate<T>>}
+ */
+class $StringTemplate extends Schema {
+  /**
+   * @param {T} shape
+   */
+  constructor (shape) {
+    super();
+    this.shape = shape;
+    this._r = new RegExp('^' + shape.map(_schemaStringTemplateToRegex).map(opts => `(${opts.join('|')})`).join('') + '$');
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is CastStringTemplateArgsToTemplate<T>}
+   */
+  check (o, err) {
+    const c = this._r.exec(o) != null;
+    /* c8 ignore next */
+    !c && err?.extend(null, this._r.toString(), o.toString(), 'String doesn\'t match string template.');
+    return c
+  }
+}
+$constructedBy($StringTemplate);
+
+const isOptionalSymbol = Symbol('optional');
+/**
+ * @template {Schema<any>} S
+ * @extends Schema<Unwrap<S>|undefined>
+ */
+class $Optional extends Schema {
+  /**
+   * @param {S} shape
+   */
+  constructor (shape) {
+    super();
+    this.shape = shape;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is (Unwrap<S>|undefined)}
+   */
+  check (o, err) {
+    const c = o === undefined || this.shape.check(o);
+    /* c8 ignore next */
+    !c && err?.extend(null, 'undefined (optional)', '()');
+    return c
+  }
+
+  get [isOptionalSymbol] () { return true }
+}
+const $$optional = $constructedBy($Optional);
+
+/**
+ * @extends Schema<never>
+ */
+class $Never extends Schema {
+  /**
+   * @param {any} _o
+   * @param {ValidationError} [err]
+   * @return {_o is never}
+   */
+  check (_o, err) {
+    /* c8 ignore next */
+    err?.extend(null, 'never', typeof _o);
+    return false
+  }
+}
+$constructedBy($Never);
+
+/**
+ * @template {{ [key: string|symbol|number]: Schema<any> }} S
+ * @typedef {{ [Key in keyof S as S[Key] extends $Optional<Schema<any>> ? Key : never]?: S[Key] extends $Optional<Schema<infer Type>> ? Type : never } & { [Key in keyof S as S[Key] extends $Optional<Schema<any>> ? never : Key]: S[Key] extends Schema<infer Type> ? Type : never }} $ObjectToType
+ */
+
+/**
+ * @template {{[key:string|symbol|number]: Schema<any>}} S
+ * @extends {Schema<$ObjectToType<S>>}
+ */
+class $Object extends Schema {
+  /**
+   * @param {S} shape
+   * @param {boolean} partial
+   */
+  constructor (shape, partial = false) {
+    super();
+    /**
+     * @type {S}
+     */
+    this.shape = shape;
+    this._isPartial = partial;
+  }
+
+  static _dilutes = true
+
+  /**
+   * @type {Schema<Partial<$ObjectToType<S>>>}
+   */
+  get partial () {
+    return new $Object(this.shape, true)
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is $ObjectToType<S>}
+   */
+  check (o, err) {
+    if (o == null) {
+      /* c8 ignore next */
+      err?.extend(null, 'object', 'null');
+      return false
+    }
+    return every$1(this.shape, (vv, vk) => {
+      const c = (this._isPartial && !hasProperty(o, vk)) || vv.check(o[vk], err);
+      !c && err?.extend(vk.toString(), vv.toString(), typeof o[vk], 'Object property does not match');
+      return c
+    })
+  }
+}
+
+/**
+ * @template S
+ * @typedef {Schema<{ [Key in keyof S as S[Key] extends $Optional<Schema<any>> ? Key : never]?: S[Key] extends $Optional<Schema<infer Type>> ? Type : never } & { [Key in keyof S as S[Key] extends $Optional<Schema<any>> ? never : Key]: S[Key] extends Schema<infer Type> ? Type : never }>} _ObjectDefToSchema
+ */
+
+// I used an explicit type annotation instead of $ObjectToType, so that the user doesn't see the
+// weird type definitions when inspecting type definions.
+/**
+ * @template {{ [key:string|symbol|number]: Schema<any> }} S
+ * @param {S} def
+ * @return {_ObjectDefToSchema<S> extends Schema<infer S> ? Schema<{ [K in keyof S]: S[K] }> : never}
+ */
+const $object = def => /** @type {any} */ (new $Object(def));
+const $$object = $constructedBy($Object);
+/**
+ * @type {Schema<{[key:string]: any}>}
+ */
+const $objectAny = $custom(o => o != null && (o.constructor === Object || o.constructor == null));
+
+/**
+ * @template {Schema<string|number|symbol>} Keys
+ * @template {Schema<any>} Values
+ * @extends {Schema<{ [key in Unwrap<Keys>]: Unwrap<Values> }>}
+ */
+class $Record extends Schema {
+  /**
+   * @param {Keys} keys
+   * @param {Values} values
+   */
+  constructor (keys, values) {
+    super();
+    this.shape = {
+      keys, values
+    };
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is { [key in Unwrap<Keys>]: Unwrap<Values> }}
+   */
+  check (o, err) {
+    return o != null && every$1(o, (vv, vk) => {
+      const ck = this.shape.keys.check(vk, err);
+      /* c8 ignore next */
+      !ck && err?.extend(vk + '', 'Record', typeof o, ck ? 'Key doesn\'t match schema' : 'Value doesn\'t match value');
+      return ck && this.shape.values.check(vv, err)
+    })
+  }
+}
+
+/**
+ * @template {Schema<string|number|symbol>} Keys
+ * @template {Schema<any>} Values
+ * @param {Keys} keys
+ * @param {Values} values
+ * @return {CastToSchema<$Record<Keys,Values>>}
+ */
+const $record = (keys, values) => new $Record(keys, values);
+const $$record = $constructedBy($Record);
+
+/**
+ * @template {Schema<any>[]} S
+ * @extends {Schema<{ [Key in keyof S]: S[Key] extends Schema<infer Type> ? Type : never }>}
+ */
+class $Tuple extends Schema {
+  /**
+   * @param {S} shape
+   */
+  constructor (shape) {
+    super();
+    this.shape = shape;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is { [K in keyof S]: S[K] extends Schema<infer Type> ? Type : never }}
+   */
+  check (o, err) {
+    return o != null && every$1(this.shape, (vv, vk) => {
+      const c = /** @type {Schema<any>} */ (vv).check(o[vk], err);
+      /* c8 ignore next */
+      !c && err?.extend(vk.toString(), 'Tuple', typeof vv);
+      return c
+    })
+  }
+}
+
+/**
+ * @template {Array<Schema<any>>} T
+ * @param {T} def
+ * @return {CastToSchema<$Tuple<T>>}
+ */
+const $tuple = (...def) => new $Tuple(def);
+$constructedBy($Tuple);
+
+/**
+ * @template {Schema<any>} S
+ * @extends {Schema<Array<S extends Schema<infer T> ? T : never>>}
+ */
+class $Array extends Schema {
+  /**
+   * @param {Array<S>} v
+   */
+  constructor (v) {
+    super();
+    /**
+     * @type {Schema<S extends Schema<infer T> ? T : never>}
+     */
+    this.shape = v.length === 1 ? v[0] : new $Union(v);
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is Array<S extends Schema<infer T> ? T : never>} o
+   */
+  check (o, err) {
+    const c = isArray(o) && every(o, oi => this.shape.check(oi));
+    /* c8 ignore next */
+    !c && err?.extend(null, 'Array', '');
+    return c
+  }
+}
+
+/**
+ * @template {Array<Schema<any>>} T
+ * @param {T} def
+ * @return {Schema<Array<T extends Array<Schema<infer S>> ? S : never>>}
+ */
+const $array = (...def) => new $Array(def);
+const $$array = $constructedBy($Array);
+/**
+ * @type {Schema<Array<any>>}
+ */
+const $arrayAny = $custom(o => isArray(o));
+
+/**
+ * @template T
+ * @extends {Schema<T>}
+ */
+class $InstanceOf extends Schema {
+  /**
+   * @param {new (...args:any) => T} constructor
+   * @param {((o:T) => boolean)|null} check
+   */
+  constructor (constructor, check) {
+    super();
+    this.shape = constructor;
+    this._c = check;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is T}
+   */
+  check (o, err) {
+    const c = o instanceof this.shape && (this._c == null || this._c(o));
+    /* c8 ignore next */
+    !c && err?.extend(null, this.shape.name, o?.constructor.name);
+    return c
+  }
+}
+
+/**
+ * @template T
+ * @param {new (...args:any) => T} c
+ * @param {((o:T) => boolean)|null} check
+ * @return {Schema<T>}
+ */
+const $instanceOf = (c, check = null) => new $InstanceOf(c, check);
+$constructedBy($InstanceOf);
+
+const $$schema = $instanceOf(Schema);
+
+/**
+ * @template {Schema<any>[]} Args
+ * @typedef {(...args:UnwrapArray<TuplePop<Args>>)=>Unwrap<TupleLast<Args>>} _LArgsToLambdaDef
+ */
+
+/**
+ * @template {Array<Schema<any>>} Args
+ * @extends {Schema<_LArgsToLambdaDef<Args>>}
+ */
+class $Lambda extends Schema {
+  /**
+   * @param {Args} args
+   */
+  constructor (args) {
+    super();
+    this.len = args.length - 1;
+    this.args = $tuple(...args.slice(-1));
+    this.res = args[this.len];
+  }
+
+  /**
+   * @param {any} f
+   * @param {ValidationError} err
+   * @return {f is _LArgsToLambdaDef<Args>}
+   */
+  check (f, err) {
+    const c = f.constructor === Function && f.length <= this.len;
+    /* c8 ignore next */
+    !c && err?.extend(null, 'function', typeof f);
+    return c
+  }
+}
+const $$lambda = $constructedBy($Lambda);
+
+/**
+ * @type {Schema<Function>}
+ */
+const $function = $custom(o => typeof o === 'function');
+
+/**
+ * @template {Array<Schema<any>>} T
+ * @extends {Schema<Intersect<UnwrapArray<T>>>}
+ */
+class $Intersection extends Schema {
+  /**
+   * @param {T} v
+   */
+  constructor (v) {
+    super();
+    /**
+     * @type {T}
+     */
+    this.shape = v;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is Intersect<UnwrapArray<T>>}
+   */
+  check (o, err) {
+    // @ts-ignore
+    const c = every(this.shape, check => check.check(o, err));
+    /* c8 ignore next */
+    !c && err?.extend(null, 'Intersectinon', typeof o);
+    return c
+  }
+}
+$constructedBy($Intersection, o => o.shape.length > 0); // Intersection with length=0 is considered "any"
+
+/**
+ * @template S
+ * @extends {Schema<S>}
+ */
+class $Union extends Schema {
+  static _dilutes = true
+
+  /**
+   * @param {Array<Schema<S>>} v
+   */
+  constructor (v) {
+    super();
+    this.shape = v;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is S}
+   */
+  check (o, err) {
+    const c = some(this.shape, (vv) => vv.check(o, err));
+    err?.extend(null, 'Union', typeof o);
+    return c
+  }
+}
+
+/**
+ * @template {Array<any>} T
+ * @param {T} schemas
+ * @return {CastToSchema<$Union<Unwrap<ReadSchema<T>>>>}
+ */
+const $union = (...schemas) => schemas.findIndex($s => $$union.check($s)) >= 0
+  ? $union(...schemas.map($s => $$1($s)).map($s => $$union.check($s) ? $s.shape : [$s]).flat(1))
+  : (schemas.length === 1
+      ? schemas[0]
+      : new $Union(schemas));
+const $$union = /** @type {Schema<$Union<any>>} */ ($constructedBy($Union));
+
+const _t = () => true;
+/**
+ * @type {Schema<any>}
+ */
+const $any = $custom(_t);
+const $$any = /** @type {Schema<Schema<any>>} */ ($constructedBy($Custom, o => o.shape === _t));
+
+/**
+ * @type {Schema<bigint>}
+ */
+const $bigint = $custom(o => typeof o === 'bigint');
+const $$bigint = /** @type {Schema<Schema<BigInt>>} */ ($custom(o => o === $bigint));
+
+/**
+ * @type {Schema<symbol>}
+ */
+const $symbol = $custom(o => typeof o === 'symbol');
+/** @type {Schema<Schema<Symbol>>} */ ($custom(o => o === $symbol));
+
+/**
+ * @type {Schema<number>}
+ */
+const $number = $custom(o => typeof o === 'number');
+const $$number = /** @type {Schema<Schema<number>>} */ ($custom(o => o === $number));
+
+/**
+ * @type {Schema<string>}
+ */
+const $string = $custom(o => typeof o === 'string');
+const $$string = /** @type {Schema<Schema<string>>} */ ($custom(o => o === $string));
+
+/**
+ * @type {Schema<boolean>}
+ */
+const $boolean = $custom(o => typeof o === 'boolean');
+const $$boolean = /** @type {Schema<Schema<Boolean>>} */ ($custom(o => o === $boolean));
+
+/**
+ * @type {Schema<undefined>}
+ */
+const $undefined = $literal(undefined);
+/** @type {Schema<Schema<undefined>>} */ ($constructedBy($Literal, o => o.shape.length === 1 && o.shape[0] === undefined));
+
+/**
+ * @type {Schema<void>}
+ */
+$literal(undefined);
+
+const $null = $literal(null);
+const $$null = /** @type {Schema<Schema<null>>} */ ($constructedBy($Literal, o => o.shape.length === 1 && o.shape[0] === null));
+
+$constructedBy(Uint8Array);
+/** @type {Schema<Schema<Uint8Array>>} */ ($constructedBy($ConstructedBy, o => o.shape === Uint8Array));
+
+/**
+ * @type {Schema<Primitive>}
+ */
+const $primitive = $union($number, $string, $null, $undefined, $bigint, $boolean, $symbol);
+
+/**
+ * @typedef {JSON[]} JSONArray
+ */
+/**
+ * @typedef {Primitive|JSONArray|{ [key:string]:JSON }} JSON
+ */
+/**
+ * @type {Schema<null|number|string|boolean|JSON[]|{[key:string]:JSON}>}
+ */
+(() => {
+  const $jsonArr = /** @type {$Array<$any>} */ ($array($any));
+  const $jsonRecord = /** @type {$Record<$string,$any>} */ ($record($string, $any));
+  const $json = $union($number, $string, $null, $boolean, $jsonArr, $jsonRecord);
+  $jsonArr.shape = $json;
+  $jsonRecord.shape.values = $json;
+  return $json
+})();
+
+/**
+ * @template {any} IN
+ * @typedef {IN extends Schema<any> ? IN
+ *   : (IN extends string|number|boolean|null ? Schema<IN>
+ *     : (IN extends new (...args:any[])=>any ? Schema<InstanceType<IN>>
+ *       : (IN extends any[] ? Schema<{ [K in keyof IN]: Unwrap<ReadSchema<IN[K]>> }[number]>
+   *       : (IN extends object ? (_ObjectDefToSchema<{[K in keyof IN]:ReadSchema<IN[K]>}> extends Schema<infer S> ? Schema<{ [K in keyof S]: S[K] }> : never)
+   *         : never)
+ *         )
+ *       )
+ *     )
+ * } ReadSchemaOld
+ */
+
+/**
+ * @template {any} IN
+ * @typedef {[Extract<IN,Schema<any>>,Extract<IN,string|number|boolean|null>,Extract<IN,new (...args:any[])=>any>,Extract<IN,any[]>,Extract<Exclude<IN,Schema<any>|string|number|boolean|null|(new (...args:any[])=>any)|any[]>,object>] extends [infer Schemas, infer Primitives, infer Constructors, infer Arrs, infer Obj]
+ *   ? Schema<
+ *       (Schemas extends Schema<infer S> ? S : never)
+ *     | Primitives
+ *     | (Constructors extends new (...args:any[])=>any ? InstanceType<Constructors> : never)
+ *     | (Arrs extends any[] ? { [K in keyof Arrs]: Unwrap<ReadSchema<Arrs[K]>> }[number] : never)
+ *     | (Obj extends object ? Unwrap<(_ObjectDefToSchema<{[K in keyof Obj]:ReadSchema<Obj[K]>}> extends Schema<infer S> ? Schema<{ [K in keyof S]: S[K] }> : never)> : never)>
+ *   : never
+ * } ReadSchema
+ */
+
+/**
+ * @typedef {ReadSchema<{x:42}|{y:99}|Schema<string>|[1,2,{}]>} Q
+ */
+
+/**
+ * @template IN
+ * @param {IN} o
+ * @return {ReadSchema<IN>}
+ */
+const $$1 = o => {
+  if ($$schema.check(o)) {
+    return /** @type {any} */ (o)
+  } else if ($objectAny.check(o)) {
+    /**
+     * @type {any}
+     */
+    const o2 = {};
+    for (const k in o) {
+      o2[k] = $$1(o[k]);
+    }
+    return /** @type {any} */ ($object(o2))
+  } else if ($arrayAny.check(o)) {
+    return /** @type {any} */ ($union(...o.map($$1)))
+  } else if ($primitive.check(o)) {
+    return /** @type {any} */ ($literal(o))
+  } else if ($function.check(o)) {
+    return /** @type {any} */ ($constructedBy(/** @type {any} */ (o)))
+  }
+  /* c8 ignore next */
+  unexpectedCase();
+};
+
+/* c8 ignore start */
+/**
+ * Assert that a variable is of this specific type.
+ * The assertion check is only performed in non-production environments.
+ *
+ * @type {<T>(o:any,schema:Schema<T>) => asserts o is T}
+ */
+const assert = production
+  ? () => {}
+  : (o, schema) => {
+      const err = new ValidationError();
+      if (!schema.check(o, err)) {
+        throw create$1(`Expected value to be of type ${schema.constructor.name}.\n${err.toString()}`)
+      }
+    };
+/* c8 ignore end */
+
+/**
+ * @template In
+ * @template Out
+ * @typedef {{ if: Schema<In>, h: (o:In,state?:any)=>Out }} Pattern
+ */
+
+/**
+ * @template {Pattern<any,any>} P
+ * @template In
+ * @typedef {ReturnType<Extract<P,Pattern<In extends number ? number : (In extends string ? string : In),any>>['h']>} PatternMatchResult
+ */
+
+/**
+ * @todo move this to separate library
+ * @template {any} [State=undefined]
+ * @template {Pattern<any,any>} [Patterns=never]
+ */
+class PatternMatcher {
+  /**
+   * @param {Schema<State>} [$state]
+   */
+  constructor ($state) {
+    /**
+     * @type {Array<Patterns>}
+     */
+    this.patterns = [];
+    this.$state = $state;
+  }
+
+  /**
+   * @template P
+   * @template R
+   * @param {P} pattern
+   * @param {(o:NoInfer<Unwrap<ReadSchema<P>>>,s:State)=>R} handler
+   * @return {PatternMatcher<State,Patterns|Pattern<Unwrap<ReadSchema<P>>,R>>}
+   */
+  if (pattern, handler) {
+    // @ts-ignore
+    this.patterns.push({ if: $$1(pattern), h: handler });
+    // @ts-ignore
+    return this
+  }
+
+  /**
+   * @template R
+   * @param {(o:any,s:State)=>R} h
+   */
+  else (h) {
+    return this.if($any, h)
+  }
+
+  /**
+   * @return {State extends undefined
+   *   ? <In extends Unwrap<Patterns['if']>>(o:In,state?:undefined)=>PatternMatchResult<Patterns,In>
+   *   : <In extends Unwrap<Patterns['if']>>(o:In,state:State)=>PatternMatchResult<Patterns,In>}
+   */
+  done () {
+    // @ts-ignore
+    return /** @type {any} */ (o, s) => {
+      for (let i = 0; i < this.patterns.length; i++) {
+        const p = this.patterns[i];
+        if (p.if.check(o)) {
+          // @ts-ignore
+          return p.h(o, s)
+        }
+      }
+      throw create$1('Unhandled pattern')
+    }
+  }
+}
+
+/**
+ * @template [State=undefined]
+ * @param {State} [state]
+ * @return {PatternMatcher<State extends undefined ? undefined : Unwrap<ReadSchema<State>>>}
+ */
+const match = state => new PatternMatcher(/** @type {any} */ (state));
+
+/**
+ * Helper function to generate a (non-exhaustive) sample set from a gives schema.
+ *
+ * @type {<T>(o:T,gen:prng.PRNG)=>T}
+ */
+const _random = /** @type {any} */ (match(/** @type {Schema<prng.PRNG>} */ ($any))
+  .if($$number, (_o, gen) => int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER))
+  .if($$string, (_o, gen) => word(gen))
+  .if($$boolean, (_o, gen) => bool(gen))
+  .if($$bigint, (_o, gen) => BigInt(int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER)))
+  .if($$union, (o, gen) => random(gen, oneOf(gen, o.shape)))
+  .if($$object, (o, gen) => {
+    /**
+     * @type {any}
+     */
+    const res = {};
+    for (const k in o.shape) {
+      let prop = o.shape[k];
+      if ($$optional.check(prop)) {
+        if (bool(gen)) { continue }
+        prop = prop.shape;
+      }
+      res[k] = _random(prop, gen);
+    }
+    return res
+  })
+  .if($$array, (o, gen) => {
+    const arr = [];
+    const n = int32(gen, 0, 42);
+    for (let i = 0; i < n; i++) {
+      arr.push(random(gen, o.shape));
+    }
+    return arr
+  })
+  .if($$literal, (o, gen) => {
+    return oneOf(gen, o.shape)
+  })
+  .if($$null, (o, gen) => {
+    return null
+  })
+  .if($$lambda, (o, gen) => {
+    const res = random(gen, o.res);
+    return () => res
+  })
+  .if($$any, (o, gen) => random(gen, oneOf(gen, [
+    $number, $string, $null, $undefined, $bigint, $boolean,
+    $array($number),
+    $record($union('a', 'b', 'c'), $number)
+  ])))
+  .if($$record, (o, gen) => {
+    /**
+     * @type {any}
+     */
+    const res = {};
+    const keysN = int53(gen, 0, 3);
+    for (let i = 0; i < keysN; i++) {
+      const key = random(gen, o.shape.keys);
+      const val = random(gen, o.shape.values);
+      res[key] = val;
+    }
+    return res
+  })
+  .done());
+
+/**
+ * @template S
+ * @param {prng.PRNG} gen
+ * @param {S} schema
+ * @return {Unwrap<ReadSchema<S>>}
+ */
+const random = (gen, schema) => /** @type {any} */ (_random($$1(schema), gen));
+
+/* eslint-env browser */
+
+
+/* c8 ignore start */
+/**
+ * @type {Document}
+ */
+const doc = /** @type {Document} */ (typeof document !== 'undefined' ? document : {});
+
+/**
+ * @type {$.Schema<DocumentFragment>}
+ */
+$custom(el => el.nodeType === DOCUMENT_FRAGMENT_NODE);
+
+/** @type {DOMParser} */ (typeof DOMParser !== 'undefined' ? new DOMParser() : null);
+
+/**
+ * @type {$.Schema<Element>}
+ */
+$custom(el => el.nodeType === ELEMENT_NODE);
+
+/**
+ * @type {$.Schema<Text>}
+ */
+$custom(el => el.nodeType === TEXT_NODE);
+
+const ELEMENT_NODE = doc.ELEMENT_NODE;
+const TEXT_NODE = doc.TEXT_NODE;
+const DOCUMENT_NODE = doc.DOCUMENT_NODE;
+const DOCUMENT_FRAGMENT_NODE = doc.DOCUMENT_FRAGMENT_NODE;
+
+/**
+ * @type {$.Schema<Node>}
+ */
+$custom(el => el.nodeType === DOCUMENT_NODE);
+/* c8 ignore stop */
+
+/* global requestIdleCallback, requestAnimationFrame, cancelIdleCallback, cancelAnimationFrame */
+
+
+/**
+ * @typedef {Object} TimeoutObject
+ * @property {function} TimeoutObject.destroy
+ */
+
+/**
+ * @param {function(number):void} clearFunction
+ */
+const createTimeoutClass = clearFunction => class TT {
+  /**
+   * @param {number} timeoutId
+   */
+  constructor (timeoutId) {
+    this._ = timeoutId;
+  }
+
+  destroy () {
+    clearFunction(this._);
+  }
+};
+
+const Timeout = createTimeoutClass(clearTimeout);
+
+/**
+ * @param {number} timeout
+ * @param {function} callback
+ * @return {TimeoutObject}
+ */
+const timeout = (timeout, callback) => new Timeout(setTimeout(callback, timeout));
 
 /**
  * @module sha256
@@ -42358,7 +45521,7 @@ const getUserColor = (colorMapping, colors, user) => {
   // @todo do not hit the same color twice if possible
   if (!colorMapping.has(user)) {
     if (colorMapping.size < colors.length) {
-      const usedColors = create$4();
+      const usedColors = create$2();
       colorMapping.forEach((color) => usedColors.add(color));
       colors = colors.filter((color) => !usedColors.has(color));
     }
@@ -42532,7 +45695,28 @@ const restoreRelativeSelection = (tr, relSel, binding) => {
         relSel.anchor,
         binding.mapping
       );
-      tr.setSelection(createSafeNodeSelection(tr, anchor));
+      // anchor is null when the referenced node was deleted or moved out of
+      // binding.type by a remote update; resolving null would throw.
+      if (anchor !== null) {
+        tr.setSelection(createSafeNodeSelection(tr, anchor));
+      }
+    } else if (relSel.type === 'nodeRange') {
+      const anchor = relativePositionToAbsolutePosition(
+        binding.doc,
+        binding.type,
+        relSel.anchor,
+        binding.mapping
+      );
+      const head = relativePositionToAbsolutePosition(
+        binding.doc,
+        binding.type,
+        relSel.head,
+        binding.mapping
+      );
+      const selection = createSafeNodeRangeSelection(tr, anchor, head, relSel.depth);
+      if (selection !== null) {
+        tr.setSelection(selection);
+      }
     } else {
       const anchor = relativePositionToAbsolutePosition(
         binding.doc,
@@ -42571,22 +45755,64 @@ const createSafeNodeSelection = (tr, pos) => {
 };
 
 /**
+ * Safely reconstructs a NodeRangeSelection from resolved absolute positions.
+ *
+ * @param {import('prosemirror-state').Transaction} tr - The transaction whose document provides resolved positions.
+ * @param {number|null} anchor - Absolute document position marking the start (boundary) of the node range.
+ *        Use `relativePositionToAbsolutePosition` before calling this function.
+ * @param {number|null} head - Absolute document position marking the end (boundary) of the node range.
+ *        Use `relativePositionToAbsolutePosition` before calling this function.
+ * @param {number|undefined} depth - The nesting depth at which the range operates (e.g. 0 for
+ *        top-level blocks, 1 for blocks nested inside a wrapper). Passed through to
+ *        `Selection.fromJSON`; ignored by `@tiptap/extension-node-range` < v2.29 but
+ *        properly stored starting from that version.
+ * @returns {import('prosemirror-state').Selection|null} Reconstructed selection, or null if
+ *          anchor/head could not be resolved.
+ */
+const createSafeNodeRangeSelection = (tr, anchor, head, depth) => {
+  if (anchor === null || head === null) {
+    return null
+  }
+  const clampedAnchor = Math.min(Math.max(anchor, 0), tr.doc.content.size);
+  const clampedHead = Math.min(Math.max(head, 0), tr.doc.content.size);
+  try {
+    const selection = Selection$1.fromJSON(tr.doc, {
+      type: 'nodeRange',
+      anchor: clampedAnchor,
+      head: clampedHead,
+      depth
+    });
+    if (!selection.ranges.length) {
+      return TextSelection$1.near(tr.doc.resolve(clampedAnchor))
+    }
+    return selection
+  } catch (e) {
+    return TextSelection$1.near(tr.doc.resolve(clampedAnchor))
+  }
+};
+
+/**
  * @param {ProsemirrorBinding} pmbinding
  * @param {import('prosemirror-state').EditorState} state
  */
-const getRelativeSelection = (pmbinding, state) => ({
-  type: /** @type {any} */ (state.selection).jsonID,
-  anchor: absolutePositionToRelativePosition(
-    state.selection.anchor,
-    pmbinding.type,
-    pmbinding.mapping
-  ),
-  head: absolutePositionToRelativePosition(
-    state.selection.head,
-    pmbinding.type,
-    pmbinding.mapping
-  )
-});
+const getRelativeSelection = (pmbinding, state) => {
+  const type = /** @type {any} */ (state.selection).jsonID;
+  return {
+    type,
+    // `depth` is only meaningful for NodeRangeSelection; undefined for every other type.
+    depth: type === 'nodeRange' ? /** @type {any} */ (state.selection).depth : undefined,
+    anchor: absolutePositionToRelativePosition(
+      state.selection.anchor,
+      pmbinding.type,
+      pmbinding.mapping
+    ),
+    head: absolutePositionToRelativePosition(
+      state.selection.head,
+      pmbinding.type,
+      pmbinding.mapping
+    )
+  }
+};
 
 /**
  * Binding for prosemirror.
@@ -43252,7 +46478,7 @@ const equalYTextPText = (ytext, ptexts) => {
     delta.every(/** @type {(d:any,i:number) => boolean} */ (d, i) =>
       d.insert === /** @type {any} */ (ptexts[i]).text &&
       keys(d.attributes || {}).length === ptexts[i].marks.length &&
-      every(d.attributes, (attr, /** @type {string} */ yattrname) => {
+      every$1(d.attributes, (attr, /** @type {string} */ yattrname) => {
         const markname = yattr2markname(yattrname);
         const pmarks = ptexts[i].marks;
 
@@ -43718,7 +46944,11 @@ const relativePositionToAbsolutePosition = (y, documentType, relPos, mapping) =>
         if (t instanceof YXmlText) {
           pos += t._length;
         } else {
-          pos += /** @type {any} */ (mapping.get(t)).nodeSize;
+          const mapped = mapping.get(t);
+          if (mapped == null) {
+            return null
+          }
+          pos += /** @type {any} */ (mapped).nodeSize;
         }
       }
       n = /** @type {Y.Item} */ (n.right);
@@ -43742,7 +46972,11 @@ const relativePositionToAbsolutePosition = (y, documentType, relPos, mapping) =>
           if (contentType instanceof YXmlText) {
             pos += contentType._length;
           } else {
-            pos += /** @type {any} */ (mapping.get(contentType)).nodeSize;
+            const mapped = mapping.get(contentType);
+            if (mapped == null) {
+              return null
+            }
+            pos += /** @type {any} */ (mapped).nodeSize;
           }
         }
         n = n.right;
@@ -44121,17 +47355,18 @@ function getSelectionRanges($from, $to, depth, options = {}) {
 
 // src/helpers/NodeRangeBookmark.ts
 var NodeRangeBookmark = class _NodeRangeBookmark {
-  constructor(anchor, head) {
+  constructor(anchor, head, depth) {
     this.anchor = anchor;
     this.head = head;
+    this.depth = depth != null ? depth : 0;
   }
   map(mapping) {
-    return new _NodeRangeBookmark(mapping.map(this.anchor), mapping.map(this.head));
+    return new _NodeRangeBookmark(mapping.map(this.anchor), mapping.map(this.head), this.depth);
   }
   resolve(doc) {
     const $anchor = doc.resolve(this.anchor);
     const $head = doc.resolve(this.head);
-    return new NodeRangeSelection($anchor, $head);
+    return new NodeRangeSelection($anchor, $head, this.depth);
   }
 };
 
@@ -44164,13 +47399,14 @@ var NodeRangeSelection = class _NodeRangeSelection extends Selection$1 {
   map(doc, mapping) {
     const $anchor = doc.resolve(mapping.map(this.anchor));
     const $head = doc.resolve(mapping.map(this.head));
-    return new _NodeRangeSelection($anchor, $head);
+    return new _NodeRangeSelection($anchor, $head, this.depth);
   }
   toJSON() {
     return {
       type: "nodeRange",
       anchor: this.anchor,
-      head: this.head
+      head: this.head,
+      depth: this.depth
     };
   }
   get isForwards() {
@@ -44204,16 +47440,20 @@ var NodeRangeSelection = class _NodeRangeSelection extends Selection$1 {
     return new _NodeRangeSelection(this.$anchor, $to, this.depth);
   }
   static fromJSON(doc, json) {
-    return new _NodeRangeSelection(doc.resolve(json.anchor), doc.resolve(json.head));
+    return new _NodeRangeSelection(doc.resolve(json.anchor), doc.resolve(json.head), json.depth);
   }
   static create(doc, anchor, head, depth, bias = 1) {
     return new this(doc.resolve(anchor), doc.resolve(head), depth, bias);
   }
   getBookmark() {
-    return new NodeRangeBookmark(this.anchor, this.head);
+    return new NodeRangeBookmark(this.anchor, this.head, this.depth);
   }
 };
 NodeRangeSelection.prototype.visible = false;
+try {
+  Selection$1.jsonID("nodeRange", NodeRangeSelection);
+} catch {
+}
 
 // src/helpers/isNodeRangeSelection.ts
 function isNodeRangeSelection(value) {
@@ -44373,7 +47613,7 @@ Extension.create({
 function getCSSText(element, properties) {
   const style = getComputedStyle(element);
   if (properties) {
-    return properties.filter((p) => p.trim().length > 0).map((p) => `${p}:${style.getPropertyValue(p)};`).join("");
+    return properties.map((property) => property.trim()).filter((property) => property.length > 0).map((property) => `${property}:${style.getPropertyValue(property)};`).join("");
   }
   let value = "";
   for (let i = 0; i < style.length; i += 1) {
@@ -44777,6 +48017,15 @@ function removeNode(node) {
 function getDragImageOffset(direction, wrapperWidth) {
   return direction === "rtl" ? wrapperWidth : 0;
 }
+function shouldResetMargin(dragImageProperties) {
+  if (!dragImageProperties) {
+    return true;
+  }
+  return !dragImageProperties.some((property) => {
+    const p = property.trim().toLowerCase();
+    return p === "margin" || p.startsWith("margin-");
+  });
+}
 function getDragHandleRanges(event, editor, nestedOptions, dragContext) {
   const { doc } = editor.view.state;
   if ((nestedOptions == null ? void 0 : nestedOptions.enabled) && (dragContext == null ? void 0 : dragContext.node) && dragContext.pos >= 0) {
@@ -44827,22 +48076,26 @@ function dragHandler(event, editor, nestedOptions, dragContext, dragImagePropert
   const direction = getDraggedBlockDir(view, from);
   wrapper.setAttribute("dir", direction);
   const isNestedDrag = (nestedOptions == null ? void 0 : nestedOptions.enabled) && (dragContext == null ? void 0 : dragContext.node);
+  const isSingleBlock = ranges.length === 1;
   let slice;
   let selection;
-  if (isNestedDrag) {
+  if (isNestedDrag && isSingleBlock) {
     slice = view.state.doc.slice(from, to);
     selection = NodeSelection$1.create(view.state.doc, from);
   } else {
     selection = NodeRangeSelection.create(view.state.doc, from, to);
     slice = selection.content();
   }
+  const resetMargin = shouldResetMargin(dragImageProperties);
   ranges.forEach((range) => {
     const element = getDraggedBlockElement(view, range.$from.pos);
     if (!element) {
       return;
     }
     const clonedElement = cloneElement(element, dragImageProperties);
-    clonedElement.style.margin = "0";
+    if (resetMargin) {
+      clonedElement.style.margin = "0";
+    }
     wrapper.append(clonedElement);
   });
   wrapper.style.position = "absolute";
@@ -44868,6 +48121,51 @@ function dragHandler(event, editor, nestedOptions, dragContext, dragImagePropert
   view.dispatch(tr);
   document.addEventListener("drop", cleanupDragPreview);
   document.addEventListener("dragend", cleanupDragPreview);
+}
+function sumNodeSizes(parent, from, to) {
+  let size = 0;
+  for (let i = from; i < to; i += 1) {
+    size += parent.child(i).nodeSize;
+  }
+  return size;
+}
+function getActiveDragRange(selection) {
+  var _a;
+  if (!isNodeRangeSelection(selection)) {
+    return null;
+  }
+  return {
+    anchorPos: selection.from,
+    nodeCount: selection.ranges.length,
+    depth: (_a = selection.depth) != null ? _a : 0
+  };
+}
+function getDroppedBlockRange(doc, anchorPos, nodeCount, depth) {
+  const $pos = doc.resolve(anchorPos);
+  const parent = $pos.node(depth);
+  let index = $pos.index(depth);
+  if (index >= parent.childCount) {
+    index = Math.max(0, parent.childCount - nodeCount);
+  }
+  const count = Math.min(nodeCount, parent.childCount - index);
+  if (count <= 0) {
+    return null;
+  }
+  const blockStart = $pos.start(depth) + sumNodeSizes(parent, 0, index);
+  const blockEnd = blockStart + sumNodeSizes(parent, index, index + count);
+  return { anchor: blockStart, head: blockEnd, count };
+}
+function createDroppedNodeRangeSelection(doc, anchorPos, nodeCount, depth) {
+  try {
+    const range = getDroppedBlockRange(doc, anchorPos, nodeCount, depth);
+    if (!range) {
+      return null;
+    }
+    const selection = NodeRangeSelection.create(doc, range.anchor, range.head, depth);
+    return selection.ranges.length === nodeCount ? selection : null;
+  } catch {
+    return null;
+  }
 }
 
 // src/helpers/getOuterNode.ts
@@ -44944,7 +48242,10 @@ var DragHandlePlugin = ({
   let currentNodePos = -1;
   let currentNodeRelPos;
   let rafId = null;
+  let restoreRafId = null;
   let pendingMouseCoords = null;
+  let activeDragRange = null;
+  let pendingRestore = null;
   function hideHandle() {
     if (!element) {
       return;
@@ -44984,6 +48285,7 @@ var DragHandlePlugin = ({
       { node: currentNode, pos: currentNodePos },
       dragImageProperties
     );
+    activeDragRange = getActiveDragRange(editor.state.selection);
     if (element) {
       element.dataset.dragging = "true";
     }
@@ -44995,13 +48297,28 @@ var DragHandlePlugin = ({
   }
   function onDragEnd(e) {
     onElementDragEnd == null ? void 0 : onElementDragEnd(e);
+    activeDragRange = null;
     hideHandle();
     if (element) {
       element.style.pointerEvents = "auto";
       element.dataset.dragging = "false";
     }
   }
-  function onDrop() {
+  function restoreNodeRangeSelection({ nodeCount, depth, anchorPos }) {
+    const nodeRangeSelection = createDroppedNodeRangeSelection(
+      editor.state.doc,
+      anchorPos,
+      nodeCount,
+      depth
+    );
+    if (nodeRangeSelection) {
+      editor.view.dispatch(editor.state.tr.setSelection(nodeRangeSelection));
+    }
+  }
+  function onDrop(e) {
+    if (!e.target || !editor.view.dom.contains(e.target)) {
+      return;
+    }
     if (isFirefox()) {
       const editorElement = editor.view.dom;
       requestAnimationFrame(() => {
@@ -45011,18 +48328,39 @@ var DragHandlePlugin = ({
         }
       });
     }
+    if (!activeDragRange || editor.view.state.selection.empty) {
+      return;
+    }
+    pendingRestore = {
+      ...activeDragRange,
+      anchorPos: editor.state.selection.from
+    };
+    restoreRafId = requestAnimationFrame(() => {
+      restoreRafId = null;
+      if (pendingRestore) {
+        restoreNodeRangeSelection(pendingRestore);
+        pendingRestore = null;
+      }
+    });
+  }
+  function cleanup() {
+    element.removeEventListener("dragstart", onDragStart);
+    element.removeEventListener("dragend", onDragEnd);
+    document.removeEventListener("drop", onDrop);
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+      pendingMouseCoords = null;
+    }
+    if (restoreRafId) {
+      cancelAnimationFrame(restoreRafId);
+      restoreRafId = null;
+    }
   }
   wrapper.appendChild(element);
   return {
     unbind() {
-      element.removeEventListener("dragstart", onDragStart);
-      element.removeEventListener("dragend", onDragEnd);
-      document.removeEventListener("drop", onDrop);
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-        pendingMouseCoords = null;
-      }
+      cleanup();
     },
     plugin: new Plugin({
       key: typeof pluginKey === "string" ? new PluginKey(pluginKey) : pluginKey,
@@ -45031,6 +48369,14 @@ var DragHandlePlugin = ({
           return { locked: false };
         },
         apply(tr, value, _oldState, state) {
+          if (pendingRestore && tr.docChanged) {
+            const mappedResult = tr.mapping.mapResult(pendingRestore.anchorPos, 1);
+            if (mappedResult.deleted) {
+              pendingRestore = null;
+            } else {
+              pendingRestore.anchorPos = mappedResult.pos;
+            }
+          }
           const isLocked = tr.getMeta("lockDragHandle");
           const hideDragHandle = tr.getMeta("hideDragHandle");
           if (isLocked !== void 0) {
@@ -45110,14 +48456,7 @@ var DragHandlePlugin = ({
           },
           // TODO: Kills even on hot reload
           destroy() {
-            element.removeEventListener("dragstart", onDragStart);
-            element.removeEventListener("dragend", onDragEnd);
-            document.removeEventListener("drop", onDrop);
-            if (rafId) {
-              cancelAnimationFrame(rafId);
-              rafId = null;
-              pendingMouseCoords = null;
-            }
+            cleanup();
             if (element) {
               removeNode(wrapper);
             }
@@ -45353,7 +48692,7 @@ function findSuggestionMatch(config) {
   return null;
 }
 
-// src/suggestion.ts
+// src/helpers.ts
 function hasInsertedWhitespace(transaction) {
   if (!transaction.docChanged) {
     return false;
@@ -45367,6 +48706,563 @@ function hasInsertedWhitespace(transaction) {
     return /\s/.test(inserted);
   });
 }
+function getAnchorClientRect(editor) {
+  return () => {
+    const pos = editor.state.selection.$anchor.pos;
+    const coords = editor.view.coordsAtPos(pos);
+    const { top, right, bottom, left } = coords;
+    try {
+      return new DOMRect(left, top, right - left, bottom - top);
+    } catch {
+      return null;
+    }
+  };
+}
+function clientRectFor(editor, view, decorationNode, pluginKey) {
+  if (!decorationNode) {
+    return getAnchorClientRect(editor);
+  }
+  return () => {
+    const state = pluginKey.getState(editor.state);
+    const decorationId = state == null ? void 0 : state.decorationId;
+    const currentDecorationNode = view.dom.querySelector(`[data-decoration-id="${decorationId}"]`);
+    return (currentDecorationNode == null ? void 0 : currentDecorationNode.getBoundingClientRect()) || null;
+  };
+}
+function shouldKeepDismissed({
+  match,
+  dismissedRange,
+  state,
+  transaction,
+  editor,
+  shouldResetDismissed,
+  effectiveAllowSpaces
+}) {
+  if (shouldResetDismissed == null ? void 0 : shouldResetDismissed({
+    editor,
+    state,
+    range: dismissedRange,
+    match,
+    transaction,
+    allowSpaces: effectiveAllowSpaces
+  })) {
+    return false;
+  }
+  if (effectiveAllowSpaces) {
+    return match.range.from === dismissedRange.from;
+  }
+  return match.range.from === dismissedRange.from && !hasInsertedWhitespace(transaction);
+}
+function dispatchExit({
+  view,
+  pluginKeyRef
+}) {
+  const tr = view.state.tr.setMeta(pluginKeyRef, { exit: true });
+  view.dispatch(tr);
+}
+function createSuggestionProps({
+  pluginKey,
+  decorationTag,
+  decorationClass,
+  decorationContent,
+  decorationEmptyClass,
+  renderer,
+  dispatchExit: dispatchExit2
+}) {
+  return {
+    /**
+     * Call the keydown hook if suggestion is active.
+     */
+    handleKeyDown(view, event) {
+      var _a, _b;
+      const state = pluginKey.getState(view.state);
+      if (!state.active) {
+        return false;
+      }
+      if (event.key === "Escape" || event.key === "Esc") {
+        (_a = renderer == null ? void 0 : renderer.onKeyDown) == null ? void 0 : _a.call(renderer, { view, event, range: state.range });
+        dispatchExit2(view);
+        return true;
+      }
+      const handled = ((_b = renderer == null ? void 0 : renderer.onKeyDown) == null ? void 0 : _b.call(renderer, { view, event, range: state.range })) || false;
+      return handled;
+    },
+    /**
+     * Setup decorator on the currently active suggestion.
+     */
+    decorations(state) {
+      const pluginState = pluginKey.getState(state);
+      const { active, range, decorationId, query } = pluginState;
+      if (!active) {
+        return null;
+      }
+      const isEmpty = !(query == null ? void 0 : query.length);
+      const classNames = [decorationClass];
+      if (isEmpty) {
+        classNames.push(decorationEmptyClass);
+      }
+      return DecorationSet.create(state.doc, [
+        Decoration.inline(range.from, range.to, {
+          nodeName: decorationTag,
+          class: classNames.join(" "),
+          "data-decoration-id": decorationId || void 0,
+          "data-decoration-content": decorationContent
+        })
+      ]);
+    }
+  };
+}
+
+// src/plugin/state.ts
+function createSuggestionState({
+  editor,
+  char,
+  effectiveAllowSpaces,
+  allowToIncludeChar,
+  allowedPrefixes,
+  startOfLine,
+  findSuggestionMatch: findSuggestionMatch2,
+  allow,
+  shouldShow,
+  shouldKeepDismissed: shouldKeepDismissed2,
+  pluginKey
+}) {
+  return {
+    /**
+     * Initialize the plugin's internal state.
+     */
+    init() {
+      return {
+        active: false,
+        range: { from: 0, to: 0 },
+        query: null,
+        text: null,
+        composing: false,
+        dismissedRange: null
+      };
+    },
+    /**
+     * Apply changes to the plugin state from a view transaction.
+     */
+    apply(transaction, prev, _oldState, state) {
+      const { isEditable } = editor;
+      const { composing } = editor.view;
+      const { selection } = transaction;
+      const { empty, from } = selection;
+      const next = { ...prev };
+      const meta = transaction.getMeta(pluginKey);
+      if (meta && meta.exit) {
+        next.active = false;
+        next.decorationId = null;
+        next.range = { from: 0, to: 0 };
+        next.query = null;
+        next.text = null;
+        next.dismissedRange = prev.active ? { ...prev.range } : prev.dismissedRange;
+        return next;
+      }
+      next.composing = composing;
+      if (transaction.docChanged && next.dismissedRange !== null) {
+        next.dismissedRange = {
+          from: transaction.mapping.map(next.dismissedRange.from),
+          to: transaction.mapping.map(next.dismissedRange.to)
+        };
+      }
+      if (isEditable && (empty || editor.view.composing)) {
+        if ((from < prev.range.from || from > prev.range.to) && !composing && !prev.composing) {
+          next.active = false;
+        }
+        const match = findSuggestionMatch2({
+          char,
+          allowSpaces: effectiveAllowSpaces,
+          allowToIncludeChar,
+          allowedPrefixes,
+          startOfLine,
+          $position: selection.$from
+        });
+        const decorationId = `id_${Math.floor(Math.random() * 4294967295)}`;
+        if (match && allow({
+          editor,
+          state,
+          range: match.range,
+          isActive: prev.active
+        }) && (!shouldShow || shouldShow({
+          editor,
+          range: match.range,
+          query: match.query,
+          text: match.text,
+          transaction
+        }))) {
+          if (next.dismissedRange !== null && !shouldKeepDismissed2({
+            match,
+            dismissedRange: next.dismissedRange,
+            state,
+            transaction
+          })) {
+            next.dismissedRange = null;
+          }
+          if (next.dismissedRange === null) {
+            next.active = true;
+            next.decorationId = prev.decorationId || decorationId;
+            next.range = match.range;
+            next.query = match.query;
+            next.text = match.text;
+          } else {
+            next.active = false;
+          }
+        } else {
+          if (!match) {
+            next.dismissedRange = null;
+          }
+          next.active = false;
+        }
+      } else {
+        next.active = false;
+      }
+      if (!next.active) {
+        next.decorationId = null;
+        next.range = { from: 0, to: 0 };
+        next.query = null;
+        next.text = null;
+      }
+      return next;
+    }
+  };
+}
+
+// src/plugin/async.ts
+function createSuggestionAsyncRequestManager({
+  editor,
+  items
+}) {
+  let abortController = null;
+  let debounceTimer = null;
+  let debounceResolve = null;
+  const clearDebounceTimer = () => {
+    if (debounceTimer !== null) {
+      clearTimeout(debounceTimer);
+      debounceTimer = null;
+    }
+    debounceResolve == null ? void 0 : debounceResolve();
+    debounceResolve = null;
+  };
+  const waitForDebounce = (delay) => {
+    return new Promise((resolve) => {
+      debounceResolve = resolve;
+      debounceTimer = setTimeout(() => {
+        debounceTimer = null;
+        const pendingResolve = debounceResolve;
+        debounceResolve = null;
+        pendingResolve == null ? void 0 : pendingResolve();
+      }, delay);
+    });
+  };
+  const abort = () => {
+    abortController == null ? void 0 : abortController.abort();
+    clearDebounceTimer();
+    abortController = null;
+  };
+  const fetch = async (query, debounce) => {
+    abort();
+    abortController = new AbortController();
+    const controller = abortController;
+    if (debounce > 0) {
+      await waitForDebounce(debounce);
+    }
+    if (abortController !== controller || controller.signal.aborted) {
+      return { status: "aborted" };
+    }
+    try {
+      const result = await items({
+        editor,
+        query,
+        signal: controller.signal
+      });
+      if (abortController !== controller || controller.signal.aborted) {
+        return { status: "aborted" };
+      }
+      return { status: "resolved", items: result };
+    } catch {
+      if (abortController !== controller || controller.signal.aborted) {
+        return { status: "aborted" };
+      }
+      return { status: "error" };
+    }
+  };
+  return {
+    abort,
+    fetch
+  };
+}
+function createSuggestionFloatingUiConfig({
+  placement,
+  offset: offset$1,
+  flip: flip$1,
+  floatingUi
+}) {
+  var _a, _b, _c, _d;
+  const middleware = [
+    offset({
+      mainAxis: (_a = offset$1.mainAxis) != null ? _a : 4,
+      crossAxis: (_b = offset$1.crossAxis) != null ? _b : 0
+    })
+  ];
+  if (flip$1) {
+    middleware.push(flip());
+  }
+  if ((_c = floatingUi == null ? void 0 : floatingUi.middleware) == null ? void 0 : _c.length) {
+    middleware.push(...floatingUi.middleware);
+  }
+  return {
+    placement,
+    strategy: (_d = floatingUi == null ? void 0 : floatingUi.strategy) != null ? _d : "absolute",
+    middleware
+  };
+}
+function resolveContainer(container) {
+  if (container instanceof HTMLElement) {
+    return container;
+  }
+  if (typeof container === "string") {
+    try {
+      const found = document.querySelector(container);
+      if (found) {
+        return found;
+      }
+    } catch {
+      return document.body;
+    }
+  }
+  return document.body;
+}
+function createMount({
+  getReferenceRect,
+  contextElement,
+  config,
+  container,
+  dismissOnOutsideClick,
+  dismiss
+}) {
+  return (element, options = {}) => {
+    const reference = {
+      getBoundingClientRect: () => {
+        var _a;
+        return (_a = getReferenceRect()) != null ? _a : new DOMRect();
+      },
+      contextElement
+    };
+    let positioned = false;
+    const mountedByUs = !element.isConnected;
+    if (mountedByUs) {
+      resolveContainer(container).appendChild(element);
+    }
+    if (!options.onPosition) {
+      element.style.visibility = "hidden";
+      element.style.width = "max-content";
+    }
+    const update = () => {
+      computePosition(reference, element, {
+        placement: config.placement,
+        strategy: config.strategy,
+        middleware: config.middleware
+      }).then(({ x, y, placement, strategy }) => {
+        if (options.onPosition) {
+          options.onPosition({ x, y, placement, strategy });
+          return;
+        }
+        Object.assign(element.style, {
+          position: strategy,
+          left: `${x}px`,
+          top: `${y}px`
+        });
+        if (!positioned) {
+          positioned = true;
+          element.style.visibility = "";
+        }
+      });
+    };
+    const cleanupAutoUpdate = autoUpdate(reference, element, update, options.autoUpdate);
+    let onOutsidePointerDown;
+    if (dismissOnOutsideClick) {
+      onOutsidePointerDown = (event) => {
+        const target = event.target;
+        if (!(target instanceof Node) || element.contains(target) || contextElement.contains(target)) {
+          return;
+        }
+        dismiss();
+      };
+      document.addEventListener("pointerdown", onOutsidePointerDown, true);
+    }
+    return () => {
+      cleanupAutoUpdate();
+      if (onOutsidePointerDown) {
+        document.removeEventListener("pointerdown", onOutsidePointerDown, true);
+      }
+      if (mountedByUs) {
+        element.remove();
+      }
+    };
+  };
+}
+
+// src/plugin/view.ts
+function createSuggestionView({
+  editor,
+  pluginKey,
+  items,
+  renderer,
+  minQueryLength,
+  debounce,
+  initialItems,
+  placement,
+  offset: offsetOption,
+  container,
+  flip,
+  floatingUi,
+  dismissOnOutsideClick,
+  command,
+  clientRectFor: clientRectFor2,
+  dispatchExit: dispatchExit2
+}) {
+  let props;
+  const asyncRequest = createSuggestionAsyncRequestManager({
+    editor,
+    items
+  });
+  const floatingUiConfig = createSuggestionFloatingUiConfig({
+    placement,
+    offset: offsetOption,
+    flip,
+    floatingUi
+  });
+  function dispatchStateUpdate(state, dispatchProps) {
+    var _a, _b, _c;
+    switch (state) {
+      case "started":
+        (_a = renderer == null ? void 0 : renderer.onStart) == null ? void 0 : _a.call(renderer, dispatchProps);
+        break;
+      case "updated":
+        (_b = renderer == null ? void 0 : renderer.onUpdate) == null ? void 0 : _b.call(renderer, dispatchProps);
+        break;
+      case "stopped":
+        (_c = renderer == null ? void 0 : renderer.onExit) == null ? void 0 : _c.call(renderer, dispatchProps);
+        break;
+    }
+  }
+  return {
+    update: async (view, prevState) => {
+      var _a, _b, _c, _d;
+      const prev = pluginKey.getState(prevState);
+      const next = pluginKey.getState(view.state);
+      if (!prev || !next) {
+        return;
+      }
+      let currentState = null;
+      const queryChanged = prev.query !== next.query;
+      const textChanged = prev.text !== next.text;
+      const rangeChanged = prev.range.from !== next.range.from || prev.range.to !== next.range.to;
+      const effectiveQueryChanged = queryChanged || textChanged || rangeChanged;
+      if (!prev.active && next.active) {
+        currentState = "started";
+      } else if (prev.active && !next.active) {
+        currentState = "stopped";
+      } else if (next.active && effectiveQueryChanged) {
+        currentState = "updated";
+      } else {
+        return;
+      }
+      const state = currentState === "stopped" ? prev : next;
+      const decorationNode = view.dom.querySelector(`[data-decoration-id="${state.decorationId}"]`);
+      const clientRect = clientRectFor2(view, decorationNode);
+      const exceedsMinQueryLength = minQueryLength === 0 || (state.query ? state.query.length >= minQueryLength : false);
+      const willFetch = (currentState === "started" || currentState === "updated") && exceedsMinQueryLength;
+      props = {
+        editor,
+        range: state.range,
+        query: state.query || "",
+        text: state.text || "",
+        items: initialItems != null ? initialItems : [],
+        command: (commandProps) => {
+          return command({
+            editor,
+            range: state.range,
+            props: commandProps
+          });
+        },
+        decorationNode,
+        clientRect,
+        loading: willFetch,
+        placement,
+        offset: { mainAxis: (_a = offsetOption.mainAxis) != null ? _a : 4, crossAxis: (_b = offsetOption.crossAxis) != null ? _b : 0 },
+        container,
+        flip,
+        floatingUi: floatingUiConfig,
+        mount: createMount({
+          getReferenceRect: clientRect,
+          contextElement: view.dom,
+          config: floatingUiConfig,
+          container,
+          dismissOnOutsideClick,
+          dismiss: () => dispatchExit2(editor.view)
+        })
+      };
+      if (currentState === "started") {
+        (_c = renderer == null ? void 0 : renderer.onBeforeStart) == null ? void 0 : _c.call(renderer, props);
+      }
+      if (currentState === "updated") {
+        (_d = renderer == null ? void 0 : renderer.onBeforeUpdate) == null ? void 0 : _d.call(renderer, props);
+      }
+      if (currentState === "started") {
+        dispatchStateUpdate(currentState, props);
+      }
+      if (currentState === "started" || currentState === "updated") {
+        if (!willFetch) {
+          asyncRequest.abort();
+          props = { ...props, items: initialItems != null ? initialItems : [], loading: false };
+        } else {
+          props = { ...props, items: initialItems != null ? initialItems : [], loading: true };
+          currentState = "updated";
+          dispatchStateUpdate(currentState, props);
+          const result = await asyncRequest.fetch(state.query || "", debounce);
+          if (result.status === "aborted") {
+            return;
+          }
+          const currentPluginState = pluginKey.getState(view.state);
+          if (!(currentPluginState == null ? void 0 : currentPluginState.active)) {
+            asyncRequest.abort();
+            return;
+          }
+          props = result.status === "resolved" ? {
+            ...props,
+            items: result.items,
+            loading: false
+          } : {
+            ...props,
+            loading: false
+          };
+        }
+      }
+      if (currentState === "stopped") {
+        asyncRequest.abort();
+        dispatchStateUpdate(currentState, props);
+        props = void 0;
+        return;
+      }
+      if (currentState === "updated") {
+        dispatchStateUpdate(currentState, props);
+      }
+    },
+    destroy: () => {
+      var _a;
+      asyncRequest.abort();
+      if (!props) {
+        return;
+      }
+      (_a = renderer == null ? void 0 : renderer.onExit) == null ? void 0 : _a.call(renderer, props);
+    }
+  };
+}
+
+// src/suggestion.ts
 var SuggestionPluginKey = new PluginKey("suggestion");
 function Suggestion({
   pluginKey = SuggestionPluginKey,
@@ -45382,294 +49278,79 @@ function Suggestion({
   decorationEmptyClass = "is-empty",
   command = () => null,
   items = () => [],
+  minQueryLength = 0,
+  debounce = 0,
+  initialItems,
+  placement = "bottom-start",
+  offset: offsetOption = {},
+  container,
+  flip = true,
+  floatingUi,
+  dismissOnOutsideClick = true,
   render = () => ({}),
   allow = () => true,
   findSuggestionMatch: findSuggestionMatch2 = findSuggestionMatch,
   shouldShow,
   shouldResetDismissed
 }) {
-  let props;
   const renderer = render == null ? void 0 : render();
   const effectiveAllowSpaces = allowSpaces && !allowToIncludeChar;
-  const getAnchorClientRect = () => {
-    const pos = editor.state.selection.$anchor.pos;
-    const coords = editor.view.coordsAtPos(pos);
-    const { top, right, bottom, left } = coords;
-    try {
-      return new DOMRect(left, top, right - left, bottom - top);
-    } catch {
-      return null;
-    }
-  };
-  const clientRectFor = (view, decorationNode) => {
-    if (!decorationNode) {
-      return getAnchorClientRect;
-    }
-    return () => {
-      const state = pluginKey.getState(editor.state);
-      const decorationId = state == null ? void 0 : state.decorationId;
-      const currentDecorationNode = view.dom.querySelector(`[data-decoration-id="${decorationId}"]`);
-      return (currentDecorationNode == null ? void 0 : currentDecorationNode.getBoundingClientRect()) || null;
-    };
-  };
-  const shouldKeepDismissed = ({
-    match,
-    dismissedRange,
-    state,
-    transaction
-  }) => {
-    if (shouldResetDismissed == null ? void 0 : shouldResetDismissed({
+  const clientRectFor2 = (view, decorationNode) => clientRectFor(editor, view, decorationNode, pluginKey);
+  function shouldKeepDismissed2(props) {
+    return shouldKeepDismissed({
+      ...props,
       editor,
-      state,
-      range: dismissedRange,
-      match,
-      transaction,
-      allowSpaces: effectiveAllowSpaces
-    })) {
-      return false;
-    }
-    if (effectiveAllowSpaces) {
-      return match.range.from === dismissedRange.from;
-    }
-    return match.range.from === dismissedRange.from && !hasInsertedWhitespace(transaction);
-  };
-  function dispatchExit(view, pluginKeyRef) {
-    var _a;
-    try {
-      const state = pluginKey.getState(view.state);
-      const decorationNode = (state == null ? void 0 : state.decorationId) ? view.dom.querySelector(`[data-decoration-id="${state.decorationId}"]`) : null;
-      const exitProps = {
-        // @ts-ignore editor is available in closure
-        editor,
-        range: (state == null ? void 0 : state.range) || { from: 0, to: 0 },
-        query: (state == null ? void 0 : state.query) || null,
-        text: (state == null ? void 0 : state.text) || null,
-        items: [],
-        command: (commandProps) => {
-          return command({
-            editor,
-            range: (state == null ? void 0 : state.range) || { from: 0, to: 0 },
-            props: commandProps
-          });
-        },
-        decorationNode,
-        clientRect: clientRectFor(view, decorationNode)
-      };
-      (_a = renderer == null ? void 0 : renderer.onExit) == null ? void 0 : _a.call(renderer, exitProps);
-    } catch {
-    }
-    const tr = view.state.tr.setMeta(pluginKeyRef, { exit: true });
-    view.dispatch(tr);
+      shouldResetDismissed,
+      effectiveAllowSpaces
+    });
   }
-  const plugin = new Plugin({
-    key: pluginKey,
-    view() {
-      return {
-        update: async (view, prevState) => {
-          var _a, _b, _c, _d, _e, _f, _g;
-          const prev = (_a = this.key) == null ? void 0 : _a.getState(prevState);
-          const next = (_b = this.key) == null ? void 0 : _b.getState(view.state);
-          const moved = prev.active && next.active && prev.range.from !== next.range.from;
-          const started = !prev.active && next.active;
-          const stopped = prev.active && !next.active;
-          const changed = !started && !stopped && prev.query !== next.query;
-          const handleStart = started || moved && changed;
-          const handleChange = changed || moved;
-          const handleExit = stopped || moved && changed;
-          if (!handleStart && !handleChange && !handleExit) {
-            return;
-          }
-          const state = handleExit && !handleStart ? prev : next;
-          const decorationNode = view.dom.querySelector(
-            `[data-decoration-id="${state.decorationId}"]`
-          );
-          props = {
-            editor,
-            range: state.range,
-            query: state.query,
-            text: state.text,
-            items: [],
-            command: (commandProps) => {
-              return command({
-                editor,
-                range: state.range,
-                props: commandProps
-              });
-            },
-            decorationNode,
-            clientRect: clientRectFor(view, decorationNode)
-          };
-          if (handleStart) {
-            (_c = renderer == null ? void 0 : renderer.onBeforeStart) == null ? void 0 : _c.call(renderer, props);
-          }
-          if (handleChange) {
-            (_d = renderer == null ? void 0 : renderer.onBeforeUpdate) == null ? void 0 : _d.call(renderer, props);
-          }
-          if (handleChange || handleStart) {
-            props.items = await items({
-              editor,
-              query: state.query
-            });
-          }
-          if (handleExit) {
-            (_e = renderer == null ? void 0 : renderer.onExit) == null ? void 0 : _e.call(renderer, props);
-          }
-          if (handleChange) {
-            (_f = renderer == null ? void 0 : renderer.onUpdate) == null ? void 0 : _f.call(renderer, props);
-          }
-          if (handleStart) {
-            (_g = renderer == null ? void 0 : renderer.onStart) == null ? void 0 : _g.call(renderer, props);
-          }
-        },
-        destroy: () => {
-          var _a;
-          if (!props) {
-            return;
-          }
-          (_a = renderer == null ? void 0 : renderer.onExit) == null ? void 0 : _a.call(renderer, props);
-        }
-      };
-    },
-    state: {
-      // Initialize the plugin's internal state.
-      init() {
-        const state = {
-          active: false,
-          range: {
-            from: 0,
-            to: 0
-          },
-          query: null,
-          text: null,
-          composing: false,
-          dismissedRange: null
-        };
-        return state;
-      },
-      // Apply changes to the plugin state from a view transaction.
-      apply(transaction, prev, _oldState, state) {
-        const { isEditable } = editor;
-        const { composing } = editor.view;
-        const { selection } = transaction;
-        const { empty, from } = selection;
-        const next = { ...prev };
-        const meta = transaction.getMeta(pluginKey);
-        if (meta && meta.exit) {
-          next.active = false;
-          next.decorationId = null;
-          next.range = { from: 0, to: 0 };
-          next.query = null;
-          next.text = null;
-          next.dismissedRange = prev.active ? { ...prev.range } : prev.dismissedRange;
-          return next;
-        }
-        next.composing = composing;
-        if (transaction.docChanged && next.dismissedRange !== null) {
-          next.dismissedRange = {
-            from: transaction.mapping.map(next.dismissedRange.from),
-            to: transaction.mapping.map(next.dismissedRange.to)
-          };
-        }
-        if (isEditable && (empty || editor.view.composing)) {
-          if ((from < prev.range.from || from > prev.range.to) && !composing && !prev.composing) {
-            next.active = false;
-          }
-          const match = findSuggestionMatch2({
-            char,
-            allowSpaces,
-            allowToIncludeChar,
-            allowedPrefixes,
-            startOfLine,
-            $position: selection.$from
-          });
-          const decorationId = `id_${Math.floor(Math.random() * 4294967295)}`;
-          if (match && allow({
-            editor,
-            state,
-            range: match.range,
-            isActive: prev.active
-          }) && (!shouldShow || shouldShow({
-            editor,
-            range: match.range,
-            query: match.query,
-            text: match.text,
-            transaction
-          }))) {
-            if (next.dismissedRange !== null && !shouldKeepDismissed({
-              match,
-              dismissedRange: next.dismissedRange,
-              state,
-              transaction
-            })) {
-              next.dismissedRange = null;
-            }
-            if (next.dismissedRange === null) {
-              next.active = true;
-              next.decorationId = prev.decorationId ? prev.decorationId : decorationId;
-              next.range = match.range;
-              next.query = match.query;
-              next.text = match.text;
-            } else {
-              next.active = false;
-            }
-          } else {
-            if (!match) {
-              next.dismissedRange = null;
-            }
-            next.active = false;
-          }
-        } else {
-          next.active = false;
-        }
-        if (!next.active) {
-          next.decorationId = null;
-          next.range = { from: 0, to: 0 };
-          next.query = null;
-          next.text = null;
-        }
-        return next;
-      }
-    },
-    props: {
-      // Call the keydown hook if suggestion is active.
-      handleKeyDown(view, event) {
-        var _a, _b;
-        const { active, range } = plugin.getState(view.state);
-        if (!active) {
-          return false;
-        }
-        if (event.key === "Escape" || event.key === "Esc") {
-          const state = plugin.getState(view.state);
-          (_a = renderer == null ? void 0 : renderer.onKeyDown) == null ? void 0 : _a.call(renderer, { view, event, range: state.range });
-          dispatchExit(view, pluginKey);
-          return true;
-        }
-        const handled = ((_b = renderer == null ? void 0 : renderer.onKeyDown) == null ? void 0 : _b.call(renderer, { view, event, range })) || false;
-        return handled;
-      },
-      // Setup decorator on the currently active suggestion.
-      decorations(state) {
-        const { active, range, decorationId, query } = plugin.getState(state);
-        if (!active) {
-          return null;
-        }
-        const isEmpty = !(query == null ? void 0 : query.length);
-        const classNames = [decorationClass];
-        if (isEmpty) {
-          classNames.push(decorationEmptyClass);
-        }
-        return DecorationSet.create(state.doc, [
-          Decoration.inline(range.from, range.to, {
-            nodeName: decorationTag,
-            class: classNames.join(" "),
-            "data-decoration-id": decorationId,
-            "data-decoration-content": decorationContent
-          })
-        ]);
-      }
-    }
+  const dispatchExit2 = (view) => dispatchExit({
+    view,
+    pluginKeyRef: pluginKey
   });
-  return plugin;
+  return new Plugin({
+    key: pluginKey,
+    view: () => createSuggestionView({
+      editor,
+      pluginKey,
+      items,
+      renderer,
+      minQueryLength,
+      debounce,
+      initialItems,
+      placement,
+      offset: offsetOption,
+      container,
+      flip,
+      floatingUi,
+      dismissOnOutsideClick,
+      command,
+      clientRectFor: clientRectFor2,
+      dispatchExit: dispatchExit2
+    }),
+    state: createSuggestionState({
+      editor,
+      char,
+      effectiveAllowSpaces,
+      allowToIncludeChar,
+      allowedPrefixes,
+      startOfLine,
+      findSuggestionMatch: findSuggestionMatch2,
+      allow,
+      shouldShow,
+      shouldKeepDismissed: shouldKeepDismissed2,
+      pluginKey
+    }),
+    props: createSuggestionProps({
+      pluginKey,
+      decorationTag,
+      decorationClass,
+      decorationContent,
+      decorationEmptyClass,
+      renderer,
+      dispatchExit: dispatchExit2
+    })
+  });
 }
 
 // src/mention.ts

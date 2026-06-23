@@ -18,22 +18,32 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums.Controllers
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    using System.Collections.Generic;
+    using System;
+    using System.Web.Caching;
 
-    using DotNetNuke.Data;
+    using DotNetNuke.ComponentModel.DataAnnotations;
 
-    internal interface IBadgeController : IRepository<DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo>
+    /// <summary>
+    /// Represents a ranking for users in the DNN Community Forums module.
+    /// </summary>
+    [TableName("activeforums_Ranks")]
+    [PrimaryKey("RankId", AutoIncrement = true)]
+    [Cacheable("activeforums_Ranks", CacheItemPriority.Low)]
+    [Scope("ModuleId")]
+    public class RankInfo
     {
-        IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo> Get(int moduleId);
+        public int RankId { get; set; }
 
-        DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetById(int moduleId, int badgeId);
+        public int ModuleId { get; set; }
 
-        void DeleteById<TProperty>(int moduleId, TProperty badgeId);
+        public string? RankName { get; set; }
 
-        DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo);
+        public int? MinPosts { get; set; }
 
-        DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo Update(DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo);
+        public int? MaxPosts { get; set; }
+
+        public string? Display { get; set; }
     }
 }

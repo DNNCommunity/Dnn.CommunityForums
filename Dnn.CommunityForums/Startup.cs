@@ -58,6 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance);
+            services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.RankController.Instance);
         }
     }
 }

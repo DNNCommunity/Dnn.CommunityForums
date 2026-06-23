@@ -222,8 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 rankId = Convert.ToInt32(this.Params["RankId"]);
             }
 
-            RewardController rc = new RewardController();
-            RewardInfo rank = rc.Reward_Get(this.PortalId, this.ModuleId, rankId);
+            var rank = new DotNetNuke.Modules.ActiveForums.Controllers.RankController().GetById(this.ModuleId, rankId);
             string sOut = "{";
             sOut += Utilities.JSON.Pair("RankId", rank.RankId.ToString());
             sOut += ",";
@@ -240,10 +239,11 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         private void RankSave()
         {
-            RewardInfo rank = new RewardInfo();
-            rank.RankId = -1;
-            rank.ModuleId = this.ModuleId;
-            rank.PortalId = this.PortalId;
+            var rank = new DotNetNuke.Modules.ActiveForums.Entities.RankInfo
+            {
+                RankId = -1,
+                ModuleId = this.ModuleId,
+            };
             if (this.Params.ContainsKey("RankId"))
             {
                 rank.RankId = Convert.ToInt32(this.Params["RankId"]);
@@ -269,8 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 rank.Display = this.Params["Display"].ToString();
             }
 
-            RewardController rc = new RewardController();
-            rank = rc.Reward_Save(rank);
+            DotNetNuke.Modules.ActiveForums.Controllers.RankController.Instance.Save(rank);
         }
 
         private void RankDelete()
@@ -285,9 +284,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 return;
             }
-
-            RewardController rc = new RewardController();
-            rc.Reward_Delete(this.PortalId, this.ModuleId, rankId);
+            
+            DotNetNuke.Modules.ActiveForums.Controllers.RankController.Instance.DeleteById(moduleId: this.ModuleId, rankId: rankId);
         }
 
         private string GetBadge()

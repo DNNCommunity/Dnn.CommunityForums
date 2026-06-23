@@ -24,16 +24,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     using DotNetNuke.Data;
 
-    internal interface IBadgeController : IRepository<DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo>
+    internal interface IRankController : IRepository<DotNetNuke.Modules.ActiveForums.Entities.RankInfo>
     {
-        IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo> Get(int moduleId);
+        IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.RankInfo> Get(int moduleId);
 
-        DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetById(int moduleId, int badgeId);
+        DotNetNuke.Modules.ActiveForums.Entities.RankInfo GetById(int moduleId, int rankId);
 
-        void DeleteById<TProperty>(int moduleId, TProperty badgeId);
+        void DeleteById<TProperty>(int moduleId, TProperty rankId);
 
-        DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo);
+        DotNetNuke.Modules.ActiveForums.Entities.RankInfo Save(DotNetNuke.Modules.ActiveForums.Entities.RankInfo rankInfo);
 
-        DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo Update(DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo);
+        DotNetNuke.Modules.ActiveForums.Entities.RankInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.RankInfo rankInfo);
+
+        DotNetNuke.Modules.ActiveForums.Entities.RankInfo Update(DotNetNuke.Modules.ActiveForums.Entities.RankInfo rankInfo);
     }
 }

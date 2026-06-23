@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     /// <summary>
@@ -37,12 +38,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
 
         /// <summary>
-        /// Gets all active badges.
+        /// Gets all badges.
         /// </summary>
-        /// <returns>List of active badges.</returns>
-        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo> GetActiveBadges(int moduleId)
+        /// <returns>List of badges.</returns>
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo> Get(int moduleId)
         {
-            return this._repositoryControllerBase.Get().Where(b => b.ModuleId.Equals(moduleId));
+            var cachekey = string.Format(CacheKeys.Badges, moduleId);
+            var badges = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo>;
+            if (badges == null)
+            {
+                badges = this._repositoryControllerBase.Get(moduleId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, badges);
+            }
+
+            return badges;
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo GetById(int moduleId, int badgeId)
@@ -60,27 +69,37 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public new void DeleteById<TProperty>(int moduleId, TProperty badgeId)
         {
-            var cachekey = string.Format(CacheKeys.BadgeInfo, moduleId, badgeId);
+            var cachekey = string.Format(CacheKeys.Badges, moduleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(moduleId, cachekey);
+            cachekey = string.Format(CacheKeys.BadgeInfo, moduleId, badgeId);
             DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(moduleId, cachekey);
             this._repositoryControllerBase.DeleteById(badgeId);
         }
 
         public new void Delete(DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo)
         {
-            var cachekey = string.Format(CacheKeys.BadgeInfo, badgeInfo.ModuleId, badgeInfo.BadgeId);
+            var cachekey = string.Format(CacheKeys.Badges, badgeInfo.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(badgeInfo.ModuleId, cachekey);
+            cachekey = string.Format(CacheKeys.BadgeInfo, badgeInfo.ModuleId, badgeInfo.BadgeId);
             DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(badgeInfo.ModuleId, cachekey);
             this._repositoryControllerBase.Delete(badgeInfo);
         }
 
         public new DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo)
         {
+            var cachekey = string.Format(CacheKeys.Badges, badgeInfo.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(badgeInfo.ModuleId, cachekey);
+            cachekey = string.Format(CacheKeys.BadgeInfo, badgeInfo.ModuleId, badgeInfo.BadgeId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(badgeInfo.ModuleId, cachekey);
             this._repositoryControllerBase.Insert(badgeInfo);
             return this.GetById(badgeInfo.ModuleId, badgeInfo.BadgeId);
         }
 
         public new DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo Update(DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo badgeInfo)
         {
-            var cachekey = string.Format(CacheKeys.BadgeInfo, badgeInfo.ModuleId, badgeInfo.BadgeId);
+            var cachekey = string.Format(CacheKeys.Badges, badgeInfo.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(badgeInfo.ModuleId, cachekey);
+            cachekey = string.Format(CacheKeys.BadgeInfo, badgeInfo.ModuleId, badgeInfo.BadgeId);
             DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(badgeInfo.ModuleId, cachekey);
             this._repositoryControllerBase.Update(badgeInfo);
             return this.GetById(badgeInfo.ModuleId, badgeInfo.BadgeId);

@@ -18,6 +18,8 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.Cache
 {
     internal static class CacheKeys
@@ -26,7 +28,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
         internal const string CacheModulePrefix = "AF-{0}-";
         internal const string UserProfile = "AF-{0}-prof-{1}";
         internal const string ForumUser = "AF-{0}-user-{1}";
+
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Ranks")]
         internal const string Rewards = "AF-{0}-rwd";
+
         internal const string ProfileInfo = "AF-{0}-pi";
         internal const string ForumInfo = "AF-{0}-fi-{1}";
         internal const string ForumInfoWithUser = "AF-{0}-fi-{1}-{2}";
@@ -73,7 +78,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
         internal const string UserBadgesDistinct = "AF-{0}-userbadges2-{1}";
         internal const string BadgeUsers = "AF-{0}-badgeusers-{1}";
         internal const string BadgeUserCount = "AF-{0}-badgeusercount-{1}-{2}";
-
+        internal const string Badges = "AF-{0}-badges";
+        internal const string Ranks = "AF-{0}-ranks";
+        internal const string RankInfo = "AF-{0}-rank-{1}";
         internal const string AttachmentInfoByContentId = "AF-{0}-aic-{1}";
         internal const string ContentInfo = "AF-{0}-ci-{1}";
         internal const string TopicInfo = "AF-{0}-ti-{1}";

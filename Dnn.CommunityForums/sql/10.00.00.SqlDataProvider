@@ -1805,3 +1805,41 @@ INNER JOIN {databaseOwner}{objectQualifier}activeforums_settings S ON S.Settings
 WHERE F.Active = 1 AND S.SettingValue = 'true' AND F.ModuleId = @ModuleId
 GO
 /* issue 267 - end - database cleanup */
+
+
+/* issue 1943 - begin - move ranks to DAL2 */
+
+/* remove unused stored procedures */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Ranks_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Ranks_Save]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Ranks_Get]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Ranks_Get]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Ranks_Delete]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Ranks_Delete]
+GO
+
+/* update activeforums_Ranks_List to not require PortalId */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Ranks_List]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Ranks_List]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Ranks_List]
+	@ModuleId int
+AS
+BEGIN
+	SELECT Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Ranks WHERE ModuleId = @ModuleId
+END
+BEGIN
+	SELECT * FROM {databaseOwner}{objectQualifier}activeforums_Ranks WHERE ModuleId = @ModuleId Order By MinPosts
+END
+
+GO
+
+/* remove PortalId column from activeforums_Ranks table */
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'PortalId' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Ranks]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Ranks] DROP COLUMN PortalId
+GO
+
+/* issue 1943 - end - move ranks to DAL2 */
