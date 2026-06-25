@@ -40,6 +40,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
             {
                 DotNetNuke.Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, expiration);
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
@@ -56,6 +60,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
             try
             {
                 return DotNetNuke.Common.Utilities.DataCache.GetCache(cacheKey: cacheKey);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -75,6 +83,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
             {
                 DotNetNuke.Common.Utilities.DataCache.RemoveCache(cacheKey: cacheKey);
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
@@ -92,6 +104,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
             {
                 DotNetNuke.Common.Utilities.DataCache.ClearCache(cachePrefix: cacheKeyPrefix);
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
@@ -108,6 +124,29 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
             {
                 DotNetNuke.Common.Utilities.DataCache.ClearCache(string.Format(CacheKeys.CacheModulePrefix, moduleId));
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Clears all cache.
+        /// </summary>
+        public static void ClearAllCache()
+        {
+            try
+            {
+                DotNetNuke.Common.Utilities.DataCache.ClearCache(string.Format(CacheKeys.CachePrefix));
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
@@ -122,7 +161,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
         {
             try
             {
-                DotNetNuke.Common.Utilities.DataCache.ClearModuleCache(tabId);;
+                DotNetNuke.Common.Utilities.DataCache.ClearModuleCache(tabId);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
             }
             catch (Exception ex)
             {

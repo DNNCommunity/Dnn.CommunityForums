@@ -24,21 +24,29 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlTypes;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI.WebControls;
+    using System.Xml.Linq;
 
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search.Entities;
 
     #region Topics Controller
-    public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
+    public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable, DotNetNuke.Entities.Modules.IPortable
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
         private readonly IPortalAliasService portalAliasService;
@@ -60,7 +68,20 @@ namespace DotNetNuke.Modules.ActiveForums
             this.portalSettings = portalSettings;
         }
 
-        #region ModuleSearchBase
+        #region "IPortable"
+        public string ExportModule(int moduleID)
+        {
+            return DotNetNuke.Modules.ActiveForums.Helpers.ImportExportHelper.ExportModule(moduleId: moduleID);
+        }
+
+        public void ImportModule(int moduleID, string content, string version, int userID)
+        {
+            DotNetNuke.Modules.ActiveForums.Helpers.ImportExportHelper.ImportModule(moduleId: moduleID, content: content, version: version, userId: userID);
+        }
+
+        #endregion "IPortable"
+
+        #region "ModuleSearchBase"
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
@@ -172,7 +193,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
-        #endregion
+
+        #endregion "ModuleSearchBase"
 
         #region "IUpgradeable"
         public string UpgradeModule(string Version)
@@ -433,6 +455,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Logger.Error(message);
             }
         }
+
         #endregion
 
     }

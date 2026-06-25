@@ -312,7 +312,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(moduleId);
-                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(moduleId);
             }
         }
 

@@ -20,6 +20,7 @@
 
 namespace DotNetNuke.Modules.ActiveForums.ViewModels
 {
+    using System;
     using System.Collections.Generic;
 
     public class Forum
@@ -76,12 +77,20 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
         public DotNetNuke.Modules.ActiveForums.ViewModels.Permissions Security => new DotNetNuke.Modules.ActiveForums.ViewModels.Permissions(this.forum.Security);
 
         public string PrefixURL => this.forum.PrefixURL;
-
+        
         public int ParentForumId => this.forum.ParentForumId;
 
         public string ParentForumName => this.forum.ParentForumName;
 
         public bool HasProperties => this.forum.HasProperties;
+        
+        public int SocialGroupId => this.forum.SocialGroupId;
+
+        public int SortOrder => this.forum.SortOrder;
+
+        public DateTime DateCreated => this.forum.DateCreated;
+
+        public DateTime DateUpdated => this.forum.DateUpdated;
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties => this.forum.Properties;
 
@@ -109,6 +118,10 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
             forumInfo.PrefixURL = this.PrefixURL;
             forumInfo.ParentForumId = this.ParentForumId;
             forumInfo.HasProperties = this.HasProperties;
+            forumInfo.DateCreated = this.DateCreated;
+            forumInfo.DateUpdated = this.DateUpdated;
+            forumInfo.SortOrder = this.SortOrder;
+            forumInfo.SocialGroupId = this.SocialGroupId;
             forumInfo.Properties = this.Properties != null ? new List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>(this.Properties) : null;
 
             return forumInfo;

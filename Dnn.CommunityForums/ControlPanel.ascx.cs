@@ -60,6 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         var fc = new ForumsConfig();
                         bool configComplete = fc.ForumsInit(this.PortalId, this.ModuleId);
                         DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", configComplete.ToString());
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache();
                     }
                     catch (Exception ex)
                     {

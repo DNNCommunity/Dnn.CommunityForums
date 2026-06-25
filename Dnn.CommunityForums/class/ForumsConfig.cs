@@ -79,6 +79,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Create "user mention notification" core messaging notification type new in 09.03.00
                 ForumsConfig.Install_UserMentionNotificationType_090300();
 
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache();
+
                 return true;
             }
             catch (Exception ex)
@@ -584,7 +586,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.SaveSetting(moduleId, sKey, ForumSettingKeys.ModDeleteNotify, "0");
                 DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.SaveSetting(moduleId, sKey, ForumSettingKeys.ModAlertNotify, "0");
 
-                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(moduleId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache();
             }
             catch (Exception ex)
             {
