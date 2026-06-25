@@ -1942,4 +1942,15 @@ De
   <data name="[RESX:ShowBoxesDesc].Text" xml:space="preserve">
     <value>Bloques de exposición</value>
   </data>
+  <data name="[RESX:Continue].Text" xml:space="preserve">
+    <value>Continúa</value>
+  </data>
+  <data name="[RESX:ClickContinueToStart].Text" xml:space="preserve">
+    <value>Haz clic en el botón de continuar para empezar.</value>
+  </data>
+  <data name="[RESX:InitConfigScreen].Text" xml:space="preserve">
+    <value>&lt;h2 class="dcf-init-title-main"&gt;Gracias por elegir los DNN Community Forums.&lt;br&gt;Tu método para construir fácilmente una comunidad online completa. &lt;/h2&gt;
+&lt;p&gt;DNN Community Forums te permiten configurar rápidamente un foro de discusión con muchas funciones para tu sitio web.&lt;/p&gt;
+&lt;p&gt;Tanto si eres un aficionado que solo necesita un foro como si estás creando una comunidad online para tu empresa, DNN Community Forums son la solución principal. Como pronto veréis, ningún otro paquete de foro para DNN tiene tantas funciones ni la flexibilidad de los DNN Community Forums.&lt;/p&gt;</value>
+  </data>
 </root>
