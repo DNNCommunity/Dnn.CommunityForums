@@ -170,7 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
-                else
+                else if (this.UserInfo.IsAdmin)
                 {
                     this.ShowToolbar = false;
                     string ctlPath = Globals.ModulePath + "controls/_default.ascx";
@@ -490,6 +490,11 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
+            if ((this.ModuleSettings == null || this.ModuleSettings.InstallDate == Utilities.NullDate()) && !this.UserInfo.IsAdmin)
+            {
+                return;
+            }
+
             System.IO.StringWriter stringWriter = new System.IO.StringWriter();
             HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
@@ -502,6 +507,11 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
+
+            if ((this.ModuleSettings == null || this.ModuleSettings.InstallDate == Utilities.NullDate()) && !this.UserInfo.IsAdmin)
+            {
+                return;
+            }
 
             if (this.SocialGroupId > 0)
             {
