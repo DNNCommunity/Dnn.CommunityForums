@@ -85,20 +85,11 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     .Get(moduleId)
                     .OrderBy(g => g.SortOrder)
                     .ThenBy(g => g.ForumGroupId)
-                    .Select(g => new DotNetNuke.Modules.ActiveForums.ViewModels.ForumGroup(g))
                     .ToList();
 
                 var tags = ((IRepository<TagInfo>)TagController.Instance)
                     .Get(moduleId)
                     .OrderBy(t => t.TagId)
-                    .Select(t => new DotNetNuke.Modules.ActiveForums.Entities.TagInfo()
-                    {
-                        TagId = t.TagId,
-                        PortalId = t.PortalId,
-                        ModuleId = t.ModuleId,
-                        TagName = t.TagName,
-                        Items = t.Items,
-                    })
                     .ToList();
 
                 var categories = ((IRepository<CategoryInfo>)CategoryController.Instance)
@@ -121,7 +112,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 var permissions = ((IRepository<PermissionInfo>)PermissionController.Instance)
                 .Get(moduleId)
                 .OrderBy(p => p.PermissionsId)
-                .Select(p => new DotNetNuke.Modules.ActiveForums.ViewModels.Permissions(p))
                 .ToList();
 
                 var settings = ((IRepository<SettingsInfo>)SettingsController.Instance)
@@ -129,20 +119,12 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 .OrderBy(s => s.SettingsKey)
                 .ThenBy(s => s.SettingName)
                 .ThenBy(s => s.SettingsId)
-                .Select(s => new DotNetNuke.Modules.ActiveForums.Entities.SettingsInfo()
-                {
-                    SettingsId = s.SettingsId,
-                    SettingsKey = s.SettingsKey,
-                    SettingName = s.SettingName,
-                    SettingValue = s.SettingValue,
-                })
                 .ToList();
 
                 var forums = ForumController.Instance.GetForums(moduleId)
                     .OrderBy(f => f.ForumGroupId)
                     .ThenBy(f => f.SortOrder)
                     .ThenBy(f => f.ForumID)
-                    .Select(f => new DotNetNuke.Modules.ActiveForums.ViewModels.Forum(f))
                     .ToList();
 
                 var forumIds = forums.Select(f => f.ForumID).ToHashSet();
@@ -151,13 +133,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     .Get()
                     .Where(ft => forumIds.Contains(ft.ForumId))
                     .OrderBy(ft => ft.ForumTopicId)
-                    .Select(ft => new ForumTopicPortable
-                    {
-                        ForumTopicId = ft.ForumTopicId,
-                        ForumId = ft.ForumId,
-                        TopicId = ft.TopicId,
-                        LastReplyId = ft.LastReplyId,
-                    })
                     .ToList();
 
                 var topicIds = forumTopics.Select(ft => ft.TopicId).Distinct().ToList();
@@ -165,46 +140,11 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     .Select(topicId => TopicController.Instance.GetById(moduleId, topicId))
                     .Where(t => t != null)
                     .OrderBy(t => t.TopicId)
-                    .Select(t => new TopicPortable
-                    {
-                        TopicId = t.TopicId,
-                        ContentId = t.ContentId,
-                        ViewCount = t.ViewCount,
-                        ReplyCount = t.ReplyCount,
-                        IsLocked = t.IsLocked,
-                        IsPinned = t.IsPinned,
-                        TopicIcon = t.TopicIcon,
-                        StatusId = t.StatusId,
-                        IsApproved = t.IsApproved,
-                        IsRejected = t.IsRejected,
-                        IsDeleted = t.IsDeleted,
-                        IsAnnounce = t.IsAnnounce,
-                        IsArchived = t.IsArchived,
-                        AnnounceStart = t.AnnounceStart,
-                        AnnounceEnd = t.AnnounceEnd,
-                        TopicType = (int)t.TopicType,
-                        Priority = t.Priority,
-                        TopicUrl = t.TopicUrl,
-                        PrevTopic = t.PrevTopic,
-                        NextTopic = t.NextTopic,
-                        TopicData = t.TopicData,
-                    })
                     .ToList();
 
                 var replies = topicIds
                     .SelectMany(topicId => ReplyController.Instance.GetByTopicId(moduleId, topicId))
                     .OrderBy(r => r.ReplyId)
-                    .Select(r => new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo()
-                    {
-                        ReplyId = r.ReplyId,
-                        TopicId = r.TopicId,
-                        ReplyToId = r.ReplyToId,
-                        ContentId = r.ContentId,
-                        IsApproved = r.IsApproved,
-                        IsRejected = r.IsRejected,
-                        StatusId = r.StatusId,
-                        IsDeleted = r.IsDeleted,
-                    })
                     .ToList();
 
                 var contentIds = topics.Select(t => t.ContentId).Concat(replies.Select(r => r.ContentId)).Distinct().ToList();
@@ -212,21 +152,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     .Select(contentId => ContentController.Instance.GetById(moduleId, contentId))
                     .Where(c => c != null)
                     .OrderBy(c => c.ContentId)
-                    .Select(c => new ContentPortable
-                    {
-                        ContentId = c.ContentId,
-                        Subject = c.Subject,
-                        Summary = c.Summary,
-                        Body = c.Body,
-                        DateCreated = c.DateCreated,
-                        DateUpdated = c.DateUpdated,
-                        AuthorId = c.AuthorId,
-                        AuthorName = c.AuthorName,
-                        IsDeleted = c.IsDeleted,
-                        IPAddress = c.IPAddress,
-                        ContentItemId = c.ContentItemId,
-                        ModuleId = c.ModuleId,
-                    })
                     .ToList();
 
                 var attachments = contentIds
@@ -249,12 +174,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 var topicTags = topicIds
                     .SelectMany(topicId => TopicTagController.Instance.GetForTopic(topicId))
                     .OrderBy(tt => tt.TopicTagId)
-                    .Select(tt => new DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo()
-                    {
-                        TopicTagId = tt.TopicTagId,
-                        TopicId = tt.TopicId,
-                        TagId = tt.TagId,
-                    })
                     .ToList();
 
                 var topicCategories = topicIds
@@ -1496,186 +1415,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
         private static string ToPortableBytes(byte[] value)
         {
             return value != null && value.Length > 0 ? Convert.ToBase64String(value) : string.Empty;
-        }
-
-        private class SettingsPortable
-        {
-            public int SettingsId { get; set; }
-
-            public string SettingsKey { get; set; }
-
-            public string SettingName { get; set; }
-
-            public string SettingValue { get; set; }
-        }
-
-        private class TagPortable
-        {
-            public int TagId { get; set; }
-
-            public int PortalId { get; set; }
-
-            public int ModuleId { get; set; }
-
-            public string TagName { get; set; }
-
-            public int Items { get; set; }
-        }
-
-        private class ForumPortable
-        {
-            public int ForumId { get; set; }
-
-            public int PortalId { get; set; }
-
-            public int ModuleId { get; set; }
-
-            public int ForumGroupId { get; set; }
-
-            public int ParentForumId { get; set; }
-
-            public string ForumName { get; set; }
-
-            public string ForumDesc { get; set; }
-
-            public int SortOrder { get; set; }
-
-            public bool Active { get; set; }
-
-            public bool Hidden { get; set; }
-
-            public int TotalTopics { get; set; }
-
-            public int TotalReplies { get; set; }
-
-            public string ForumSettingsKey { get; set; }
-
-            public DateTime DateCreated { get; set; }
-
-            public DateTime DateUpdated { get; set; }
-
-            public int LastTopicId { get; set; }
-
-            public int LastReplyId { get; set; }
-
-            public int PermissionsId { get; set; }
-
-            public string PrefixURL { get; set; }
-
-            public int SocialGroupId { get; set; }
-
-            public bool HasProperties { get; set; }
-        }
-
-        private class ContentPortable
-        {
-            public int ContentId { get; set; }
-
-            public string Subject { get; set; }
-
-            public string Summary { get; set; }
-
-            public string Body { get; set; }
-
-            public DateTime DateCreated { get; set; }
-
-            public DateTime DateUpdated { get; set; }
-
-            public int AuthorId { get; set; }
-
-            public string AuthorName { get; set; }
-
-            public bool IsDeleted { get; set; }
-
-            public string IPAddress { get; set; }
-
-            public int ContentItemId { get; set; }
-
-            public int ModuleId { get; set; }
-        }
-
-        private class TopicPortable
-        {
-            public int TopicId { get; set; }
-
-            public int ContentId { get; set; }
-
-            public int ViewCount { get; set; }
-
-            public int ReplyCount { get; set; }
-
-            public bool IsLocked { get; set; }
-
-            public bool IsPinned { get; set; }
-
-            public string TopicIcon { get; set; }
-
-            public int StatusId { get; set; }
-
-            public bool IsApproved { get; set; }
-
-            public bool IsRejected { get; set; }
-
-            public bool IsDeleted { get; set; }
-
-            public bool IsAnnounce { get; set; }
-
-            public bool IsArchived { get; set; }
-
-            public DateTime? AnnounceStart { get; set; }
-
-            public DateTime? AnnounceEnd { get; set; }
-
-            public int TopicType { get; set; }
-
-            public int Priority { get; set; }
-
-            public string TopicUrl { get; set; }
-
-            public int PrevTopic { get; set; }
-
-            public int NextTopic { get; set; }
-
-            public string TopicData { get; set; }
-        }
-
-        private class ReplyPortable
-        {
-            public int ReplyId { get; set; }
-
-            public int TopicId { get; set; }
-
-            public int ReplyToId { get; set; }
-
-            public int ContentId { get; set; }
-
-            public bool IsApproved { get; set; }
-
-            public bool IsRejected { get; set; }
-
-            public int StatusId { get; set; }
-
-            public bool IsDeleted { get; set; }
-        }
-
-        private class ForumTopicPortable
-        {
-            public int ForumTopicId { get; set; }
-
-            public int ForumId { get; set; }
-
-            public int TopicId { get; set; }
-
-            public int? LastReplyId { get; set; }
-        }
-
-        private class TopicTagPortable
-        {
-            public int TopicTagId { get; set; }
-
-            public int TopicId { get; set; }
-
-            public int TagId { get; set; }
         }
 
         private static IEnumerable<XElement> GetElements(XElement root, string containerName, string elementName)

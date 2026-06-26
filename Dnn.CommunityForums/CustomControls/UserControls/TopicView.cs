@@ -928,7 +928,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sOutput = TemplateUtils.ReplaceSubSection(sOutput, string.Empty, "[REPLYSEPARATOR]", "[/REPLYSEPARATOR]");
                 }
 
-                foreach (Match match in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Matches(sOutput))
+                foreach (Match match in RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase, 2).Matches(sOutput))
                 {
                     var rowIndex = int.Parse(match.Groups[1].Value);
                     var startTag = string.Format("[REPLYSEPARATOR:{0}]", rowIndex);

@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             const string tagsPattern = @"href="".*?/afv/search\?aftg=(?<tag>.+?)""";
             var tags = new List<string>();
-            var matches = RegexUtils.GetCachedRegex(tagsPattern, RegexOptions.Compiled & RegexOptions.IgnoreCase & RegexOptions.IgnorePatternWhitespace, 5).Matches(body);
+            var matches = RegexUtils.GetCachedRegex(tagsPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace, 5).Matches(body);
             if (matches.Count > 0)
             {
                 foreach (Match match in matches)

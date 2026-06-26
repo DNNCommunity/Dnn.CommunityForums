@@ -349,9 +349,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[CSS:"))
             {
                 string pattern = "(\\[CSS:.+?\\])";
-                if (RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).IsMatch(template))
+                if (RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase, 2).IsMatch(template))
                 {
-                    cssmatch = RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Match(template).Value;
+                    cssmatch = RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase, 2).Match(template).Value;
                     css = cssmatch.Split(':'); // 0=CSS,1=TopRow, 2=mid rows, 3=lastRow
                 }
             }

@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             try
             {
                 const string Base64ImagePattern = @"(?<tag><img src=""(?<src>data:(?<mimetype>image\/[a-zA-Z]+);base64,(?<content>[A-Za-z0-9+\/]+=*)"")[^>]*>)";
-                var matches = RegexUtils.GetCachedRegex(Base64ImagePattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(this.Body);
+                var matches = RegexUtils.GetCachedRegex(Base64ImagePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase).Matches(this.Body);
                 foreach (Match match in matches)
                 {
                     if (match.Groups["content"].Success)
