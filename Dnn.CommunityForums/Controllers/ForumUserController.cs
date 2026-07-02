@@ -588,29 +588,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             // GIF files when reduced using DNN class losses its animation, so for gifs send them as is
             var user = DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalSettings.PortalId, userId);
-            string imgUrl = string.Empty;
+            var imgUrl = string.Empty;
 
             if (user != null)
             {
                 imgUrl = user.Profile.PhotoURL;
             }
 
-            if (!string.IsNullOrWhiteSpace(imgUrl) && imgUrl.ToLower().Contains(".gif") && !imgUrl.Equals("/images/no_avatar.gif", StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (!imgUrl.StartsWith("/"))
-                {
-                    imgUrl = "/" + imgUrl;
-                }
-
-                imgUrl = $"https://{portalSettings.DefaultPortalAlias}{imgUrl}";
-            }
-            else
+            if (string.IsNullOrWhiteSpace(imgUrl) || !imgUrl.ToLower().Contains(".gif") || imgUrl.Equals("/images/no_avatar.gif", StringComparison.InvariantCultureIgnoreCase))
             {
                 /* NOTE: This purposely does not use DNN API GetUserProfilePictureUrl because it inadvertantly requires HttpContext */
-                imgUrl = $"https://{portalSettings.DefaultPortalAlias}/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={avatarWidth}&w={avatarHeight}";
+                imgUrl = $"DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={avatarWidth}&w={avatarHeight}";
             }
 
-            return Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(imgUrl, portalSettings), portalSettings);
+            return Utilities.GetImageUrl(imageUrl: imgUrl, portalSettings: portalSettings);
         }
 
         internal static void UpdateUserTopicCount(int portalId, int userId)

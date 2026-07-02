@@ -178,8 +178,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 }
                             }
 
-                            var imgUrl = $"https://{this.Post.Forum.PortalSettings.DefaultPortalAlias}{DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file)}";
-                            imgUrl = Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(imgUrl, this.Post.Forum.PortalSettings), this.Post.Forum.PortalSettings);
+                            var fileUrl = DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file);
+                            var imgUrl = Utilities.GetImageUrl(fileUrl, this.Post.Forum.PortalSettings);
                             var tag = $"<img src=\"{imgUrl}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />";
                             this.Body = this.Body.Replace(match.Groups["tag"].Value, tag);
                             DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.Save(this, this.ContentId);

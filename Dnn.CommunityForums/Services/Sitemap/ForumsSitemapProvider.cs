@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
 
                 try
                 {
-                    this.AppendModuleUrls(module, portalAlias, sitemapUrlsByUrl);
+                    this.AppendModuleUrls(module, ps, sitemapUrlsByUrl);
                 }
                 catch (Exception ex)
                 {
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
             return sitemapUrlsByUrl.Values.ToList();
         }
 
-        private void AppendModuleUrls(ModuleInfo module, string portalAlias, IDictionary<string, SitemapUrl> sitemapUrlsByUrl)
+        private void AppendModuleUrls(ModuleInfo module, PortalSettings ps, IDictionary<string, SitemapUrl> sitemapUrlsByUrl)
         {
             var tab = TabController.Instance.GetTab(module.TabID, module.PortalID);
             bool isSecureTab = tab != null && tab.IsSecure;
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     continue;
                 }
 
-                link = Utilities.ResolveUrl(link, portalAlias, isSecureTab);
+                link = Utilities.ResolveUrl(link, ps);
                 if (string.IsNullOrWhiteSpace(link))
                 {
                     continue;
