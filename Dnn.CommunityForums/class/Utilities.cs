@@ -1810,7 +1810,50 @@ namespace DotNetNuke.Modules.ActiveForums
             return tag;
         }
 
-        internal static string ResolveUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        /// <summary>Gets the URL suitable for an image, which must NOT contain culture/language and needs to properly handle child portals.</summary>
+        /// <param name="imageUrl">The "FileUrl" for an image.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <returns>A Url to the image.</returns>
+        internal static string GetImageUrl(string imageUrl, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return GetImageUrl(imageUrl: imageUrl, defaultPortalAlias: portalSettings?.DefaultPortalAlias, cultureCode: portalSettings?.CultureCode, portalSettings.SSLEnabled);
+        }
+
+        /// <summary>Gets the URL suitable for an image, which must NOT contain culture/language and needs to properly handle child portals.</summary>
+        /// <param name="imageUrl">The "FileUrl" for an image.</param>
+        /// <param name="defaultPortalAlias">The default portal alias.</param>
+        /// <param name="cultureCode">Portal culture code, e.g. en-US.</param>
+        /// <param name="sslEnabled">Boolean if SSL enabled.</param>
+        /// <returns>A Url to the image.</returns>
+        internal static string GetImageUrl(string imageUrl, string defaultPortalAlias, string cultureCode, bool sslEnabled = true)
+        {
+            if (imageUrl.StartsWith("/", StringComparison.InvariantCultureIgnoreCase))
+            {
+                imageUrl = imageUrl.Substring(1);
+            }
+
+            var http_https = sslEnabled ? "https://" : "http://";
+            return RemoveCultureFromUrl($"{http_https}{GetHostNameAndPortFromPortalAlias(defaultPortalAlias)}/{imageUrl}", cultureCode);
+        }
+
+        /// <summary>Gets the hostname portion of the default portal alias.</summary>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <returns>Resolves the host name portion of the default portal alias for the specified portal.</returns>
+        internal static string GetHostNameFromPortalAlias(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return GetHostNameAndPortFromPortalAlias(portalSettings.DefaultPortalAlias);
+        }
+
+        /// <summary>Gets the hostname portion of the default portal alias.</summary>
+        /// <param name="defaultPortalAlias">Default Portal Alias.</param>
+        /// <returns>Resolves the host name portion of the default portal alias for the specified portal.</returns>
+        internal static string GetHostNameAndPortFromPortalAlias(string defaultPortalAlias)
+        {
+            var uri = new UriBuilder($"https://{defaultPortalAlias}").Uri;
+            return uri.IsDefaultPort ? uri.Host : $"{uri.Host}:{uri.Port}";
+        }
+
+        internal static string ResolveUrl(string url,  DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             return ResolveUrl(url: url, defaultPortalAlias: portalSettings?.DefaultPortalAlias, sslEnabled: portalSettings?.SSLEnabled ?? true);
         }
@@ -1829,17 +1872,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 link = pathAndQuery;
             }
 
-            var defaultAlias = defaultPortalAlias;
-            var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
-            if (defaultAlias.Contains("/"))
+            if (defaultPortalAlias.Contains("/"))
             {
-                var subDomain = defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                var subDomain = defaultPortalAlias.Substring(defaultPortalAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
                 if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
                 {
                     link = link.Substring(subDomain.Length);
                 }
             }
 
+            var domain = DotNetNuke.Common.Globals.AddHTTP(defaultPortalAlias);
             url = url.Replace(url, $"{domain}{link}");
 
             if (sslEnabled && url.StartsWith("http://"))
@@ -1852,6 +1894,21 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return url;
+        }
+
+        internal static string RemoveCultureFromUrl(string url, string cultureCode)
+        {
+            if (!string.IsNullOrEmpty(cultureCode) && url.ToLowerInvariant().Contains($"/{cultureCode?.ToLowerInvariant()}/"))
+            {
+                url = url.ToLowerInvariant().Replace($"/{cultureCode.ToLowerInvariant()}/", "/");
+            }
+
+            return url;
+        }
+
+        internal static string RemoveCultureFromUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return RemoveCultureFromUrl(url: url, cultureCode: portalSettings?.CultureCode);
         }
 
         internal static string GetSha256Hash(string input)
@@ -1939,16 +1996,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return false;
-        }
-
-        internal static string RemoveCultureFromUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
-        {
-            if (!string.IsNullOrEmpty(portalSettings?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalSettings?.CultureCode?.ToLowerInvariant()}/"))
-            {
-                url = url.ToLowerInvariant().Replace($"/{portalSettings.CultureCode.ToLowerInvariant()}/", "/");
-            }
-
-            return url;
         }
     }
 }

@@ -1210,5 +1210,36 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Assert
             Assert.That(result, Is.EqualTo(expected));
         }
+
+        [Test]
+        [TestCase("example.com/child1", "example.com", TestName = "GetHostNameFromPortalAlias_ChildPortal_ReturnsHost")]
+        [TestCase("example.com/child1/en-us", "example.com", TestName = "GetHostNameFromPortalAlias_ChildPortalWithCulture_ReturnsHost")]
+        [TestCase("example.com", "example.com", TestName = "GetHostNameFromPortalAlias_DomainOnly_ReturnsHost")]
+        [TestCase("sub.example.com:8080/en-us", "sub.example.com:8080", TestName = "GetHostNameFromPortalAlias_WithSubpathAndPort_ReturnsHostWithoutSubpathButWithPort")]
+        [TestCase("example.com/en-us/", "example.com", TestName = "GetHostNameFromPortalAlias_WithTrailingSlashAndSubpath_ReturnsHost")]
+        public void GetHostNameFromPortalAlias_VariousInputs_ReturnsExpected(string defaultPortalAlias, string expected)
+        {
+            // Arrange & Act
+            var result = Utilities.GetHostNameAndPortFromPortalAlias(defaultPortalAlias);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        [TestCase("Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com", "en-US", true, "https://example.com/Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_Portal0")]
+        [TestCase("Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com/en-US", "en-US", true, "https://example.com/Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_PortalWithCulture")]
+        [TestCase("child1/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com/child1", "", true, "https://example.com/child1/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_ChildPortalWithoutCulture")]
+        [TestCase("child2/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com/child2/en-us", "en-US", true, "https://example.com/child2/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_ChildPortalWithCulture")]
+        [TestCase("Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "sub.example.com:8080/en-us", "en-US", true, "https://sub.example.com:8080/Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_WithSubpathAndPort")]
+        [TestCase("Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com/en-us/", "en-US", true, "https://example.com/Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_WithTrailingSlashAndSubpath")]
+        public void GetImageUrl_VariousInputs_ReturnsExpected(string imageUrl, string defaultPortalAlias, string cultureCode, bool sslEnabled, string expected)
+        {
+            // Arrange & Act
+            var result = Utilities.GetImageUrl(imageUrl: imageUrl, defaultPortalAlias: defaultPortalAlias, cultureCode: cultureCode, sslEnabled: sslEnabled);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
     }
 }

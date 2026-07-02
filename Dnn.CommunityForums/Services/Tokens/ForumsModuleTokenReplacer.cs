@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                     case "portallogourl":
                         {
                             var logoUrl = FileManager.Instance.GetUrl(FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.LogoFile));
-                            return PropertyAccess.FormatString(Utilities.RemoveCultureFromUrl(url: Utilities.ResolveUrl(url: $"https://{this.PortalSettings.DefaultPortalAlias}{logoUrl}", portalSettings: this.PortalSettings), portalSettings: this.portalSettings), format);
+                            return PropertyAccess.FormatString(Utilities.GetImageUrl(imageUrl: logoUrl, portalSettings: this.PortalSettings), format);
                         }
 
                     case "portalurlwithoutculture":
