@@ -142,7 +142,7 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL]') AND type in (N'U'))
     AND NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ArchivedURLs]') AND type in (N'U'))
 BEGIN
-    EXEC sp_rename '{databaseOwner}{objectQualifier}activeforums_URL', 'activeforums_ArchivedURLs'
+    EXEC sp_rename '{databaseOwner}{objectQualifier}activeforums_URL', '{databaseOwner}{objectQualifier}activeforums_ArchivedURLs'
 END
 GO
 

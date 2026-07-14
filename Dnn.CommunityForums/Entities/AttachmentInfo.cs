@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Tokens;
 
-    [TableName("activeforums_Attachments")]
+    [TableName("communityforums_Attachments")]
     [PrimaryKey("AttachmentId", AutoIncrement = true)]
     public class AttachmentInfo
     {

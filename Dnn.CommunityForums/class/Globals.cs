@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ThemesPath = Globals.ModulePath + "themes/";
 
         public const string AvatarRefreshGravatar = "GRAVATAR";
-        public const string LegacyAvatarsFolderName = "activeforums_Avatars";
+        public const string LegacyAvatarsFolderName = "communityforums_Avatars";
 
         public const string DefaultBadgesFolderName = "DNNCommunityForums/Badges";
         public const string ContentFolderNameBase = "DNNCommunityForums/content/";
@@ -132,8 +132,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string EmbeddedImagesFolderNameFormatString = "DNNCommunityForums/content/{0}/{1}/images/";
         public const string AttachmentsFolderNameFormatString = "DNNCommunityForums/content/{0}/{1}/attachments/";
         public const string LegacyAttachmentFileNameFormatString = "__{0}__{1}__{2}";
-        public const string LegacyAttachmentsFolderName = "activeforums_Attach";
-        public const string LegacyAttachmentUploadsFolderName = "activeforums_Upload";
+        public const string LegacyAttachmentsFolderName = "communityforums_Attach";
+        public const string LegacyAttachmentUploadsFolderName = "communityforums_Upload";
         public const string AttachmentUploadsFolderName = "DNNCommunityForums/upload";
         public const string AttachmentFileNameFormatString = "{0}_{1}{2}";
 

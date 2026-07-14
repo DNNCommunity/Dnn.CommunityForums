@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.ParentForumId = this.ForumId;
             }
 
-            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_ForumContent_List", this.PortalId, this.ModuleId, this.ForumGroupId, this.ForumId, this.ParentForumId))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("communityforums_ForumContent_List", this.PortalId, this.ModuleId, this.ForumGroupId, this.ForumId, this.ParentForumId))
             {
                 // ParentForum Section
                 dr.Read();

@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 topicReadCount = DataContext.Instance().ExecuteQuery<int>(
                     System.Data.CommandType.Text,
-                    "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics t ON t.TopicId = tt.TopicId WHERE tt.UserId = @0 AND tt.ForumId = @1 AND t.IsDeleted = 0",
+                    "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Topics_Tracking tt LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_Topics t ON t.TopicId = tt.TopicId WHERE tt.UserId = @0 AND tt.ForumId = @1 AND t.IsDeleted = 0",
                     userId,
                     forumId).FirstOrDefault();
 
@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return DataContext.Instance().ExecuteQuery<int>(
                 System.Data.CommandType.Text,
-                "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt WHERE tt.UserId = @0",
+                "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Topics_Tracking tt WHERE tt.UserId = @0",
                 userId).FirstOrDefault();
         }
 
@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return DataContext.Instance().ExecuteQuery<int>(
                 System.Data.CommandType.Text,
-                "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt WHERE tt.UserId = @0 AND DateAdded IS NOT NULL AND DateAdded >= @1",
+                "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Topics_Tracking tt WHERE tt.UserId = @0 AND DateAdded IS NOT NULL AND DateAdded >= @1",
                 userId,
                 minDateTime).FirstOrDefault();
         }

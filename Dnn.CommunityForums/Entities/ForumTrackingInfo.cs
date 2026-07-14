@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Log.EventLog;
 
-    [TableName("activeforums_Forums_Tracking")]
+    [TableName("communityforums_Forums_Tracking")]
     [PrimaryKey("TrackingId", AutoIncrement = true)]
 
     internal class ForumTrackingInfo

@@ -28,9 +28,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     /// <summary>
     /// Represents a ranking for users in the DNN Community Forums module.
     /// </summary>
-    [TableName("activeforums_Ranks")]
+    [TableName("communityforums_Ranks")]
     [PrimaryKey("RankId", AutoIncrement = true)]
-    [Cacheable("activeforums_Ranks", CacheItemPriority.Low)]
+    [Cacheable("communityforums_Ranks", CacheItemPriority.Low)]
     [Scope("ModuleId")]
     public class RankInfo
     {

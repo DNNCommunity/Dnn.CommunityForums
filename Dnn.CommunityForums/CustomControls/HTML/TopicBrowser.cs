@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int recordCount = 0;
             int i = 0;
             sb.Append(this.HeaderTemplate);
-            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_TopicsList", this.PortalId, this.PageIndex, this.PageSize, this.ForumIds, this.CategoryId, this.TagId))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("communityforums_TopicsList", this.PortalId, this.PageIndex, this.PageSize, this.ForumIds, this.CategoryId, this.TagId))
             {
                 while (dr.Read())
                 {

@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_ForumTopics")]
+    [TableName("communityforums_ForumTopics")]
     [PrimaryKey("ForumTopicId", AutoIncrement = true)]
 
     internal class ForumTopicInfo

@@ -24,9 +24,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_Properties")]
+    [TableName("communityforums_Properties")]
     [PrimaryKey("PropertyId", AutoIncrement = true)]
-    [Cacheable("activeforums_Properties", CacheItemPriority.Low)]
+    [Cacheable("communityforums_Properties", CacheItemPriority.Low)]
     public class PropertyInfo
     {
         public int PropertyId { get; set; }

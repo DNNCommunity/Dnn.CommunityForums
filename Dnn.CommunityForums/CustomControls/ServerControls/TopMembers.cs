@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             var sb = new System.Text.StringBuilder();
-            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_UI_TopMembers", this.PortalId, this.Rows))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("communityforums_UI_TopMembers", this.PortalId, this.Rows))
             {
                 while (dr.Read())
                 {
