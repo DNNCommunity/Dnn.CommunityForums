@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string Render()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_TopicWithReplies", this.PortalId, this.TopicId, this.PageIndex, this.PageSize))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("communityforums_TopicWithReplies", this.PortalId, this.TopicId, this.PageIndex, this.PageSize))
             {
                 while (dr.Read())
                 {

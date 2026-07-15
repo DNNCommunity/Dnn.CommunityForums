@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("activeforums_UI_TagCloud", this.PortalId, this.ModuleId, this.ForumIds, this.TagCount))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("communityforums_UI_TagCloud", this.PortalId, this.ModuleId, this.ForumIds, this.TagCount))
             {
                 ControlUtils ctlUtils = new ControlUtils();
                 string sURL = string.Empty;

@@ -368,7 +368,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController.Instance.DeleteForForum(moduleId, forumId);
             new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().DeleteForForum(moduleId, forumId);
             this._repositoryControllerBase.DeleteById(forumId);
-            DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_Forums_RepairSort", forumId, parentForumId);
+            DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Forums_RepairSort", forumId, parentForumId);
             DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.ClearAll(moduleId);
         }
 
@@ -542,7 +542,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                return DataContext.Instance().ExecuteQuery<DateTime>(System.Data.CommandType.Text, "SELECT LastAccessDate FROM {databaseOwner}{objectQualifier}activeforums_Forums_Tracking WHERE ForumId = @0 AND UserId = @1", forumId, userId).FirstOrDefault();
+                return DataContext.Instance().ExecuteQuery<DateTime>(System.Data.CommandType.Text, "SELECT LastAccessDate FROM {databaseOwner}{objectQualifier}communityforums_Forums_Tracking WHERE ForumId = @0 AND UserId = @1", forumId, userId).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -555,7 +555,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev", forumId);
+                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_SaveTopicNextPrev", forumId);
                 return true;
             }
             catch (Exception ex)
@@ -569,7 +569,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_Forums_LastUpdates", forumId);
+                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Forums_LastUpdates", forumId);
                 return true;
             }
             catch (Exception ex)

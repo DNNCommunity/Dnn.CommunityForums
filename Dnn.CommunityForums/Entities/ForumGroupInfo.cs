@@ -31,11 +31,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
 
-    [TableName("activeforums_Groups")]
+    [TableName("communityforums_Groups")]
     [PrimaryKey("ForumGroupId", AutoIncrement = true)]
     [Scope("ModuleId")]
 
-    // TODO [Cacheable("activeforums_Groups", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
+    // TODO [Cacheable("communityforums_Groups", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public partial class ForumGroupInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
         [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.ForumGroupInfo;

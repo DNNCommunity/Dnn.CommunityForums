@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Tokens;
 
-    [TableName("activeforums_Replies")]
+    [TableName("communityforums_Replies")]
     [PrimaryKey("ReplyId")]
     public partial class ReplyInfo : DotNetNuke.Modules.ActiveForums.Entities.IPostInfo
     {

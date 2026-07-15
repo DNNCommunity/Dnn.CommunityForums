@@ -24,10 +24,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_Categories")]
+    [TableName("communityforums_Categories")]
     [PrimaryKey("CategoryId", AutoIncrement = true)]
     [Scope("ModuleId")]
-    [Cacheable("activeforums_Categories", CacheItemPriority.Low)]
+    [Cacheable("communityforums_Categories", CacheItemPriority.Low)]
     public class CategoryInfo
     {
         public int CategoryId { get; set; }

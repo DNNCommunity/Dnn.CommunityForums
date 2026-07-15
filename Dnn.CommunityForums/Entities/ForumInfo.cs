@@ -45,11 +45,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using Newtonsoft.Json;
 
-    [TableName("activeforums_Forums")]
+    [TableName("communityforums_Forums")]
     [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
     [Scope("ModuleId")]
 
-    // TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
+    // TODO [Cacheable("communityforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public class ForumInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
@@ -117,12 +117,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TotalLikeCount => this.totalLikeCount ?? (this.totalLikeCount = DataContext.Instance().ExecuteQuery<int>(
             CommandType.Text,
             @"SELECT COUNT(1)
-                FROM {databaseOwner}{objectQualifier}activeforums_Likes l
-                INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content c ON c.ContentId = l.PostId
-                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics t ON t.ContentId = c.ContentId
-                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Replies r ON r.ContentId = c.ContentId
-                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics ftTopic ON ftTopic.TopicId = t.TopicId
-                LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics ftReply ON ftReply.TopicId = r.TopicId
+                FROM {databaseOwner}{objectQualifier}communityforums_Likes l
+                INNER JOIN {databaseOwner}{objectQualifier}communityforums_Content c ON c.ContentId = l.PostId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_Topics t ON t.ContentId = c.ContentId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_Replies r ON r.ContentId = c.ContentId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_ForumTopics ftTopic ON ftTopic.TopicId = t.TopicId
+                LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_ForumTopics ftReply ON ftReply.TopicId = r.TopicId
                 WHERE l.Checked = 1
                   AND COALESCE(ftTopic.ForumId, ftReply.ForumId) = @0",
             this.ForumID).FirstOrDefault()).Value;

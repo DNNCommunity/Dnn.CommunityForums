@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_Subscriptions")]
+    [TableName("communityforums_Subscriptions")]
     [PrimaryKey("Id", AutoIncrement = true)]
     public class SubscriptionInfo
     {

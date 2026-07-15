@@ -24,10 +24,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_Filters")]
+    [TableName("communityforums_Filters")]
     [PrimaryKey("FilterId", AutoIncrement = true)]
     [Scope("ModuleId")]
-    [Cacheable("activeforums_Filters", CacheItemPriority.Low)]
+    [Cacheable("communityforums_Filters", CacheItemPriority.Low)]
     public partial class FilterInfo
     {
         public int FilterId { get; set; }

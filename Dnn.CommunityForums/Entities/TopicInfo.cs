@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.Tokens;
 
-    [TableName("activeforums_Topics")]
+    [TableName("communityforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
     public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.IPostInfo
     {

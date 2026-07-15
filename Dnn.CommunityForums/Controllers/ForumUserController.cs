@@ -269,7 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 var postsRemoved = new StringBuilder();
 
-                var contentForBannedUser = DataContext.Instance().ExecuteQuery<JournalContentForUser>(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}activeforums_Content_GetJournalKeysForUser", authorId, moduleId).ToList();
+                var contentForBannedUser = DataContext.Instance().ExecuteQuery<JournalContentForUser>(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Content_GetJournalKeysForUser", authorId, moduleId).ToList();
                 string objectKey;
                 contentForBannedUser.ForEach(c =>
                 {
@@ -606,11 +606,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static void UpdateUserTopicCount(int portalId, int userId)
         {
-            string sSql = "UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET TopicCount = ISNULL((SELECT COUNT(t.TopicId) ";
-            sSql += "FROM {databaseOwner}{objectQualifier}activeforums_Topics as t ";
-            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content as c ON c.ContentId = t.ContentId AND c.AuthorId = @1 ";
-            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId ";
-            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f ON f.ForumId = ft.ForumId ";
+            string sSql = "UPDATE {databaseOwner}{objectQualifier}communityforums_UserProfiles SET TopicCount = ISNULL((SELECT COUNT(t.TopicId) ";
+            sSql += "FROM {databaseOwner}{objectQualifier}communityforums_Topics as t ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}communityforums_Content as c ON c.ContentId = t.ContentId AND c.AuthorId = @1 ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}communityforums_ForumTopics as ft ON ft.TopicId = t.TopicId ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}communityforums_Forums as f ON f.ForumId = ft.ForumId ";
             sSql += "WHERE c.AuthorId = @1 AND t.IsApproved = 1 AND t.IsDeleted=0 AND f.PortalId=@0),0) ";
             sSql += "WHERE UserId = @1 AND PortalId = @0";
             DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);
@@ -619,11 +619,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static void UpdateUserReplyCount(int portalId, int userId)
         {
-            string sSql = "UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles SET ReplyCount = ISNULL((SELECT COUNT(r.ReplyId) ";
-            sSql += "FROM {databaseOwner}{objectQualifier}activeforums_Replies as r ";
-            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content as c ON c.ContentId = r.ContentId AND c.AuthorId = @1 ";
-            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = r.TopicId ";
-            sSql += "INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f ON f.ForumId = ft.ForumId ";
+            string sSql = "UPDATE {databaseOwner}{objectQualifier}communityforums_UserProfiles SET ReplyCount = ISNULL((SELECT COUNT(r.ReplyId) ";
+            sSql += "FROM {databaseOwner}{objectQualifier}communityforums_Replies as r ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}communityforums_Content as c ON c.ContentId = r.ContentId AND c.AuthorId = @1 ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}communityforums_ForumTopics as ft ON ft.TopicId = r.TopicId ";
+            sSql += "INNER JOIN {databaseOwner}{objectQualifier}communityforums_Forums as f ON f.ForumId = ft.ForumId ";
             sSql += "WHERE c.AuthorId = @1 AND r.IsApproved = 1 AND r.IsDeleted=0 AND f.PortalId=@0),0) ";
             sSql += "WHERE UserId = @1 AND PortalId = @0";
             DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);

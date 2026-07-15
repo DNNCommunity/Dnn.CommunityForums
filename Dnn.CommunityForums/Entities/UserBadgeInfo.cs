@@ -31,9 +31,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     /// <summary>
     /// Represents a user badge assignment in the DNN Community Forums module.
     /// </summary>
-    [TableName("activeforums_UserBadges")]
+    [TableName("communityforums_UserBadges")]
     [PrimaryKey("UserBadgeId", AutoIncrement = true)]
-    [Cacheable("activeforums_UserBadges", CacheItemPriority.Normal)]
+    [Cacheable("communityforums_UserBadges", CacheItemPriority.Normal)]
     [Scope("ModuleId")]
     public class UserBadgeInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {

@@ -30,9 +30,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     /// <summary>
     /// Represents a user content assignment in the DNN Community Forums module.
     /// </summary>
-    [TableName("activeforums_UserMentions")]
+    [TableName("communityforums_UserMentions")]
     [PrimaryKey("UserMentionId", AutoIncrement = true)]
-    [Cacheable("activeforums_UserMentions", CacheItemPriority.Normal)]
+    [Cacheable("communityforums_UserMentions", CacheItemPriority.Normal)]
     [Scope("ModuleId")]
     public class UserMentionInfo
     {

@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     attachmentFileNames.Add(new System.IO.FileInfo(attachmentFileName).Name);
                 }
 
-                var databaseFileNames = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT FileName FROM {databaseOwner}{objectQualifier}activeforums_Attachments ORDER BY FileName").ToList();
+                var databaseFileNames = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT FileName FROM {databaseOwner}{objectQualifier}communityforums_Attachments ORDER BY FileName").ToList();
 
                 foreach (var attachmentFileName in attachmentFileNames)
                 {
@@ -299,7 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static void FillMissingTopicUrls_070012()
         {
-            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteSQL("SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {databaseOwner}{objectQualifier}activeforums_Topics t INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content c ON c.ContentId = t.ContentId INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteSQL("SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {databaseOwner}{objectQualifier}communityforums_Topics t INNER JOIN {databaseOwner}{objectQualifier}communityforums_ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {databaseOwner}{objectQualifier}communityforums_Content c ON c.ContentId = t.ContentId INNER JOIN {databaseOwner}{objectQualifier}communityforums_Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
             {
                 while (dr.Read())
                 {
@@ -1053,11 +1053,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                var message = $"dropping column FileData from activeforums_Attachments table";
+                var message = $"dropping column FileData from communityforums_Attachments table";
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments]')) ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Attachments] DROP COLUMN FileData");
+                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Attachments]')) ALTER TABLE {databaseOwner}[{objectQualifier}communityforums_Attachments] DROP COLUMN FileData");
             }
             catch (Exception ex)
             {
@@ -1147,10 +1147,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         /* use direct SQL command rather than DAL2 entity so the column can be removed after data is migrated */
                         byte[] fileBytes = null;
-                        var fileDataColumnObjectId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT object_id FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments]')").FirstOrDefault();
+                        var fileDataColumnObjectId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT object_id FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Attachments]')").FirstOrDefault();
                         if (fileDataColumnObjectId != null)
                         {
-                            var fileData = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<byte[]>(System.Data.CommandType.Text, "SELECT FileData FROM {databaseOwner}[{objectQualifier}activeforums_Attachments] WHERE AttachmentId = @0", attachment.AttachmentId).FirstOrDefault();
+                            var fileData = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<byte[]>(System.Data.CommandType.Text, "SELECT FileData FROM {databaseOwner}[{objectQualifier}communityforums_Attachments] WHERE AttachmentId = @0", attachment.AttachmentId).FirstOrDefault();
                             if (fileData != null && fileData.Length > 0)
                             {
                                 fileBytes = fileData;
@@ -1357,10 +1357,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         /* use direct SQL command rather than DAL2 entity so the column can be removed after data is migrated */
                         byte[] fileBytes = null;
-                        var fileDataColumnObjectId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT object_id FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments]')").FirstOrDefault();
+                        var fileDataColumnObjectId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT object_id FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Attachments]')").FirstOrDefault();
                         if (fileDataColumnObjectId != null)
                         {
-                            var fileData = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<byte[]>(System.Data.CommandType.Text, "SELECT FileData FROM {databaseOwner}[{objectQualifier}activeforums_Attachments] WHERE AttachmentId = @0", attachment.AttachmentId).FirstOrDefault();
+                            var fileData = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<byte[]>(System.Data.CommandType.Text, "SELECT FileData FROM {databaseOwner}[{objectQualifier}communityforums_Attachments] WHERE AttachmentId = @0", attachment.AttachmentId).FirstOrDefault();
                             if (fileData != null && fileData.Length > 0)
                             {
                                 fileBytes = fileData;

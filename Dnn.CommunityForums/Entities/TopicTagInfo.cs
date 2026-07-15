@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_Topics_Tags")]
+    [TableName("communityforums_Topics_Tags")]
     [PrimaryKey("TopicTagId", AutoIncrement = true)]
     public class TopicTagInfo
     {

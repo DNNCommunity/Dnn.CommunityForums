@@ -29,9 +29,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Tokens;
 
-    [TableName("activeforums_Likes")]
+    [TableName("communityforums_Likes")]
     [PrimaryKey("Id", AutoIncrement = true)]
-    [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
+    [Cacheable("communityforums_Likes", CacheItemPriority.Normal)]
     internal class LikeInfo : DotNetNuke.Services.Tokens.IPropertyAccess
     {
         [IgnoreColumn] private string cacheKeyTemplate => CacheKeys.LikeInfo;

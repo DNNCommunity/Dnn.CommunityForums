@@ -29,9 +29,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
-    [TableName("activeforums_Permissions")]
+    [TableName("communityforums_Permissions")]
     [PrimaryKey("PermissionsId", AutoIncrement = true)]
-    [Cacheable("activeforums_Permissions", CacheItemPriority.Low)]
+    [Cacheable("communityforums_Permissions", CacheItemPriority.Low)]
     [Scope("ModuleId")]
     public class PermissionInfo
     {

@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
 
-    [TableName("activeforums_Content")]
+    [TableName("communityforums_Content")]
     [PrimaryKey("ContentId", AutoIncrement = true)]
     public class ContentInfo
     {

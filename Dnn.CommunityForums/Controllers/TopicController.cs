@@ -122,8 +122,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
-                       FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t
-                       INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_ForumTopics] ft
+                       FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
+                       INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
                            ON ft.TopicId = t.TopicId
                        WHERE ft.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                          AND t.IsAnnounce = 1
@@ -159,8 +159,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                         System.Data.CommandType.Text,
                         $@"SELECT t.TopicId
-                           FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t
-                           INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_ForumTopics] ft
+                           FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
+                           INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
                                ON ft.TopicId = t.TopicId
                            WHERE ft.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                              AND t.IsAnnounce = 1
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
-                       FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                       FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                        WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                          AND t.ReplyCount > 0
                          AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)",
@@ -233,7 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT t.TopicId
-                        FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                         WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                             AND t.ReplyCount > 0
                             AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)
@@ -269,7 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
-                       FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                       FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                        WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                          AND t.IsLocked = 0
                          AND t.StatusId = 1
@@ -309,7 +309,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT t.TopicId
-                        FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                         WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                             AND t.IsLocked = 0
                             AND t.StatusId = 1
@@ -346,7 +346,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
-                       FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                       FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                        WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                          AND t.LastReplyId = 0
                          AND t.IsLocked = 0
@@ -382,7 +382,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT t.TopicId
-                        FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                         WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                             AND t.LastReplyId = 0
                             AND t.IsLocked = 0
@@ -420,7 +420,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
-                       FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                       FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                        WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                          AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)",
                     forumsIdsList,
@@ -454,7 +454,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                         System.Data.CommandType.Text,
                         $@"SELECT t.TopicId
-                           FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                           FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                            WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                              AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)
                            ORDER BY t.LastReplyDate DESC
@@ -493,10 +493,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     $@"SELECT COUNT(DISTINCT TopicId)
                         FROM (
                             SELECT DISTINCT t.TopicId
-                            FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Content] c
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t
+                            FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
                                 ON t.ContentId = c.ContentId
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_ForumTopics] ft
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
                                 ON ft.TopicId = t.TopicId
                             WHERE c.AuthorId = @2
                                 AND c.IsDeleted = 0
@@ -505,14 +505,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 AND (@1=0 OR DATEDIFF(mi, c.DateCreated, GETUTCDATE()) <= @1)
                             UNION
                             SELECT DISTINCT r.TopicId
-                            FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Content] c
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Replies] r
+                            FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Replies] r
                                 ON r.ContentId = c.ContentId
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
                                 ON t.TopicId = r.TopicId
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Content] tc
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Content] tc
                                 ON tc.ContentId = t.ContentId
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_ForumTopics] ft
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
                                 ON ft.TopicId = r.TopicId
                             WHERE c.AuthorId = @2
                                 AND c.IsDeleted = 0
@@ -556,10 +556,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 SELECT DISTINCT TopicIds.TopicId, c.DateCreated
                                 FROM (
                                     SELECT DISTINCT t.TopicId
-                                    FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Content] c
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t
+                                    FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
                                         ON t.ContentId = c.ContentId
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_ForumTopics] ft
+                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
                                         ON ft.TopicId = t.TopicId
                                     WHERE c.AuthorId = @2
                                         AND c.IsDeleted = 0
@@ -568,14 +568,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                         AND (@1=0 OR DATEDIFF(mi, c.DateCreated, GETUTCDATE()) <= @1)
                                     UNION
                                     SELECT DISTINCT r.TopicId
-                                    FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Content] c
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Replies] r
+                                    FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Replies] r
                                         ON r.ContentId = c.ContentId
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t
+                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
                                         ON t.TopicId = r.TopicId
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Content] tc
+                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Content] tc
                                         ON tc.ContentId = t.ContentId
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_ForumTopics] ft
+                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
                                         ON ft.TopicId = r.TopicId
                                     WHERE c.AuthorId = @2
                                         AND c.IsDeleted = 0
@@ -583,9 +583,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                         AND ft.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                                         AND (@1=0 OR DATEDIFF(mi, tc.DateCreated, GETUTCDATE()) <= @1)
                                 ) AS TopicIds
-                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
                                     ON t.TopicId = TopicIds.TopicId
-                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Content] c
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
                                     ON c.ContentId = t.ContentId
                                     ORDER BY c.DateCreated DESC
                                     OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY
@@ -627,19 +627,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 SELECT TopicIds.TopicId, TopicIds.LastReplyDate
                                 FROM (
                                     SELECT DISTINCT t.TopicId, t.LastReplyDate
-                                    FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
-                                    LEFT OUTER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Forums_Tracking] AS ftr
+                                    FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
+                                    LEFT OUTER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Forums_Tracking] AS ftr
                                     ON ftr.ForumId = t.ForumId AND ftr.UserId = @2
                                     WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                                         AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)
                                         AND (
 		                                        (
-			                                        t.TopicId NOT IN (SELECT TopicId FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Topics_Tracking] WHERE UserId = @2)
+			                                        t.TopicId NOT IN (SELECT TopicId FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tracking] WHERE UserId = @2)
 			                                        AND t.TopicId > IsNull(ftr.MaxTopicRead,0)
 		                                        )
 		                                        OR
 		                                        (
-			                                        ISNULL(t.LastReplyId, 0) > (SELECT IsNull(MAX(LastReplyId),0) FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Topics_Tracking] WHERE UserId = @2 AND TopicId = t.TopicId)
+			                                        ISNULL(t.LastReplyId, 0) > (SELECT IsNull(MAX(LastReplyId),0) FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tracking] WHERE UserId = @2 AND TopicId = t.TopicId)
 			                                        AND ISNULL(t.LastReplyId, 0) > IsNull(ftr.MaxReplyRead,0)
 		                                        )
 	                                        )                                    
@@ -681,19 +681,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 SELECT TopicIds.TopicId, TopicIds.LastReplyDate
                                 FROM (
                                     SELECT DISTINCT t.TopicId, t.LastReplyDate
-                                    FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
-                                    LEFT OUTER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Forums_Tracking] AS ftr
+                                    FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
+                                    LEFT OUTER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Forums_Tracking] AS ftr
                                     ON ftr.ForumId = t.ForumId AND ftr.UserId = @2
                                     WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                                         AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)
                                         AND (
 		                                        (
-			                                        t.TopicId NOT IN (SELECT TopicId FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Topics_Tracking] WHERE UserId = @2)
+			                                        t.TopicId NOT IN (SELECT TopicId FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tracking] WHERE UserId = @2)
 			                                        AND t.TopicId > IsNull(ftr.MaxTopicRead,0)
 		                                        )
 		                                        OR
 		                                        (
-			                                        ISNULL(t.LastReplyId, 0) > (SELECT IsNull(MAX(LastReplyId),0) FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Topics_Tracking] WHERE UserId = @2 AND TopicId = t.TopicId)
+			                                        ISNULL(t.LastReplyId, 0) > (SELECT IsNull(MAX(LastReplyId),0) FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tracking] WHERE UserId = @2 AND TopicId = t.TopicId)
 			                                        AND ISNULL(t.LastReplyId, 0) > IsNull(ftr.MaxReplyRead,0)
 		                                        )
 	                                        )                                    
@@ -734,8 +734,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(DISTINCT t.TopicId)
-                       FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
-                       INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Topics_Tags] tt ON tt.TopicId = t.TopicId
+                       FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
+                       INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tags] tt ON tt.TopicId = t.TopicId
                        WHERE tt.TagId = @2
                          AND t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                          AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)",
@@ -773,8 +773,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             FROM (
                                 SELECT TopicIds.TopicId, TopicIds.DateCreated
                                 FROM (SELECT DISTINCT t.TopicId, t.DateCreated
-                                    FROM {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Topics_Tags] tt ON tt.TopicId = t.TopicId
+                                    FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
+                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tags] tt ON tt.TopicId = t.TopicId
                                     WHERE tt.TagId = @2
                                         AND t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                                         AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)                                  
@@ -804,8 +804,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     var topicId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
                         System.Data.CommandType.Text,
                         $@"SELECT t.TopicId
-                           FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t
-                           INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_ForumTopics] ft
+                           FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
+                           INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
                                ON ft.TopicId = t.TopicId
                            WHERE ft.ForumId = @0
                              AND t.URL_Hash = HASHBYTES('MD5', CONVERT(varbinary(8000), @1))

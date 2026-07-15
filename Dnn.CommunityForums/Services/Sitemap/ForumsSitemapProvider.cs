@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
 
             var results = DataContext.Instance().ExecuteQuery<SearchSitemapResult>(
                 CommandType.StoredProcedure,
-                "{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate",
+                "{databaseOwner}{objectQualifier}communityforums_Search_GetSearchItemsFromBegDate",
                 module.ModuleID,
                 SqlDateTime.MinValue.Value);
 

@@ -31,9 +31,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     /// <summary>
     /// Represents a badge in the DNN Community Forums module.
     /// </summary>
-    [TableName("activeforums_Badges")]
+    [TableName("communityforums_Badges")]
     [PrimaryKey("BadgeId", AutoIncrement = true)]
-    [Cacheable("activeforums_Badges", CacheItemPriority.Normal)]
+    [Cacheable("communityforums_Badges", CacheItemPriority.Normal)]
     [Scope("ModuleId")]
     public class BadgeInfo
     {

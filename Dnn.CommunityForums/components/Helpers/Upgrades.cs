@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
         internal static void MoveSettings_070011()
         {
-            /* at some point around v6, general module settings were moved from the activeforums_settings table to the DNN platform Settings table;
+            /* at some point around v6, general module settings were moved from the communityforums_settings table to the DNN platform Settings table;
              * the code that did that migration would check every time during page load (in ForumBase.OnLoad()) to see if the settings conversion was required.
              * So code has been moved here, and is now called once during module upgrade for one version to ensure that this is done.
              */
@@ -176,7 +176,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
             var templates = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<TemplateInfoForConversion>(
             System.Data.CommandType.Text,
-            @"SELECT ModuleId, TemplateType, FileName, Template FROM {databaseOwner}[{objectQualifier}activeforums_Templates]");
+            @"SELECT ModuleId, TemplateType, FileName, Template FROM {databaseOwner}[{objectQualifier}communityforums_Templates]");
             foreach (var templateInfo in templates)
             {
                 ModuleSettings moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
@@ -302,7 +302,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         {
                             var subject = DotNetNuke.Data.DataContext.Instance().ExecuteScalar<string>(
                             System.Data.CommandType.Text,
-                            @"SELECT TOP 1 Subject FROM {databaseOwner}[{objectQualifier}activeforums_Templates] WHERE TemplateType = 8 & ModuleId = @0",
+                            @"SELECT TOP 1 Subject FROM {databaseOwner}[{objectQualifier}communityforums_Templates] WHERE TemplateType = 8 & ModuleId = @0",
                             module.ModuleID);
                             try
                             {
@@ -423,7 +423,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         var modTemplateToggles = new string[] { "MODAPPROVENOTIFY", "MODREJECTNOTIFY", "MODMOVENOTIFY", "MODDELETENOTIFY", "MODNOTIFYNOTIFY", };
                         for (int i = 0; i < modTemplateIds.Length -1; i++)
                         {
-                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "INSERT INTO {databaseOwner}{objectQualifier}activeforums_Settings SELECT [ModuleId],[SettingsKey],'@2', CASE WHEN [SettingValue] <> '0' THEN 1 ELSE 0 END FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND [SettingName] = '@1'", module.ModuleID, modTemplateIds[i], modTemplateToggles[i]);
+                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "INSERT INTO {databaseOwner}{objectQualifier}communityforums_Settings SELECT [ModuleId],[SettingsKey],'@2', CASE WHEN [SettingValue] <> '0' THEN 1 ELSE 0 END FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @0 AND [SettingName] = '@1'", module.ModuleID, modTemplateIds[i], modTemplateToggles[i]);
                         }
 
                         foreach (var settingName in new string[]
@@ -441,7 +441,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             "PROFILETEMPLATEID",
                         })
                         {
-                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
+                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
                         }
 
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "FORUMTEMPLATEID");
@@ -643,7 +643,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
         internal static void DeleteObsoleteModuleSettings_100000()
         {
-            /* remove URLBASE depending on how old the install is, it might be in ModuleSettings or it might be in activeforums_Settings, or both */
+            /* remove URLBASE depending on how old the install is, it might be in ModuleSettings or it might be in communityforums_Settings, or both */
 
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
             {
@@ -657,7 +657,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             "URLBASE",
                         })
                         {
-                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
+                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
                         }
                     }
                 }
@@ -683,11 +683,11 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             {
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                var message = $"dropping table activeforums_Templates table";
+                var message = $"dropping table communityforums_Templates table";
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates]') AND type in (N'U')) DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Templates]");
+                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Templates]') AND type in (N'U')) DROP TABLE {databaseOwner}[{objectQualifier}communityforums_Templates]");
             }
             catch (Exception ex)
             {

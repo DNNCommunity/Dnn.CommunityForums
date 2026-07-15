@@ -24,10 +24,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_Tags")]
+    [TableName("communityforums_Tags")]
     [PrimaryKey("TagId", AutoIncrement = true)]
     [Scope("ModuleId")]
-    [Cacheable("activeforums_Tags", CacheItemPriority.Low)]
+    [Cacheable("communityforums_Tags", CacheItemPriority.Low)]
     public class TagInfo
     {
         public int TagId { get; set; }
