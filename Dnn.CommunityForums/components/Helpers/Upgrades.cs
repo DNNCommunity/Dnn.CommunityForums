@@ -663,7 +663,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
             }
 
-            /* remove PMTABID and update PMTYPE from 2 to 1 if needed */
+            /* remove PMTABID and update PMTYPE from 2 to 1 if needed (removing ventrian messaging) */
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
             {
                 foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
@@ -679,6 +679,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
         internal static void Remove_TemplatesTable_100000()
         {
+            /* NOTE: This table cannot be removed using SQL scripts because it is used in the upgrade process. Since all SQL scripts are executed before the upgrade processes, we need to remove this table in code after the upgrade process is complete. */
             try
             {
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
@@ -687,7 +688,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Templates]') AND type in (N'U')) DROP TABLE {databaseOwner}[{objectQualifier}communityforums_Templates]");
+                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DROP TABLE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Templates]");
+                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Templates]");
             }
             catch (Exception ex)
             {

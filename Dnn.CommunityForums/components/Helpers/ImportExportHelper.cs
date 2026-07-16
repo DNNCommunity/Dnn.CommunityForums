@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
     {
         internal static readonly IReadOnlyList<string> PortableEntityDependencyOrder =
         [
+            "userProfiles",
             "groups",
             "tags",
             "badges",
@@ -59,7 +60,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             "subscriptions",
             "archivedUrls",
             "forumTopics",
-            "userProfiles",
             "forumTracking",
             "userBadges",
         ];
@@ -639,6 +639,56 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         GetString(sourceSetting, "settingValue"));
                 }
 
+                foreach (var sourceUserProfile in GetElements(root, "userProfiles", "userProfile"))
+                {
+                    var resolvedUserId = ResolveUserIdOrDefault(portalId, GetInt(sourceUserProfile, "userId"));
+                    if (!resolvedUserId.HasValue || resolvedUserId.Value <= 0)
+                    {
+                        continue;
+                    }
+
+                    var forumUser = ForumUserController.Instance.GetByUserId(portalId, moduleId, resolvedUserId.Value);
+                    if (forumUser == null)
+                    {
+                        continue;
+                    }
+
+                    forumUser.TopicCount = GetInt(sourceUserProfile, "topicCount");
+                    forumUser.ReplyCount = GetInt(sourceUserProfile, "replyCount");
+                    forumUser.ViewCount = GetInt(sourceUserProfile, "viewCount");
+                    forumUser.AnswerCount = GetInt(sourceUserProfile, "answerCount");
+                    forumUser.RewardPoints = GetInt(sourceUserProfile, "rewardPoints");
+                    forumUser.UserCaption = GetString(sourceUserProfile, "userCaption");
+                    forumUser.AvatarLastRefresh = GetNullableDateTime(sourceUserProfile, "avatarLastRefresh");
+                    forumUser.AvatarSourceLastModified = GetNullableDateTime(sourceUserProfile, "avatarSourceLastModified");
+                    forumUser.AvatarFileId = GetNullableInt(sourceUserProfile, "avatarFileId");
+                    forumUser.DateCreated = GetDateTime(sourceUserProfile, "dateCreated", forumUser.DateCreated);
+                    forumUser.DateUpdated = GetNullableDateTime(sourceUserProfile, "dateUpdated");
+                    forumUser.DateLastActivity = GetNullableDateTime(sourceUserProfile, "dateLastActivity");
+                    forumUser.DateLastPost = GetNullableDateTime(sourceUserProfile, "dateLastPost");
+                    forumUser.DateLastReply = GetNullableDateTime(sourceUserProfile, "dateLastReply");
+                    forumUser.Signature = GetString(sourceUserProfile, "signature");
+                    forumUser.SignatureDisabled = GetBool(sourceUserProfile, "signatureDisabled");
+                    forumUser.TrustLevel = GetInt(sourceUserProfile, "trustLevel");
+                    forumUser.AdminWatch = GetBool(sourceUserProfile, "adminWatch");
+                    forumUser.AttachDisabled = GetBool(sourceUserProfile, "attachDisabled");
+                    forumUser.AvatarDisabled = GetBool(sourceUserProfile, "avatarDisabled");
+                    forumUser.PrefDefaultSort = GetString(sourceUserProfile, "prefDefaultSort");
+                    forumUser.PrefDefaultShowReplies = GetBool(sourceUserProfile, "prefDefaultShowReplies");
+                    forumUser.PrefJumpLastPost = GetBool(sourceUserProfile, "prefJumpLastPost");
+                    forumUser.PrefTopicSubscribe = GetBool(sourceUserProfile, "prefTopicSubscribe");
+                    forumUser.PrefSubscriptionType = (SubscriptionTypes)GetInt(sourceUserProfile, "prefSubscriptionType");
+                    forumUser.PrefBlockAvatars = GetBool(sourceUserProfile, "prefBlockAvatars");
+                    forumUser.PrefBlockSignatures = GetBool(sourceUserProfile, "prefBlockSignatures");
+                    forumUser.PrefPageSize = GetInt(sourceUserProfile, "prefPageSize");
+                    forumUser.LikeNotificationsEnabled = GetBool(sourceUserProfile, "likeNotificationsEnabled");
+                    forumUser.PinNotificationsEnabled = GetBool(sourceUserProfile, "pinNotificationsEnabled");
+                    forumUser.EnableNotificationsForOwnContent = GetBool(sourceUserProfile, "enableNotificationsForOwnContent");
+                    forumUser.BadgeNotificationsEnabled = GetBool(sourceUserProfile, "badgeNotificationsEnabled");
+                    forumUser.UserMentionNotificationsEnabled = GetBool(sourceUserProfile, "userMentionNotificationsEnabled");
+                    ((IRepository<ForumUserInfo>)ForumUserController.Instance).Update(forumUser);
+                }
+
                 foreach (var sourceGroup in GetElements(root, "groups", "group"))
                 {
                     var forumGroup = new ForumGroupInfo
@@ -1153,56 +1203,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     forum.LastTopicId = topicMap.TryGetValue(oldLastTopicId, out var newLastTopicId) ? newLastTopicId : 0;
                     forum.LastReplyId = replyMap.TryGetValue(oldLastReplyId, out var newLastReplyId) ? newLastReplyId : 0;
                     ((IRepository<ForumInfo>)ForumController.Instance).Update(forum);
-                }
-
-                foreach (var sourceUserProfile in GetElements(root, "userProfiles", "userProfile"))
-                {
-                    var resolvedUserId = ResolveUserIdOrDefault(portalId, GetInt(sourceUserProfile, "userId"));
-                    if (!resolvedUserId.HasValue || resolvedUserId.Value <= 0)
-                    {
-                        continue;
-                    }
-
-                    var forumUser = ForumUserController.Instance.GetByUserId(portalId, moduleId, resolvedUserId.Value);
-                    if (forumUser == null)
-                    {
-                        continue;
-                    }
-
-                    forumUser.TopicCount = GetInt(sourceUserProfile, "topicCount");
-                    forumUser.ReplyCount = GetInt(sourceUserProfile, "replyCount");
-                    forumUser.ViewCount = GetInt(sourceUserProfile, "viewCount");
-                    forumUser.AnswerCount = GetInt(sourceUserProfile, "answerCount");
-                    forumUser.RewardPoints = GetInt(sourceUserProfile, "rewardPoints");
-                    forumUser.UserCaption = GetString(sourceUserProfile, "userCaption");
-                    forumUser.AvatarLastRefresh = GetNullableDateTime(sourceUserProfile, "avatarLastRefresh");
-                    forumUser.AvatarSourceLastModified = GetNullableDateTime(sourceUserProfile, "avatarSourceLastModified");
-                    forumUser.AvatarFileId = GetNullableInt(sourceUserProfile, "avatarFileId");
-                    forumUser.DateCreated = GetDateTime(sourceUserProfile, "dateCreated", forumUser.DateCreated);
-                    forumUser.DateUpdated = GetNullableDateTime(sourceUserProfile, "dateUpdated");
-                    forumUser.DateLastActivity = GetNullableDateTime(sourceUserProfile, "dateLastActivity");
-                    forumUser.DateLastPost = GetNullableDateTime(sourceUserProfile, "dateLastPost");
-                    forumUser.DateLastReply = GetNullableDateTime(sourceUserProfile, "dateLastReply");
-                    forumUser.Signature = GetString(sourceUserProfile, "signature");
-                    forumUser.SignatureDisabled = GetBool(sourceUserProfile, "signatureDisabled");
-                    forumUser.TrustLevel = GetInt(sourceUserProfile, "trustLevel");
-                    forumUser.AdminWatch = GetBool(sourceUserProfile, "adminWatch");
-                    forumUser.AttachDisabled = GetBool(sourceUserProfile, "attachDisabled");
-                    forumUser.AvatarDisabled = GetBool(sourceUserProfile, "avatarDisabled");
-                    forumUser.PrefDefaultSort = GetString(sourceUserProfile, "prefDefaultSort");
-                    forumUser.PrefDefaultShowReplies = GetBool(sourceUserProfile, "prefDefaultShowReplies");
-                    forumUser.PrefJumpLastPost = GetBool(sourceUserProfile, "prefJumpLastPost");
-                    forumUser.PrefTopicSubscribe = GetBool(sourceUserProfile, "prefTopicSubscribe");
-                    forumUser.PrefSubscriptionType = (SubscriptionTypes)GetInt(sourceUserProfile, "prefSubscriptionType");
-                    forumUser.PrefBlockAvatars = GetBool(sourceUserProfile, "prefBlockAvatars");
-                    forumUser.PrefBlockSignatures = GetBool(sourceUserProfile, "prefBlockSignatures");
-                    forumUser.PrefPageSize = GetInt(sourceUserProfile, "prefPageSize");
-                    forumUser.LikeNotificationsEnabled = GetBool(sourceUserProfile, "likeNotificationsEnabled");
-                    forumUser.PinNotificationsEnabled = GetBool(sourceUserProfile, "pinNotificationsEnabled");
-                    forumUser.EnableNotificationsForOwnContent = GetBool(sourceUserProfile, "enableNotificationsForOwnContent");
-                    forumUser.BadgeNotificationsEnabled = GetBool(sourceUserProfile, "badgeNotificationsEnabled");
-                    forumUser.UserMentionNotificationsEnabled = GetBool(sourceUserProfile, "userMentionNotificationsEnabled");
-                    ((IRepository<ForumUserInfo>)ForumUserController.Instance).Update(forumUser);
                 }
 
                 foreach (var sourceForumTracking in GetElements(root, "forumTracking", "forumTracking"))
