@@ -1693,6 +1693,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static int GetForumModuleId(DotNetNuke.Entities.Modules.ModuleInfo moduleInfo)
         {
+            if (moduleInfo == null)
+            {
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+
             var cacheKey = string.Format(CacheKeys.ForumModuleId, moduleInfo.ModuleID, moduleInfo.TabID);
             var forumModuleId = (int?)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleInfo.ModuleID, cacheKey);
             if (forumModuleId == null || !forumModuleId.HasValue)

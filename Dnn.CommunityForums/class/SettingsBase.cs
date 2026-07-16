@@ -131,6 +131,17 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 this.ForumModuleId = this.forumModuleId <= 0 ? this.ForumModuleId : this.forumModuleId;
+                if (this.TabModuleId <= 0)
+                {
+                    var moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false);
+                    if (moduleInfo != null && moduleInfo.TabModuleID > 0)
+                    {
+                        return GetTabModuleSettings(this.ForumModuleId, moduleInfo.TabModuleID);
+                    }
+
+                    return GetModuleSettings(this.ForumModuleId);
+                }
+
                 return GetTabModuleSettings(this.ForumModuleId, this.TabModuleId);
             }
         }

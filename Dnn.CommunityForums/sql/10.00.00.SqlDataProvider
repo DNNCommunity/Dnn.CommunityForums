@@ -1029,184 +1029,235 @@ BEGIN CATCH
 END CATCH;
 
 GO
-/* issue 1856 - end - rename objects */
+/* issue 1856 - end but continues below other drops/creates - rename objects */
 
 /* issue 1908 - begin - remove legacy rewriter */
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_URL_Search]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_URL_Search]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_URL_Search]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Tags_GetByName]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Tags_GetByName]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_URL_Search]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Forums_GetPrefixes]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Forums_GetPrefixes]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Tags_GetByName]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Tags_GetByName]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Forums_GetPrefixes]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Forums_GetPrefixes]
 GO
 
 /* issue 1908 - end - remove legacy rewriter */
 
 /* issue 1909 - begin - remove deprecated procedures */
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_ActiveView]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_ActiveView]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_ActiveView]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_MyTopicsView]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_MyTopicsView]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_ActiveView]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_NotRead]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_NotRead]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_MyTopicsView]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_UnansweredView]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_UnansweredView]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_MyTopicsView]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_Announcements]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_Announcements]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_NotRead]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_Unresolved]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_Unresolved]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_NotRead]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_MostReplies]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_MostReplies]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_UnansweredView]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_MostLiked]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_MostLiked]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_UnansweredView]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_FindByURL]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_FindByURL]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_Announcements]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Filters_Delete]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Filters_Delete]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_Announcements]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Filters_DeleteByModuleId]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Filters_DeleteByModuleId]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_Unresolved]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Filters_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Filters_Get]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_Unresolved]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Filters_GetEmoticons]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Filters_GetEmoticons]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_MostReplies]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Filters_ListByType]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Filters_ListByType]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_MostReplies]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Forums_Delete]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Forums_Delete]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_MostLiked]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Forums_List]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Forums_List]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_MostLiked]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}communityforums_Forum_ConfigCleanUp') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}communityforums_Forum_ConfigCleanUp
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_FindByURL]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Groups_Delete]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Groups_Delete]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_FindByURL]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Groups_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Groups_Get]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Filters_Delete]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Settings_Delete]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Settings_Delete]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Filters_Delete]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Settings_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Settings_Get]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Filters_DeleteByModuleId]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Settings_List]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Settings_List]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Filters_DeleteByModuleId]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Settings_Save]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Settings_Save]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Filters_Get]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}communityforums_Subscriptions_IsSubscribed') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}communityforums_Subscriptions_IsSubscribed
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Filters_Get]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Tags_Delete]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Tags_Delete]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Filters_GetEmoticons]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Tags_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Tags_Get]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Filters_GetEmoticons]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Tags_Search]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Tags_Search]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Filters_ListByType]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Topics_Get]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Filters_ListByType]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_GetRating]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Topics_GetRating]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Forums_Delete]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_List]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Topics_List]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Forums_Delete]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_Replies]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Topics_Replies]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Forums_List]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_AddRating]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Topics_AddRating]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Forums_List]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_SaveToForum]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Topics_SaveToForum]
+DROP PROCEDURE IF EXISTS {databaseOwner}{objectQualifier}communityforums_Forum_ConfigCleanUp
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}communityforums_Queue_Add') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}communityforums_Queue_Add
+DROP SYNONYM IF EXISTS {databaseOwner}{objectQualifier}activeforums_Forum_ConfigCleanUp
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}communityforums_Queue_DeleteItem') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}communityforums_Queue_DeleteItem
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Groups_Delete]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}communityforums_Queue_List') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}communityforums_Queue_List
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Groups_Delete]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UserProfiles_Create]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UserProfiles_Create]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Groups_Get]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UserProfiles_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UserProfiles_Get]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Groups_Get]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UserProfiles_Save]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UserProfiles_Save]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Settings_Delete]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UserProfiles_GetUsersOnline]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UserProfiles_GetUsersOnline]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Settings_Delete]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UserProfiles_Members]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UserProfiles_Members]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Settings_Get]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Templates_Delete]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Templates_Delete]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Settings_Get]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Templates_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Templates_Get]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Settings_List]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Templates_List]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Templates_List]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Settings_List]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Templates_Save]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Templates_Save]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Settings_Save]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Settings_Save]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}{objectQualifier}communityforums_Subscriptions_IsSubscribed
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}{objectQualifier}activeforums_Subscriptions_IsSubscribed
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Tags_Delete]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Tags_Delete]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Tags_Get]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Tags_Get]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Tags_Search]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Tags_Search]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_Get]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_Get]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_GetRating]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_GetRating]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_List]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_List]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_Replies]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_Replies]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_AddRating]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_AddRating]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_SaveToForum]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_SaveToForum]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}{objectQualifier}communityforums_Queue_Add
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}{objectQualifier}activeforums_Queue_Add
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}{objectQualifier}communityforums_Queue_DeleteItem
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}{objectQualifier}activeforums_Queue_DeleteItem
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}{objectQualifier}communityforums_Queue_List
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}{objectQualifier}activeforums_Queue_List
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UserProfiles_Create]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UserProfiles_Create]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UserProfiles_Get]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UserProfiles_Get]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UserProfiles_Save]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UserProfiles_Save]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UserProfiles_GetUsersOnline]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UserProfiles_GetUsersOnline]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UserProfiles_Members]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UserProfiles_Members]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Templates_Delete]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Templates_Delete]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Templates_Get]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Templates_Get]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Templates_List]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Templates_List]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Templates_Save]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Templates_Save]
 GO
 
 /* REMOVE unused views */
 
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_communityforums_ForumLastPosts]'))
-DROP VIEW {databaseOwner}[{objectQualifier}vw_communityforums_ForumLastPosts]
+DROP VIEW IF EXISTS {databaseOwner}[{objectQualifier}vw_communityforums_ForumLastPosts]
 GO
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_communityforums_ForumView]'))
-DROP VIEW {databaseOwner}[{objectQualifier}vw_communityforums_ForumView]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}vw_activeforums_ForumLastPosts]
 GO
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_communityforums_TopicRatings]'))
-DROP VIEW {databaseOwner}[{objectQualifier}vw_communityforums_TopicRatings]
+DROP VIEW IF EXISTS {databaseOwner}[{objectQualifier}vw_communityforums_ForumView]
 GO
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_communityforums_TopicViewForSearch]'))
-DROP VIEW {databaseOwner}[{objectQualifier}vw_communityforums_TopicViewForSearch]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}vw_activeforums_ForumView]
+GO
+DROP VIEW IF EXISTS {databaseOwner}[{objectQualifier}vw_communityforums_TopicRatings]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}vw_activeforums_TopicRatings]
+GO
+DROP VIEW IF EXISTS {databaseOwner}[{objectQualifier}vw_communityforums_TopicViewForSearch]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}vw_activeforums_TopicViewForSearch]
 GO
 
 /* issue 1909 - end - remove deprecated procedures */
 
 /* issue 1882 - fn_communityforums_GetURL - begin - remove URLBASE and change name from fn_communityforums_GetURL to communityforums_GetURL */
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}fn_communityforums_GetURL]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}fn_communityforums_GetURL]
+DROP FUNCTION IF EXISTS {databaseOwner}[{objectQualifier}fn_communityforums_GetURL]
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_GetURL]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}communityforums_GetURL]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}fn_activeforums_GetURL]
+GO
+DROP FUNCTION IF EXISTS {databaseOwner}[{objectQualifier}communityforums_GetURL]
 GO
 
 CREATE FUNCTION {databaseOwner}[{objectQualifier}communityforums_GetURL]
@@ -1687,7 +1738,6 @@ IF @GroupPrefix <> '' OR @GroupPrefix IS NOT NULL
 	SET @PrefixURL = '/' + @GroupPrefix + @PrefixURL 
 BEGIN
 	SELECT v.ForumName, v.GroupName, v.ForumGroupId, v.ForumDesc,
-		TopicsTemplateId = IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @ModuleId AND SettingName = 'TOPICSTEMPLATEID' and SettingsKey = v.ForumSettingsKey),0),
 		AllowRSS = IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @ModuleId AND SettingName = 'ALLOWRSS' and SettingsKey = v.ForumSettingsKey),0),
 		TopicRowCount = IsNull((SELECT Count(t.TopicId) FROM {databaseOwner}{objectQualifier}communityforums_Topics as t inner join {databaseOwner}{objectQualifier}communityforums_ForumTopics as ft on t.topicid = ft.topicid WHERE ft.ForumId = @ForumId AND t.IsApproved = 1 and t.IsDeleted = 0),0),
 		IsSubscribedForum = IsNull((SELECT ID FROM {databaseOwner}{objectQualifier}communityforums_Subscriptions WHERE ModuleId = @ModuleId AND ForumId = @ForumId AND TopicId = 0 AND UserId = @UserId),0),
@@ -2226,53 +2276,73 @@ END
 GO
 
 /* remove unused stored procedures and functions */
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_ForumGet]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_ForumGet]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_ForumGet]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Permission_Create]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Permission_Create]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_ForumGet]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_GetForumsForSocialGroup]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_GetForumsForSocialGroup]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Permission_Create]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Forums_GetPermissions]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Forums_GetPermissions]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Permission_Create]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Groups_List]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Groups_List]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_GetForumsForSocialGroup]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}communityforums_MC_Forums') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}communityforums_MC_Forums
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_GetForumsForSocialGroup]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Settings_ListAll]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Settings_ListAll]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Forums_GetPermissions]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_TagsView]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_TagsView]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Forums_GetPermissions]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UI_TopicsDisplay]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_UI_TopicsDisplay]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Groups_List]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Properties_List]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Properties_List]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Groups_List]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Properties_RebuildSort]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Properties_RebuildSort]
+DROP PROCEDURE IF EXISTS {databaseOwner}{objectQualifier}communityforums_MC_Forums
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Properties_Save]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Properties_Save]
+DROP SYNONYM IF EXISTS {databaseOwner}{objectQualifier}activeforums_MC_Forums
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Properties_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Properties_Get]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Settings_ListAll]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_DeleteRelated]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Topics_DeleteRelated]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Settings_ListAll]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_SaveRelated]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Topics_SaveRelated]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_TagsView]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_ListRelated]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Topics_ListRelated]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_TagsView]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UI_TopicsDisplay]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UI_TopicsDisplay]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Properties_List]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Properties_List]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Properties_RebuildSort]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Properties_RebuildSort]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Properties_Save]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Properties_Save]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Properties_Get]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Properties_Get]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_DeleteRelated]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_DeleteRelated]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_SaveRelated]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_SaveRelated]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_ListRelated]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_ListRelated]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_ListRelated]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_ListRelated]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
@@ -2444,23 +2514,29 @@ If (@TopicsOnly = 1 AND @IsNewTopic = 0) OR (@TopicsOnly = 0)
 /* return the results */	
 SELECT DISTINCT userid, email, topicsubscriber FROM @subs
 GO
+DROP FUNCTION IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Tracking_HasRead]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Tracking_HasRead]
+GO
+DROP FUNCTION IF EXISTS {databaseOwner}[{objectQualifier}communityforums_UserProfiles_GetUserRoles]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_UserProfiles_GetUserRoles]
+GO
+DROP FUNCTION IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topics_GetCategories]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics_GetCategories]
+GO
+DROP FUNCTION IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topic_GetPrevNext]
+GO
+DROP FUNCTION IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Topic_GetPrevNext]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topic_GetPrevNext]
+GO
+DROP FUNCTION IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Functions_Split]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Functions_Split]
+GO
 
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Tracking_HasRead]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}communityforums_Tracking_HasRead]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_UserProfiles_GetUserRoles]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}communityforums_UserProfiles_GetUserRoles]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_GetCategories]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}communityforums_Topics_GetCategories]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topic_GetPrevNext]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}communityforums_Topic_GetPrevNext]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Functions_Split]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}communityforums_Functions_Split]
-GO
 
 /* communityforums_Util_GetUrl -- update function reference fn_communityforums_GetURL to communityforums_GetURL */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Util_GetUrl]') AND type in (N'P', N'PC'))
@@ -2851,14 +2927,17 @@ GO
 
 /* remove unused stored procedures */
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Ranks_Save]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Ranks_Save]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Ranks_Save]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Ranks_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Ranks_Get]
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Ranks_Save]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Ranks_Delete]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}communityforums_Ranks_Delete]
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Ranks_Get]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Ranks_Get]
+GO
+DROP PROCEDURE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Ranks_Delete]
+GO
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Ranks_Delete]
 GO
 
 /* update communityforums_Ranks_List to not require PortalId */
@@ -2886,6 +2965,7 @@ GO
 
 
 
+/* issue 1856 - continues - rename objects */
 
 /* first fix a couple of stored procedures that were not correct in the previous release */
 
@@ -3140,3 +3220,9 @@ BEGIN
 END
 GO
 
+/* this is done here because a synonym was created for this object during the renaming process, but table itself is removed in code */
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Templates]
+GO
+
+
+/* issue 1856 - end - rename objects  */
