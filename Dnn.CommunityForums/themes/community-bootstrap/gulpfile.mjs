@@ -1,12 +1,13 @@
-const gulp = require('gulp');
-const sass = require('gulp-sass')(require('sass'));
-const cleanCSS = require('gulp-clean-css');
-const sourcemaps = require('gulp-sourcemaps');
-const rename = require('gulp-rename');
-const  merge = require('merge-stream');
+import gulp from 'gulp';
+import sassModule from 'sass';
+import sassPlugin from 'gulp-sass';
+import cleanCSS from 'gulp-clean-css';
+import sourcemaps from 'gulp-sourcemaps';
+import rename from 'gulp-rename';
+import merge from 'merge-stream';
+import { default as zip } from 'gulp-zip';
 
-const zip = require('gulp-zip').default;
-
+const sass = sassPlugin(sassModule);
 
 // scss ----------------------
 
@@ -17,16 +18,12 @@ const cssCopyTo = "./";
 function buildScss() { // Parse only the Theme.scss file
   // 1. What scss files to parse?
   var scssCss = gulp.src('./_src/scss/theme.scss')
-
     .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(sourcemaps.write(cssCopyTo))
     .pipe(gulp.dest(cssCopyTo));
 
-
     var cssCssMin = gulp.src('./_src/scss/theme.scss')
-
-
     .pipe(sass())
     .pipe(rename({ suffix: '.min' }))
     .pipe(sourcemaps.init())
@@ -34,12 +31,8 @@ function buildScss() { // Parse only the Theme.scss file
     .pipe(cleanCSS({ inline: ['none'] }))
     .pipe(gulp.dest(cssCopyTo));
 
-
   return merge(scssCss, cssCssMin);
-
 }
-
-
 
 function allTasks() {
   buildScss();
@@ -51,21 +44,10 @@ function packageSource(cb) {
     .pipe(gulp.dest('./'))
 
   cb();
-
 }
 
-
-// Watch task: watch scss files for changes
-// If any change, run scss tasks
 function watchTask() {
-
   gulp.watch(scssWatchPath, gulp.series(buildScss, packageSource));
-
-
 }
 
-exports.buildScss = buildScss;
-exports.source = packageSource;
-
-exports.default = watchTask;
-
+export { buildScss, packageSource as source, watchTask as default };
