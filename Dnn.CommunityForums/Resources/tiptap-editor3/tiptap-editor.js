@@ -55,16 +55,22 @@ export default class TipTapEditorController {
                 },
             },
         ];
+
+        // Create a div container for the buttons
+        const buttonsContainer = document.createElement("div");
+        buttonsContainer.setAttribute("class", "dcf-tiptap-buttons");
+        this.editorElement.appendChild(buttonsContainer);
         for (let i in this.actions) {
             let a = this.actions[i];
             a.button = document.createElement("button");
             a.button.setAttribute("title", a.title || a.name);
+            a.button.setAttribute("class", "dcf-tiptap-button-" + a.name);
             a.button.innerHTML = "<i class=\"fa " + a.fontTag + "\"></i>"
             a.button.addEventListener("click", (event) => {
                 event.preventDefault();
                 this.executeAction(a);
             });
-            this.editorElement.appendChild(a.button);
+            buttonsContainer.appendChild(a.button);
         };
 
         // Extend the Mention node so it explicitly declares the attributes we will store.
