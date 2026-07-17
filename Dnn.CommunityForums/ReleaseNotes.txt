@@ -82,6 +82,7 @@
             <li>ENHANCED: Improved caching logic, significantly reducing database calls for certain scenarios (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1917">PR 1917</a>)</li>
             <li>ENHANCED: Remove deprecated URLBASE friendly URL module setting (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1918">PR 1918</a>)</li>
             <li>ENHANCED: Reposition "Mark All Read" button in "Not Read" filtered topics view (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1907">PR 1907</a>)</li>
+            <li>ENHANCED: Button styling for TipTap content editor (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1962">PR 1962</a>)</li>
 
 
 <!--
@@ -110,13 +111,14 @@
           <li>None at this time.</li> 
           
 -->
-             <li>FIX: "Automatic Links" feature now ignores invalid URLs (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1902">Issue 1902</a>)</li>
-             <li>FIX: Hide Badge titles when parent width is smaller than 150px (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1678">Issue 1678</a>)</li>
-             <li>FIX: Ignore null CreatedDate for user when displaying dashboard in Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1922">Issue 1922</a>)</li>
-             <li>FIX: Misspelled resource key for "italics" button in TipTap editor (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1900">Issue 1900</a>)</li>
-             <li>FIX: Update embedded image URLs to accomodate child portals (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1941">Issue 1941</a>)</li>
-             <li>FIX: Last reply name tokens showing original topic author's name rather than last replier (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1905">Issue 1905</a>)</li>
-             <li>FIX: "Ranks" page not loading in control panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1942">Issue 1942</a>)</li>
+            <li>FIX: "Automatic Links" feature now ignores invalid URLs (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1902">Issue 1902</a>)</li>
+            <li>FIX: Hide Badge titles when parent width is smaller than 150px (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1678">Issue 1678</a>)</li>
+            <li>FIX: Ignore null CreatedDate for user when displaying dashboard in Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1922">Issue 1922</a>)</li>
+            <li>FIX: Misspelled resource key for "italics" button in TipTap editor (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1900">Issue 1900</a>)</li>
+            <li>FIX: Update embedded image URLs to accomodate child portals (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1941">Issue 1941</a>)</li>
+            <li>FIX: Last reply name tokens showing original topic author's name rather than last replier (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1905">Issue 1905</a>)</li>
+            <li>FIX: "Ranks" page not loading in control panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1942">Issue 1942</a>)</li>
+            <li>FIX: Block highlighting in TipTap content editor (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1957">PR 1957</a>)</li>
             
 
         </ul>
@@ -131,9 +133,10 @@
             <li>Refactor SQL scripts and remove legacy functions and procedures (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1928">PR 1928</a>)</li>
             <li>Move ranks table to use DAL2/PetaPoco (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1943">PR 1943</a>)</li>
             <li>Remove deprecated Ventrian messaging option (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1920">PR 1920</a>)</li>
-            <li>Remove deprecated methods and properties, and SQL procedures (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1909">PR 1909</a>)</li>
+            <li>Remove deprecated methods and properties, and SQL procedures (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1909">Issue 1909</a>)</li>
             <li>Remove deprecated/legacy URL rewriter and unused procedures (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1910">PR 1910</a>)</li>
             <li>Remove legacy Data/CommonDB/Null classes and change Microsoft.ApplicationBlocks.Data usage to use DotNetNuke.Data.SqlDataProvider.Instance() methods (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1926">PR 1926</a>)</li>
+            <li>Update build process to use modern/ESM gulpfile.mjs rather than gulpfile.js (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1959">Issue 1959</a>)</li>
             <li>10.00.00 Release Prep (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1954">Issue 1954</a>)</li>
             
 <!--
