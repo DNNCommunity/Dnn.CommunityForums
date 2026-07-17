@@ -64,7 +64,7 @@ export default class TipTapEditorController {
             let a = this.actions[i];
             a.button = document.createElement("button");
             a.button.setAttribute("title", a.title || a.name);
-            a.button.setAttribute("class", "dcf-tiptap-button-" + a.name);
+            a.button.setAttribute("class", "dcf-tiptap-button dcf-tiptap-button-" + a.name);
             a.button.innerHTML = "<i class=\"fa " + a.fontTag + "\"></i>"
             a.button.addEventListener("click", (event) => {
                 event.preventDefault();

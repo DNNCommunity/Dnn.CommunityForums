@@ -1,11 +1,25 @@
-.tiptap{
-	--tip-tap-has-focus: 0 0 0 1px #ddd;
+:root{
+	--dcf-has-focus: 0 0 0 1px #ddd;
+	--dcf-border-color: #f1f1f1;
+	--dcf-background-color: #fff;
+	--dcf-focus-border-color: #444;
+	--dcf-button-background: #f1f1f1;
+	--dcf-button-active-background: #444;
+	--dcf-button-active-color: #fff;
+	--dcf-button-hover-background: #ddd;
+	--dcf-drag-handle-background: #ddd;
+	--dcf-drag-handle-line-color: #000;
+	--dcf-mention-popup-background: #fff;
+	--dcf-mention-popup-border-color: #b6b6b6;
+	--dcf-mention-popup-item-hover-background: #f0f0f0;
+	--dcf-show-boxes-outline-color: #888;
 }
+
 .tiptap {
-    border: solid 1px #ccc;
-    background-color: #fff;
-    padding: 5px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    border: solid 2px var(--dcf-border-color);
+    background-color: var(--dcf-background-color);
+    padding: 0.5em;
+
     position: absolute;
     width: 99%;
     height: 350px;
@@ -13,36 +27,66 @@
     resize: vertical;
 }
 
-.dcf-tiptap-drag-handle {
-    &::after {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 1rem;
-        height: 1.25rem;
-        content: '?';
-        font-weight: 700;
-        cursor: grab;
-        background: #dddddd;
-        color: #444;
-        border-radius: 0.25rem;
-    }
+.tiptap:focus{
+	border-color: var(--dcf-focus-border-color);
+	outline: none;
 }
 
+.dcf-tiptap-buttons {
+    .dcf-tiptap-button {
+        border: none;
+        background: var(--dcf-button-background);
+        padding: 0.3em 0.5em;
+        min-width: 2em;
+        margin: 0 0.2em;
+        transition: all 0.2s;
+    }
+
+        .dcf-tiptap-button.is-active {
+            background: var(--dcf-button-active-background);
+            color: var(--dcf-button-active-color);
+        }
+
+        .dcf-tiptap-button:hover {
+            background: var(--dcf-button-hover-background);
+            cursor: pointer;
+        }
+}
+
+.dcf-tiptap-drag-handle {
+	display: flex;
+        align-items: center;
+        justify-content: center;
+		background: var(--dcf-drag-handle-background);
+		cursor: grab;
+		min-height: 1.8em;
+		padding: 0.1em 0.4em;
+		border-radius: 50%;
+		overflow: hidden;
+}
+.dcf-tiptap-drag-handle::after {
+         content: '';
+		display:inline-block;
+        width: 1em;
+        height: 0.3em;
+		border-top: solid 1px var(--dcf-drag-handle-line-color);
+		border-bottom: solid 1px var(--dcf-drag-handle-line-color);
+        color: var(--dcf-focus-border-color);
+        border-radius: 0;
+    }
+
 .dcf-tiptap-has-focus {
-    
+
     border-radius: 0;
-    box-shadow: var(--tip-tap-has-focus) ;
+    box-shadow: var(--dcf-has-focus) ;
 }
 
 .dcf-mention-popup {
-    background: white;
-    border: 1px solid #b6b6b6;
+    background: var(--dcf-mention-popup-background);
+    border: 1px solid var(--dcf-mention-popup-border-color);
     border-radius: 2px;
-    padding: 2px;
     position: absolute;
     z-index: 9997;
-    position: absolute;
     box-sizing: border-box;
     width: auto;
     max-height: 300px;
@@ -69,10 +113,10 @@
 
 .dcf-mention-popup .item:hover,
 .dcf-mention-popup .item.is-selected {
-    background: #f0f0f0;
+    background: var(--dcf-mention-popup-item-hover-background);
 }
 
 .dcf-tiptap-show-boxes * {
-    outline: 1px dashed #888;
+    outline: 1px dashed var(--dcf-show-boxes-outline-color);
     outline-offset: 2px;
 }
