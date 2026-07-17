@@ -32,27 +32,25 @@
 	outline: none;
 }
 
-/* This ID selector needs to de replaced with .dcf-tiptap-buttons (?) */
+.dcf-tiptap-buttons {
+    .dcf-tiptap-button {
+        border: none;
+        background: var(--dcf-button-background);
+        padding: 0.3em 0.5em;
+        min-width: 2em;
+        margin: 0 0.2em;
+        transition: all 0.2s;
+    }
 
-#dnn_ctr594_ActiveForums_ctl00_post_ctlForm_txtBody {
-	button{
-		border: none;
-		background: var(--dcf-button-background);
-		padding: 0.3em 0.5em;
-		min-width: 2em;
-		margin: 0 0.2em;
-		transition: all 0.2s;
+        .dcf-tiptap-button.is-active {
+            background: var(--dcf-button-active-background);
+            color: var(--dcf-button-active-color);
+        }
 
-	}
-	button.is-active{
-		background: var(--dcf-button-active-background);
-		color: var(--dcf-button-active-color);
-	}
-
-	button:hover{
-		background: var(--dcf-button-hover-background);
-		cursor: pointer;
-	}
+        .dcf-tiptap-button:hover {
+            background: var(--dcf-button-hover-background);
+            cursor: pointer;
+        }
 }
 
 .dcf-tiptap-drag-handle {
