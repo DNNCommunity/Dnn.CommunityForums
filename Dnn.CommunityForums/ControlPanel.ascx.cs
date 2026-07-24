@@ -52,14 +52,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (!this.Page.IsPostBack)
             {
-                Hashtable settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
-                if (Convert.ToBoolean(settings["AFINSTALLED"]) == false)
+                var settings = SettingsBase.GetTabModuleSettings(moduleId: this.ModuleId, tabModuleId: this.TabModuleId);
+                if (!settings.IsInstalled)
                 {
                     try
                     {
                         var fc = new ForumsConfig();
                         bool configComplete = fc.ForumsInit(this.PortalId, this.ModuleId);
-                        DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", configComplete.ToString());
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, SettingKeys.IsInstalled, configComplete.ToString());
                         DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache();
                     }
                     catch (Exception ex)
