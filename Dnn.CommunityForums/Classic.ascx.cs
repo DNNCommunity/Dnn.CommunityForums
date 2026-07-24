@@ -58,26 +58,15 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
 
 #if DEBUG
-            //ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
-            //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.RemoveUnused(this.ForumModuleId);
-            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
-            //ForumsConfig.Install_LikeNotificationType_080200();
-            //ForumsConfig.Install_PinNotificationType_080200();
-            //ForumsConfig.Sort_PermissionSets_080200();
-            //ForumsConfig.Upgrade_PermissionSets_090000();
-            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
-            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
-            //new ForumsConfig().Install_DefaultBadges_090100();
-            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
-
-
             //new ForumsConfig().RemoveLegacyAvatarsFolder_090700();
             //new ForumsConfig().RelocateAttachments_090700();
+
+            //DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_100000();
 #endif
 
             try
             {
-                if (this.ModuleSettings != null && this.ModuleSettings.InstallDate > Utilities.NullDate())
+                if (this.ModuleSettings != null && this.ModuleSettings.IsInstalled)
                 {
                     if (this.ForumModuleId < 1)
                     {
@@ -498,7 +487,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
-            if ((this.ModuleSettings == null || this.ModuleSettings.InstallDate == Utilities.NullDate()) && !this.UserInfo.IsAdmin)
+            if ((this.ModuleSettings == null || !this.ModuleSettings.IsInstalled) && !this.UserInfo.IsAdmin)
             {
                 return;
             }
@@ -516,7 +505,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnPreRender(e);
 
-            if ((this.ModuleSettings == null || this.ModuleSettings.InstallDate == Utilities.NullDate()) && !this.UserInfo.IsAdmin)
+            if ((this.ModuleSettings == null || !this.ModuleSettings.IsInstalled) && !this.UserInfo.IsAdmin)
             {
                 return;
             }

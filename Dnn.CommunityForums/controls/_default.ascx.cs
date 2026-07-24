@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums
             init = fc.ForumsInit(this.PortalId, this.ModuleId);
             if (init == true)
             {
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", init.ToString());
+                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, SettingKeys.IsInstalled, true.ToString());
                 DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCacheForTabId(this.TabId);
                 this.Response.Redirect(this.EditUrl(), false);
