@@ -111,7 +111,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.IsInstalled, "True");
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(moduleId, "NeedsConvert", "False");
                 try
                 {
                     System.Globalization.DateTimeFormatInfo nfi = new System.Globalization.CultureInfo("en-US", true).DateTimeFormat;

@@ -643,14 +643,21 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
         internal static void DeleteObsoleteModuleSettings_100000()
         {
-            /* remove URLBASE depending on how old the install is, it might be in ModuleSettings or it might be in communityforums_Settings, or both */
-
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
             {
                 foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
                 {
                     if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
                     {
+                        /* remove obsolete AFINSTALLED & NeedsConvert flags */
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "AFINSTALLED");
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "NeedsConvert");
+
+                        /* remove PMTABID and update PMTYPE from 2 to 1 if needed (removing ventrian messaging) */
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "PMTABID");
+                        DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "UPDATE {databaseOwner}{objectQualifier}ModuleSettings SET SettingValue = 1 WHERE ModuleId = @0 AND SettingName = 'PMTYPE' AND SettingValue = 2", module.ModuleID);
+
+                        /* remove URLBASE depending on how old the install is, it might be in ModuleSettings or it might be in communityforums_Settings, or both */
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "URLBASE");
                         foreach (var settingName in new string[]
                         {
@@ -659,19 +666,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         {
                             DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
                         }
-                    }
-                }
-            }
-
-            /* remove PMTABID and update PMTYPE from 2 to 1 if needed (removing ventrian messaging) */
-            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
-            {
-                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
-                {
-                    if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant().Equals(Globals.ModuleName.ToLowerInvariant()))
-                    {
-                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "PMTABID");
-                        DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "UPDATE {databaseOwner}{objectQualifier}ModuleSettings SET SettingValue = 1 WHERE ModuleId = @0 AND SettingName = 'PMTYPE' AND SettingValue = 2", module.ModuleID);
                     }
                 }
             }

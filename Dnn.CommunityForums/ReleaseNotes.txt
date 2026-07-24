@@ -135,6 +135,7 @@
             <li>Remove deprecated Ventrian messaging option (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1920">PR 1920</a>)</li>
             <li>Remove deprecated methods and properties, and SQL procedures (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1909">Issue 1909</a>)</li>
             <li>Remove deprecated/legacy URL rewriter and unused procedures (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1910">PR 1910</a>)</li>
+            <li>Remove obsolete "AFINSTALLED" module setting(<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1967">Issue 1967</a>)</li>
             <li>Remove legacy Data/CommonDB/Null classes and change Microsoft.ApplicationBlocks.Data usage to use DotNetNuke.Data.SqlDataProvider.Instance() methods (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1926">PR 1926</a>)</li>
             <li>Update build process to use modern/ESM gulpfile.mjs rather than gulpfile.js (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1959">Issue 1959</a>)</li>
             <li>10.00.00 Release Prep (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1954">Issue 1954</a>)</li>
