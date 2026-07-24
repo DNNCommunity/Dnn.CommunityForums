@@ -36,5 +36,33 @@ namespace DotNetNuke.Modules.ActiveForums.Extensions
 
             return text.Substring(0, maxLength) + "...";
         }
+
+        public static string EncodeInvalidXmlChars(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            var sb = new System.Text.StringBuilder();
+            foreach (var c in text)
+            {
+                // Characters invalid in XML: control chars 0x00-0x08, 0x0B-0x0C, 0x0E-0x1F, 0x7F-0x9F
+                if ((c >= 0x00 && c <= 0x08) ||
+                    (c >= 0x0B && c <= 0x0C) ||
+                    (c >= 0x0E && c <= 0x1F) ||
+                    (c >= 0x7F && c <= 0x9F))
+                {
+                    // Encode as numeric character reference
+                    sb.AppendFormat("&#x{0:X};", (int)c);
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.ToString();
+        }
     }
 }

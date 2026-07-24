@@ -44,22 +44,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetById(int portalId, int moduleId, int badgeId)
         {
             var cachekey = string.Format(CacheKeys.UserBadgeInfo, moduleId, badgeId);
-            DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo UserBadge = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo;
-            if (UserBadge == null)
+            DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo userBadge = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo;
+            if (userBadge == null)
             {
-                UserBadge = this._repositoryControllerBase.GetById(badgeId, moduleId);
-                if (UserBadge != null)
+                userBadge = this._repositoryControllerBase.GetById(id: badgeId, scopeValue: moduleId);
+                if (userBadge == null)
                 {
-                    UserBadge.ModuleId = moduleId;
-                    UserBadge.PortalId = portalId;
-                    UserBadge.GetBadge();
-                    UserBadge.GetForumUser();
+                    userBadge = this._repositoryControllerBase.GetById(id: badgeId);
                 }
 
-                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, UserBadge);
+                if (userBadge != null)
+                {
+                    userBadge.ModuleId = moduleId;
+                    userBadge.PortalId = portalId;
+                    userBadge.GetBadge();
+                    userBadge.GetForumUser();
+                }
+
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, userBadge);
             }
 
-            return UserBadge;
+            return userBadge;
         }
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForUser(int portalId, int moduleId, int userId)

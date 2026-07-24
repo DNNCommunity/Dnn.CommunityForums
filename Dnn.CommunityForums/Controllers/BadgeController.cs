@@ -60,7 +60,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var badgeInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.BadgeInfo;
             if (badgeInfo == null)
             {
-                badgeInfo = this._repositoryControllerBase.GetById(badgeId, moduleId);
+                badgeInfo = this._repositoryControllerBase.GetById(id: badgeId, scopeValue: moduleId);
+                if (badgeInfo == null)
+                {
+                    badgeInfo = this._repositoryControllerBase.GetById(id: badgeId);
+                }
+
                 DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, badgeInfo);
             }
 

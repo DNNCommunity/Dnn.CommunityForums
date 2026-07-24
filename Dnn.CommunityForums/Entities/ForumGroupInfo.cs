@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
         {
-            var security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(this.PermissionsId, this.ModuleId);
+            var security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(this.ModuleId, this.PermissionsId);
             if (security == null)
             {
                 security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions(this.ModuleId);

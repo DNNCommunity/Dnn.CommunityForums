@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void Reply_Delete(int portalId, int moduleId, int forumId, int topicId, int replyId, DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior delBehavior)
         {
-            var reply = this.GetById(moduleId, replyId);
+            var reply = this.GetById(moduleId: moduleId, replyId: replyId);
 
             Social.DeleteJournalItemForPost(reply);
 
@@ -141,7 +141,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void Restore(int portalId, int moduleId, int forumId, int topicId, int replyId)
         {
-            var reply = this._repositoryControllerBase.GetById(moduleId, replyId);
+            var reply = this._repositoryControllerBase.GetById(id: replyId, scopeValue: moduleId);
+            if (reply == null)
+            {
+                reply = this._repositoryControllerBase.GetById(id: replyId);
+            }
 
             // if restoring reply, also restore topic if necessary
             if (reply.Topic.IsDeleted)

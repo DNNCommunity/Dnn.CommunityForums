@@ -60,7 +60,7 @@ export default class TipTapEditorController {
         const buttonsContainer = document.createElement("div");
         buttonsContainer.setAttribute("class", "dcf-tiptap-buttons");
         this.editorElement.appendChild(buttonsContainer);
-        for (let i in this.actions) {
+        for (let i = 0; i < this.actions.length; i++) {
             let a = this.actions[i];
             a.button = document.createElement("button");
             a.button.setAttribute("title", a.title || a.name);

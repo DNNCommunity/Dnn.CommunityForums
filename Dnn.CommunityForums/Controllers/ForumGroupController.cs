@@ -39,7 +39,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var forumGroup = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
             if (forumGroup == null)
             {
-                forumGroup = this._repositoryControllerBase.GetById(forumGroupId, moduleId);
+                forumGroup = this._repositoryControllerBase.GetById(id: forumGroupId, scopeValue: moduleId);
+                if (forumGroup == null)
+                {
+                    forumGroup = this._repositoryControllerBase.GetById(id: forumGroupId);
+                }
+
                 if (forumGroup != null)
                 {
                     forumGroup.LoadSecurity();
@@ -100,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (isNew || forumGroupInfo.InheritSecurity) /* new forum group or switching from module security to group security */
                 {
                     // set forum group permissions to use module default permissions as starting point
-                    forumGroupInfo.PermissionsId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.Insert(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(permissionsId: SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId, moduleId: forumGroupInfo.ModuleId)).PermissionsId;
+                    forumGroupInfo.PermissionsId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.Insert(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(moduleId: forumGroupInfo.ModuleId, permissionsId: SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId)).PermissionsId;
 
                     if (!isNew)
                     {

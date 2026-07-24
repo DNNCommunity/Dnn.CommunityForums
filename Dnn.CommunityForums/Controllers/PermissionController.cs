@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
             this._repositoryControllerBase.Insert(permissionInfo);
-            return this.GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
+            return this.GetById(permissionInfo.ModuleId, permissionInfo.PermissionsId);
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Update(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
@@ -71,12 +71,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var cachekey = string.Format(CacheKeys.PermissionsInfo, permissionInfo.ModuleId, permissionInfo.PermissionsId);
             DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(permissionInfo.ModuleId, cachekey);
             this._repositoryControllerBase.Update(permissionInfo);
-            return this.GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
+            return this.GetById(permissionInfo.ModuleId, permissionInfo.PermissionsId);
         }
 
         public void UpdateSecurityForSocialGroupForum(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum)
         {
-            var permissions = this.GetById(forum.PermissionsId, forum.ModuleId);
+            var permissions = this.GetById(forum.ModuleId, forum.PermissionsId);
             Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: forum.ModuleId, tabId: forum.GetTabId(), ignoreCache: false).TabModuleSettings;
             if (htSettings == null || htSettings.Count == 0)
             {
@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                         if (Convert.ToBoolean(sNode.Attributes["value"].Value))
                         {
-                            switch (sPerm)
+                            switch (sPerm.ToLowerInvariant())
                             {
                                 case "view":
                                     permissions.View = AddPermToSet(roleId.ToString(), permissions.View);
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 case "moderate":
                                     permissions.Moderate = AddPermToSet(roleId.ToString(), permissions.Moderate);
                                     break;
-                                case "Move":
+                                case "move":
                                     permissions.Move = AddPermToSet(roleId.ToString(), permissions.Move);
                                     break;
                                 case "manageusers":
@@ -172,13 +172,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int permissionsId, int moduleId)
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int moduleId, int permissionsId)
         {
             var cachekey = string.Format(CacheKeys.PermissionsInfo, moduleId, permissionsId);
             DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissions = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo;
             if (permissions == null)
             {
-                permissions = this._repositoryControllerBase.GetById(permissionsId, moduleId);
+                permissions = this._repositoryControllerBase.GetById(id: permissionsId, scopeValue: moduleId);
+                if (permissions == null)
+                {
+                    permissions = this._repositoryControllerBase.GetById(permissionsId);
+                }
+
                 DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, permissions);
             }
 
@@ -556,7 +561,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static string GetPermSetForRequestedAccess(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess)
         {
-            var permission = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(permissionsId, moduleId);
+            var permission = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(moduleId, permissionsId);
             return GetPermSetForRequestedAccess(permission, requestedAccess);
         }
 
@@ -618,13 +623,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static HashSet<int> GetRoleIdsForRequestedAccess(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess)
         {
-            var permission = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(permissionsId, moduleId);
+            var permission = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(moduleId, permissionsId);
             return GetRoleIdsFromPermSet(GetPermSetForRequestedAccess(permission, requestedAccess));
         }
 
         public string SavePermSet(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string permSet)
         {
-            var permission = this.GetById(permissionsId, moduleId);
+            var permission = this.GetById(moduleId, permissionsId);
             if (permission != null)
             {
                 SetPermSetForRequestedAccess(permission, requestedAccess, permSet);

@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
                     DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.TopicsViewPrefix, moduleId));
                     DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.FilteredTopicsPrefix, moduleId));
                     DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.ToolbarPrefix, moduleId));
-                    DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.WhatsNewData, moduleId));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.WhatsNewDataPrefix, moduleId));
                 }
                 catch (Exception ex)
                 {

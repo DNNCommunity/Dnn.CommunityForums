@@ -47,20 +47,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool ForumsInit(int portalId, int moduleId)
         {
+            return this.ForumsInit(portalId: portalId, moduleId: moduleId, skipContent: false);
+        }
+
+        public bool ForumsInit(int portalId, int moduleId, bool skipContent)
+        {
             try
             {
-                // Initial Settings
-                this.LoadSettings(portalId, moduleId);
-
-                // Add Default Status
-                this.LoadFilters(portalId, moduleId);
-
-                // Add Default Steps
-                this.LoadRanks(portalId, moduleId);
-
-                // Add Default Forums
-                this.LoadDefaultForums(portalId, moduleId);
-
                 // Create "User Banned" core messaging notification type new in 08.01.00
                 ForumsConfig.Install_BanUser_NotificationType_080100();
 
@@ -78,6 +71,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Create "user mention notification" core messaging notification type new in 09.03.00
                 ForumsConfig.Install_UserMentionNotificationType_090300();
+
+                // Initial Settings
+                this.LoadSettings(portalId, moduleId);
+
+                if (!skipContent)
+                {
+                    // Add Default Filters
+                    this.LoadFilters(portalId, moduleId);
+
+                    // Add Default Ranks
+                    this.LoadRanks(portalId, moduleId);
+
+                    // Add Default Forums
+                    this.LoadDefaultForums(portalId, moduleId);
+                }
 
                 DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache();
 

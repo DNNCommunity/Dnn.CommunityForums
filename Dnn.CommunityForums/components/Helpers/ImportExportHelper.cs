@@ -30,21 +30,25 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
+    using DotNetNuke.Services.Log.EventLog;
 
     internal static class ImportExportHelper
     {
         internal static readonly IReadOnlyList<string> PortableEntityDependencyOrder =
         [
+            "permissions",
+            "settings",
             "userProfiles",
             "groups",
             "tags",
             "badges",
             "ranks",
-            "permissions",
-            "settings",
+            "filters",
             "forums",
             "categories",
             "contents",
@@ -69,7 +73,14 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             var container = new XElement(containerName);
             foreach (var item in items)
             {
-                container.Add(elementFactory(item));
+                try
+                {
+                    container.Add(elementFactory(item));
+                }
+                catch (Exception ex)
+                {
+                   Exceptions.LogException(ex);
+                }
             }
 
             return container;
@@ -81,47 +92,44 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             {
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
                 var moduleSettings = SettingsBase.GetModuleSettings(moduleId);
-                var groups = ((IRepository<ForumGroupInfo>)ForumGroupController.Instance)
-                    .Get(moduleId)
+                var groups = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.Get(moduleId)
                     .OrderBy(g => g.SortOrder)
                     .ThenBy(g => g.ForumGroupId)
                     .ToList();
 
-                var tags = ((IRepository<TagInfo>)TagController.Instance)
-                    .Get(moduleId)
+                var tags = DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.Get(moduleId)
                     .OrderBy(t => t.TagId)
                     .ToList();
 
-                var categories = ((IRepository<CategoryInfo>)CategoryController.Instance)
-                    .Get(moduleId)
+                var categories = DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance.Get(moduleId)
                     .OrderBy(c => c.Priority)
                     .ThenBy(c => c.CategoryId)
                     .ToList();
 
-                var badges = ((IRepository<BadgeInfo>)BadgeController.Instance)
-                    .Get(moduleId)
+                var badges = DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.Get(moduleId)
                     .OrderBy(b => b.SortOrder)
                     .ThenBy(b => b.BadgeId)
                     .ToList();
 
-                var ranks = ((IRepository<RankInfo>)RankController.Instance)
-                    .Get(moduleId)
+                var filters = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().Get()
+                    .OrderBy(b => b.FilterId)
+                    .ToList();
+
+                var ranks = DotNetNuke.Modules.ActiveForums.Controllers.RankController.Instance.Get(moduleId)
                     .OrderBy(b => b.RankId)
                     .ToList();
 
-                var permissions = ((IRepository<PermissionInfo>)PermissionController.Instance)
-                .Get(moduleId)
+                var permissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.Get(moduleId)
                 .OrderBy(p => p.PermissionsId)
                 .ToList();
 
-                var settings = ((IRepository<SettingsInfo>)SettingsController.Instance)
-                .Get(moduleId)
+                var settings = DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.Get(moduleId)
                 .OrderBy(s => s.SettingsKey)
                 .ThenBy(s => s.SettingName)
                 .ThenBy(s => s.SettingsId)
                 .ToList();
 
-                var forums = ForumController.Instance.GetForums(moduleId)
+                var forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(moduleId)
                     .OrderBy(f => f.ForumGroupId)
                     .ThenBy(f => f.SortOrder)
                     .ThenBy(f => f.ForumID)
@@ -129,89 +137,81 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
                 var forumIds = forums.Select(f => f.ForumID).ToHashSet();
 
-                var forumTopics = ((IRepository<ForumTopicInfo>)ForumTopicController.Instance)
-                    .Get()
+                var forumTopics = DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController.Instance.Get()
                     .Where(ft => forumIds.Contains(ft.ForumId))
                     .OrderBy(ft => ft.ForumTopicId)
                     .ToList();
 
-                var topicIds = forumTopics.Select(ft => ft.TopicId).Distinct().ToList();
-                var topics = topicIds
-                    .Select(topicId => TopicController.Instance.GetById(moduleId, topicId))
-                    .Where(t => t != null)
+                var topicIds = forumTopics.Select(ft => ft.TopicId).Distinct().ToHashSet();
+
+                var topics = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.Get()
+                    .Where(t => topicIds.Contains(t.TopicId))
                     .OrderBy(t => t.TopicId)
                     .ToList();
 
-                var replies = topicIds
-                    .SelectMany(topicId => ReplyController.Instance.GetByTopicId(moduleId, topicId))
+                var replies = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Get()
+                    .Where(r => topicIds.Contains(r.TopicId))
                     .OrderBy(r => r.ReplyId)
                     .ToList();
 
-                var contentIds = topics.Select(t => t.ContentId).Concat(replies.Select(r => r.ContentId)).Distinct().ToList();
-                var contents = contentIds
-                    .Select(contentId => ContentController.Instance.GetById(moduleId, contentId))
-                    .Where(c => c != null)
+                var contentIds = topics.Select(t => t.ContentId).Concat(replies.Select(r => r.ContentId)).Distinct().ToHashSet();
+
+                var contents = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.Get()
+                    .Where(c => contentIds.Contains(c.ContentId))
                     .OrderBy(c => c.ContentId)
                     .ToList();
 
-                var attachments = contentIds
-                    .SelectMany(contentId => DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(moduleId, contentId) ?? Enumerable.Empty<AttachmentInfo>())
+                var attachments = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.Get()
+                    .Where(a => contentIds.Contains(a.ContentId))
                     .OrderBy(a => a.AttachmentId)
                     .ToList();
 
-                var likes = ((IRepository<LikeInfo>)LikeController.Instance)
-                    .Get()
+                var likes = DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Instance.Get()
                     .Where(l => contentIds.Contains(l.PostId))
                     .OrderBy(l => l.Id)
                     .ToList();
 
-                var userMentions = ((IRepository<UserMentionInfo>)UserMentionController.Instance)
-                    .Get(moduleId)
+                var userMentions = DotNetNuke.Modules.ActiveForums.Controllers.UserMentionController.Instance.Get(moduleId)
                     .Where(um => contentIds.Contains(um.ContentId))
                     .OrderBy(um => um.UserMentionId)
                     .ToList();
 
-                var topicTags = topicIds
-                    .SelectMany(topicId => TopicTagController.Instance.GetForTopic(topicId))
+                var topicTags = DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController.Instance.Get()
+                    .Where(tt => topicIds.Contains(tt.TopicId))
                     .OrderBy(tt => tt.TopicTagId)
                     .ToList();
 
-                var topicCategories = topicIds
-                    .SelectMany(topicId => TopicCategoryController.Instance.GetForTopic(topicId))
+                var topicCategories = DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController.Instance.Get()
+                    .Where(tc => topicIds.Contains(tc.TopicId))
                     .OrderBy(tc => tc.TopicCategoryId)
                     .ToList();
 
-                var topicRatings = topicIds
-                    .SelectMany(topicId => TopicRatingController.Instance.GetForTopic(topicId))
+                var topicRatings = DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController.Instance.Get()
+                    .Where(tr => topicIds.Contains(tr.TopicId))
                     .OrderBy(tr => tr.RatingId)
                     .ToList();
 
-                var topicTracking = ((IRepository<TopicTrackingInfo>)TopicTrackingController.Instance)
-                    .Get()
+                var topicTracking = DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance.Get()
                     .Where(tt => topicIds.Contains(tt.TopicId))
                     .OrderBy(tt => tt.TrackingId)
                     .ToList();
 
-                var subscriptions = ((IRepository<SubscriptionInfo>)DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.Instance)
-                    .Get()
+                var subscriptions = DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.Instance.Get()
                     .Where(s => s.ModuleId == moduleId && (topicIds.Contains(s.TopicId) || forumIds.Contains(s.ForumId)))
                     .OrderBy(s => s.Id)
                     .ToList();
 
-                var archivedUrls = ((IRepository<ArchivedURLInfo>)ArchivedURLController.Instance)
-                    .Get()
+                var archivedUrls = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedURLController.Instance.Get()
                     .Where(a => forumIds.Contains(a.ForumId) || topicIds.Contains(a.TopicId))
                     .OrderBy(a => a.Id)
                     .ToList();
 
-                var forumTracking = ((IRepository<ForumTrackingInfo>)ForumTrackingController.Instance)
-                    .Get()
+                var forumTracking = DotNetNuke.Modules.ActiveForums.Controllers.ForumTrackingController.Instance.Get()
                     .Where(ft => ft.ModuleId == moduleId && forumIds.Contains(ft.ForumId))
                     .OrderBy(ft => ft.TrackingId)
                     .ToList();
 
-                var userBadges = ((IRepository<UserBadgeInfo>)UserBadgeController.Instance)
-                    .Get(moduleId)
+                var userBadges = DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.Get(moduleId)
                     .OrderBy(ub => ub.UserBadgeId)
                     .ToList();
 
@@ -227,8 +227,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         .Concat(userBadges.Select(ub => ub.UserId))
                         .Where(id => id > 0));
 
-                var userProfiles = ((IRepository<ForumUserInfo>)ForumUserController.Instance)
-                    .Get()
+                var userProfiles = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.Get()
                     .Where(up => up.PortalId == moduleInfo.PortalID && exportedUserIds.Contains(up.UserId))
                     .OrderBy(up => up.ProfileId)
                     .ToList();
@@ -254,14 +253,14 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             new XElement(
                                 "tag",
                                 new XAttribute("tagId", t.TagId),
-                                new XAttribute("tagName", t.TagName ?? string.Empty),
+                                new XAttribute("tagName", t.TagName.EncodeInvalidXmlChars() ?? string.Empty),
                                 new XAttribute("items", t.Items))),
                         SerializeEntities("badges", badges, b =>
                             new XElement(
                                 "badge",
                                 new XAttribute("badgeId", b.BadgeId),
                                 new XAttribute("name", b.Name ?? string.Empty),
-                                new XAttribute("description", b.Description ?? string.Empty),
+                                new XAttribute("description", b.Description.EncodeInvalidXmlChars() ?? string.Empty),
                                 new XAttribute("imageMarkup", b.ImageMarkup ?? string.Empty),
                                 new XAttribute("fileId", b.FileId),
                                 new XAttribute("sortOrder", b.SortOrder),
@@ -280,6 +279,13 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 new XAttribute("display", r.Display ?? string.Empty),
                                 new XAttribute("minPosts", (int)r.MinPosts),
                                 new XAttribute("maxPosts", (int)r.MaxPosts))),
+                        SerializeEntities("filters", filters, f =>
+                            new XElement(
+                                "filter",
+                                new XAttribute("filterId", f.FilterId),
+                                new XAttribute("filterType", f.FilterType),
+                                new XAttribute("find", f.Find ?? string.Empty),
+                                new XAttribute("replace", f.Replace ?? string.Empty))),
                         SerializeEntities("permissions", permissions, p =>
                             new XElement(
                                 "permission",
@@ -318,8 +324,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 new XAttribute("forumId", f.ForumID),
                                 new XAttribute("forumGroupId", f.ForumGroupId),
                                 new XAttribute("parentForumId", f.ParentForumId),
-                                new XAttribute("forumName", f.ForumName ?? string.Empty),
-                                new XAttribute("forumDesc", f.ForumDesc ?? string.Empty),
+                                new XAttribute("forumName", f.ForumName.EncodeInvalidXmlChars() ?? string.Empty),
+                                new XAttribute("forumDesc", f.ForumDesc.EncodeInvalidXmlChars() ?? string.Empty),
                                 new XAttribute("sortOrder", f.SortOrder),
                                 new XAttribute("active", f.Active),
                                 new XAttribute("hidden", f.Hidden),
@@ -348,9 +354,9 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             new XElement(
                                 "content",
                                 new XAttribute("contentId", c.ContentId),
-                                new XAttribute("subject", c.Subject ?? string.Empty),
-                                new XAttribute("summary", c.Summary ?? string.Empty),
-                                new XAttribute("body", c.Body ?? string.Empty),
+                                new XAttribute("subject", c.Subject.EncodeInvalidXmlChars() ?? string.Empty),
+                                new XAttribute("summary", c.Summary.EncodeInvalidXmlChars() ?? string.Empty),
+                                new XAttribute("body", c.Body.EncodeInvalidXmlChars() ?? string.Empty),
                                 new XAttribute("dateCreated", c.DateCreated.ToString("o", CultureInfo.InvariantCulture)),
                                 new XAttribute("dateUpdated", c.DateUpdated.ToString("o", CultureInfo.InvariantCulture)),
                                 new XAttribute("authorId", c.AuthorId),
@@ -448,7 +454,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 new XAttribute("userId", tr.UserId),
                                 new XAttribute("rating", tr.Rating),
                                 new XAttribute("helpful", tr.Helpful),
-                                new XAttribute("comments", tr.Comments ?? string.Empty),
+                                new XAttribute("comments", tr.Comments.EncodeInvalidXmlChars() ?? string.Empty),
                                 new XAttribute("ipAddress", tr.IPAddress ?? string.Empty),
                                 new XAttribute("dateAdded", tr.DateAdded.ToString("o", CultureInfo.InvariantCulture)),
                                 new XAttribute("dateUpdated", tr.DateUpdated.ToString("o", CultureInfo.InvariantCulture)))),
@@ -490,7 +496,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 new XAttribute("viewCount", up.ViewCount),
                                 new XAttribute("answerCount", up.AnswerCount),
                                 new XAttribute("rewardPoints", up.RewardPoints),
-                                new XAttribute("userCaption", up.UserCaption ?? string.Empty),
+                                new XAttribute("userCaption", up.UserCaption.EncodeInvalidXmlChars() ?? string.Empty),
                                 new XAttribute("avatarLastRefresh", ToPortableDate(up.AvatarLastRefresh)),
                                 new XAttribute("avatarSourceLastModified", ToPortableDate(up.AvatarSourceLastModified)),
                                 new XAttribute("avatarFileId", up.AvatarFileId.HasValue ? up.AvatarFileId.Value.ToString(CultureInfo.InvariantCulture) : string.Empty),
@@ -499,7 +505,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 new XAttribute("dateLastActivity", ToPortableDate(up.DateLastActivity)),
                                 new XAttribute("dateLastPost", ToPortableDate(up.DateLastPost)),
                                 new XAttribute("dateLastReply", ToPortableDate(up.DateLastReply)),
-                                new XAttribute("signature", up.Signature ?? string.Empty),
+                                new XAttribute("signature", up.Signature.EncodeInvalidXmlChars() ?? string.Empty),
                                 new XAttribute("signatureDisabled", up.SignatureDisabled),
                                 new XAttribute("trustLevel", up.TrustLevel),
                                 new XAttribute("adminWatch", up.AdminWatch),
@@ -563,14 +569,12 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
                 var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
                 var portalId = moduleInfo?.PortalID ?? Null.NullInteger;
+
                 var moduleSettings = SettingsBase.GetModuleSettings(moduleId);
-                var defaultPermissionId = moduleSettings?.DefaultPermissionId ?? -1;
-                var defaultSettingsKey = moduleSettings?.DefaultSettingsKey ?? string.Empty;
-                var sourceDefaultPermissionId = GetInt(root, "defaultPermissionId");
-                var sourceDefaultSettingsKey = GetString(root, "defaultSettingsKey");
-                if (sourceDefaultSettingsKey.StartsWith("M"))
+                if (!moduleSettings.IsInstalled)
                 {
-                    sourceDefaultSettingsKey = $"M{moduleId}";
+                    // load initial Settings
+                    new ForumsConfig().ForumsInit(portalId, moduleId, skipContent: true);
                 }
 
                 var groupMap = new Dictionary<int, int>();
@@ -581,41 +585,22 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 var tagMap = new Dictionary<int, int>();
                 var categoryMap = new Dictionary<int, int>();
                 var badgeMap = new Dictionary<int, int>();
-                var rankMap = new Dictionary<int, int>();
                 var permissionMap = new Dictionary<int, int>();
                 var settingsKeyMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                 var importedForums = new Dictionary<int, ForumInfo>();
                 var pendingForumParents = new Dictionary<int, int>();
                 var pendingReplyParents = new Dictionary<int, int>();
 
-                if (sourceDefaultPermissionId > 0 && defaultPermissionId > 0)
+                var defaultSettingsKey = moduleSettings?.DefaultSettingsKey ?? string.Empty;
+                var sourceDefaultSettingsKey = GetString(root, "defaultSettingsKey");
+                if (sourceDefaultSettingsKey.StartsWith("M"))
                 {
-                    permissionMap[sourceDefaultPermissionId] = defaultPermissionId;
+                    sourceDefaultSettingsKey = $"M{moduleId}";
                 }
 
                 if (!string.IsNullOrWhiteSpace(sourceDefaultSettingsKey) && !string.IsNullOrWhiteSpace(defaultSettingsKey))
                 {
                     settingsKeyMap[sourceDefaultSettingsKey] = defaultSettingsKey;
-                }
-
-                var defaultPermission = defaultPermissionId > 0 ? PermissionController.Instance.GetById(defaultPermissionId, moduleId) : null;
-                foreach (var sourcePermission in GetElements(root, "permissions", "permission"))
-                {
-                    var oldPermissionId = GetInt(sourcePermission, "permissionsId");
-                    if (oldPermissionId <= 0)
-                    {
-                        continue;
-                    }
-
-                    var permission = CreatePermission(moduleId, sourcePermission);
-                    permission = PermissionController.Instance.Insert(permission);
-                    permissionMap[oldPermissionId] = permission.PermissionsId;
-                }
-
-                if (defaultPermissionId <= 0 && sourceDefaultPermissionId > 0 && permissionMap.TryGetValue(sourceDefaultPermissionId, out var mappedDefaultPermissionId))
-                {
-                    ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultPermissionId, mappedDefaultPermissionId.ToString(CultureInfo.InvariantCulture));
-                    defaultPermissionId = mappedDefaultPermissionId;
                 }
 
                 foreach (var sourceSetting in GetElements(root, "settings", "setting"))
@@ -637,6 +622,44 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         mappedSettingsKey,
                         GetString(sourceSetting, "settingName"),
                         GetString(sourceSetting, "settingValue"));
+                }
+
+                var sourcePermissions = GetElements(root, "permissions", "permission");
+                foreach (var sourcePermission in sourcePermissions)
+                {
+                    var oldPermissionId = GetInt(sourcePermission, "permissionsId");
+                    if (oldPermissionId <= 0)
+                    {
+                        continue;
+                    }
+
+                    var permission = CreatePermission(moduleId, sourcePermission);
+                    permission = PermissionController.Instance.Insert(permission);
+                    permissionMap[oldPermissionId] = permission.PermissionsId;
+                }
+
+                var sourceDefaultPermissionId = GetInt(root, "defaultPermissionId");
+                var defaultPermissionId = -1;
+
+                if (permissionMap.ContainsKey(sourceDefaultPermissionId))
+                {
+                    defaultPermissionId = permissionMap[sourceDefaultPermissionId];
+                }
+                else
+                {
+                    var defaultPermission = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo()
+                    {
+                        ModuleId = moduleId,
+                    };
+                    defaultPermission = PermissionController.Instance.Insert(defaultPermission);
+                    permissionMap[sourceDefaultPermissionId] = defaultPermission.PermissionsId;
+                    defaultPermissionId = defaultPermission.PermissionsId;
+                }
+
+                if (sourceDefaultPermissionId > 0 && permissionMap.TryGetValue(sourceDefaultPermissionId, out var mappedDefaultPermissionId))
+                {
+                    ModuleController.Instance.UpdateModuleSetting(moduleId, SettingKeys.DefaultPermissionId, mappedDefaultPermissionId.ToString(CultureInfo.InvariantCulture));
+                    defaultPermissionId = mappedDefaultPermissionId;
                 }
 
                 foreach (var sourceUserProfile in GetElements(root, "userProfiles", "userProfile"))
@@ -761,7 +784,20 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     };
 
                     ((IRepository<RankInfo>)RankController.Instance).Insert(rank);
-                    rankMap[GetInt(sourceRank, "rankId")] = rank.RankId;
+                }
+
+                foreach (var sourceFilter in GetElements(root, "filters", "filter"))
+                {
+                    var filter = new FilterInfo
+                    {
+                        ModuleId = moduleId,
+                        PortalId = portalId,
+                        FilterType = GetString(sourceFilter, "filterType"),
+                        Find = GetString(sourceFilter, "find"),
+                        Replace = GetString(sourceFilter, "replace"),
+                    };
+
+                    new FilterController().Insert(filter);
                 }
 
                 foreach (var sourceForum in GetElements(root, "forums", "forum"))
@@ -1203,6 +1239,9 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     forum.LastTopicId = topicMap.TryGetValue(oldLastTopicId, out var newLastTopicId) ? newLastTopicId : 0;
                     forum.LastReplyId = replyMap.TryGetValue(oldLastReplyId, out var newLastReplyId) ? newLastReplyId : 0;
                     ((IRepository<ForumInfo>)ForumController.Instance).Update(forum);
+
+                    _ = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(newForumId);
+                    _ = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.RecalculateTopicPointers(newForumId);
                 }
 
                 foreach (var sourceForumTracking in GetElements(root, "forumTracking", "forumTracking"))
@@ -1252,7 +1291,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     });
                 }
 
-                SettingsCache.ClearAll(moduleId);
+                // Clear out the cache
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.ClearAllCache(moduleId);
             }
             catch (Exception ex)
             {

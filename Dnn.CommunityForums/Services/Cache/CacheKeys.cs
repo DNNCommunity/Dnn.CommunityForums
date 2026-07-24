@@ -64,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
         internal const string CacheUpdate = "AF-{0}-cu";
         internal const string WhatsNew = "AF-{0}-tp";
         internal const string WhatsNewData = "AF-{0}-tprssdata-{1}-{2}-{3}-{4}-{5}";
+        internal const string WhatsNewDataPrefix = "AF-{0}-tprssdata-";
         internal const string RssTemplate = "AF-{0}-tprss-{1}";
         internal const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
         internal const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";
