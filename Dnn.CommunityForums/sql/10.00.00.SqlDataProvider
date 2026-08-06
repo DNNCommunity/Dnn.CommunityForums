@@ -236,7 +236,21 @@ BEGIN TRY
             SELECT STRING_AGG(COL_NAME(fkc.referenced_object_id, fkc.referenced_column_id), ',')
             FROM sys.foreign_key_columns fkc
             WHERE fkc.constraint_object_id = fk.object_id
-        ) + ')'
+        ) + ')' +
+        ' ON DELETE ' + CASE fk.delete_referential_action
+            WHEN 0 THEN 'NO ACTION'
+            WHEN 1 THEN 'CASCADE'
+            WHEN 2 THEN 'SET NULL'
+            WHEN 3 THEN 'SET DEFAULT'
+            ELSE 'NO ACTION'
+        END +
+        ' ON UPDATE ' + CASE fk.update_referential_action
+            WHEN 0 THEN 'NO ACTION'
+            WHEN 1 THEN 'CASCADE'
+            WHEN 2 THEN 'SET NULL'
+            WHEN 3 THEN 'SET DEFAULT'
+            ELSE 'NO ACTION'
+        END
     FROM sys.foreign_keys fk    
     WHERE SCHEMA_NAME(fk.schema_id) = @SchemaName
     AND (OBJECT_NAME(fk.referenced_object_id) LIKE @OldPattern OR OBJECT_NAME(fk.parent_object_id) LIKE @OldPattern)
