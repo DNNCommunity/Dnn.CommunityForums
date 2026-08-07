@@ -56,7 +56,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 else
                 {
-                    forum = this._repositoryControllerBase.GetById(forumId, moduleId);
+                    forum = this._repositoryControllerBase.GetById(id: forumId, scopeValue: moduleId);
+                    if (forum == null)
+                    {
+                        forum = this._repositoryControllerBase.GetById(id: forumId);
+                    }
                 }
 
                 if (forum != null)

@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal interface IPermissionController : IRepository<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
-        DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int permissionsId, int moduleId);
+        DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int moduleId, int permissionsId);
 
         string SavePermSet(int moduleId, int permissionsId, DotNetNuke.Modules.ActiveForums.SecureActions requestedAccess, string permSet);
 

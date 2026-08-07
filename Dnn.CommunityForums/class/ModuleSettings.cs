@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ? string.Empty
                     : this.MainSettings.GetString(SettingKeys.PrefixURLLikes, Views.likes);
 
-        public int DefaultPermissionId => this.MainSettings.GetInt(SettingKeys.DefaultPermissionId);
+        public int DefaultPermissionId => this.MainSettings.GetInt(SettingKeys.DefaultPermissionId, -1);
 
         public string DefaultSettingsKey => this.MainSettings.GetString(SettingKeys.DefaultSettingsKey) ?? $"M{this.ModuleId}";
 

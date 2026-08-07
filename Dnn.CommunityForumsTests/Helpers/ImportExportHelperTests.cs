@@ -33,12 +33,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Helpers
         {
             var expected = new[]
             {
+                "permissions",
+                "settings",
+                "userProfiles",
                 "groups",
                 "tags",
                 "badges",
                 "ranks",
-                "permissions",
-                "settings",
+                "filters",
                 "forums",
                 "categories",
                 "contents",
@@ -54,7 +56,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Helpers
                 "subscriptions",
                 "archivedUrls",
                 "forumTopics",
-                "userProfiles",
                 "forumTracking",
                 "userBadges",
             };

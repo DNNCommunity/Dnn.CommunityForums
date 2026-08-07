@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 var roles = new HashSet<int>();
                 if (permissionRequired is SecureActions.ManageUsers)
                 {
-                    var moduleDefaultSecurity = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(permissionsId: SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId, moduleId: moduleId);
+                    var moduleDefaultSecurity = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(moduleId: moduleId, permissionsId: SettingsBase.GetModuleSettings(moduleId).DefaultPermissionId);
                     roles = moduleDefaultSecurity.ManageUsersRoleIds;
                 }
                 else

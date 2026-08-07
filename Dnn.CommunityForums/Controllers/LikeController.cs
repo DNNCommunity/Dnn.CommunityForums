@@ -45,7 +45,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.LikeInfo;
             if (like == null)
             {
-                like = this._repositoryControllerBase.GetById(id, moduleId);
+                like = this._repositoryControllerBase.GetById(id: id, scopeValue: moduleId);
+                if (like == null)
+                {
+                    like = this._repositoryControllerBase.GetById(id: id);
+                }
+
                 if (like != null)
                 {
                     like.ModuleId = moduleId;

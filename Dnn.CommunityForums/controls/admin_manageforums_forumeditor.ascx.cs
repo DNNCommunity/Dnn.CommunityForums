@@ -638,7 +638,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.ctlSecurityGrid = this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/admin_securitygrid.ascx")) as Controls.admin_securitygrid;
             if (this.ctlSecurityGrid != null)
             {
-                var permissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(permissionsId: this.MainSettings.DefaultPermissionId, moduleId: this.ModuleId);
+                var permissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(moduleId: this.ModuleId, permissionsId: this.MainSettings.DefaultPermissionId);
                 if (permissions == null)
                 {
                     permissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.CreateDefaultPermissions(this.PortalSettings, this.ModuleId);

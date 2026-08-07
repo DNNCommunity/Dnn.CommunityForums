@@ -134,7 +134,7 @@ OrderedMap.from = function(value) {
   return new OrderedMap(content)
 };
 
-function findDiffStart(a, b, pos) {
+function findDiffStart$1(a, b, pos) {
     for (let i = 0;; i++) {
         if (i == a.childCount || i == b.childCount)
             return a.childCount == b.childCount ? null : pos;
@@ -154,14 +154,14 @@ function findDiffStart(a, b, pos) {
             return pos;
         }
         if (childA.content.size || childB.content.size) {
-            let inner = findDiffStart(childA.content, childB.content, pos + 1);
+            let inner = findDiffStart$1(childA.content, childB.content, pos + 1);
             if (inner != null)
                 return inner;
         }
         pos += childA.nodeSize;
     }
 }
-function findDiffEnd(a, b, posA, posB) {
+function findDiffEnd$1(a, b, posA, posB) {
     for (let iA = a.childCount, iB = b.childCount;;) {
         if (iA == 0 || iB == 0)
             return iA == iB ? null : { a: posA, b: posB };
@@ -188,7 +188,7 @@ function findDiffEnd(a, b, posA, posB) {
             return { a: posA, b: posB };
         }
         if (childA.content.size || childB.content.size) {
-            let inner = findDiffEnd(childA.content, childB.content, posA - 1, posB - 1);
+            let inner = findDiffEnd$1(childA.content, childB.content, posA - 1, posB - 1);
             if (inner)
                 return inner;
         }
@@ -206,7 +206,7 @@ Like nodes, fragments are persistent data structures, and you
 should not mutate them or their content. Rather, you create new
 instances whenever needed. The API tries to make this easy.
 */
-class Fragment {
+let Fragment$1 = class Fragment {
     /**
     @internal
     */
@@ -400,7 +400,7 @@ class Fragment {
     fragment differ, or `null` if they are the same.
     */
     findDiffStart(other, pos = 0) {
-        return findDiffStart(this, other, pos);
+        return findDiffStart$1(this, other, pos);
     }
     /**
     Find the first position, searching from the end, at which this
@@ -409,7 +409,7 @@ class Fragment {
     nodes, an object with two separate positions is returned.
     */
     findDiffEnd(other, pos = this.size, otherPos = other.size) {
-        return findDiffEnd(this, other, pos, otherPos);
+        return findDiffEnd$1(this, other, pos, otherPos);
     }
     /**
     Find the index and inner offset corresponding to a given relative
@@ -418,17 +418,17 @@ class Fragment {
     */
     findIndex(pos) {
         if (pos == 0)
-            return retIndex(0, pos);
+            return retIndex$1(0, pos);
         if (pos == this.size)
-            return retIndex(this.content.length, pos);
+            return retIndex$1(this.content.length, pos);
         if (pos > this.size || pos < 0)
             throw new RangeError(`Position ${pos} outside of fragment (${this})`);
         for (let i = 0, curPos = 0;; i++) {
             let cur = this.child(i), end = curPos + cur.nodeSize;
             if (end >= pos) {
                 if (end == pos)
-                    return retIndex(i + 1, end);
-                return retIndex(i, curPos);
+                    return retIndex$1(i + 1, end);
+                return retIndex$1(i, curPos);
             }
             curPos = end;
         }
@@ -498,18 +498,18 @@ class Fragment {
         throw new RangeError("Can not convert " + nodes + " to a Fragment" +
             (nodes.nodesBetween ? " (looks like multiple versions of prosemirror-model were loaded)" : ""));
     }
-}
+};
 /**
 An empty fragment. Intended to be reused whenever a node doesn't
 contain anything (rather than allocating a new empty fragment for
 each leaf node).
 */
-Fragment.empty = new Fragment([], 0);
-const found = { index: 0, offset: 0 };
-function retIndex(index, offset) {
-    found.index = index;
-    found.offset = offset;
-    return found;
+Fragment$1.empty = new Fragment$1([], 0);
+const found$1 = { index: 0, offset: 0 };
+function retIndex$1(index, offset) {
+    found$1.index = index;
+    found$1.offset = offset;
+    return found$1;
 }
 
 function compareDeep(a, b) {
@@ -687,14 +687,14 @@ Mark$1.none = [];
 Error type raised by [`Node.replace`](https://prosemirror.net/docs/ref/#model.Node.replace) when
 given an invalid replacement.
 */
-class ReplaceError extends Error {
-}
+let ReplaceError$1 = class ReplaceError extends Error {
+};
 /**
 A slice represents a piece cut out of a larger document. It
 stores not only a fragment, but also the depth up to which nodes on
 both side are ‘open’ (cut through).
 */
-class Slice {
+let Slice$1 = class Slice {
     /**
     Create a slice. When specifying a non-zero open depth, you must
     make sure that there are nodes of at least that depth at the
@@ -734,14 +734,14 @@ class Slice {
     @internal
     */
     insertAt(pos, fragment) {
-        let content = insertInto(this.content, pos + this.openStart, fragment, this.openStart + 1, this.openEnd + 1);
+        let content = insertInto$1(this.content, pos + this.openStart, fragment, this.openStart + 1, this.openEnd + 1);
         return content && new Slice(content, this.openStart, this.openEnd);
     }
     /**
     @internal
     */
     removeBetween(from, to) {
-        return new Slice(removeRange(this.content, from + this.openStart, to + this.openStart), this.openStart, this.openEnd);
+        return new Slice(removeRange$1(this.content, from + this.openStart, to + this.openStart), this.openStart, this.openEnd);
     }
     /**
     Tests whether this slice is equal to another slice.
@@ -777,7 +777,7 @@ class Slice {
         let openStart = json.openStart || 0, openEnd = json.openEnd || 0;
         if (typeof openStart != "number" || typeof openEnd != "number")
             throw new RangeError("Invalid input for Slice.fromJSON");
-        return new Slice(Fragment.fromJSON(schema, json.content), openStart, openEnd);
+        return new Slice(Fragment$1.fromJSON(schema, json.content), openStart, openEnd);
     }
     /**
     Create a slice from a fragment by taking the maximum possible
@@ -791,12 +791,12 @@ class Slice {
             openEnd++;
         return new Slice(fragment, openStart, openEnd);
     }
-}
+};
 /**
 The empty slice.
 */
-Slice.empty = new Slice(Fragment.empty, 0, 0);
-function removeRange(content, from, to) {
+Slice$1.empty = new Slice$1(Fragment$1.empty, 0, 0);
+function removeRange$1(content, from, to) {
     let { index, offset } = content.findIndex(from), child = content.maybeChild(index);
     let { index: indexTo, offset: offsetTo } = content.findIndex(to);
     if (offset == from || child.isText) {
@@ -806,23 +806,23 @@ function removeRange(content, from, to) {
     }
     if (index != indexTo)
         throw new RangeError("Removing non-flat range");
-    return content.replaceChild(index, child.copy(removeRange(child.content, from - offset - 1, to - offset - 1)));
+    return content.replaceChild(index, child.copy(removeRange$1(child.content, from - offset - 1, to - offset - 1)));
 }
-function insertInto(content, dist, insert, openStart, openEnd, parent) {
+function insertInto$1(content, dist, insert, openStart, openEnd, parent) {
     let { index, offset } = content.findIndex(dist), child = content.maybeChild(index);
     if (offset == dist || child.isText) {
         if (parent && openStart <= 0 && openEnd <= 0 && !parent.canReplace(index, index, insert))
             return null;
         return content.cut(0, dist).append(insert).append(content.cut(dist));
     }
-    let inner = insertInto(child.content, dist - offset - 1, insert, index == 0 ? openStart - 1 : 0, index == content.childCount - 1 ? openEnd - 1 : 0, child);
+    let inner = insertInto$1(child.content, dist - offset - 1, insert, index == 0 ? openStart - 1 : 0, index == content.childCount - 1 ? openEnd - 1 : 0, child);
     return inner && content.replaceChild(index, child.copy(inner));
 }
 function replace($from, $to, slice) {
     if (slice.openStart > $from.depth)
-        throw new ReplaceError("Inserted content deeper than insertion position");
+        throw new ReplaceError$1("Inserted content deeper than insertion position");
     if ($from.depth - slice.openStart != $to.depth - slice.openEnd)
-        throw new ReplaceError("Inconsistent open depths");
+        throw new ReplaceError$1("Inconsistent open depths");
     return replaceOuter($from, $to, slice, 0);
 }
 function replaceOuter($from, $to, slice, depth) {
@@ -845,7 +845,7 @@ function replaceOuter($from, $to, slice, depth) {
 }
 function checkJoin(main, sub) {
     if (!sub.type.compatibleContent(main.type))
-        throw new ReplaceError("Cannot join " + sub.type.name + " onto " + main.type.name);
+        throw new ReplaceError$1("Cannot join " + sub.type.name + " onto " + main.type.name);
 }
 function joinable$1($before, $after, depth) {
     let node = $before.node(depth);
@@ -879,7 +879,7 @@ function addRange($start, $end, depth, target) {
 }
 function close(node, content) {
     if (!node.type.validContent(content))
-        throw new ReplaceError("Invalid content for node " + node.type.name);
+        throw new ReplaceError$1("Invalid content for node " + node.type.name);
     return node.copy(content);
 }
 function replaceThreeWay($from, $start, $end, $to, depth) {
@@ -899,7 +899,7 @@ function replaceThreeWay($from, $start, $end, $to, depth) {
             addNode(close(openEnd, replaceTwoWay($end, $to, depth + 1)), content);
     }
     addRange($to, null, depth, content);
-    return new Fragment(content);
+    return new Fragment$1(content);
 }
 function replaceTwoWay($from, $to, depth) {
     let content = [];
@@ -909,13 +909,13 @@ function replaceTwoWay($from, $to, depth) {
         addNode(close(type, replaceTwoWay($from, $to, depth + 1)), content);
     }
     addRange($to, null, depth, content);
-    return new Fragment(content);
+    return new Fragment$1(content);
 }
 function prepareSliceForReplace(slice, $along) {
     let extra = $along.depth - slice.openStart, parent = $along.node(extra);
     let node = parent.copy(slice.content);
     for (let i = extra - 1; i >= 0; i--)
-        node = $along.node(i).copy(Fragment.from(node));
+        node = $along.node(i).copy(Fragment$1.from(node));
     return { start: node.resolveNoCache(slice.openStart + extra),
         end: node.resolveNoCache(node.content.size - slice.openEnd - extra) };
 }
@@ -1313,7 +1313,7 @@ let Node$1 = class Node {
         this.type = type;
         this.attrs = attrs;
         this.marks = marks;
-        this.content = content || Fragment.empty;
+        this.content = content || Fragment$1.empty;
     }
     /**
     The array of this node's child nodes.
@@ -1449,12 +1449,12 @@ let Node$1 = class Node {
     */
     slice(from, to = this.content.size, includeParents = false) {
         if (from == to)
-            return Slice.empty;
+            return Slice$1.empty;
         let $from = this.resolve(from), $to = this.resolve(to);
         let depth = includeParents ? 0 : $from.sharedDepth(to);
         let start = $from.start(depth), node = $from.node(depth);
         let content = node.content.cut($from.pos - start, $to.pos - start);
-        return new Slice(content, $from.depth - depth, $to.depth - depth);
+        return new Slice$1(content, $from.depth - depth, $to.depth - depth);
     }
     /**
     Replace the part of the document between the given positions with
@@ -1589,7 +1589,7 @@ let Node$1 = class Node {
     can optionally pass `start` and `end` indices into the
     replacement fragment.
     */
-    canReplace(from, to, replacement = Fragment.empty, start = 0, end = replacement.childCount) {
+    canReplace(from, to, replacement = Fragment$1.empty, start = 0, end = replacement.childCount) {
         let one = this.contentMatchAt(from).matchFragment(replacement, start, end);
         let two = one && one.matchFragment(this.content, to);
         if (!two || !two.validEnd)
@@ -1671,7 +1671,7 @@ let Node$1 = class Node {
                 throw new RangeError("Invalid text node in JSON");
             return schema.text(json.text, marks);
         }
-        let content = Fragment.fromJSON(schema, json.content);
+        let content = Fragment$1.fromJSON(schema, json.content);
         let node = schema.nodeType(json.type).create(json.attrs, content, marks);
         node.type.checkAttrs(node.attrs);
         return node;
@@ -1824,7 +1824,7 @@ class ContentMatch {
         function search(match, types) {
             let finished = match.matchFragment(after, startIndex);
             if (finished && (!toEnd || finished.validEnd))
-                return Fragment.from(types.map(tp => tp.createAndFill()));
+                return Fragment$1.from(types.map(tp => tp.createAndFill()));
             for (let i = 0; i < match.next.length; i++) {
                 let { type, next } = match.next[i];
                 if (!(type.isText || type.hasRequiredAttrs()) && seen.indexOf(next) == -1) {
@@ -2311,7 +2311,7 @@ let NodeType$1 = class NodeType {
     create(attrs = null, content, marks) {
         if (this.isText)
             throw new Error("NodeType.create can't construct text nodes");
-        return new Node$1(this, this.computeAttrs(attrs), Fragment.from(content), Mark$1.setFrom(marks));
+        return new Node$1(this, this.computeAttrs(attrs), Fragment$1.from(content), Mark$1.setFrom(marks));
     }
     /**
     Like [`create`](https://prosemirror.net/docs/ref/#model.NodeType.create), but check the given content
@@ -2319,7 +2319,7 @@ let NodeType$1 = class NodeType {
     if it doesn't match.
     */
     createChecked(attrs = null, content, marks) {
-        content = Fragment.from(content);
+        content = Fragment$1.from(content);
         this.checkContent(content);
         return new Node$1(this, this.computeAttrs(attrs), content, Mark$1.setFrom(marks));
     }
@@ -2333,7 +2333,7 @@ let NodeType$1 = class NodeType {
     */
     createAndFill(attrs = null, content, marks) {
         attrs = this.computeAttrs(attrs);
-        content = Fragment.from(content);
+        content = Fragment$1.from(content);
         if (content.size) {
             let before = this.contentMatch.fillBefore(content);
             if (!before)
@@ -2341,7 +2341,7 @@ let NodeType$1 = class NodeType {
             content = before.append(content);
         }
         let matched = this.contentMatch.matchFragment(content);
-        let after = matched && matched.fillBefore(Fragment.empty, true);
+        let after = matched && matched.fillBefore(Fragment$1.empty, true);
         if (!after)
             return null;
         return new Node$1(this, attrs, content.append(after), Mark$1.setFrom(marks));
@@ -2542,7 +2542,7 @@ creating and deserializing such documents.
 When given, the type parameters provide the names of the nodes and
 marks in this schema.
 */
-let Schema$1 = class Schema {
+let Schema$2 = class Schema {
     /**
     Construct a schema from a schema [specification](https://prosemirror.net/docs/ref/#model.SchemaSpec).
     */
@@ -2726,7 +2726,7 @@ let DOMParser$1 = class DOMParser {
     parseSlice(dom, options = {}) {
         let context = new ParseContext(this, options, true);
         context.addAll(dom, Mark$1.none, options.from, options.to);
-        return Slice.maxOpen(context.finish());
+        return Slice$1.maxOpen(context.finish());
     }
     /**
     @internal
@@ -2815,7 +2815,7 @@ let DOMParser$1 = class DOMParser {
     }
 };
 const blockTags = {
-    address: true, article: true, aside: true, blockquote: true, body: true, canvas: true,
+    address: true, article: true, aside: true, blockquote: true, canvas: true,
     dd: true, div: true, dl: true, fieldset: true, figcaption: true, figure: true,
     footer: true, form: true, h1: true, h2: true, h3: true, h4: true, h5: true,
     h6: true, header: true, hgroup: true, hr: true, li: true, noscript: true, ol: true,
@@ -2849,7 +2849,7 @@ class NodeContext {
         if (!this.match) {
             if (!this.type)
                 return [];
-            let fill = this.type.contentMatch.fillBefore(Fragment.from(node));
+            let fill = this.type.contentMatch.fillBefore(Fragment$1.from(node));
             if (fill) {
                 this.match = this.type.contentMatch.matchFragment(fill);
             }
@@ -2877,9 +2877,9 @@ class NodeContext {
                     this.content[this.content.length - 1] = text.withText(text.text.slice(0, text.text.length - m[0].length));
             }
         }
-        let content = Fragment.from(this.content);
+        let content = Fragment$1.from(this.content);
         if (!openEnd && this.match)
-            content = content.append(this.match.fillBefore(Fragment.empty, true));
+            content = content.append(this.match.fillBefore(Fragment$1.empty, true));
         return this.type ? this.type.create(this.attrs, content, this.marks) : content;
     }
     inlineContext(node) {
@@ -3401,7 +3401,7 @@ class DOMSerializer {
     */
     serializeFragment(fragment, options = {}, target) {
         if (!target)
-            target = doc$2(options).createDocumentFragment();
+            target = doc$3(options).createDocumentFragment();
         let top = target, active = [];
         fragment.forEach(node => {
             if (active.length || node.marks.length) {
@@ -3438,8 +3438,8 @@ class DOMSerializer {
     */
     serializeNodeInner(node, options) {
         if (node.isText)
-            return doc$2(options).createTextNode(node.text);
-        let { dom, contentDOM } = renderSpec(doc$2(options), this.nodes[node.type.name](node), null, node.attrs);
+            return doc$3(options).createTextNode(node.text);
+        let { dom, contentDOM } = renderSpec(doc$3(options), this.nodes[node.type.name](node), null, node.attrs);
         if (contentDOM) {
             if (node.isLeaf)
                 throw new RangeError("Content hole not allowed in a leaf node spec");
@@ -3470,7 +3470,7 @@ class DOMSerializer {
     */
     serializeMark(mark, inline, options = {}) {
         let toDOM = this.marks[mark.type.name];
-        return toDOM && renderSpec(doc$2(options), toDOM(mark, inline), null, mark.attrs);
+        return toDOM && renderSpec(doc$3(options), toDOM(mark, inline), null, mark.attrs);
     }
     static renderSpec(doc, structure, xmlNS = null, blockArraysIn) {
         // Kludge for backwards-compatibility with accidental original behavious
@@ -3512,7 +3512,7 @@ function gatherToDOM(obj) {
     }
     return result;
 }
-function doc$2(options) {
+function doc$3(options) {
     return options.document || window.document;
 }
 const suspiciousAttributeCache = new WeakMap();
@@ -3610,17 +3610,17 @@ function renderSpec(doc, structure, xmlNS, blockArraysIn) {
 // decode these, since those clip to 32 bits, which we might in rare
 // cases want to overflow. A 64-bit float can represent 48-bit
 // integers precisely.
-const lower16 = 0xffff;
-const factor16 = Math.pow(2, 16);
-function makeRecover(index, offset) { return index + offset * factor16; }
-function recoverIndex(value) { return value & lower16; }
-function recoverOffset(value) { return (value - (value & lower16)) / factor16; }
-const DEL_BEFORE = 1, DEL_AFTER = 2, DEL_ACROSS = 4, DEL_SIDE = 8;
+const lower16$1 = 0xffff;
+const factor16$1 = Math.pow(2, 16);
+function makeRecover$1(index, offset) { return index + offset * factor16$1; }
+function recoverIndex$1(value) { return value & lower16$1; }
+function recoverOffset$1(value) { return (value - (value & lower16$1)) / factor16$1; }
+const DEL_BEFORE$1 = 1, DEL_AFTER$1 = 2, DEL_ACROSS$1 = 4, DEL_SIDE$1 = 8;
 /**
 An object representing a mapped position with extra
 information.
 */
-class MapResult {
+let MapResult$1 = class MapResult {
     /**
     @internal
     */
@@ -3646,29 +3646,29 @@ class MapResult {
     step removed the token on the side queried (via the `assoc`)
     argument from the document.
     */
-    get deleted() { return (this.delInfo & DEL_SIDE) > 0; }
+    get deleted() { return (this.delInfo & DEL_SIDE$1) > 0; }
     /**
     Tells you whether the token before the mapped position was deleted.
     */
-    get deletedBefore() { return (this.delInfo & (DEL_BEFORE | DEL_ACROSS)) > 0; }
+    get deletedBefore() { return (this.delInfo & (DEL_BEFORE$1 | DEL_ACROSS$1)) > 0; }
     /**
     True when the token after the mapped position was deleted.
     */
-    get deletedAfter() { return (this.delInfo & (DEL_AFTER | DEL_ACROSS)) > 0; }
+    get deletedAfter() { return (this.delInfo & (DEL_AFTER$1 | DEL_ACROSS$1)) > 0; }
     /**
     Tells whether any of the steps mapped through deletes across the
     position (including both the token before and after the
     position).
     */
-    get deletedAcross() { return (this.delInfo & DEL_ACROSS) > 0; }
-}
+    get deletedAcross() { return (this.delInfo & DEL_ACROSS$1) > 0; }
+};
 /**
 A map describing the deletions and insertions made by a step, which
 can be used to find the correspondence between positions in the
 pre-step version of a document and the same position in the
 post-step version.
 */
-class StepMap {
+let StepMap$1 = class StepMap {
     /**
     Create a position map. The modifications to the document are
     represented as an array of numbers, in which each group of three
@@ -3692,11 +3692,11 @@ class StepMap {
     @internal
     */
     recover(value) {
-        let diff = 0, index = recoverIndex(value);
+        let diff = 0, index = recoverIndex$1(value);
         if (!this.inverted)
             for (let i = 0; i < index; i++)
                 diff += this.ranges[i * 3 + 2] - this.ranges[i * 3 + 1];
-        return this.ranges[index * 3] + diff + recoverOffset(value);
+        return this.ranges[index * 3] + diff + recoverOffset$1(value);
     }
     mapResult(pos, assoc = 1) { return this._map(pos, assoc, false); }
     map(pos, assoc = 1) { return this._map(pos, assoc, true); }
@@ -3715,21 +3715,21 @@ class StepMap {
                 let result = start + diff + (side < 0 ? 0 : newSize);
                 if (simple)
                     return result;
-                let recover = pos == (assoc < 0 ? start : end) ? null : makeRecover(i / 3, pos - start);
-                let del = pos == start ? DEL_AFTER : pos == end ? DEL_BEFORE : DEL_ACROSS;
+                let recover = pos == (assoc < 0 ? start : end) ? null : makeRecover$1(i / 3, pos - start);
+                let del = pos == start ? DEL_AFTER$1 : pos == end ? DEL_BEFORE$1 : DEL_ACROSS$1;
                 if (assoc < 0 ? pos != start : pos != end)
-                    del |= DEL_SIDE;
-                return new MapResult(result, del, recover);
+                    del |= DEL_SIDE$1;
+                return new MapResult$1(result, del, recover);
             }
             diff += newSize - oldSize;
         }
-        return simple ? pos + diff : new MapResult(pos + diff, 0, null);
+        return simple ? pos + diff : new MapResult$1(pos + diff, 0, null);
     }
     /**
     @internal
     */
     touches(pos, recover) {
-        let diff = 0, index = recoverIndex(recover);
+        let diff = 0, index = recoverIndex$1(recover);
         let oldIndex = this.inverted ? 2 : 1, newIndex = this.inverted ? 1 : 2;
         for (let i = 0; i < this.ranges.length; i += 3) {
             let start = this.ranges[i] - (this.inverted ? diff : 0);
@@ -3776,11 +3776,11 @@ class StepMap {
     static offset(n) {
         return n == 0 ? StepMap.empty : new StepMap(n < 0 ? [0, -n, 0] : [0, 0, n]);
     }
-}
+};
 /**
 A StepMap that contains no changed ranges.
 */
-StepMap.empty = new StepMap([]);
+StepMap$1.empty = new StepMap$1([]);
 /**
 A mapping represents a pipeline of zero or more [step
 maps](https://prosemirror.net/docs/ref/#transform.StepMap). It has special provisions for losslessly
@@ -3917,11 +3917,11 @@ class Mapping {
             delInfo |= result.delInfo;
             pos = result.pos;
         }
-        return simple ? pos : new MapResult(pos, delInfo, null);
+        return simple ? pos : new MapResult$1(pos, delInfo, null);
     }
 }
 
-const stepsByID = Object.create(null);
+const stepsByID$1 = Object.create(null);
 /**
 A step object represents an atomic change. It generally applies
 only to the document it was created for, since the positions
@@ -3933,13 +3933,13 @@ methods, and registering your class with a unique
 JSON-serialization identifier using
 [`Step.jsonID`](https://prosemirror.net/docs/ref/#transform.Step^jsonID).
 */
-class Step {
+let Step$1 = class Step {
     /**
     Get the step map that represents the changes made by this step,
     and which can be used to transform between positions in the old
     and the new document.
     */
-    getMap() { return StepMap.empty; }
+    getMap() { return StepMap$1.empty; }
     /**
     Try to merge this step with another one, to be applied directly
     after it. Returns the merged step when possible, null if the
@@ -3953,7 +3953,7 @@ class Step {
     static fromJSON(schema, json) {
         if (!json || !json.stepType)
             throw new RangeError("Invalid input for Step.fromJSON");
-        let type = stepsByID[json.stepType];
+        let type = stepsByID$1[json.stepType];
         if (!type)
             throw new RangeError(`No step type ${json.stepType} defined`);
         return type.fromJSON(schema, json);
@@ -3965,18 +3965,18 @@ class Step {
     that's unlikely to clash with steps from other modules.
     */
     static jsonID(id, stepClass) {
-        if (id in stepsByID)
+        if (id in stepsByID$1)
             throw new RangeError("Duplicate use of step JSON ID " + id);
-        stepsByID[id] = stepClass;
+        stepsByID$1[id] = stepClass;
         stepClass.prototype.jsonID = id;
         return stepClass;
     }
-}
+};
 /**
 The result of [applying](https://prosemirror.net/docs/ref/#transform.Step.apply) a step. Contains either a
 new document or a failure value.
 */
-class StepResult {
+let StepResult$1 = class StepResult {
     /**
     @internal
     */
@@ -4010,29 +4010,29 @@ class StepResult {
             return StepResult.ok(doc.replace(from, to, slice));
         }
         catch (e) {
-            if (e instanceof ReplaceError)
+            if (e instanceof ReplaceError$1)
                 return StepResult.fail(e.message);
             throw e;
         }
     }
-}
+};
 
-function mapFragment(fragment, f, parent) {
+function mapFragment$1(fragment, f, parent) {
     let mapped = [];
     for (let i = 0; i < fragment.childCount; i++) {
         let child = fragment.child(i);
         if (child.content.size)
-            child = child.copy(mapFragment(child.content, f, child));
+            child = child.copy(mapFragment$1(child.content, f, child));
         if (child.isInline)
             child = f(child, parent, i);
         mapped.push(child);
     }
-    return Fragment.fromArray(mapped);
+    return Fragment$1.fromArray(mapped);
 }
 /**
 Add a mark to all inline content between two positions.
 */
-class AddMarkStep extends Step {
+let AddMarkStep$1 = class AddMarkStep extends Step$1 {
     /**
     Create a mark step.
     */
@@ -4057,15 +4057,15 @@ class AddMarkStep extends Step {
     apply(doc) {
         let oldSlice = doc.slice(this.from, this.to), $from = doc.resolve(this.from);
         let parent = $from.node($from.sharedDepth(this.to));
-        let slice = new Slice(mapFragment(oldSlice.content, (node, parent) => {
+        let slice = new Slice$1(mapFragment$1(oldSlice.content, (node, parent) => {
             if (!node.isAtom || !parent.type.allowsMarkType(this.mark.type))
                 return node;
             return node.mark(this.mark.addToSet(node.marks));
         }, parent), oldSlice.openStart, oldSlice.openEnd);
-        return StepResult.fromReplace(doc, this.from, this.to, slice);
+        return StepResult$1.fromReplace(doc, this.from, this.to, slice);
     }
     invert() {
-        return new RemoveMarkStep(this.from, this.to, this.mark);
+        return new RemoveMarkStep$1(this.from, this.to, this.mark);
     }
     map(mapping) {
         let from = mapping.mapResult(this.from, 1), to = mapping.mapResult(this.to, -1);
@@ -4092,12 +4092,12 @@ class AddMarkStep extends Step {
             throw new RangeError("Invalid input for AddMarkStep.fromJSON");
         return new AddMarkStep(json.from, json.to, schema.markFromJSON(json.mark));
     }
-}
-Step.jsonID("addMark", AddMarkStep);
+};
+Step$1.jsonID("addMark", AddMarkStep$1);
 /**
 Remove a mark from all inline content between two positions.
 */
-class RemoveMarkStep extends Step {
+let RemoveMarkStep$1 = class RemoveMarkStep extends Step$1 {
     /**
     Create a mark-removing step.
     */
@@ -4121,13 +4121,13 @@ class RemoveMarkStep extends Step {
     }
     apply(doc) {
         let oldSlice = doc.slice(this.from, this.to);
-        let slice = new Slice(mapFragment(oldSlice.content, node => {
+        let slice = new Slice$1(mapFragment$1(oldSlice.content, node => {
             return node.mark(this.mark.removeFromSet(node.marks));
         }, doc), oldSlice.openStart, oldSlice.openEnd);
-        return StepResult.fromReplace(doc, this.from, this.to, slice);
+        return StepResult$1.fromReplace(doc, this.from, this.to, slice);
     }
     invert() {
-        return new AddMarkStep(this.from, this.to, this.mark);
+        return new AddMarkStep$1(this.from, this.to, this.mark);
     }
     map(mapping) {
         let from = mapping.mapResult(this.from, 1), to = mapping.mapResult(this.to, -1);
@@ -4154,12 +4154,12 @@ class RemoveMarkStep extends Step {
             throw new RangeError("Invalid input for RemoveMarkStep.fromJSON");
         return new RemoveMarkStep(json.from, json.to, schema.markFromJSON(json.mark));
     }
-}
-Step.jsonID("removeMark", RemoveMarkStep);
+};
+Step$1.jsonID("removeMark", RemoveMarkStep$1);
 /**
 Add a mark to a specific node.
 */
-class AddNodeMarkStep extends Step {
+let AddNodeMarkStep$1 = class AddNodeMarkStep extends Step$1 {
     /**
     Create a node mark step.
     */
@@ -4179,9 +4179,9 @@ class AddNodeMarkStep extends Step {
     apply(doc) {
         let node = doc.nodeAt(this.pos);
         if (!node)
-            return StepResult.fail("No node at mark step's position");
+            return StepResult$1.fail("No node at mark step's position");
         let updated = node.type.create(node.attrs, null, this.mark.addToSet(node.marks));
-        return StepResult.fromReplace(doc, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1));
+        return StepResult$1.fromReplace(doc, this.pos, this.pos + 1, new Slice$1(Fragment$1.from(updated), 0, node.isLeaf ? 0 : 1));
     }
     invert(doc) {
         let node = doc.nodeAt(this.pos);
@@ -4194,7 +4194,7 @@ class AddNodeMarkStep extends Step {
                 return new AddNodeMarkStep(this.pos, this.mark);
             }
         }
-        return new RemoveNodeMarkStep(this.pos, this.mark);
+        return new RemoveNodeMarkStep$1(this.pos, this.mark);
     }
     map(mapping) {
         let pos = mapping.mapResult(this.pos, 1);
@@ -4211,12 +4211,12 @@ class AddNodeMarkStep extends Step {
             throw new RangeError("Invalid input for AddNodeMarkStep.fromJSON");
         return new AddNodeMarkStep(json.pos, schema.markFromJSON(json.mark));
     }
-}
-Step.jsonID("addNodeMark", AddNodeMarkStep);
+};
+Step$1.jsonID("addNodeMark", AddNodeMarkStep$1);
 /**
 Remove a mark from a specific node.
 */
-class RemoveNodeMarkStep extends Step {
+let RemoveNodeMarkStep$1 = class RemoveNodeMarkStep extends Step$1 {
     /**
     Create a mark-removing step.
     */
@@ -4236,15 +4236,15 @@ class RemoveNodeMarkStep extends Step {
     apply(doc) {
         let node = doc.nodeAt(this.pos);
         if (!node)
-            return StepResult.fail("No node at mark step's position");
+            return StepResult$1.fail("No node at mark step's position");
         let updated = node.type.create(node.attrs, null, this.mark.removeFromSet(node.marks));
-        return StepResult.fromReplace(doc, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1));
+        return StepResult$1.fromReplace(doc, this.pos, this.pos + 1, new Slice$1(Fragment$1.from(updated), 0, node.isLeaf ? 0 : 1));
     }
     invert(doc) {
         let node = doc.nodeAt(this.pos);
         if (!node || !this.mark.isInSet(node.marks))
             return this;
-        return new AddNodeMarkStep(this.pos, this.mark);
+        return new AddNodeMarkStep$1(this.pos, this.mark);
     }
     map(mapping) {
         let pos = mapping.mapResult(this.pos, 1);
@@ -4261,13 +4261,13 @@ class RemoveNodeMarkStep extends Step {
             throw new RangeError("Invalid input for RemoveNodeMarkStep.fromJSON");
         return new RemoveNodeMarkStep(json.pos, schema.markFromJSON(json.mark));
     }
-}
-Step.jsonID("removeNodeMark", RemoveNodeMarkStep);
+};
+Step$1.jsonID("removeNodeMark", RemoveNodeMarkStep$1);
 
 /**
 Replace a part of the document with a slice of new content.
 */
-class ReplaceStep extends Step {
+let ReplaceStep$1 = class ReplaceStep extends Step$1 {
     /**
     The given `slice` should fit the 'gap' between `from` and
     `to`—the depths must line up, and the surrounding nodes must be
@@ -4301,12 +4301,12 @@ class ReplaceStep extends Step {
         this.structure = structure;
     }
     apply(doc) {
-        if (this.structure && contentBetween(doc, this.from, this.to))
-            return StepResult.fail("Structure replace would overwrite content");
-        return StepResult.fromReplace(doc, this.from, this.to, this.slice);
+        if (this.structure && contentBetween$1(doc, this.from, this.to))
+            return StepResult$1.fail("Structure replace would overwrite content");
+        return StepResult$1.fromReplace(doc, this.from, this.to, this.slice);
     }
     getMap() {
-        return new StepMap([this.from, this.to - this.from, this.slice.size]);
+        return new StepMap$1([this.from, this.to - this.from, this.slice.size]);
     }
     invert(doc) {
         return new ReplaceStep(this.from, this.from + this.slice.size, doc.slice(this.from, this.to));
@@ -4322,13 +4322,13 @@ class ReplaceStep extends Step {
         if (!(other instanceof ReplaceStep) || other.structure || this.structure)
             return null;
         if (this.from + this.slice.size == other.from && !this.slice.openEnd && !other.slice.openStart) {
-            let slice = this.slice.size + other.slice.size == 0 ? Slice.empty
-                : new Slice(this.slice.content.append(other.slice.content), this.slice.openStart, other.slice.openEnd);
+            let slice = this.slice.size + other.slice.size == 0 ? Slice$1.empty
+                : new Slice$1(this.slice.content.append(other.slice.content), this.slice.openStart, other.slice.openEnd);
             return new ReplaceStep(this.from, this.to + (other.to - other.from), slice, this.structure);
         }
         else if (other.to == this.from && !this.slice.openStart && !other.slice.openEnd) {
-            let slice = this.slice.size + other.slice.size == 0 ? Slice.empty
-                : new Slice(other.slice.content.append(this.slice.content), other.slice.openStart, this.slice.openEnd);
+            let slice = this.slice.size + other.slice.size == 0 ? Slice$1.empty
+                : new Slice$1(other.slice.content.append(this.slice.content), other.slice.openStart, this.slice.openEnd);
             return new ReplaceStep(other.from, this.to, slice, this.structure);
         }
         else {
@@ -4349,9 +4349,9 @@ class ReplaceStep extends Step {
     static fromJSON(schema, json) {
         if (typeof json.from != "number" || typeof json.to != "number")
             throw new RangeError("Invalid input for ReplaceStep.fromJSON");
-        return new ReplaceStep(json.from, json.to, Slice.fromJSON(schema, json.slice), !!json.structure);
+        return new ReplaceStep(json.from, json.to, Slice$1.fromJSON(schema, json.slice), !!json.structure);
     }
-}
+};
 /**
 By default, for backwards compatibility, an inserting step
 mapped over an insertion at that same position fill move after
@@ -4360,14 +4360,14 @@ can make redone insertions appear in unexpected places. You can
 set this to -1 to make such mapping keep the step before the
 insertion instead.
 */
-ReplaceStep.MAP_BIAS = 1;
-Step.jsonID("replace", ReplaceStep);
+ReplaceStep$1.MAP_BIAS = 1;
+Step$1.jsonID("replace", ReplaceStep$1);
 /**
 Replace a part of the document with a slice of content, but
 preserve a range of the replaced content by moving it into the
 slice.
 */
-class ReplaceAroundStep extends Step {
+let ReplaceAroundStep$1 = class ReplaceAroundStep extends Step$1 {
     /**
     Create a replace-around step with the given range and gap.
     `insert` should be the point in the slice into which the content
@@ -4414,19 +4414,19 @@ class ReplaceAroundStep extends Step {
         this.structure = structure;
     }
     apply(doc) {
-        if (this.structure && (contentBetween(doc, this.from, this.gapFrom) ||
-            contentBetween(doc, this.gapTo, this.to)))
-            return StepResult.fail("Structure gap-replace would overwrite content");
+        if (this.structure && (contentBetween$1(doc, this.from, this.gapFrom) ||
+            contentBetween$1(doc, this.gapTo, this.to)))
+            return StepResult$1.fail("Structure gap-replace would overwrite content");
         let gap = doc.slice(this.gapFrom, this.gapTo);
         if (gap.openStart || gap.openEnd)
-            return StepResult.fail("Gap is not a flat range");
+            return StepResult$1.fail("Gap is not a flat range");
         let inserted = this.slice.insertAt(this.insert, gap.content);
         if (!inserted)
-            return StepResult.fail("Content does not fit in gap");
-        return StepResult.fromReplace(doc, this.from, this.to, inserted);
+            return StepResult$1.fail("Content does not fit in gap");
+        return StepResult$1.fromReplace(doc, this.from, this.to, inserted);
     }
     getMap() {
-        return new StepMap([this.from, this.gapFrom - this.from, this.insert,
+        return new StepMap$1([this.from, this.gapFrom - this.from, this.insert,
             this.gapTo, this.to - this.gapTo, this.slice.size - this.insert]);
     }
     invert(doc) {
@@ -4457,11 +4457,11 @@ class ReplaceAroundStep extends Step {
         if (typeof json.from != "number" || typeof json.to != "number" ||
             typeof json.gapFrom != "number" || typeof json.gapTo != "number" || typeof json.insert != "number")
             throw new RangeError("Invalid input for ReplaceAroundStep.fromJSON");
-        return new ReplaceAroundStep(json.from, json.to, json.gapFrom, json.gapTo, Slice.fromJSON(schema, json.slice), json.insert, !!json.structure);
+        return new ReplaceAroundStep(json.from, json.to, json.gapFrom, json.gapTo, Slice$1.fromJSON(schema, json.slice), json.insert, !!json.structure);
     }
-}
-Step.jsonID("replaceAround", ReplaceAroundStep);
-function contentBetween(doc, from, to) {
+};
+Step$1.jsonID("replaceAround", ReplaceAroundStep$1);
+function contentBetween$1(doc, from, to) {
     let $from = doc.resolve(from), dist = to - from, depth = $from.depth;
     while (dist > 0 && depth > 0 && $from.indexAfter(depth) == $from.node(depth).childCount) {
         depth--;
@@ -4494,13 +4494,13 @@ function addMark(tr, from, to, mark) {
                     if (removing && removing.to == start && removing.mark.eq(marks[i]))
                         removing.to = end;
                     else
-                        removed.push(removing = new RemoveMarkStep(start, end, marks[i]));
+                        removed.push(removing = new RemoveMarkStep$1(start, end, marks[i]));
                 }
             }
             if (adding && adding.to == start)
                 adding.to = end;
             else
-                added.push(adding = new AddMarkStep(start, end, mark));
+                added.push(adding = new AddMarkStep$1(start, end, mark));
         }
     });
     removed.forEach(s => tr.step(s));
@@ -4546,7 +4546,7 @@ function removeMark(tr, from, to, mark) {
             }
         }
     });
-    matched.forEach(m => tr.step(new RemoveMarkStep(m.from, m.to, m.style)));
+    matched.forEach(m => tr.step(new RemoveMarkStep$1(m.from, m.to, m.style)));
 }
 function clearIncompatible(tr, pos, parentType, match = parentType.contentMatch, clearNewlines = true) {
     let node = tr.doc.nodeAt(pos);
@@ -4555,27 +4555,27 @@ function clearIncompatible(tr, pos, parentType, match = parentType.contentMatch,
         let child = node.child(i), end = cur + child.nodeSize;
         let allowed = match.matchType(child.type);
         if (!allowed) {
-            replSteps.push(new ReplaceStep(cur, end, Slice.empty));
+            replSteps.push(new ReplaceStep$1(cur, end, Slice$1.empty));
         }
         else {
             match = allowed;
             for (let j = 0; j < child.marks.length; j++)
                 if (!parentType.allowsMarkType(child.marks[j].type))
-                    tr.step(new RemoveMarkStep(cur, end, child.marks[j]));
+                    tr.step(new RemoveMarkStep$1(cur, end, child.marks[j]));
             if (clearNewlines && child.isText && parentType.whitespace != "pre") {
                 let m, newline = /\r?\n|\r/g, slice;
                 while (m = newline.exec(child.text)) {
                     if (!slice)
-                        slice = new Slice(Fragment.from(parentType.schema.text(" ", parentType.allowedMarks(child.marks))), 0, 0);
-                    replSteps.push(new ReplaceStep(cur + m.index, cur + m.index + m[0].length, slice));
+                        slice = new Slice$1(Fragment$1.from(parentType.schema.text(" ", parentType.allowedMarks(child.marks))), 0, 0);
+                    replSteps.push(new ReplaceStep$1(cur + m.index, cur + m.index + m[0].length, slice));
                 }
             }
         }
         cur = end;
     }
     if (!match.validEnd) {
-        let fill = match.fillBefore(Fragment.empty, true);
-        tr.replace(cur, cur, new Slice(fill, 0, 0));
+        let fill = match.fillBefore(Fragment$1.empty, true);
+        tr.replace(cur, cur, new Slice$1(fill, 0, 0));
     }
     for (let i = replSteps.length - 1; i >= 0; i--)
         tr.step(replSteps[i]);
@@ -4611,27 +4611,27 @@ function lift$2(tr, range, target) {
     let { $from, $to, depth } = range;
     let gapStart = $from.before(depth + 1), gapEnd = $to.after(depth + 1);
     let start = gapStart, end = gapEnd;
-    let before = Fragment.empty, openStart = 0;
+    let before = Fragment$1.empty, openStart = 0;
     for (let d = depth, splitting = false; d > target; d--)
         if (splitting || $from.index(d) > 0) {
             splitting = true;
-            before = Fragment.from($from.node(d).copy(before));
+            before = Fragment$1.from($from.node(d).copy(before));
             openStart++;
         }
         else {
             start--;
         }
-    let after = Fragment.empty, openEnd = 0;
+    let after = Fragment$1.empty, openEnd = 0;
     for (let d = depth, splitting = false; d > target; d--)
         if (splitting || $to.after(d + 1) < $to.end(d)) {
             splitting = true;
-            after = Fragment.from($to.node(d).copy(after));
+            after = Fragment$1.from($to.node(d).copy(after));
             openEnd++;
         }
         else {
             end++;
         }
-    tr.step(new ReplaceAroundStep(start, end, gapStart, gapEnd, new Slice(before.append(after), openStart, openEnd), before.size - openStart, true));
+    tr.step(new ReplaceAroundStep$1(start, end, gapStart, gapEnd, new Slice$1(before.append(after), openStart, openEnd), before.size - openStart, true));
 }
 /**
 Try to find a valid way to wrap the content in the given range in a
@@ -4673,17 +4673,17 @@ function findWrappingInside(range, type) {
     return inside;
 }
 function wrap(tr, range, wrappers) {
-    let content = Fragment.empty;
+    let content = Fragment$1.empty;
     for (let i = wrappers.length - 1; i >= 0; i--) {
         if (content.size) {
             let match = wrappers[i].type.contentMatch.matchFragment(content);
             if (!match || !match.validEnd)
                 throw new RangeError("Wrapper type given to Transform.wrap does not form valid content of its parent wrapper");
         }
-        content = Fragment.from(wrappers[i].type.create(wrappers[i].attrs, content));
+        content = Fragment$1.from(wrappers[i].type.create(wrappers[i].attrs, content));
     }
     let start = range.start, end = range.end;
-    tr.step(new ReplaceAroundStep(start, end, start, end, new Slice(content, 0, 0), wrappers.length, true));
+    tr.step(new ReplaceAroundStep$1(start, end, start, end, new Slice$1(content, 0, 0), wrappers.length, true));
 }
 function setBlockType$1(tr, from, to, type, attrs) {
     if (!type.isTextblock)
@@ -4707,7 +4707,7 @@ function setBlockType$1(tr, from, to, type, attrs) {
             clearIncompatible(tr, tr.mapping.slice(mapFrom).map(pos, 1), type, undefined, convertNewlines === null);
             let mapping = tr.mapping.slice(mapFrom);
             let startM = mapping.map(pos, 1), endM = mapping.map(pos + node.nodeSize, 1);
-            tr.step(new ReplaceAroundStep(startM, endM, startM + 1, endM - 1, new Slice(Fragment.from(type.create(attrsHere, null, node.marks)), 0, 0), 1, true));
+            tr.step(new ReplaceAroundStep$1(startM, endM, startM + 1, endM - 1, new Slice$1(Fragment$1.from(type.create(attrsHere, null, node.marks)), 0, 0), 1, true));
             if (convertNewlines === true)
                 replaceNewlines(tr, node, pos, mapFrom);
             return false;
@@ -4752,7 +4752,7 @@ function setNodeMarkup(tr, pos, type, attrs, marks) {
         return tr.replaceWith(pos, pos + node.nodeSize, newNode);
     if (!type.validContent(node.content))
         throw new RangeError("Invalid content for node type " + type.name);
-    tr.step(new ReplaceAroundStep(pos, pos + node.nodeSize, pos + 1, pos + node.nodeSize - 1, new Slice(Fragment.from(newNode), 0, 0), 1, true));
+    tr.step(new ReplaceAroundStep$1(pos, pos + node.nodeSize, pos + 1, pos + node.nodeSize - 1, new Slice$1(Fragment$1.from(newNode), 0, 0), 1, true));
 }
 /**
 Check whether splitting at the given position is allowed.
@@ -4781,13 +4781,13 @@ function canSplit(doc, pos, depth = 1, typesAfter) {
     return $pos.node(base).canReplaceWith(index, index, baseType ? baseType.type : $pos.node(base + 1).type);
 }
 function split(tr, pos, depth = 1, typesAfter) {
-    let $pos = tr.doc.resolve(pos), before = Fragment.empty, after = Fragment.empty;
+    let $pos = tr.doc.resolve(pos), before = Fragment$1.empty, after = Fragment$1.empty;
     for (let d = $pos.depth, e = $pos.depth - depth, i = depth - 1; d > e; d--, i--) {
-        before = Fragment.from($pos.node(d).copy(before));
+        before = Fragment$1.from($pos.node(d).copy(before));
         let typeAfter = typesAfter && typesAfter[i];
-        after = Fragment.from(typeAfter ? typeAfter.type.create(typeAfter.attrs, after) : $pos.node(d).copy(after));
+        after = Fragment$1.from(typeAfter ? typeAfter.type.create(typeAfter.attrs, after) : $pos.node(d).copy(after));
     }
-    tr.step(new ReplaceStep(pos, pos, new Slice(before.append(after), depth, depth), true));
+    tr.step(new ReplaceStep$1(pos, pos, new Slice$1(before.append(after), depth, depth), true));
 }
 /**
 Test whether the blocks before and after a given position can be
@@ -4867,7 +4867,7 @@ function join(tr, pos, depth) {
     if (beforeType.inlineContent)
         clearIncompatible(tr, pos + depth - 1, beforeType, $before.node().contentMatchAt($before.index()), convertNewlines == null);
     let mapping = tr.mapping.slice(mapFrom), start = mapping.map(pos - depth);
-    tr.step(new ReplaceStep(start, mapping.map(pos + depth, -1), Slice.empty, true));
+    tr.step(new ReplaceStep$1(start, mapping.map(pos + depth, -1), Slice$1.empty, true));
     if (convertNewlines === true) {
         let $full = tr.doc.resolve(start);
         replaceNewlines(tr, $full.node(), $full.before(), tr.steps.length);
@@ -4940,13 +4940,13 @@ function dropPoint(doc, pos, slice) {
 there's no meaningful way to insert the slice here, or inserting it
 would be a no-op (an empty slice over an empty range).
 */
-function replaceStep(doc, from, to = from, slice = Slice.empty) {
+function replaceStep(doc, from, to = from, slice = Slice$1.empty) {
     if (from == to && !slice.size)
         return null;
     let $from = doc.resolve(from), $to = doc.resolve(to);
     // Optimization -- avoid work if it's obvious that it's not needed.
     if (fitsTrivially($from, $to, slice))
-        return new ReplaceStep(from, to, slice);
+        return new ReplaceStep$1(from, to, slice);
     return new Fitter($from, $to, slice).fit();
 }
 function fitsTrivially($from, $to, slice) {
@@ -4979,7 +4979,7 @@ class Fitter {
         this.$to = $to;
         this.unplaced = unplaced;
         this.frontier = [];
-        this.placed = Fragment.empty;
+        this.placed = Fragment$1.empty;
         for (let i = 0; i <= $from.depth; i++) {
             let node = $from.node(i);
             this.frontier.push({
@@ -4988,7 +4988,7 @@ class Fitter {
             });
         }
         for (let i = $from.depth; i > 0; i--)
-            this.placed = Fragment.from($from.node(i).copy(this.placed));
+            this.placed = Fragment$1.from($from.node(i).copy(this.placed));
     }
     get depth() { return this.frontier.length - 1; }
     fit() {
@@ -5018,11 +5018,11 @@ class Fitter {
             openStart--;
             openEnd--;
         }
-        let slice = new Slice(content, openStart, openEnd);
+        let slice = new Slice$1(content, openStart, openEnd);
         if (moveInline > -1)
-            return new ReplaceAroundStep($from.pos, moveInline, this.$to.pos, this.$to.end(), slice, placedSize);
+            return new ReplaceAroundStep$1($from.pos, moveInline, this.$to.pos, this.$to.end(), slice, placedSize);
         if (slice.size || $from.pos != this.$to.pos) // Don't generate no-op steps
-            return new ReplaceStep($from.pos, $to.pos, slice);
+            return new ReplaceStep$1($from.pos, $to.pos, slice);
         return null;
     }
     // Find a position on the start spine of `this.unplaced` that has
@@ -5058,7 +5058,7 @@ class Fitter {
                     // In pass 1, if the next node matches, or there is no next
                     // node but the parents look compatible, we've found a
                     // place.
-                    if (pass == 1 && (first ? match.matchType(first.type) || (inject = match.fillBefore(Fragment.from(first), false))
+                    if (pass == 1 && (first ? match.matchType(first.type) || (inject = match.fillBefore(Fragment$1.from(first), false))
                         : parent && type.compatibleContent(parent.type)))
                         return { sliceDepth, frontierDepth, parent, inject };
                     // In pass 2, look for a set of wrapping nodes that make
@@ -5078,7 +5078,7 @@ class Fitter {
         let inner = contentAt(content, openStart);
         if (!inner.childCount || inner.firstChild.isLeaf)
             return false;
-        this.unplaced = new Slice(content, openStart + 1, Math.max(openEnd, inner.size + openStart >= content.size - openEnd ? openStart + 1 : 0));
+        this.unplaced = new Slice$1(content, openStart + 1, Math.max(openEnd, inner.size + openStart >= content.size - openEnd ? openStart + 1 : 0));
         return true;
     }
     dropNode() {
@@ -5086,10 +5086,10 @@ class Fitter {
         let inner = contentAt(content, openStart);
         if (inner.childCount <= 1 && openStart > 0) {
             let openAtEnd = content.size - openStart <= openStart + inner.size;
-            this.unplaced = new Slice(dropFromFragment(content, openStart - 1, 1), openStart - 1, openAtEnd ? openStart - 1 : openEnd);
+            this.unplaced = new Slice$1(dropFromFragment(content, openStart - 1, 1), openStart - 1, openAtEnd ? openStart - 1 : openEnd);
         }
         else {
-            this.unplaced = new Slice(dropFromFragment(content, openStart, 1), openStart, openEnd);
+            this.unplaced = new Slice$1(dropFromFragment(content, openStart, 1), openStart, openEnd);
         }
     }
     // Move content from the unplaced slice at `sliceDepth` to the
@@ -5129,7 +5129,7 @@ class Fitter {
         let toEnd = taken == fragment.childCount;
         if (!toEnd)
             openEndCount = -1;
-        this.placed = addToFragment(this.placed, frontierDepth, Fragment.from(add));
+        this.placed = addToFragment(this.placed, frontierDepth, Fragment$1.from(add));
         this.frontier[frontierDepth].match = match;
         // If the parent types match, and the entire node was moved, and
         // it's not open, close this frontier node right away.
@@ -5144,9 +5144,9 @@ class Fitter {
         // Update `this.unplaced`. Drop the entire node from which we
         // placed it we got to its end, otherwise just drop the placed
         // nodes.
-        this.unplaced = !toEnd ? new Slice(dropFromFragment(slice.content, sliceDepth, taken), slice.openStart, slice.openEnd)
-            : sliceDepth == 0 ? Slice.empty
-                : new Slice(dropFromFragment(slice.content, sliceDepth - 1, 1), sliceDepth - 1, openEndCount < 0 ? slice.openEnd : sliceDepth - 1);
+        this.unplaced = !toEnd ? new Slice$1(dropFromFragment(slice.content, sliceDepth, taken), slice.openStart, slice.openEnd)
+            : sliceDepth == 0 ? Slice$1.empty
+                : new Slice$1(dropFromFragment(slice.content, sliceDepth - 1, 1), sliceDepth - 1, openEndCount < 0 ? slice.openEnd : sliceDepth - 1);
     }
     mustMoveInline() {
         if (!this.$to.parent.isTextblock)
@@ -5194,12 +5194,12 @@ class Fitter {
     openFrontierNode(type, attrs = null, content) {
         let top = this.frontier[this.depth];
         top.match = top.match.matchType(type);
-        this.placed = addToFragment(this.placed, this.depth, Fragment.from(type.create(attrs, content)));
+        this.placed = addToFragment(this.placed, this.depth, Fragment$1.from(type.create(attrs, content)));
         this.frontier.push({ type, match: type.contentMatch });
     }
     closeFrontierNode() {
         let open = this.frontier.pop();
-        let add = open.match.fillBefore(Fragment.empty, true);
+        let add = open.match.fillBefore(Fragment$1.empty, true);
         if (add.childCount)
             this.placed = addToFragment(this.placed, this.frontier.length, add);
     }
@@ -5228,7 +5228,7 @@ function closeNodeStart(node, openStart, openEnd) {
     if (openStart > 0) {
         frag = node.type.contentMatch.fillBefore(frag).append(frag);
         if (openEnd <= 0)
-            frag = frag.append(node.type.contentMatch.matchFragment(frag).fillBefore(Fragment.empty, true));
+            frag = frag.append(node.type.contentMatch.matchFragment(frag).fillBefore(Fragment$1.empty, true));
     }
     return node.copy(frag);
 }
@@ -5253,7 +5253,7 @@ function replaceRange(tr, from, to, slice) {
         return tr.deleteRange(from, to);
     let $from = tr.doc.resolve(from), $to = tr.doc.resolve(to);
     if (fitsTrivially($from, $to, slice))
-        return tr.step(new ReplaceStep(from, to, slice));
+        return tr.step(new ReplaceStep$1(from, to, slice));
     let targetDepths = coveredDepths($from, $to);
     // Can't replace the whole document, so remove 0 if it's present
     if (targetDepths[targetDepths.length - 1] == 0)
@@ -5310,7 +5310,7 @@ function replaceRange(tr, from, to, slice) {
             }
             let parent = $from.node(targetDepth - 1), index = $from.index(targetDepth - 1);
             if (parent.canReplaceWith(index, index, insert.type, insert.marks))
-                return tr.replace($from.before(targetDepth), expand ? $to.after(targetDepth) : to, new Slice(closeFragment(slice.content, 0, slice.openStart, openDepth), openDepth, slice.openEnd));
+                return tr.replace($from.before(targetDepth), expand ? $to.after(targetDepth) : to, new Slice$1(closeFragment(slice.content, 0, slice.openStart, openDepth), openDepth, slice.openEnd));
         }
     }
     let startSteps = tr.steps.length;
@@ -5333,7 +5333,7 @@ function closeFragment(fragment, depth, oldOpen, newOpen, parent) {
     if (depth > newOpen) {
         let match = parent.contentMatchAt(0);
         let start = match.fillBefore(fragment).append(fragment);
-        fragment = start.append(match.matchFragment(start).fillBefore(Fragment.empty, true));
+        fragment = start.append(match.matchFragment(start).fillBefore(Fragment$1.empty, true));
     }
     return fragment;
 }
@@ -5343,7 +5343,7 @@ function replaceRangeWith(tr, from, to, node) {
         if (point != null)
             from = to = point;
     }
-    tr.replaceRange(from, to, new Slice(Fragment.from(node), 0, 0));
+    tr.replaceRange(from, to, new Slice$1(Fragment$1.from(node), 0, 0));
 }
 function deleteRange$1(tr, from, to) {
     let $from = tr.doc.resolve(from), $to = tr.doc.resolve(to);
@@ -5404,7 +5404,7 @@ function coveredDepths($from, $to) {
 /**
 Update an attribute in a specific node.
 */
-class AttrStep extends Step {
+let AttrStep$1 = class AttrStep extends Step$1 {
     /**
     Construct an attribute step.
     */
@@ -5427,16 +5427,16 @@ class AttrStep extends Step {
     apply(doc) {
         let node = doc.nodeAt(this.pos);
         if (!node)
-            return StepResult.fail("No node at attribute step's position");
+            return StepResult$1.fail("No node at attribute step's position");
         let attrs = Object.create(null);
         for (let name in node.attrs)
             attrs[name] = node.attrs[name];
         attrs[this.attr] = this.value;
         let updated = node.type.create(attrs, null, node.marks);
-        return StepResult.fromReplace(doc, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1));
+        return StepResult$1.fromReplace(doc, this.pos, this.pos + 1, new Slice$1(Fragment$1.from(updated), 0, node.isLeaf ? 0 : 1));
     }
     getMap() {
-        return StepMap.empty;
+        return StepMap$1.empty;
     }
     invert(doc) {
         return new AttrStep(this.pos, this.attr, doc.nodeAt(this.pos).attrs[this.attr]);
@@ -5453,12 +5453,12 @@ class AttrStep extends Step {
             throw new RangeError("Invalid input for AttrStep.fromJSON");
         return new AttrStep(json.pos, json.attr, json.value);
     }
-}
-Step.jsonID("attr", AttrStep);
+};
+Step$1.jsonID("attr", AttrStep$1);
 /**
 Update an attribute in the doc node.
 */
-class DocAttrStep extends Step {
+let DocAttrStep$1 = class DocAttrStep extends Step$1 {
     /**
     Construct an attribute step.
     */
@@ -5479,10 +5479,10 @@ class DocAttrStep extends Step {
             attrs[name] = doc.attrs[name];
         attrs[this.attr] = this.value;
         let updated = doc.type.create(attrs, doc.content, doc.marks);
-        return StepResult.ok(updated);
+        return StepResult$1.ok(updated);
     }
     getMap() {
-        return StepMap.empty;
+        return StepMap$1.empty;
     }
     invert(doc) {
         return new DocAttrStep(this.attr, doc.attrs[this.attr]);
@@ -5498,22 +5498,22 @@ class DocAttrStep extends Step {
             throw new RangeError("Invalid input for DocAttrStep.fromJSON");
         return new DocAttrStep(json.attr, json.value);
     }
-}
-Step.jsonID("docAttr", DocAttrStep);
+};
+Step$1.jsonID("docAttr", DocAttrStep$1);
 
 /**
 @internal
 */
-let TransformError = class extends Error {
+let TransformError$1 = class TransformError extends Error {
 };
-TransformError = function TransformError(message) {
+TransformError$1 = function TransformError(message) {
     let err = Error.call(this, message);
     err.__proto__ = TransformError.prototype;
     return err;
 };
-TransformError.prototype = Object.create(Error.prototype);
-TransformError.prototype.constructor = TransformError;
-TransformError.prototype.name = "TransformError";
+TransformError$1.prototype = Object.create(Error.prototype);
+TransformError$1.prototype.constructor = TransformError$1;
+TransformError$1.prototype.name = "TransformError";
 /**
 Abstraction to build up and track an array of
 [steps](https://prosemirror.net/docs/ref/#transform.Step) representing a document transformation.
@@ -5556,7 +5556,7 @@ class Transform {
     step(step) {
         let result = this.maybeStep(step);
         if (result.failed)
-            throw new TransformError(result.failed);
+            throw new TransformError$1(result.failed);
         return this;
     }
     /**
@@ -5610,7 +5610,7 @@ class Transform {
     Replace the part of the document between `from` and `to` with the
     given `slice`.
     */
-    replace(from, to = from, slice = Slice.empty) {
+    replace(from, to = from, slice = Slice$1.empty) {
         let step = replaceStep(this.doc, from, to, slice);
         if (step)
             this.step(step);
@@ -5621,13 +5621,13 @@ class Transform {
     fragment, node, or array of nodes.
     */
     replaceWith(from, to, content) {
-        return this.replace(from, to, new Slice(Fragment.from(content), 0, 0));
+        return this.replace(from, to, new Slice$1(Fragment$1.from(content), 0, 0));
     }
     /**
     Delete the content between the given positions.
     */
     delete(from, to) {
-        return this.replace(from, to, Slice.empty);
+        return this.replace(from, to, Slice$1.empty);
     }
     /**
     Insert the given content at the given position.
@@ -5729,21 +5729,21 @@ class Transform {
     to set attributes on the document itself.
     */
     setNodeAttribute(pos, attr, value) {
-        this.step(new AttrStep(pos, attr, value));
+        this.step(new AttrStep$1(pos, attr, value));
         return this;
     }
     /**
     Set a single attribute on the document to a new value.
     */
     setDocAttribute(attr, value) {
-        this.step(new DocAttrStep(attr, value));
+        this.step(new DocAttrStep$1(attr, value));
         return this;
     }
     /**
     Add a mark to the node at position `pos`.
     */
     addNodeMark(pos, mark) {
-        this.step(new AddNodeMarkStep(pos, mark));
+        this.step(new AddNodeMarkStep$1(pos, mark));
         return this;
     }
     /**
@@ -5756,12 +5756,12 @@ class Transform {
             throw new RangeError("No node at position " + pos);
         if (mark instanceof Mark$1) {
             if (mark.isInSet(node.marks))
-                this.step(new RemoveNodeMarkStep(pos, mark));
+                this.step(new RemoveNodeMarkStep$1(pos, mark));
         }
         else {
             let set = node.marks, found, steps = [];
             while (found = mark.isInSet(set)) {
-                steps.push(new RemoveNodeMarkStep(pos, found));
+                steps.push(new RemoveNodeMarkStep$1(pos, found));
                 set = found.removeFromSet(set);
             }
             for (let i = steps.length - 1; i >= 0; i--)
@@ -5809,12 +5809,12 @@ class Transform {
     }
 }
 
-const classesById = Object.create(null);
+const classesById$1 = Object.create(null);
 /**
 Superclass for editor selections. Every selection type should
 extend this. Should not be instantiated directly.
 */
-class Selection {
+let Selection$1 = class Selection {
     /**
     Initialize a selection with the head and anchor and ranges. If no
     ranges are given, constructs a single range across `$anchor` and
@@ -5833,7 +5833,7 @@ class Selection {
     $head, ranges) {
         this.$anchor = $anchor;
         this.$head = $head;
-        this.ranges = ranges || [new SelectionRange($anchor.min($head), $anchor.max($head))];
+        this.ranges = ranges || [new SelectionRange$1($anchor.min($head), $anchor.max($head))];
     }
     /**
     The selection's anchor, as an unresolved position.
@@ -5883,7 +5883,7 @@ class Selection {
     Replace the selection with a slice or, if no slice is given,
     delete the selection. Will append to the given transaction.
     */
-    replace(tr, content = Slice.empty) {
+    replace(tr, content = Slice$1.empty) {
         // Put the new selection at the position after the inserted
         // content. When that ended in an inline node, search backwards,
         // to get the position after that node. If not, search forward.
@@ -5895,9 +5895,9 @@ class Selection {
         let mapFrom = tr.steps.length, ranges = this.ranges;
         for (let i = 0; i < ranges.length; i++) {
             let { $from, $to } = ranges[i], mapping = tr.mapping.slice(mapFrom);
-            tr.replaceRange(mapping.map($from.pos), mapping.map($to.pos), i ? Slice.empty : content);
+            tr.replaceRange(mapping.map($from.pos), mapping.map($to.pos), i ? Slice$1.empty : content);
             if (i == 0)
-                selectionToInsertionEnd$1(tr, mapFrom, (lastNode ? lastNode.isInline : lastParent && lastParent.isTextblock) ? -1 : 1);
+                selectionToInsertionEnd$2(tr, mapFrom, (lastNode ? lastNode.isInline : lastParent && lastParent.isTextblock) ? -1 : 1);
         }
     }
     /**
@@ -5914,7 +5914,7 @@ class Selection {
             }
             else {
                 tr.replaceRangeWith(from, to, node);
-                selectionToInsertionEnd$1(tr, mapFrom, node.isInline ? -1 : 1);
+                selectionToInsertionEnd$2(tr, mapFrom, node.isInline ? -1 : 1);
             }
         }
     }
@@ -5926,14 +5926,14 @@ class Selection {
     found.
     */
     static findFrom($pos, dir, textOnly = false) {
-        let inner = $pos.parent.inlineContent ? new TextSelection($pos)
-            : findSelectionIn($pos.node(0), $pos.parent, $pos.pos, $pos.index(), dir, textOnly);
+        let inner = $pos.parent.inlineContent ? new TextSelection$1($pos)
+            : findSelectionIn$1($pos.node(0), $pos.parent, $pos.pos, $pos.index(), dir, textOnly);
         if (inner)
             return inner;
         for (let depth = $pos.depth - 1; depth >= 0; depth--) {
             let found = dir < 0
-                ? findSelectionIn($pos.node(0), $pos.node(depth), $pos.before(depth + 1), $pos.index(depth), dir, textOnly)
-                : findSelectionIn($pos.node(0), $pos.node(depth), $pos.after(depth + 1), $pos.index(depth) + 1, dir, textOnly);
+                ? findSelectionIn$1($pos.node(0), $pos.node(depth), $pos.before(depth + 1), $pos.index(depth), dir, textOnly)
+                : findSelectionIn$1($pos.node(0), $pos.node(depth), $pos.after(depth + 1), $pos.index(depth) + 1, dir, textOnly);
             if (found)
                 return found;
         }
@@ -5945,7 +5945,7 @@ class Selection {
     negative, it will search backwards first.
     */
     static near($pos, bias = 1) {
-        return this.findFrom($pos, bias) || this.findFrom($pos, -bias) || new AllSelection($pos.node(0));
+        return this.findFrom($pos, bias) || this.findFrom($pos, -bias) || new AllSelection$1($pos.node(0));
     }
     /**
     Find the cursor or leaf node selection closest to the start of
@@ -5954,14 +5954,14 @@ class Selection {
     exists.
     */
     static atStart(doc) {
-        return findSelectionIn(doc, doc, 0, 0, 1) || new AllSelection(doc);
+        return findSelectionIn$1(doc, doc, 0, 0, 1) || new AllSelection$1(doc);
     }
     /**
     Find the cursor or leaf node selection closest to the end of the
     given document.
     */
     static atEnd(doc) {
-        return findSelectionIn(doc, doc, doc.content.size, doc.childCount, -1) || new AllSelection(doc);
+        return findSelectionIn$1(doc, doc, doc.content.size, doc.childCount, -1) || new AllSelection$1(doc);
     }
     /**
     Deserialize the JSON representation of a selection. Must be
@@ -5970,7 +5970,7 @@ class Selection {
     static fromJSON(doc, json) {
         if (!json || !json.type)
             throw new RangeError("Invalid input for Selection.fromJSON");
-        let cls = classesById[json.type];
+        let cls = classesById$1[json.type];
         if (!cls)
             throw new RangeError(`No selection type ${json.type} defined`);
         return cls.fromJSON(doc, json);
@@ -5982,9 +5982,9 @@ class Selection {
     clash with classes from other modules.
     */
     static jsonID(id, selectionClass) {
-        if (id in classesById)
+        if (id in classesById$1)
             throw new RangeError("Duplicate use of selection JSON ID " + id);
-        classesById[id] = selectionClass;
+        classesById$1[id] = selectionClass;
         selectionClass.prototype.jsonID = id;
         return selectionClass;
     }
@@ -5998,14 +5998,14 @@ class Selection {
     returns the bookmark for that.
     */
     getBookmark() {
-        return TextSelection.between(this.$anchor, this.$head).getBookmark();
+        return TextSelection$1.between(this.$anchor, this.$head).getBookmark();
     }
-}
-Selection.prototype.visible = true;
+};
+Selection$1.prototype.visible = true;
 /**
 Represents a selected range in a document.
 */
-class SelectionRange {
+let SelectionRange$1 = class SelectionRange {
     /**
     Create a range.
     */
@@ -6021,11 +6021,11 @@ class SelectionRange {
         this.$from = $from;
         this.$to = $to;
     }
-}
-let warnedAboutTextSelection = false;
-function checkTextSelection($pos) {
-    if (!warnedAboutTextSelection && !$pos.parent.inlineContent) {
-        warnedAboutTextSelection = true;
+};
+let warnedAboutTextSelection$1 = false;
+function checkTextSelection$1($pos) {
+    if (!warnedAboutTextSelection$1 && !$pos.parent.inlineContent) {
+        warnedAboutTextSelection$1 = true;
         console["warn"]("TextSelection endpoint not pointing into a node with inline content (" + $pos.parent.type.name + ")");
     }
 }
@@ -6035,13 +6035,13 @@ head (the moving side) and anchor (immobile side), both of which
 point into textblock nodes. It can be empty (a regular cursor
 position).
 */
-class TextSelection extends Selection {
+let TextSelection$1 = class TextSelection extends Selection$1 {
     /**
     Construct a text selection between the given points.
     */
     constructor($anchor, $head = $anchor) {
-        checkTextSelection($anchor);
-        checkTextSelection($head);
+        checkTextSelection$1($anchor);
+        checkTextSelection$1($head);
         super($anchor, $head);
     }
     /**
@@ -6052,13 +6052,13 @@ class TextSelection extends Selection {
     map(doc, mapping) {
         let $head = doc.resolve(mapping.map(this.head));
         if (!$head.parent.inlineContent)
-            return Selection.near($head);
+            return Selection$1.near($head);
         let $anchor = doc.resolve(mapping.map(this.anchor));
         return new TextSelection($anchor.parent.inlineContent ? $anchor : $head, $head);
     }
-    replace(tr, content = Slice.empty) {
+    replace(tr, content = Slice$1.empty) {
         super.replace(tr, content);
-        if (content == Slice.empty) {
+        if (content == Slice$1.empty) {
             let marks = this.$from.marksAcross(this.$to);
             if (marks)
                 tr.ensureMarks(marks);
@@ -6068,7 +6068,7 @@ class TextSelection extends Selection {
         return other instanceof TextSelection && other.anchor == this.anchor && other.head == this.head;
     }
     getBookmark() {
-        return new TextBookmark(this.anchor, this.head);
+        return new TextBookmark$1(this.anchor, this.head);
     }
     toJSON() {
         return { type: "text", anchor: this.anchor, head: this.head };
@@ -6101,27 +6101,27 @@ class TextSelection extends Selection {
         if (!bias || dPos)
             bias = dPos >= 0 ? 1 : -1;
         if (!$head.parent.inlineContent) {
-            let found = Selection.findFrom($head, bias, true) || Selection.findFrom($head, -bias, true);
+            let found = Selection$1.findFrom($head, bias, true) || Selection$1.findFrom($head, -bias, true);
             if (found)
                 $head = found.$head;
             else
-                return Selection.near($head, bias);
+                return Selection$1.near($head, bias);
         }
         if (!$anchor.parent.inlineContent) {
             if (dPos == 0) {
                 $anchor = $head;
             }
             else {
-                $anchor = (Selection.findFrom($anchor, -bias, true) || Selection.findFrom($anchor, bias, true)).$anchor;
+                $anchor = (Selection$1.findFrom($anchor, -bias, true) || Selection$1.findFrom($anchor, bias, true)).$anchor;
                 if (($anchor.pos < $head.pos) != (dPos < 0))
                     $anchor = $head;
             }
         }
         return new TextSelection($anchor, $head);
     }
-}
-Selection.jsonID("text", TextSelection);
-class TextBookmark {
+};
+Selection$1.jsonID("text", TextSelection$1);
+let TextBookmark$1 = class TextBookmark {
     constructor(anchor, head) {
         this.anchor = anchor;
         this.head = head;
@@ -6130,9 +6130,9 @@ class TextBookmark {
         return new TextBookmark(mapping.map(this.anchor), mapping.map(this.head));
     }
     resolve(doc) {
-        return TextSelection.between(doc.resolve(this.anchor), doc.resolve(this.head));
+        return TextSelection$1.between(doc.resolve(this.anchor), doc.resolve(this.head));
     }
-}
+};
 /**
 A node selection is a selection that points at a single node. All
 nodes marked [selectable](https://prosemirror.net/docs/ref/#model.NodeSpec.selectable) can be the
@@ -6140,7 +6140,7 @@ target of a node selection. In such a selection, `from` and `to`
 point directly before and after the selected node, `anchor` equals
 `from`, and `head` equals `to`..
 */
-class NodeSelection extends Selection {
+let NodeSelection$1 = class NodeSelection extends Selection$1 {
     /**
     Create a node selection. Does not verify the validity of its
     argument.
@@ -6155,11 +6155,11 @@ class NodeSelection extends Selection {
         let { deleted, pos } = mapping.mapResult(this.anchor);
         let $pos = doc.resolve(pos);
         if (deleted)
-            return Selection.near($pos);
+            return Selection$1.near($pos);
         return new NodeSelection($pos);
     }
     content() {
-        return new Slice(Fragment.from(this.node), 0, 0);
+        return new Slice$1(Fragment$1.from(this.node), 0, 0);
     }
     eq(other) {
         return other instanceof NodeSelection && other.anchor == this.anchor;
@@ -6167,7 +6167,7 @@ class NodeSelection extends Selection {
     toJSON() {
         return { type: "node", anchor: this.anchor };
     }
-    getBookmark() { return new NodeBookmark(this.anchor); }
+    getBookmark() { return new NodeBookmark$1(this.anchor); }
     /**
     @internal
     */
@@ -6189,41 +6189,41 @@ class NodeSelection extends Selection {
     static isSelectable(node) {
         return !node.isText && node.type.spec.selectable !== false;
     }
-}
-NodeSelection.prototype.visible = false;
-Selection.jsonID("node", NodeSelection);
-class NodeBookmark {
+};
+NodeSelection$1.prototype.visible = false;
+Selection$1.jsonID("node", NodeSelection$1);
+let NodeBookmark$1 = class NodeBookmark {
     constructor(anchor) {
         this.anchor = anchor;
     }
     map(mapping) {
         let { deleted, pos } = mapping.mapResult(this.anchor);
-        return deleted ? new TextBookmark(pos, pos) : new NodeBookmark(pos);
+        return deleted ? new TextBookmark$1(pos, pos) : new NodeBookmark(pos);
     }
     resolve(doc) {
         let $pos = doc.resolve(this.anchor), node = $pos.nodeAfter;
-        if (node && NodeSelection.isSelectable(node))
-            return new NodeSelection($pos);
-        return Selection.near($pos);
+        if (node && NodeSelection$1.isSelectable(node))
+            return new NodeSelection$1($pos);
+        return Selection$1.near($pos);
     }
-}
+};
 /**
 A selection type that represents selecting the whole document
 (which can not necessarily be expressed with a text selection, when
 there are for example leaf block nodes at the start or end of the
 document).
 */
-class AllSelection extends Selection {
+let AllSelection$1 = class AllSelection extends Selection$1 {
     /**
     Create an all-selection over the given document.
     */
     constructor(doc) {
         super(doc.resolve(0), doc.resolve(doc.content.size));
     }
-    replace(tr, content = Slice.empty) {
-        if (content == Slice.empty) {
+    replace(tr, content = Slice$1.empty) {
+        if (content == Slice$1.empty) {
             tr.delete(0, tr.doc.content.size);
-            let sel = Selection.atStart(tr.doc);
+            let sel = Selection$1.atStart(tr.doc);
             if (!sel.eq(tr.selection))
                 tr.setSelection(sel);
         }
@@ -6238,45 +6238,45 @@ class AllSelection extends Selection {
     static fromJSON(doc) { return new AllSelection(doc); }
     map(doc) { return new AllSelection(doc); }
     eq(other) { return other instanceof AllSelection; }
-    getBookmark() { return AllBookmark; }
-}
-Selection.jsonID("all", AllSelection);
-const AllBookmark = {
+    getBookmark() { return AllBookmark$1; }
+};
+Selection$1.jsonID("all", AllSelection$1);
+const AllBookmark$1 = {
     map() { return this; },
-    resolve(doc) { return new AllSelection(doc); }
+    resolve(doc) { return new AllSelection$1(doc); }
 };
 // FIXME we'll need some awareness of text direction when scanning for selections
 // Try to find a selection inside the given node. `pos` points at the
 // position where the search starts. When `text` is true, only return
 // text selections.
-function findSelectionIn(doc, node, pos, index, dir, text = false) {
+function findSelectionIn$1(doc, node, pos, index, dir, text = false) {
     if (node.inlineContent)
-        return TextSelection.create(doc, pos);
+        return TextSelection$1.create(doc, pos);
     for (let i = index - (dir > 0 ? 0 : 1); dir > 0 ? i < node.childCount : i >= 0; i += dir) {
         let child = node.child(i);
         if (!child.isAtom) {
-            let inner = findSelectionIn(doc, child, pos + dir, dir < 0 ? child.childCount : 0, dir, text);
+            let inner = findSelectionIn$1(doc, child, pos + dir, dir < 0 ? child.childCount : 0, dir, text);
             if (inner)
                 return inner;
         }
-        else if (!text && NodeSelection.isSelectable(child)) {
-            return NodeSelection.create(doc, pos - (dir < 0 ? child.nodeSize : 0));
+        else if (!text && NodeSelection$1.isSelectable(child)) {
+            return NodeSelection$1.create(doc, pos - (dir < 0 ? child.nodeSize : 0));
         }
         pos += child.nodeSize * dir;
     }
     return null;
 }
-function selectionToInsertionEnd$1(tr, startLen, bias) {
+function selectionToInsertionEnd$2(tr, startLen, bias) {
     let last = tr.steps.length - 1;
     if (last < startLen)
         return;
     let step = tr.steps[last];
-    if (!(step instanceof ReplaceStep || step instanceof ReplaceAroundStep))
+    if (!(step instanceof ReplaceStep$1 || step instanceof ReplaceAroundStep$1))
         return;
     let map = tr.mapping.maps[last], end;
     map.forEach((_from, _to, _newFrom, newTo) => { if (end == null)
         end = newTo; });
-    tr.setSelection(Selection.near(tr.doc.resolve(end), bias));
+    tr.setSelection(Selection$1.near(tr.doc.resolve(end), bias));
 }
 
 const UPDATED_SEL = 1, UPDATED_MARKS = 2, UPDATED_SCROLL = 4;
@@ -6451,7 +6451,7 @@ let Transaction$1 = class Transaction extends Transform {
             }
             this.replaceRangeWith(from, to, schema.text(text, marks));
             if (!this.selection.empty && this.selection.to == from + text.length)
-                this.setSelection(Selection.near(this.selection.$to));
+                this.setSelection(Selection$1.near(this.selection.$to));
             return this;
         }
     }
@@ -6494,30 +6494,30 @@ let Transaction$1 = class Transaction extends Transform {
     }
 };
 
-function bind(f, self) {
+function bind$1(f, self) {
     return !self || !f ? f : f.bind(self);
 }
-class FieldDesc {
+let FieldDesc$1 = class FieldDesc {
     constructor(name, desc, self) {
         this.name = name;
-        this.init = bind(desc.init, self);
-        this.apply = bind(desc.apply, self);
+        this.init = bind$1(desc.init, self);
+        this.apply = bind$1(desc.apply, self);
     }
-}
+};
 const baseFields = [
-    new FieldDesc("doc", {
+    new FieldDesc$1("doc", {
         init(config) { return config.doc || config.schema.topNodeType.createAndFill(); },
         apply(tr) { return tr.doc; }
     }),
-    new FieldDesc("selection", {
-        init(config, instance) { return config.selection || Selection.atStart(instance.doc); },
+    new FieldDesc$1("selection", {
+        init(config, instance) { return config.selection || Selection$1.atStart(instance.doc); },
         apply(tr) { return tr.selection; }
     }),
-    new FieldDesc("storedMarks", {
+    new FieldDesc$1("storedMarks", {
         init(config) { return config.storedMarks || null; },
         apply(tr, _marks, _old, state) { return state.selection.$cursor ? tr.storedMarks : null; }
     }),
-    new FieldDesc("scrollToSelection", {
+    new FieldDesc$1("scrollToSelection", {
         init() { return 0; },
         apply(tr, prev) { return tr.scrolledIntoView ? prev + 1 : prev; }
     })
@@ -6537,7 +6537,7 @@ class Configuration {
                 this.plugins.push(plugin);
                 this.pluginsByKey[plugin.key] = plugin;
                 if (plugin.spec.state)
-                    this.fields.push(new FieldDesc(plugin.key, plugin.spec.state, plugin));
+                    this.fields.push(new FieldDesc$1(plugin.key, plugin.spec.state, plugin));
             });
     }
 }
@@ -6716,7 +6716,7 @@ class EditorState {
                 instance.doc = Node$1.fromJSON(config.schema, json.doc);
             }
             else if (field.name == "selection") {
-                instance.selection = Selection.fromJSON(instance.doc, json.selection);
+                instance.selection = Selection$1.fromJSON(instance.doc, json.selection);
             }
             else if (field.name == "storedMarks") {
                 if (json.storedMarks)
@@ -6778,11 +6778,11 @@ class Plugin {
     */
     getState(state) { return state[this.key]; }
 }
-const keys$1 = Object.create(null);
+const keys$2 = Object.create(null);
 function createKey(name) {
-    if (name in keys$1)
-        return name + "$" + ++keys$1[name];
-    keys$1[name] = 0;
+    if (name in keys$2)
+        return name + "$" + ++keys$2[name];
+    keys$2[name] = 0;
     return name + "$";
 }
 /**
@@ -6854,15 +6854,15 @@ const joinBackward$1 = (state, dispatch, view) => {
     // If the node below has no content and the node above is
     // selectable, delete the node below and select the one above.
     if ($cursor.parent.content.size == 0 &&
-        (textblockAt(before, "end") || NodeSelection.isSelectable(before))) {
+        (textblockAt(before, "end") || NodeSelection$1.isSelectable(before))) {
         for (let depth = $cursor.depth;; depth--) {
-            let delStep = replaceStep(state.doc, $cursor.before(depth), $cursor.after(depth), Slice.empty);
+            let delStep = replaceStep(state.doc, $cursor.before(depth), $cursor.after(depth), Slice$1.empty);
             if (delStep && delStep.slice.size < delStep.to - delStep.from) {
                 if (dispatch) {
                     let tr = state.tr.step(delStep);
                     tr.setSelection(textblockAt(before, "end")
-                        ? Selection.findFrom(tr.doc.resolve(tr.mapping.map($cut.pos, -1)), -1)
-                        : NodeSelection.create(tr.doc, $cut.pos - before.nodeSize));
+                        ? Selection$1.findFrom(tr.doc.resolve(tr.mapping.map($cut.pos, -1)), -1)
+                        : NodeSelection$1.create(tr.doc, $cut.pos - before.nodeSize));
                     dispatch(tr.scrollIntoView());
                 }
                 return true;
@@ -6922,13 +6922,13 @@ function joinTextblocksAround(state, $cut, dispatch) {
             return false;
         afterText = child;
     }
-    let step = replaceStep(state.doc, beforePos, afterPos, Slice.empty);
+    let step = replaceStep(state.doc, beforePos, afterPos, Slice$1.empty);
     if (!step || step.from != beforePos ||
-        step instanceof ReplaceStep && step.slice.size >= afterPos - beforePos)
+        step instanceof ReplaceStep$1 && step.slice.size >= afterPos - beforePos)
         return false;
     if (dispatch) {
         let tr = state.tr.step(step);
-        tr.setSelection(TextSelection.create(tr.doc, beforePos));
+        tr.setSelection(TextSelection$1.create(tr.doc, beforePos));
         dispatch(tr.scrollIntoView());
     }
     return true;
@@ -6960,10 +6960,10 @@ const selectNodeBackward$1 = (state, dispatch, view) => {
         $cut = findCutBefore($head);
     }
     let node = $cut && $cut.nodeBefore;
-    if (!node || !NodeSelection.isSelectable(node))
+    if (!node || !NodeSelection$1.isSelectable(node))
         return false;
     if (dispatch)
-        dispatch(state.tr.setSelection(NodeSelection.create(state.doc, $cut.pos - node.nodeSize)).scrollIntoView());
+        dispatch(state.tr.setSelection(NodeSelection$1.create(state.doc, $cut.pos - node.nodeSize)).scrollIntoView());
     return true;
 };
 function findCutBefore($pos) {
@@ -7005,13 +7005,13 @@ const joinForward$1 = (state, dispatch, view) => {
     // If the node above has no content and the node below is
     // selectable, delete the node above and select the one below.
     if ($cursor.parent.content.size == 0 &&
-        (textblockAt(after, "start") || NodeSelection.isSelectable(after))) {
-        let delStep = replaceStep(state.doc, $cursor.before(), $cursor.after(), Slice.empty);
+        (textblockAt(after, "start") || NodeSelection$1.isSelectable(after))) {
+        let delStep = replaceStep(state.doc, $cursor.before(), $cursor.after(), Slice$1.empty);
         if (delStep && delStep.slice.size < delStep.to - delStep.from) {
             if (dispatch) {
                 let tr = state.tr.step(delStep);
-                tr.setSelection(textblockAt(after, "start") ? Selection.findFrom(tr.doc.resolve(tr.mapping.map($cut.pos)), 1)
-                    : NodeSelection.create(tr.doc, tr.mapping.map($cut.pos)));
+                tr.setSelection(textblockAt(after, "start") ? Selection$1.findFrom(tr.doc.resolve(tr.mapping.map($cut.pos)), 1)
+                    : NodeSelection$1.create(tr.doc, tr.mapping.map($cut.pos)));
                 dispatch(tr.scrollIntoView());
             }
             return true;
@@ -7043,10 +7043,10 @@ const selectNodeForward$1 = (state, dispatch, view) => {
         $cut = findCutAfter($head);
     }
     let node = $cut && $cut.nodeAfter;
-    if (!node || !NodeSelection.isSelectable(node))
+    if (!node || !NodeSelection$1.isSelectable(node))
         return false;
     if (dispatch)
-        dispatch(state.tr.setSelection(NodeSelection.create(state.doc, $cut.pos)).scrollIntoView());
+        dispatch(state.tr.setSelection(NodeSelection$1.create(state.doc, $cut.pos)).scrollIntoView());
     return true;
 };
 function findCutAfter($pos) {
@@ -7066,7 +7066,7 @@ closest ancestor block of the selection that can be joined, with
 the sibling above it.
 */
 const joinUp$1 = (state, dispatch) => {
-    let sel = state.selection, nodeSel = sel instanceof NodeSelection, point;
+    let sel = state.selection, nodeSel = sel instanceof NodeSelection$1, point;
     if (nodeSel) {
         if (sel.node.isTextblock || !canJoin(state.doc, sel.from))
             return false;
@@ -7080,7 +7080,7 @@ const joinUp$1 = (state, dispatch) => {
     if (dispatch) {
         let tr = state.tr.join(point);
         if (nodeSel)
-            tr.setSelection(NodeSelection.create(tr.doc, point - state.doc.resolve(point).nodeBefore.nodeSize));
+            tr.setSelection(NodeSelection$1.create(tr.doc, point - state.doc.resolve(point).nodeBefore.nodeSize));
         dispatch(tr.scrollIntoView());
     }
     return true;
@@ -7091,7 +7091,7 @@ that can be joined, with the sibling after it.
 */
 const joinDown$1 = (state, dispatch) => {
     let sel = state.selection, point;
-    if (sel instanceof NodeSelection) {
+    if (sel instanceof NodeSelection$1) {
         if (sel.node.isTextblock || !canJoin(state.doc, sel.to))
             return false;
         point = sel.to;
@@ -7153,7 +7153,7 @@ const exitCode$1 = (state, dispatch) => {
         return false;
     if (dispatch) {
         let pos = $head.after(), tr = state.tr.replaceWith(pos, pos, type.createAndFill());
-        tr.setSelection(Selection.near(tr.doc.resolve(pos), 1));
+        tr.setSelection(Selection$1.near(tr.doc.resolve(pos), 1));
         dispatch(tr.scrollIntoView());
     }
     return true;
@@ -7164,7 +7164,7 @@ it is its parent's first child) or after it.
 */
 const createParagraphNear$1 = (state, dispatch) => {
     let sel = state.selection, { $from, $to } = sel;
-    if (sel instanceof AllSelection || $from.parent.inlineContent || $to.parent.inlineContent)
+    if (sel instanceof AllSelection$1 || $from.parent.inlineContent || $to.parent.inlineContent)
         return false;
     let type = defaultBlockAt$1($to.parent.contentMatchAt($to.indexAfter()));
     if (!type || !type.isTextblock)
@@ -7172,7 +7172,7 @@ const createParagraphNear$1 = (state, dispatch) => {
     if (dispatch) {
         let side = (!$from.parentOffset && $to.index() < $to.parent.childCount ? $from : $to).pos;
         let tr = state.tr.insert(side, type.createAndFill());
-        tr.setSelection(TextSelection.create(tr.doc, side + 1));
+        tr.setSelection(TextSelection$1.create(tr.doc, side + 1));
         dispatch(tr.scrollIntoView());
     }
     return true;
@@ -7207,7 +7207,7 @@ a custom function to determine the type of the newly split off block.
 function splitBlockAs(splitNode) {
     return (state, dispatch) => {
         let { $from, $to } = state.selection;
-        if (state.selection instanceof NodeSelection && state.selection.node.isBlock) {
+        if (state.selection instanceof NodeSelection$1 && state.selection.node.isBlock) {
             if (!$from.parentOffset || !canSplit(state.doc, $from.pos))
                 return false;
             if (dispatch)
@@ -7235,7 +7235,7 @@ function splitBlockAs(splitNode) {
             }
         }
         let tr = state.tr;
-        if (state.selection instanceof TextSelection || state.selection instanceof AllSelection)
+        if (state.selection instanceof TextSelection$1 || state.selection instanceof AllSelection$1)
             tr.deleteSelection();
         let splitPos = tr.mapping.map($from.pos);
         let can = canSplit(tr.doc, splitPos, types.length, types);
@@ -7272,7 +7272,7 @@ const selectParentNode$1 = (state, dispatch) => {
         return false;
     pos = $from.before(same);
     if (dispatch)
-        dispatch(state.tr.setSelection(NodeSelection.create(state.doc, pos)));
+        dispatch(state.tr.setSelection(NodeSelection$1.create(state.doc, pos)));
     return true;
 };
 function joinMaybeClear(state, $pos, dispatch) {
@@ -7300,11 +7300,11 @@ function deleteBarrier(state, $cut, dispatch, dir) {
         (conn = (match = before.contentMatchAt(before.childCount)).findWrapping(after.type)) &&
         match.matchType(conn[0] || after.type).validEnd) {
         if (dispatch) {
-            let end = $cut.pos + after.nodeSize, wrap = Fragment.empty;
+            let end = $cut.pos + after.nodeSize, wrap = Fragment$1.empty;
             for (let i = conn.length - 1; i >= 0; i--)
-                wrap = Fragment.from(conn[i].create(null, wrap));
-            wrap = Fragment.from(before.copy(wrap));
-            let tr = state.tr.step(new ReplaceAroundStep($cut.pos - 1, end, $cut.pos, end, new Slice(wrap, 1, 0), conn.length, true));
+                wrap = Fragment$1.from(conn[i].create(null, wrap));
+            wrap = Fragment$1.from(before.copy(wrap));
+            let tr = state.tr.step(new ReplaceAroundStep$1($cut.pos - 1, end, $cut.pos, end, new Slice$1(wrap, 1, 0), conn.length, true));
             let $joinAt = tr.doc.resolve(end + 2 * conn.length);
             if ($joinAt.nodeAfter && $joinAt.nodeAfter.type == before.type &&
                 canJoin(tr.doc, $joinAt.pos))
@@ -7313,7 +7313,7 @@ function deleteBarrier(state, $cut, dispatch, dir) {
         }
         return true;
     }
-    let selAfter = after.type.spec.isolating || (dir > 0 && isolated) ? null : Selection.findFrom($cut, 1);
+    let selAfter = after.type.spec.isolating || (dir > 0 && isolated) ? null : Selection$1.findFrom($cut, 1);
     let range = selAfter && selAfter.$from.blockRange(selAfter.$to), target = range && liftTarget(range);
     if (target != null && target >= $cut.depth) {
         if (dispatch)
@@ -7333,10 +7333,10 @@ function deleteBarrier(state, $cut, dispatch, dir) {
             afterDepth++;
         if (at.canReplace(at.childCount, at.childCount, afterText.content)) {
             if (dispatch) {
-                let end = Fragment.empty;
+                let end = Fragment$1.empty;
                 for (let i = wrap.length - 1; i >= 0; i--)
-                    end = Fragment.from(wrap[i].copy(end));
-                let tr = state.tr.step(new ReplaceAroundStep($cut.pos - wrap.length, $cut.pos + after.nodeSize, $cut.pos + afterDepth, $cut.pos + after.nodeSize - afterDepth, new Slice(end, wrap.length, 0), 0, true));
+                    end = Fragment$1.from(wrap[i].copy(end));
+                let tr = state.tr.step(new ReplaceAroundStep$1($cut.pos - wrap.length, $cut.pos + after.nodeSize, $cut.pos + afterDepth, $cut.pos + after.nodeSize - afterDepth, new Slice$1(end, wrap.length, 0), 0, true));
                 dispatch(tr.scrollIntoView());
             }
             return true;
@@ -7356,7 +7356,7 @@ function selectTextblockSide(side) {
         if (!$pos.node(depth).isTextblock)
             return false;
         if (dispatch)
-            dispatch(state.tr.setSelection(TextSelection.create(state.doc, side < 0 ? $pos.start(depth) : $pos.end(depth))));
+            dispatch(state.tr.setSelection(TextSelection$1.create(state.doc, side < 0 ? $pos.start(depth) : $pos.end(depth))));
         return true;
     };
 }
@@ -7500,10 +7500,10 @@ function wrapRangeInList(tr, range, listType, attrs = null) {
     return true;
 }
 function doWrapInList(tr, range, wrappers, joinBefore, listType) {
-    let content = Fragment.empty;
+    let content = Fragment$1.empty;
     for (let i = wrappers.length - 1; i >= 0; i--)
-        content = Fragment.from(wrappers[i].type.create(wrappers[i].attrs, content));
-    tr.step(new ReplaceAroundStep(range.start - (joinBefore ? 2 : 0), range.end, range.start, range.end, new Slice(content, 0, 0), wrappers.length, true));
+        content = Fragment$1.from(wrappers[i].type.create(wrappers[i].attrs, content));
+    tr.step(new ReplaceAroundStep$1(range.start - (joinBefore ? 2 : 0), range.end, range.start, range.end, new Slice$1(content, 0, 0), wrappers.length, true));
     let found = 0;
     for (let i = 0; i < wrappers.length; i++)
         if (wrappers[i].type == listType)
@@ -7542,7 +7542,7 @@ function liftToOuterList(state, dispatch, itemType, range) {
     if (end < endOfList) {
         // There are siblings after the lifted items, which must become
         // children of the last item
-        tr.step(new ReplaceAroundStep(end - 1, endOfList, end, endOfList, new Slice(Fragment.from(itemType.create(null, range.parent.copy())), 1, 0), 1, true));
+        tr.step(new ReplaceAroundStep$1(end - 1, endOfList, end, endOfList, new Slice$1(Fragment$1.from(itemType.create(null, range.parent.copy())), 1, 0), 1, true));
         range = new NodeRange(tr.doc.resolve(range.$from.pos), tr.doc.resolve(endOfList), range.depth);
     }
     const target = liftTarget(range);
@@ -7567,14 +7567,14 @@ function liftOutOfList(state, dispatch, range) {
         return false;
     let atStart = range.startIndex == 0, atEnd = range.endIndex == list.childCount;
     let parent = $start.node(-1), indexBefore = $start.index(-1);
-    if (!parent.canReplace(indexBefore + (atStart ? 0 : 1), indexBefore + 1, item.content.append(atEnd ? Fragment.empty : Fragment.from(list))))
+    if (!parent.canReplace(indexBefore + (atStart ? 0 : 1), indexBefore + 1, item.content.append(atEnd ? Fragment$1.empty : Fragment$1.from(list))))
         return false;
     let start = $start.pos, end = start + item.nodeSize;
     // Strip off the surrounding list. At the sides where we're not at
     // the end of the list, the existing list is closed. At sides where
     // this is the end, it is overwritten to its end.
-    tr.step(new ReplaceAroundStep(start - (atStart ? 1 : 0), end + (atEnd ? 1 : 0), start + 1, end - 1, new Slice((atStart ? Fragment.empty : Fragment.from(list.copy(Fragment.empty)))
-        .append(atEnd ? Fragment.empty : Fragment.from(list.copy(Fragment.empty))), atStart ? 0 : 1, atEnd ? 0 : 1), atStart ? 0 : 1));
+    tr.step(new ReplaceAroundStep$1(start - (atStart ? 1 : 0), end + (atEnd ? 1 : 0), start + 1, end - 1, new Slice$1((atStart ? Fragment$1.empty : Fragment$1.from(list.copy(Fragment$1.empty)))
+        .append(atEnd ? Fragment$1.empty : Fragment$1.from(list.copy(Fragment$1.empty))), atStart ? 0 : 1, atEnd ? 0 : 1), atStart ? 0 : 1));
     dispatch(tr.scrollIntoView());
     return true;
 }
@@ -7596,10 +7596,10 @@ function sinkListItem$1(itemType) {
             return false;
         if (dispatch) {
             let nestedBefore = nodeBefore.lastChild && nodeBefore.lastChild.type == parent.type;
-            let inner = Fragment.from(nestedBefore ? itemType.create() : null);
-            let slice = new Slice(Fragment.from(itemType.create(null, Fragment.from(parent.type.create(null, inner)))), nestedBefore ? 3 : 1, 0);
+            let inner = Fragment$1.from(nestedBefore ? itemType.create() : null);
+            let slice = new Slice$1(Fragment$1.from(itemType.create(null, Fragment$1.from(parent.type.create(null, inner)))), nestedBefore ? 3 : 1, 0);
             let before = range.start, after = range.end;
-            dispatch(state.tr.step(new ReplaceAroundStep(before - (nestedBefore ? 3 : 1), after, before, after, slice, 1, true))
+            dispatch(state.tr.step(new ReplaceAroundStep$1(before - (nestedBefore ? 3 : 1), after, before, after, slice, 1, true))
                 .scrollIntoView());
         }
         return true;
@@ -7767,7 +7767,7 @@ function caretFromPoint(doc, x, y) {
 }
 
 const nav = typeof navigator != "undefined" ? navigator : null;
-const doc$1 = typeof document != "undefined" ? document : null;
+const doc$2 = typeof document != "undefined" ? document : null;
 const agent = (nav && nav.userAgent) || "";
 const ie_edge = /Edge\/(\d+)/.exec(agent);
 const ie_upto10 = /MSIE \d/.exec(agent);
@@ -7785,7 +7785,7 @@ const ios = safari && (/Mobile\/\w+/.test(agent) || !!nav && nav.maxTouchPoints 
 const mac$2 = ios || (nav ? /Mac/.test(nav.platform) : false);
 const windows$1 = nav ? /Win/.test(nav.platform) : false;
 const android = /Android \d/.test(agent);
-const webkit = !!doc$1 && "webkitFontSmoothing" in doc$1.documentElement.style;
+const webkit = !!doc$2 && "webkitFontSmoothing" in doc$2.documentElement.style;
 const webkit_version = webkit ? +(/\bAppleWebKit\/(\d+)/.exec(navigator.userAgent) || [0, 0])[1] : 0;
 
 function windowRect(doc) {
@@ -7811,9 +7811,6 @@ function clientRect(node) {
         top: rect.top, bottom: rect.top + node.clientHeight * scaleY };
 }
 function scrollRectIntoView(view, rect, startDOM) {
-    // Skip empty rects with all sides at 0, for example, when the element has no CSS box (display: none)
-    if (!nonZero(rect) && rect.left == 0)
-        return;
     let scrollThreshold = view.someProp("scrollThreshold") || 0, scrollMargin = view.someProp("scrollMargin") || 5;
     let doc = view.dom.ownerDocument;
     for (let parent = startDOM || view.dom;;) {
@@ -8880,7 +8877,7 @@ class MarkViewDesc extends ViewDesc {
 // correspond to an actual node in the document. Unlike mark descs,
 // they populate their child array themselves.
 class NodeViewDesc extends ViewDesc {
-    constructor(parent, node, outerDeco, innerDeco, dom, contentDOM, nodeDOM) {
+    constructor(parent, node, outerDeco, innerDeco, dom, contentDOM, nodeDOM, view, pos) {
         super(parent, [], dom, contentDOM);
         this.node = node;
         this.outerDeco = outerDeco;
@@ -8926,11 +8923,11 @@ class NodeViewDesc extends ViewDesc {
         let nodeDOM = dom;
         dom = applyOuterDeco(dom, outerDeco, node);
         if (spec)
-            return descObj = new CustomNodeViewDesc(parent, node, outerDeco, innerDeco, dom, contentDOM || null, nodeDOM, spec);
+            return descObj = new CustomNodeViewDesc(parent, node, outerDeco, innerDeco, dom, contentDOM || null, nodeDOM, spec, view, pos + 1);
         else if (node.isText)
-            return new TextViewDesc(parent, node, outerDeco, innerDeco, dom, nodeDOM);
+            return new TextViewDesc(parent, node, outerDeco, innerDeco, dom, nodeDOM, view);
         else
-            return new NodeViewDesc(parent, node, outerDeco, innerDeco, dom, contentDOM || null, nodeDOM);
+            return new NodeViewDesc(parent, node, outerDeco, innerDeco, dom, contentDOM || null, nodeDOM, view, pos + 1);
     }
     parseRule() {
         // Experimental kludge to allow opt-in re-parsing of nodes
@@ -8961,7 +8958,7 @@ class NodeViewDesc extends ViewDesc {
                 }
             }
             if (!rule.contentElement)
-                rule.getContent = () => Fragment.empty;
+                rule.getContent = () => Fragment$1.empty;
         }
         return rule;
     }
@@ -9025,7 +9022,7 @@ class NodeViewDesc extends ViewDesc {
         // Only do something if both the selection and a focused text node
         // are inside of this node
         let { from, to } = view.state.selection;
-        if (!(view.state.selection instanceof TextSelection) || from < pos || to > pos + this.node.content.size)
+        if (!(view.state.selection instanceof TextSelection$1) || from < pos || to > pos + this.node.content.size)
             return null;
         let textNode = view.input.compositionNode;
         if (!textNode || !this.dom.contains(textNode.parentNode))
@@ -9114,14 +9111,14 @@ class NodeViewDesc extends ViewDesc {
 // and used by the view class.
 function docViewDesc(doc, outerDeco, innerDeco, dom, view) {
     applyOuterDeco(dom, outerDeco, doc);
-    let docView = new NodeViewDesc(undefined, doc, outerDeco, innerDeco, dom, dom, dom);
+    let docView = new NodeViewDesc(undefined, doc, outerDeco, innerDeco, dom, dom, dom, view, 0);
     if (docView.contentDOM)
         docView.updateChildren(view, 0);
     return docView;
 }
 class TextViewDesc extends NodeViewDesc {
-    constructor(parent, node, outerDeco, innerDeco, dom, nodeDOM) {
-        super(parent, node, outerDeco, innerDeco, dom, null, nodeDOM);
+    constructor(parent, node, outerDeco, innerDeco, dom, nodeDOM, view) {
+        super(parent, node, outerDeco, innerDeco, dom, null, nodeDOM, view, 0);
     }
     parseRule() {
         let skip = this.nodeDOM.parentNode;
@@ -9161,9 +9158,9 @@ class TextViewDesc extends NodeViewDesc {
     ignoreMutation(mutation) {
         return mutation.type != "characterData" && mutation.type != "selection";
     }
-    slice(from, to, _view) {
+    slice(from, to, view) {
         let node = this.node.cut(from, to), dom = document.createTextNode(node.text);
-        return new TextViewDesc(this.parent, node, this.outerDeco, this.innerDeco, dom, dom);
+        return new TextViewDesc(this.parent, node, this.outerDeco, this.innerDeco, dom, dom, view);
     }
     markDirty(from, to) {
         super.markDirty(from, to);
@@ -9185,8 +9182,8 @@ class TrailingHackViewDesc extends ViewDesc {
 // extra checks only have to be made for nodes that are actually
 // customized.
 class CustomNodeViewDesc extends NodeViewDesc {
-    constructor(parent, node, outerDeco, innerDeco, dom, contentDOM, nodeDOM, spec) {
-        super(parent, node, outerDeco, innerDeco, dom, contentDOM, nodeDOM);
+    constructor(parent, node, outerDeco, innerDeco, dom, contentDOM, nodeDOM, spec, view, pos) {
+        super(parent, node, outerDeco, innerDeco, dom, contentDOM, nodeDOM, view, pos);
         this.spec = spec;
     }
     // A custom `update` method gets to decide whether the update goes
@@ -9421,19 +9418,6 @@ class ViewTreeUpdater {
                 if (next.matchesMark(marks[depth]) && !this.isLocked(next.dom)) {
                     found = i;
                     break;
-                }
-            }
-            // When nothing matches, try to update the mark view at this position
-            // in place, so a custom mark view can adapt to a changed mark without
-            // re-creating its DOM.
-            if (found < 0 && this.index < this.top.children.length) {
-                let cur = this.top.children[this.index];
-                if (cur instanceof MarkViewDesc && cur.dirty != NODE_DIRTY &&
-                    cur.mark.type == marks[depth].type && cur.spec.update &&
-                    !this.isLocked(cur.dom) && cur.spec.update(marks[depth])) {
-                    cur.mark = marks[depth];
-                    found = this.index;
-                    this.changed = true;
                 }
             }
             if (found > -1) {
@@ -9823,10 +9807,10 @@ function selectionFromDOM(view, origin = null) {
         while (nearestDesc && !nearestDesc.node)
             nearestDesc = nearestDesc.parent;
         let nearestDescNode = nearestDesc.node;
-        if (nearestDesc && nearestDescNode.isAtom && NodeSelection.isSelectable(nearestDescNode) && nearestDesc.parent
+        if (nearestDesc && nearestDescNode.isAtom && NodeSelection$1.isSelectable(nearestDescNode) && nearestDesc.parent
             && !(nearestDescNode.isInline && isOnEdge(domSel.focusNode, domSel.focusOffset, nearestDesc.dom))) {
             let pos = nearestDesc.posBefore;
-            selection = new NodeSelection(head == pos ? $head : doc.resolve(pos));
+            selection = new NodeSelection$1(head == pos ? $head : doc.resolve(pos));
         }
     }
     else {
@@ -9882,7 +9866,7 @@ function selectionToDOM(view, force = false) {
     }
     else {
         let { anchor, head } = sel, resetEditableFrom, resetEditableTo;
-        if (brokenSelectBetweenUneditable && !(sel instanceof TextSelection)) {
+        if (brokenSelectBetweenUneditable && !(sel instanceof TextSelection$1)) {
             if (!sel.$from.parent.inlineContent)
                 resetEditableFrom = temporarilyEditableNear(view, sel.from);
             if (!sel.empty && !sel.$from.parent.inlineContent)
@@ -9975,7 +9959,7 @@ function selectCursorWrapper(view) {
     }
 }
 function syncNodeSelection(view, sel) {
-    if (sel instanceof NodeSelection) {
+    if (sel instanceof NodeSelection$1) {
         let desc = view.docView.descAt(sel.from);
         if (desc != view.lastSelectedViewDesc) {
             clearNodeSelection(view);
@@ -9998,7 +9982,7 @@ function clearNodeSelection(view) {
 }
 function selectionBetween(view, $anchor, $head, bias) {
     return view.someProp("createSelectionBetween", f => f(view, $anchor, $head))
-        || TextSelection.between($anchor, $head, bias);
+        || TextSelection$1.between($anchor, $head, bias);
 }
 function hasFocusAndSelection(view) {
     if (view.editable && !view.hasFocus())
@@ -10030,7 +10014,7 @@ function moveSelectionBlock(state, dir) {
     let { $anchor, $head } = state.selection;
     let $side = dir > 0 ? $anchor.max($head) : $anchor.min($head);
     let $start = !$side.parent.inlineContent ? $side : $side.depth ? state.doc.resolve(dir > 0 ? $side.after() : $side.before()) : null;
-    return $start && Selection.findFrom($start, dir);
+    return $start && Selection$1.findFrom($start, dir);
 }
 function apply(view, sel) {
     view.dispatch(view.state.tr.setSelection(sel).scrollIntoView());
@@ -10038,20 +10022,20 @@ function apply(view, sel) {
 }
 function selectHorizontally(view, dir, mods) {
     let sel = view.state.selection;
-    if (sel instanceof TextSelection) {
+    if (sel instanceof TextSelection$1) {
         if (mods.indexOf("s") > -1) {
             let { $head } = sel, node = $head.textOffset ? null : dir < 0 ? $head.nodeBefore : $head.nodeAfter;
             if (!node || node.isText || !node.isLeaf)
                 return false;
             let $newHead = view.state.doc.resolve($head.pos + node.nodeSize * (dir < 0 ? -1 : 1));
-            return apply(view, new TextSelection(sel.$anchor, $newHead));
+            return apply(view, new TextSelection$1(sel.$anchor, $newHead));
         }
         else if (!sel.empty) {
             return false;
         }
         else if (view.endOfTextblock(dir > 0 ? "forward" : "backward")) {
             let next = moveSelectionBlock(view.state, dir);
-            if (next && (next instanceof NodeSelection))
+            if (next && (next instanceof NodeSelection$1))
                 return apply(view, next);
             return false;
         }
@@ -10062,22 +10046,22 @@ function selectHorizontally(view, dir, mods) {
             let nodePos = dir < 0 ? $head.pos - node.nodeSize : $head.pos;
             if (!(node.isAtom || (desc = view.docView.descAt(nodePos)) && !desc.contentDOM))
                 return false;
-            if (NodeSelection.isSelectable(node)) {
-                return apply(view, new NodeSelection(dir < 0 ? view.state.doc.resolve($head.pos - node.nodeSize) : $head));
+            if (NodeSelection$1.isSelectable(node)) {
+                return apply(view, new NodeSelection$1(dir < 0 ? view.state.doc.resolve($head.pos - node.nodeSize) : $head));
             }
             else if (webkit) {
                 // Chrome and Safari will introduce extra pointless cursor
                 // positions around inline uneditable nodes, so we have to
                 // take over and move the cursor past them (#937)
-                return apply(view, new TextSelection(view.state.doc.resolve(dir < 0 ? nodePos : nodePos + node.nodeSize)));
+                return apply(view, new TextSelection$1(view.state.doc.resolve(dir < 0 ? nodePos : nodePos + node.nodeSize)));
             }
             else {
                 return false;
             }
         }
     }
-    else if (sel instanceof NodeSelection && sel.node.isInline) {
-        return apply(view, new TextSelection(dir > 0 ? sel.$to : sel.$from));
+    else if (sel instanceof NodeSelection$1 && sel.node.isInline) {
+        return apply(view, new TextSelection$1(dir > 0 ? sel.$to : sel.$from));
     }
     else {
         let next = moveSelectionBlock(view.state, dir);
@@ -10294,25 +10278,25 @@ function findDirection(view, pos) {
 // browser)
 function selectVertically(view, dir, mods) {
     let sel = view.state.selection;
-    if (sel instanceof TextSelection && !sel.empty || mods.indexOf("s") > -1)
+    if (sel instanceof TextSelection$1 && !sel.empty || mods.indexOf("s") > -1)
         return false;
     if (mac$2 && mods.indexOf("m") > -1)
         return false;
     let { $from, $to } = sel;
     if (!$from.parent.inlineContent || view.endOfTextblock(dir < 0 ? "up" : "down")) {
         let next = moveSelectionBlock(view.state, dir);
-        if (next && (next instanceof NodeSelection))
+        if (next && (next instanceof NodeSelection$1))
             return apply(view, next);
     }
     if (!$from.parent.inlineContent) {
         let side = dir < 0 ? $from : $to;
-        let beyond = sel instanceof AllSelection ? Selection.near(side, dir) : Selection.findFrom(side, dir);
+        let beyond = sel instanceof AllSelection$1 ? Selection$1.near(side, dir) : Selection$1.findFrom(side, dir);
         return beyond ? apply(view, beyond) : false;
     }
     return false;
 }
 function stopNativeHorizontalDelete(view, dir) {
-    if (!(view.state.selection instanceof TextSelection))
+    if (!(view.state.selection instanceof TextSelection$1))
         return true;
     let { $head, $anchor, empty } = view.state.selection;
     if (!$head.sameParent($anchor))
@@ -10445,7 +10429,7 @@ function parseFromClipboard(view, text, html, plainText, $context) {
     if (asText) {
         view.someProp("transformPastedText", f => { text = f(text, inCode || plainText, view); });
         if (inCode) {
-            slice = new Slice(Fragment.from(view.state.schema.text(text.replace(/\r\n?/g, "\n"))), 0, 0);
+            slice = new Slice$1(Fragment$1.from(view.state.schema.text(text.replace(/\r\n?/g, "\n"))), 0, 0);
             view.someProp("transformPasted", f => { slice = f(slice, view, true); });
             return slice;
         }
@@ -10498,7 +10482,7 @@ function parseFromClipboard(view, text, html, plainText, $context) {
         slice = addContext(closeSlice(slice, +sliceData[1], +sliceData[2]), sliceData[4]);
     }
     else { // HTML wasn't created by ProseMirror. Make sure top-level siblings are coherent
-        slice = Slice.maxOpen(normalizeSiblings(slice.content, $context), true);
+        slice = Slice$1.maxOpen(normalizeSiblings(slice.content, $context), true);
         if (slice.openStart || slice.openEnd) {
             let openStart = 0, openEnd = 0;
             for (let node = slice.content.firstChild; openStart < slice.openStart && !node.type.spec.isolating; openStart++, node = node.firstChild) { }
@@ -10544,13 +10528,13 @@ function normalizeSiblings(fragment, $context) {
             }
         });
         if (result)
-            return Fragment.from(result);
+            return Fragment$1.from(result);
     }
     return fragment;
 }
 function withWrappers(node, wrap, from = 0) {
     for (let i = wrap.length - 1; i >= from; i--)
-        node = wrap[i].create(null, Fragment.from(node));
+        node = wrap[i].create(null, Fragment$1.from(node));
     return node;
 }
 // Used to group adjacent nodes wrapped in similar parents by
@@ -10562,14 +10546,14 @@ function addToSibling(wrap, lastWrap, node, sibling, depth) {
             return sibling.copy(sibling.content.replaceChild(sibling.childCount - 1, inner));
         let match = sibling.contentMatchAt(sibling.childCount);
         if (match.matchType(depth == wrap.length - 1 ? node.type : wrap[depth + 1]))
-            return sibling.copy(sibling.content.append(Fragment.from(withWrappers(node, wrap, depth + 1))));
+            return sibling.copy(sibling.content.append(Fragment$1.from(withWrappers(node, wrap, depth + 1))));
     }
 }
 function closeRight(node, depth) {
     if (depth == 0)
         return node;
     let fragment = node.content.replaceChild(node.childCount - 1, closeRight(node.lastChild, depth - 1));
-    let fill = node.contentMatchAt(node.childCount).fillBefore(Fragment.empty, true);
+    let fill = node.contentMatchAt(node.childCount).fillBefore(Fragment$1.empty, true);
     return node.copy(fragment.append(fill));
 }
 function closeRange(fragment, side, from, to, depth, openEnd) {
@@ -10580,14 +10564,14 @@ function closeRange(fragment, side, from, to, depth, openEnd) {
         inner = closeRange(inner, side, from, to, depth + 1, openEnd);
     if (depth >= from)
         inner = side < 0 ? node.contentMatchAt(0).fillBefore(inner, openEnd <= depth).append(inner)
-            : inner.append(node.contentMatchAt(node.childCount).fillBefore(Fragment.empty, true));
+            : inner.append(node.contentMatchAt(node.childCount).fillBefore(Fragment$1.empty, true));
     return fragment.replaceChild(side < 0 ? 0 : fragment.childCount - 1, node.copy(inner));
 }
 function closeSlice(slice, openStart, openEnd) {
     if (openStart < slice.openStart)
-        slice = new Slice(closeRange(slice.content, -1, openStart, slice.openStart, 0, slice.openEnd), openStart, slice.openEnd);
+        slice = new Slice$1(closeRange(slice.content, -1, openStart, slice.openStart, 0, slice.openEnd), openStart, slice.openEnd);
     if (openEnd < slice.openEnd)
-        slice = new Slice(closeRange(slice.content, 1, openEnd, slice.openEnd, 0, 0), slice.openStart, openEnd);
+        slice = new Slice$1(closeRange(slice.content, 1, openEnd, slice.openEnd, 0, 0), slice.openStart, openEnd);
     return slice;
 }
 // Trick from jQuery -- some elements must be wrapped in other
@@ -10604,8 +10588,9 @@ const wrapMap = {
     td: ["table", "tbody", "tr"],
     th: ["table", "tbody", "tr"]
 };
+let _detachedDoc = null;
 function detachedDoc() {
-    return document.implementation.createHTMLDocument("title");
+    return _detachedDoc || (_detachedDoc = document.implementation.createHTMLDocument("title"));
 }
 let _policy = null;
 function maybeWrapTrusted(html) {
@@ -10623,7 +10608,7 @@ function readHTML(html) {
     let metas = /^(\s*<meta [^>]*>)*/.exec(html);
     if (metas)
         html = html.slice(metas[0].length);
-    let doc = detachedDoc(), elt = doc.body;
+    let elt = detachedDoc().createElement("div");
     let firstTag = /<([a-z][^>\s]+)/i.exec(html), wrap;
     if (wrap = firstTag && wrapMap[firstTag[1].toLowerCase()])
         html = wrap.map(n => "<" + n + ">").join("") + html + wrap.map(n => "</" + n + ">").reverse().join("");
@@ -10631,18 +10616,6 @@ function readHTML(html) {
     if (wrap)
         for (let i = 0; i < wrap.length; i++)
             elt = elt.querySelector(wrap[i]) || elt;
-    // Inline styles defined in the pasted content, so that parse rules pick them up
-    for (let i = 0; i < doc.styleSheets.length; i++) {
-        let style = doc.styleSheets[i];
-        for (let j = 0; j < style.rules.length; j++) {
-            let rule = style.rules[j];
-            if (rule instanceof CSSStyleRule) {
-                let matches = elt.querySelectorAll(rule.selectorText);
-                for (let k = 0; k < matches.length; k++)
-                    matches[k].style.cssText += rule.style.cssText;
-            }
-        }
-    }
     return elt;
 }
 // Webkit browsers do some hard-to-predict replacement of regular
@@ -10673,11 +10646,11 @@ function addContext(slice, context) {
         let type = schema.nodes[array[i]];
         if (!type || type.hasRequiredAttrs())
             break;
-        content = Fragment.from(type.create(array[i + 1], content));
+        content = Fragment$1.from(type.create(array[i + 1], content));
         openStart++;
         openEnd++;
     }
-    return new Slice(content, openStart, openEnd);
+    return new Slice$1(content, openStart, openEnd);
 }
 
 // A collection of DOM events that occur within the editor, and callback functions
@@ -10820,7 +10793,7 @@ editHandlers.keypress = (view, _event) => {
         return;
     }
     let sel = view.state.selection;
-    if (!(sel instanceof TextSelection) || !sel.$from.sameParent(sel.$to)) {
+    if (!(sel instanceof TextSelection$1) || !sel.$from.sameParent(sel.$to)) {
         let text = String.fromCharCode(event.charCode);
         let deflt = () => view.state.tr.insertText(text).scrollIntoView();
         if (!/[\r\n]/.test(text) && !view.someProp("handleTextInput", f => f(view, sel.$from.pos, sel.$to.pos, text, deflt)))
@@ -10857,8 +10830,8 @@ function selectClickedLeaf(view, inside) {
     if (inside == -1)
         return false;
     let $pos = view.state.doc.resolve(inside), node = $pos.nodeAfter;
-    if (node && node.isAtom && NodeSelection.isSelectable(node)) {
-        updateSelection(view, new NodeSelection($pos));
+    if (node && node.isAtom && NodeSelection$1.isSelectable(node)) {
+        updateSelection(view, new NodeSelection$1($pos));
         return true;
     }
     return false;
@@ -10867,12 +10840,12 @@ function selectClickedNode(view, inside) {
     if (inside == -1)
         return false;
     let sel = view.state.selection, selectedNode, selectAt;
-    if (sel instanceof NodeSelection)
+    if (sel instanceof NodeSelection$1)
         selectedNode = sel.node;
     let $pos = view.state.doc.resolve(inside);
     for (let i = $pos.depth + 1; i > 0; i--) {
         let node = i > $pos.depth ? $pos.nodeAfter : $pos.node(i);
-        if (NodeSelection.isSelectable(node)) {
+        if (NodeSelection$1.isSelectable(node)) {
             if (selectedNode && sel.$from.depth > 0 &&
                 i >= sel.$from.depth && $pos.before(sel.$from.depth + 1) == sel.$from.pos)
                 selectAt = $pos.before(sel.$from.depth);
@@ -10882,7 +10855,7 @@ function selectClickedNode(view, inside) {
         }
     }
     if (selectAt != null) {
-        updateSelection(view, NodeSelection.create(view.state.doc, selectAt));
+        updateSelection(view, NodeSelection$1.create(view.state.doc, selectAt));
         return true;
     }
     else {
@@ -10910,22 +10883,22 @@ function defaultTripleClick(view, inside, event) {
     if (!selection)
         return false;
     updateSelection(view, selection);
-    if (selection instanceof TextSelection && doc.eq(view.state.doc))
+    if (selection instanceof TextSelection$1 && doc.eq(view.state.doc))
         view.input.mouseDown = new TripleClickDrag(view, selection);
     return true;
 }
 function selectionForTripleClick(view, inside, selectNodes) {
     let doc = view.state.doc;
     if (inside == -1)
-        return doc.inlineContent ? TextSelection.create(doc, 0, doc.content.size) : null;
+        return doc.inlineContent ? TextSelection$1.create(doc, 0, doc.content.size) : null;
     let $pos = doc.resolve(inside);
     for (let i = $pos.depth + 1; i > 0; i--) {
         let node = i > $pos.depth ? $pos.nodeAfter : $pos.node(i);
         let nodePos = $pos.before(i);
         if (node.inlineContent)
-            return TextSelection.create(doc, nodePos + 1, nodePos + 1 + node.content.size);
-        else if (selectNodes && NodeSelection.isSelectable(node))
-            return NodeSelection.create(doc, nodePos);
+            return TextSelection$1.create(doc, nodePos + 1, nodePos + 1 + node.content.size);
+        else if (selectNodes && NodeSelection$1.isSelectable(node))
+            return NodeSelection$1.create(doc, nodePos);
     }
     return null;
 }
@@ -11009,7 +10982,7 @@ class LeftMouseDown extends MouseDown {
         let { selection } = view.state;
         if (event.button == 0 &&
             (targetNode.type.spec.draggable && targetNode.type.spec.selectable !== false ||
-                selection instanceof NodeSelection && selection.from <= targetPos && selection.to > targetPos))
+                selection instanceof NodeSelection$1 && selection.from <= targetPos && selection.to > targetPos))
             this.mightDrag = {
                 node: targetNode,
                 pos: targetPos,
@@ -11072,7 +11045,7 @@ class LeftMouseDown extends MouseDown {
                 // works around that.
                 (chrome && !this.view.state.selection.visible &&
                     Math.min(Math.abs(pos.pos - this.view.state.selection.from), Math.abs(pos.pos - this.view.state.selection.to)) <= 2))) {
-            updateSelection(this.view, Selection.near(this.view.state.doc.resolve(pos.pos)));
+            updateSelection(this.view, Selection$1.near(this.view.state.doc.resolve(pos.pos)));
             event.preventDefault();
         }
         else {
@@ -11115,7 +11088,7 @@ class TripleClickDrag extends MouseDown {
             return;
         let { doc } = this.view.state, start = this.startSelection;
         let [anchor, head] = target.from < start.from ? [start.to, target.from] : [start.from, target.to];
-        updateSelection(this.view, TextSelection.create(doc, anchor, head));
+        updateSelection(this.view, TextSelection$1.create(doc, anchor, head));
     }
 }
 handlers.touchstart = view => {
@@ -11153,7 +11126,7 @@ editHandlers.compositionstart = editHandlers.compositionupdate = view => {
     if (!view.composing) {
         view.domObserver.flush();
         let { state } = view, $pos = state.selection.$to;
-        if (state.selection instanceof TextSelection &&
+        if (state.selection instanceof TextSelection$1 &&
             (state.storedMarks ||
                 (!$pos.textOffset && $pos.parentOffset && $pos.nodeBefore.marks.some(m => m.type.spec.inclusive === false)) ||
                 chrome && windows$1 && selectionBeforeUneditable(view))) { // Issue #1500
@@ -11337,7 +11310,7 @@ function capturePaste(view, event) {
 }
 function doPaste(view, text, html, preferPlain, event) {
     let slice = parseFromClipboard(view, text, html, preferPlain, view.state.selection.$from);
-    if (view.someProp("handlePaste", f => f(view, event, slice || Slice.empty)))
+    if (view.someProp("handlePaste", f => f(view, event, slice || Slice$1.empty)))
         return true;
     if (!slice)
         return false;
@@ -11393,14 +11366,14 @@ handlers.dragstart = (view, _event) => {
     let sel = view.state.selection;
     let pos = sel.empty ? null : view.posAtCoords(eventCoords(event));
     let node;
-    if (pos && pos.pos >= sel.from && pos.pos <= (sel instanceof NodeSelection ? sel.to - 1 : sel.to)) ;
+    if (pos && pos.pos >= sel.from && pos.pos <= (sel instanceof NodeSelection$1 ? sel.to - 1 : sel.to)) ;
     else if (mouseDown && mouseDown.mightDrag) {
-        node = NodeSelection.create(view.state.doc, mouseDown.mightDrag.pos);
+        node = NodeSelection$1.create(view.state.doc, mouseDown.mightDrag.pos);
     }
     else if (event.target && event.target.nodeType == 1) {
         let desc = view.docView.nearestDesc(event.target, true);
         if (desc && desc.node.type.spec.draggable && desc != view.docView)
-            node = NodeSelection.create(view.state.doc, desc.posBefore);
+            node = NodeSelection$1.create(view.state.doc, desc.posBefore);
     }
     let draggedSlice = (node || view.state.selection).content();
     let { dom, text, slice } = serializeForClipboard(view, draggedSlice);
@@ -11445,7 +11418,7 @@ function handleDrop(view, event, dragging) {
         slice = parseFromClipboard(view, getText$1(event.dataTransfer), brokenClipboardAPI ? null : event.dataTransfer.getData("text/html"), false, $mouse);
     }
     let move = !!(dragging && dragMoves(view, event));
-    if (view.someProp("handleDrop", f => f(view, event, slice || Slice.empty, move))) {
+    if (view.someProp("handleDrop", f => f(view, event, slice || Slice$1.empty, move))) {
         event.preventDefault();
         return;
     }
@@ -11473,9 +11446,9 @@ function handleDrop(view, event, dragging) {
     if (tr.doc.eq(beforeInsert))
         return;
     let $pos = tr.doc.resolve(pos);
-    if (isNode && NodeSelection.isSelectable(slice.content.firstChild) &&
+    if (isNode && NodeSelection$1.isSelectable(slice.content.firstChild) &&
         $pos.nodeAfter && $pos.nodeAfter.sameMarkup(slice.content.firstChild)) {
-        tr.setSelection(new NodeSelection($pos));
+        tr.setSelection(new NodeSelection$1($pos));
     }
     else {
         let end = tr.mapping.map(insertPos);
@@ -12444,7 +12417,7 @@ class DOMObserver {
         if (from < 0 && newSel && view.input.lastFocus > Date.now() - 200 &&
             Math.max(view.input.lastTouch, view.input.lastClick.time) < Date.now() - 300 &&
             selectionCollapsed(sel) && (readSel = selectionFromDOM(view)) &&
-            readSel.eq(Selection.near(view.state.doc.resolve(0), 1))) {
+            readSel.eq(Selection$1.near(view.state.doc.resolve(0), 1))) {
             view.input.lastFocus = 0;
             selectionToDOM(view);
             this.currentSelection.set(sel);
@@ -12739,7 +12712,7 @@ function readDOMChange(view, from, to, typeOver, addedNodes) {
         return;
     }
     if (!change) {
-        if (typeOver && sel instanceof TextSelection && !sel.empty && sel.$head.sameParent(sel.$anchor) &&
+        if (typeOver && sel instanceof TextSelection$1 && !sel.empty && sel.$head.sameParent(sel.$anchor) &&
             !view.composing && !(parse.sel && parse.sel.anchor != parse.sel.head)) {
             change = { start: sel.from, endA: sel.to, endB: sel.to };
         }
@@ -12761,7 +12734,7 @@ function readDOMChange(view, from, to, typeOver, addedNodes) {
     // that's smaller than what was actually overwritten.
     if (view.state.selection.from < view.state.selection.to &&
         change.start == change.endB &&
-        view.state.selection instanceof TextSelection) {
+        view.state.selection instanceof TextSelection$1) {
         if (change.start > view.state.selection.from && change.start <= view.state.selection.from + 2 &&
             view.state.selection.from >= parse.from) {
             change.start = view.state.selection.from;
@@ -12917,7 +12890,7 @@ function isMarkChange(cur, prev) {
     let updated = [];
     for (let i = 0; i < prev.childCount; i++)
         updated.push(update(prev.child(i)));
-    if (Fragment.from(updated).eq(cur))
+    if (Fragment$1.from(updated).eq(cur))
         return { mark, type };
 }
 function looksLikeBackspace(old, start, end, $newStart, $newEnd) {
@@ -13205,7 +13178,7 @@ class EditorView {
         let startDOM = this.domSelectionRange().focusNode;
         if (!startDOM || !this.dom.contains(startDOM.nodeType == 1 ? startDOM : startDOM.parentNode)) ;
         else if (this.someProp("handleScrollToSelection", f => f(this))) ;
-        else if (this.state.selection instanceof NodeSelection) {
+        else if (this.state.selection instanceof NodeSelection$1) {
             let target = this.docView.domAfterPos(this.state.selection.from);
             if (target.nodeType == 1)
                 scrollRectIntoView(this, target.getBoundingClientRect(), startDOM);
@@ -13254,7 +13227,7 @@ class EditorView {
             if (moved == sel.node)
                 found = movedPos;
         }
-        this.dragging = new Dragging(dragging.slice, dragging.move, found < 0 ? undefined : NodeSelection.create(this.state.doc, found));
+        this.dragging = new Dragging(dragging.slice, dragging.move, found < 0 ? undefined : NodeSelection$1.create(this.state.doc, found));
     }
     someProp(propName, f) {
         let prop = this._props && this._props[propName], value;
@@ -14072,7 +14045,7 @@ var cut = (originRange, targetPos) => ({ editor, tr }) => {
   tr.deleteRange(originRange.from, originRange.to);
   const newPos = tr.mapping.map(targetPos);
   tr.insert(newPos, contentSlice.content);
-  tr.setSelection(new TextSelection(tr.doc.resolve(Math.max(newPos - 1, 0))));
+  tr.setSelection(new TextSelection$1(tr.doc.resolve(Math.max(newPos - 1, 0))));
   return true;
 };
 
@@ -14165,22 +14138,14 @@ var expandSelectionForInlineText = ($from, $to, schema) => {
   return { from, to };
 };
 var deleteSelection = () => ({ state, dispatch }) => {
+  const { $from, $to } = state.selection;
   if (state.selection.empty) {
     return false;
   }
+  const { from, to } = expandSelectionForInlineText($from, $to, state.schema);
   if (dispatch) {
-    const tr = state.tr;
-    const { ranges } = state.selection;
-    const mapFrom = tr.steps.length;
-    ranges.forEach((range) => {
-      const mapping = tr.mapping.slice(mapFrom);
-      const $from = tr.doc.resolve(mapping.map(range.$from.pos));
-      const $to = tr.doc.resolve(mapping.map(range.$to.pos));
-      const { from, to } = expandSelectionForInlineText($from, $to, state.schema);
-      tr.deleteRange(from, to);
-    });
-    tr.scrollIntoView();
-    dispatch(tr);
+    state.tr.deleteRange(from, to).scrollIntoView();
+    dispatch(state.tr);
   }
   return true;
 };
@@ -14288,7 +14253,7 @@ var extendMarkRange = (typeOrName, attributes) => ({ tr, state, dispatch }) => {
   if (dispatch) {
     const range = getMarkRange($from, type, attributes);
     if (range && range.from <= from && range.to >= to) {
-      const newSelection = TextSelection.create(doc, range.from, range.to);
+      const newSelection = TextSelection$1.create(doc, range.from, range.to);
       tr.setSelection(newSelection);
     }
   }
@@ -14306,7 +14271,7 @@ var first = (commands) => (props) => {
   return false;
 };
 function isTextSelection(value) {
-  return value instanceof TextSelection;
+  return value instanceof TextSelection$1;
 }
 
 // src/utilities/minMax.ts
@@ -14319,8 +14284,8 @@ function resolveFocusPosition(doc, position = null) {
   if (!position) {
     return null;
   }
-  const selectionAtStart = Selection.atStart(doc);
-  const selectionAtEnd = Selection.atEnd(doc);
+  const selectionAtStart = Selection$1.atStart(doc);
+  const selectionAtEnd = Selection$1.atEnd(doc);
   if (position === "start" || position === true) {
     return selectionAtStart;
   }
@@ -14330,13 +14295,13 @@ function resolveFocusPosition(doc, position = null) {
   const minPos = selectionAtStart.from;
   const maxPos = selectionAtEnd.to;
   if (position === "all") {
-    return TextSelection.create(
+    return TextSelection$1.create(
       doc,
       minMax(0, minPos, maxPos),
       minMax(doc.content.size, minPos, maxPos)
     );
   }
-  return TextSelection.create(
+  return TextSelection$1.create(
     doc,
     minMax(position, minPos, maxPos),
     minMax(position, minPos, maxPos)
@@ -14448,7 +14413,7 @@ function elementFromString(value) {
 
 // src/helpers/createNodeFromContent.ts
 function createNodeFromContent(content, schema, options) {
-  if (content instanceof Node$1 || content instanceof Fragment) {
+  if (content instanceof Node$1 || content instanceof Fragment$1) {
     return content;
   }
   options = {
@@ -14462,7 +14427,7 @@ function createNodeFromContent(content, schema, options) {
     try {
       const isArrayContent = Array.isArray(content) && content.length > 0;
       if (isArrayContent) {
-        return Fragment.fromArray(content.map((item) => schema.nodeFromJSON(item)));
+        return Fragment$1.fromArray(content.map((item) => schema.nodeFromJSON(item)));
       }
       const node = schema.nodeFromJSON(content);
       if (options.errorOnInvalidContent) {
@@ -14481,7 +14446,7 @@ function createNodeFromContent(content, schema, options) {
     if (options.errorOnInvalidContent) {
       let hasInvalidContent = false;
       let invalidContent = "";
-      const contentCheckSchema = new Schema$1({
+      const contentCheckSchema = new Schema$2({
         topNode: schema.spec.topNode,
         marks: schema.spec.marks,
         // Prosemirror's schemas are executed such that: the last to execute, matches last
@@ -14528,13 +14493,13 @@ function createNodeFromContent(content, schema, options) {
   }
   return createNodeFromContent("", schema, options);
 }
-function selectionToInsertionEnd(tr, startLen, bias) {
+function selectionToInsertionEnd$1(tr, startLen, bias) {
   const last = tr.steps.length - 1;
   if (last < startLen) {
     return;
   }
   const step = tr.steps[last];
-  if (!(step instanceof ReplaceStep || step instanceof ReplaceAroundStep)) {
+  if (!(step instanceof ReplaceStep$1 || step instanceof ReplaceAroundStep$1)) {
     return;
   }
   const map = tr.mapping.maps[last];
@@ -14544,7 +14509,7 @@ function selectionToInsertionEnd(tr, startLen, bias) {
       end = newTo;
     }
   });
-  tr.setSelection(Selection.near(tr.doc.resolve(end), bias));
+  tr.setSelection(Selection$1.near(tr.doc.resolve(end), bias));
 }
 
 // src/commands/insertContentAt.ts
@@ -14617,7 +14582,7 @@ var insertContentAt = (position, value, options) => ({ tr, dispatch, editor }) =
     if (isOnlyTextContent) {
       if (Array.isArray(value)) {
         newContent = value.map((v) => v.text || "").join("");
-      } else if (value instanceof Fragment) {
+      } else if (value instanceof Fragment$1) {
         let text = "";
         value.forEach((node) => {
           if (node.text) {
@@ -14644,7 +14609,7 @@ var insertContentAt = (position, value, options) => ({ tr, dispatch, editor }) =
       tr.replaceWith(from, to, newContent);
     }
     if (options.updateSelection) {
-      selectionToInsertionEnd(tr, tr.steps.length - 1, -1);
+      selectionToInsertionEnd$1(tr, tr.steps.length - 1, -1);
     }
     if (options.applyInputRules) {
       tr.setMeta("applyInputRules", { from, text: newContent });
@@ -14905,7 +14870,7 @@ var scrollIntoView = () => ({ tr, dispatch }) => {
 };
 var selectAll = () => ({ tr, dispatch }) => {
   if (dispatch) {
-    const selection = new AllSelection(tr.doc);
+    const selection = new AllSelection$1(tr.doc);
     tr.setSelection(selection);
   }
   return true;
@@ -15522,7 +15487,7 @@ function getSchemaByResolvedExtensions(extensions, editor) {
       return [extension.name, schema];
     })
   );
-  return new Schema$1({
+  return new Schema$2({
     topNode,
     nodes,
     marks
@@ -15951,7 +15916,7 @@ function isNodeEmpty(node, {
   return false;
 }
 function isNodeSelection(value) {
-  return value instanceof NodeSelection;
+  return value instanceof NodeSelection$1;
 }
 
 // src/helpers/MappablePosition.ts
@@ -16088,7 +16053,7 @@ var setNodeSelection = (position) => ({ tr, dispatch }) => {
   if (dispatch) {
     const { doc } = tr;
     const from = minMax(position, 0, doc.content.size);
-    const selection = NodeSelection.create(doc, from);
+    const selection = NodeSelection$1.create(doc, from);
     tr.setSelection(selection);
   }
   return true;
@@ -16126,11 +16091,11 @@ var setTextSelection = (position) => ({ tr, dispatch }) => {
   if (dispatch) {
     const { doc } = tr;
     const { from, to } = typeof position === "number" ? { from: position, to: position } : position;
-    const minPos = TextSelection.atStart(doc).from;
-    const maxPos = TextSelection.atEnd(doc).to;
+    const minPos = TextSelection$1.atStart(doc).from;
+    const maxPos = TextSelection$1.atEnd(doc).to;
     const resolvedFrom = minMax(from, minPos, maxPos);
     const resolvedEnd = minMax(to, minPos, maxPos);
-    const selection = TextSelection.create(doc, resolvedFrom, resolvedEnd);
+    const selection = TextSelection$1.create(doc, resolvedFrom, resolvedEnd);
     tr.setSelection(selection);
   }
   return true;
@@ -16155,7 +16120,7 @@ var splitBlock = ({ keepMarks = true } = {}) => ({ tr, state, dispatch, editor }
     $from.node().type.name,
     $from.node().attrs
   );
-  if (selection instanceof NodeSelection && selection.node.isBlock) {
+  if (selection instanceof NodeSelection$1 && selection.node.isBlock) {
     if (!$from.parentOffset || !canSplit(doc, $from.pos)) {
       return false;
     }
@@ -16190,7 +16155,7 @@ var splitBlock = ({ keepMarks = true } = {}) => ({ tr, state, dispatch, editor }
   }
   if (dispatch) {
     if (can) {
-      if (selection instanceof TextSelection) {
+      if (selection instanceof TextSelection$1) {
         tr.deleteSelection();
       }
       tr.split(tr.mapping.map($from.pos), 1, types);
@@ -16227,10 +16192,10 @@ var splitListItem = (typeOrName, overrideAttrs = {}) => ({ tr, state, dispatch, 
       return false;
     }
     if (dispatch) {
-      let wrap = Fragment.empty;
+      let wrap = Fragment$1.empty;
       const depthBefore = $from.index(-1) ? 1 : $from.index(-2) ? 2 : 3;
       for (let d = $from.depth - depthBefore; d >= $from.depth - 3; d -= 1) {
-        wrap = Fragment.from($from.node(d).copy(wrap));
+        wrap = Fragment$1.from($from.node(d).copy(wrap));
       }
       const depthAfter = (
         // oxlint-disable-next-line no-nested-ternary
@@ -16241,9 +16206,9 @@ var splitListItem = (typeOrName, overrideAttrs = {}) => ({ tr, state, dispatch, 
         ...overrideAttrs
       };
       const nextType2 = ((_a = type.contentMatch.defaultType) == null ? void 0 : _a.createAndFill(newNextTypeAttributes2)) || void 0;
-      wrap = wrap.append(Fragment.from(type.createAndFill(null, nextType2) || void 0));
+      wrap = wrap.append(Fragment$1.from(type.createAndFill(null, nextType2) || void 0));
       const start = $from.before($from.depth - (depthBefore - 1));
-      tr.replace(start, $from.after(-depthAfter), new Slice(wrap, 4 - depthBefore, 0));
+      tr.replace(start, $from.after(-depthAfter), new Slice$1(wrap, 4 - depthBefore, 0));
       let sel = -1;
       tr.doc.nodesBetween(start, tr.doc.content.size, (n, pos) => {
         if (sel > -1) {
@@ -16254,7 +16219,7 @@ var splitListItem = (typeOrName, overrideAttrs = {}) => ({ tr, state, dispatch, 
         }
       });
       if (sel > -1) {
-        tr.setSelection(TextSelection.near(tr.doc.resolve(sel)));
+        tr.setSelection(TextSelection$1.near(tr.doc.resolve(sel)));
       }
       tr.scrollIntoView();
     }
@@ -16344,7 +16309,7 @@ function createInnerSelectionForWholeDocList(tr) {
   }
   const $start = doc.resolve(1);
   const $end = doc.resolve(list.nodeSize - 1);
-  return TextSelection.between($start, $end);
+  return TextSelection$1.between($start, $end);
 }
 var toggleList = (listTypeOrName, itemTypeOrName, keepMarks, attributes = {}) => ({ editor, tr, state, dispatch, chain, commands, can }) => {
   const { extensions, splittableMarks } = editor.extensionManager;
@@ -16705,7 +16670,7 @@ var EventEmitter = class {
 function canInsertNode(state, nodeType) {
   const { selection } = state;
   const { $from } = selection;
-  if (selection instanceof NodeSelection) {
+  if (selection instanceof NodeSelection$1) {
     const index = $from.index();
     const parent = $from.parent;
     return parent.canReplaceWith(index, index + 1, nodeType);
@@ -16725,7 +16690,7 @@ function canInsertNode(state, nodeType) {
 
 // src/utilities/createStyleTag.ts
 function createStyleTag(style2, nonce, suffix) {
-  const tiptapStyleTag = document.querySelector(`style[data-tiptap-style${""}]`);
+  const tiptapStyleTag = document.querySelector(`style[data-tiptap-style${suffix ? `-${suffix}` : ""}]`);
   if (tiptapStyleTag !== null) {
     return tiptapStyleTag;
   }
@@ -16733,7 +16698,7 @@ function createStyleTag(style2, nonce, suffix) {
   if (nonce) {
     styleNode.setAttribute("nonce", nonce);
   }
-  styleNode.setAttribute(`data-tiptap-style${""}`, "");
+  styleNode.setAttribute(`data-tiptap-style${suffix ? `-${suffix}` : ""}`, "");
   styleNode.innerHTML = style2;
   document.getElementsByTagName("head")[0].appendChild(styleNode);
   return styleNode;
@@ -17424,7 +17389,7 @@ function inputRulesPlugin(props) {
             if (typeof text === "string") {
               text = text;
             } else {
-              text = getHTMLFromFragment(Fragment.from(text), state.schema);
+              text = getHTMLFromFragment(Fragment$1.from(text), state.schema);
             }
             const { from } = simulatedInputMeta;
             const to = from + text.length;
@@ -17792,7 +17757,7 @@ function pasteRulesPlugin(props) {
           if (typeof text === "string") {
             text = text;
           } else {
-            text = getHTMLFromFragment(Fragment.from(text), state.schema);
+            text = getHTMLFromFragment(Fragment$1.from(text), state.schema);
           }
           const { from: from2 } = simulatedPasteMeta;
           const to2 = from2 + text.length;
@@ -18335,7 +18300,7 @@ var Delete = Extension.create({
       const mapping = nextTransaction.mapping;
       nextTransaction.steps.forEach((step, index) => {
         var _a3, _b3;
-        if (step instanceof RemoveMarkStep) {
+        if (step instanceof RemoveMarkStep$1) {
           const newStart = mapping.slice(index).map(step.from, -1);
           const newEnd = mapping.slice(index).map(step.to);
           const oldStart = mapping.invert().map(newStart, -1);
@@ -18444,7 +18409,7 @@ var Keymap = Extension.create({
         const $parentPos = $anchor.parent.isTextblock && pos > 0 ? tr.doc.resolve(pos - 1) : $anchor;
         const parentIsIsolating = $parentPos.parent.type.spec.isolating;
         const parentPos = $anchor.pos - $anchor.parentOffset;
-        const isAtStart = parentIsIsolating && $parentPos.parent.childCount === 1 ? parentPos === $anchor.pos : Selection.atStart(doc).from === pos;
+        const isAtStart = parentIsIsolating && $parentPos.parent.childCount === 1 ? parentPos === $anchor.pos : Selection$1.atStart(doc).from === pos;
         if (!empty || !parent.type.isTextblock || parent.textContent.length || !isAtStart || isAtStart && $anchor.parent.type.name === "paragraph") {
           return false;
         }
@@ -18516,8 +18481,8 @@ var Keymap = Extension.create({
             return;
           }
           const { empty, from, to } = oldState.selection;
-          const allFrom = Selection.atStart(oldState.doc).from;
-          const allEnd = Selection.atEnd(oldState.doc).to;
+          const allFrom = Selection$1.atStart(oldState.doc).from;
+          const allEnd = Selection$1.atEnd(oldState.doc).to;
           const allWasSelected = from === allFrom && to === allEnd;
           if (empty || !allWasSelected) {
             return;
@@ -20288,7 +20253,6 @@ class DropCursorView {
         this.cursorPos = null;
         this.element = null;
         this.timeout = -1;
-        this.lastDragEvent = null;
         this.width = (_a = options.width) !== null && _a !== void 0 ? _a : 1;
         this.color = options.color === false ? undefined : (options.color || "black");
         this.class = options.class;
@@ -20303,18 +20267,10 @@ class DropCursorView {
     }
     update(editorView, prevState) {
         if (this.cursorPos != null && prevState.doc != editorView.state.doc) {
-            // if we currently have an on-going drag event
-            // we need to update the cursor position again and update the overlay
-            if (this.lastDragEvent) {
-                let target = this.computeTarget(this.lastDragEvent);
-                if (target == this.cursorPos)
-                    this.updateOverlay();
-                else
-                    this.setCursor(target);
-            }
-            else {
+            if (this.cursorPos > editorView.state.doc.content.size)
+                this.setCursor(null);
+            else
                 this.updateOverlay();
-            }
         }
     }
     setCursor(pos) {
@@ -20385,29 +20341,22 @@ class DropCursorView {
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => this.setCursor(null), timeout);
     }
-    computeTarget(event) {
+    dragover(event) {
+        if (!this.editorView.editable)
+            return;
         let pos = this.editorView.posAtCoords({ left: event.clientX, top: event.clientY });
         let node = pos && pos.inside >= 0 && this.editorView.state.doc.nodeAt(pos.inside);
         let disableDropCursor = node && node.type.spec.disableDropCursor;
         let disabled = typeof disableDropCursor == "function"
             ? disableDropCursor(this.editorView, pos, event)
             : disableDropCursor;
-        if (!pos || disabled)
-            return null;
-        let target = pos.pos;
-        if (this.editorView.dragging && this.editorView.dragging.slice) {
-            let point = dropPoint(this.editorView.state.doc, target, this.editorView.dragging.slice);
-            if (point != null)
-                target = point;
-        }
-        return target;
-    }
-    dragover(event) {
-        if (!this.editorView.editable)
-            return;
-        this.lastDragEvent = event;
-        let target = this.computeTarget(event);
-        if (target != null) {
+        if (pos && !disabled) {
+            let target = pos.pos;
+            if (this.editorView.dragging && this.editorView.dragging.slice) {
+                let point = dropPoint(this.editorView.state.doc, target, this.editorView.dragging.slice);
+                if (point != null)
+                    target = point;
+            }
             this.setCursor(target);
             this.scheduleRemoval(5000);
         }
@@ -20428,7 +20377,7 @@ class DropCursorView {
 Gap cursor selections are represented using this class. Its
 `$anchor` and `$head` properties both point at the cursor position.
 */
-class GapCursor extends Selection {
+class GapCursor extends Selection$1 {
     /**
     Create a gap cursor.
     */
@@ -20437,9 +20386,9 @@ class GapCursor extends Selection {
     }
     map(doc, mapping) {
         let $pos = doc.resolve(mapping.map(this.head));
-        return GapCursor.valid($pos) ? new GapCursor($pos) : Selection.near($pos);
+        return GapCursor.valid($pos) ? new GapCursor($pos) : Selection$1.near($pos);
     }
-    content() { return Slice.empty; }
+    content() { return Slice$1.empty; }
     eq(other) {
         return other instanceof GapCursor && other.head == this.head;
     }
@@ -20498,7 +20447,7 @@ class GapCursor extends Selection {
             for (;;) {
                 let inside = dir > 0 ? next.firstChild : next.lastChild;
                 if (!inside) {
-                    if (next.isAtom && !next.isText && !NodeSelection.isSelectable(next)) {
+                    if (next.isAtom && !next.isText && !NodeSelection$1.isSelectable(next)) {
                         $pos = $pos.doc.resolve(pos + next.nodeSize * dir);
                         mustMove = false;
                         continue search;
@@ -20517,7 +20466,7 @@ class GapCursor extends Selection {
 }
 GapCursor.prototype.visible = false;
 GapCursor.findFrom = GapCursor.findGapCursorFrom;
-Selection.jsonID("gapcursor", GapCursor);
+Selection$1.jsonID("gapcursor", GapCursor);
 class GapBookmark {
     constructor(pos) {
         this.pos = pos;
@@ -20527,7 +20476,7 @@ class GapBookmark {
     }
     resolve(doc) {
         let $pos = doc.resolve(this.pos);
-        return GapCursor.valid($pos) ? new GapCursor($pos) : Selection.near($pos);
+        return GapCursor.valid($pos) ? new GapCursor($pos) : Selection$1.near($pos);
     }
 }
 function needsGap(type) {
@@ -20604,7 +20553,7 @@ function arrow(axis, dir) {
     return function (state, dispatch, view) {
         let sel = state.selection;
         let $start = dir > 0 ? sel.$to : sel.$from, mustMove = sel.empty;
-        if (sel instanceof TextSelection) {
+        if (sel instanceof TextSelection$1) {
             if (!view.endOfTextblock(dirStr) || $start.depth == 0)
                 return false;
             mustMove = false;
@@ -20625,7 +20574,7 @@ function handleClick(view, pos, event) {
     if (!GapCursor.valid($pos))
         return false;
     let clickPos = view.posAtCoords({ left: event.clientX, top: event.clientY });
-    if (clickPos && clickPos.inside > -1 && NodeSelection.isSelectable(view.state.doc.nodeAt(clickPos.inside)))
+    if (clickPos && clickPos.inside > -1 && NodeSelection$1.isSelectable(view.state.doc.nodeAt(clickPos.inside)))
         return false;
     view.dispatch(view.state.tr.setSelection(new GapCursor($pos)));
     return true;
@@ -20641,11 +20590,11 @@ function beforeinput(view, event) {
     let insert = $from.parent.contentMatchAt($from.index()).findWrapping(view.state.schema.nodes.text);
     if (!insert)
         return false;
-    let frag = Fragment.empty;
+    let frag = Fragment$1.empty;
     for (let i = insert.length - 1; i >= 0; i--)
-        frag = Fragment.from(insert[i].createAndFill(null, frag));
-    let tr = view.state.tr.replace($from.pos, $from.pos, new Slice(frag, 0, 0));
-    tr.setSelection(TextSelection.near(tr.doc.resolve($from.pos + 1)));
+        frag = Fragment$1.from(insert[i].createAndFill(null, frag));
+    let tr = view.state.tr.replace($from.pos, $from.pos, new Slice$1(frag, 0, 0));
+    tr.setSelection(TextSelection$1.near(tr.doc.resolve($from.pos + 1)));
     view.dispatch(tr);
     return false;
 }
@@ -21462,6 +21411,7 @@ var Gapcursor = Extension.create({
 });
 var DEFAULT_DATA_ATTRIBUTE = "placeholder";
 var PLUGIN_KEY = new PluginKey("tiptap__placeholder");
+var VIEWPORT_OVERSCAN_PX = 200;
 function createPlaceholderDecoration(options) {
   const {
     editor,
@@ -21492,50 +21442,6 @@ function createPlaceholderDecoration(options) {
 function resolveEmptyNodeClass(emptyNodeClass, props) {
   return typeof emptyNodeClass === "function" ? emptyNodeClass(props) : emptyNodeClass;
 }
-function scanRangeForDecorations({
-  editor,
-  options,
-  dataAttribute,
-  doc,
-  selection,
-  from,
-  to
-}) {
-  const { anchor } = selection;
-  const decorations = [];
-  const isEmptyDoc = editor.isEmpty;
-  doc.nodesBetween(from, to, (node, pos) => {
-    const hasAnchor = anchor >= pos && anchor <= pos + node.nodeSize;
-    const isEmpty = !node.isLeaf && isNodeEmpty(node);
-    if (!node.type.isTextblock) {
-      return options.includeChildren;
-    }
-    if ((hasAnchor || !options.showOnlyCurrent) && isEmpty) {
-      decorations.push(
-        createPlaceholderDecoration({
-          editor,
-          isEmptyDoc,
-          dataAttribute,
-          hasAnchor,
-          placeholder: options.placeholder,
-          classes: {
-            emptyEditor: options.emptyEditorClass,
-            emptyNode: resolveEmptyNodeClass(options.emptyNodeClass, {
-              editor,
-              node,
-              pos,
-              hasAnchor
-            })
-          },
-          node,
-          pos
-        })
-      );
-    }
-    return options.includeChildren;
-  });
-  return decorations;
-}
 function buildPlaceholderDecorations({
   editor,
   options,
@@ -21543,6 +21449,7 @@ function buildPlaceholderDecorations({
   doc,
   selection
 }) {
+  var _a, _b;
   const active = editor.isEditable || !options.showOnlyWhenEditable;
   if (!active) {
     return null;
@@ -21579,188 +21486,41 @@ function buildPlaceholderDecorations({
       );
     }
   } else {
-    decorations.push(
-      ...scanRangeForDecorations({
-        editor,
-        options,
-        dataAttribute,
-        doc,
-        selection,
-        from: 0,
-        to: doc.content.size
-      })
-    );
+    const pluginState = PLUGIN_KEY.getState(editor.state);
+    const from = (_a = pluginState == null ? void 0 : pluginState.topPos) != null ? _a : 0;
+    const to = (_b = pluginState == null ? void 0 : pluginState.bottomPos) != null ? _b : doc.content.size;
+    doc.nodesBetween(from, to, (node, pos) => {
+      const hasAnchor = anchor >= pos && anchor <= pos + node.nodeSize;
+      const isEmpty = !node.isLeaf && isNodeEmpty(node);
+      if (!node.type.isTextblock) {
+        return options.includeChildren;
+      }
+      if ((hasAnchor || !options.showOnlyCurrent) && isEmpty) {
+        decorations.push(
+          createPlaceholderDecoration({
+            editor,
+            isEmptyDoc,
+            dataAttribute,
+            hasAnchor,
+            placeholder: options.placeholder,
+            classes: {
+              emptyEditor: options.emptyEditorClass,
+              emptyNode: resolveEmptyNodeClass(options.emptyNodeClass, {
+                editor,
+                node,
+                pos,
+                hasAnchor
+              })
+            },
+            node,
+            pos
+          })
+        );
+      }
+      return options.includeChildren;
+    });
   }
   return DecorationSet.create(doc, decorations);
-}
-
-// src/placeholder/utils/resolveTopLevelRange.ts
-function resolveTopLevelRange(doc, pos) {
-  var _a;
-  const resolved = doc.resolve(pos);
-  if (resolved.depth === 0) {
-    const node2 = (_a = resolved.nodeAfter) != null ? _a : resolved.nodeBefore;
-    if (!node2) {
-      return { from: pos, to: pos };
-    }
-    const nodePos = resolved.nodeAfter ? pos : pos - node2.nodeSize;
-    return { from: nodePos, to: nodePos + node2.nodeSize };
-  }
-  const topLevelPos = resolved.before(1);
-  const node = resolved.node(1);
-  return { from: topLevelPos, to: topLevelPos + node.nodeSize };
-}
-function toContentRelativeRange(doc, range) {
-  return {
-    from: Math.max(0, range.from - 1),
-    to: Math.min(doc.content.size, range.to - 1)
-  };
-}
-function getTopLevelBlocksInRange(doc, from, to) {
-  const ranges = [];
-  doc.forEach((node, offset) => {
-    const nodeStart = offset;
-    const nodeEnd = nodeStart + node.nodeSize;
-    const absNodeStart = nodeStart + 1;
-    const absNodeEnd = nodeEnd + 1;
-    if (absNodeStart < to && absNodeEnd > from) {
-      ranges.push({ from: nodeStart, to: nodeEnd });
-    }
-  });
-  return ranges;
-}
-function mergeRanges(ranges) {
-  if (ranges.length === 0) {
-    return [];
-  }
-  const sorted = [...ranges].sort((a, b) => a.from - b.from);
-  const merged = [{ ...sorted[0] }];
-  for (let i = 1; i < sorted.length; i += 1) {
-    const last = merged[merged.length - 1];
-    const current = sorted[i];
-    if (current.from <= last.to) {
-      last.to = Math.max(last.to, current.to);
-    } else {
-      merged.push({ ...current });
-    }
-  }
-  return merged;
-}
-
-// src/placeholder/utils/placeholderStateField.ts
-function collectBlocksForChange(doc, change) {
-  const ranges = getTopLevelBlocksInRange(doc, change.from, change.to);
-  ranges.push(toContentRelativeRange(doc, resolveTopLevelRange(doc, change.from)));
-  if (change.to > change.from) {
-    ranges.push(
-      toContentRelativeRange(
-        doc,
-        resolveTopLevelRange(doc, Math.min(change.to, doc.content.size + 1) - 1)
-      )
-    );
-  } else if (change.from < doc.content.size + 1) {
-    ranges.push(
-      toContentRelativeRange(
-        doc,
-        resolveTopLevelRange(doc, Math.min(change.from + 1, doc.content.size))
-      )
-    );
-  }
-  return ranges;
-}
-function collectRescanRanges(tr, oldState, newState) {
-  const ranges = [];
-  if (tr.docChanged) {
-    const changes = getChangedRanges(tr);
-    for (const change of changes) {
-      ranges.push(...collectBlocksForChange(newState.doc, change.newRange));
-    }
-  }
-  if (tr.selectionSet) {
-    ranges.push(
-      toContentRelativeRange(
-        newState.doc,
-        resolveTopLevelRange(newState.doc, tr.mapping.map(oldState.selection.anchor))
-      )
-    );
-    ranges.push(
-      toContentRelativeRange(
-        newState.doc,
-        resolveTopLevelRange(newState.doc, newState.selection.anchor)
-      )
-    );
-  }
-  return mergeRanges(ranges);
-}
-function clampRange(from, to, doc) {
-  const clampedFrom = Math.max(0, Math.min(from, doc.content.size));
-  const clampedTo = Math.max(clampedFrom, Math.min(to, doc.content.size));
-  return { from: clampedFrom, to: clampedTo };
-}
-function updateDecorationsInRanges({
-  decorations,
-  ranges,
-  editor,
-  options,
-  dataAttribute,
-  doc,
-  selection
-}) {
-  let next = decorations;
-  for (const range of ranges) {
-    const { from, to } = clampRange(range.from, range.to, doc);
-    const existing = next.find(from, to).filter((decoration) => decoration.from >= from && decoration.to <= to);
-    if (existing.length) {
-      next = next.remove(existing);
-    }
-    const newDecos = scanRangeForDecorations({
-      editor,
-      options,
-      dataAttribute,
-      doc,
-      selection,
-      from,
-      to
-    });
-    if (newDecos.length) {
-      next = next.add(doc, newDecos);
-    }
-  }
-  return next;
-}
-function createPlaceholderStateField({
-  editor,
-  options,
-  dataAttribute
-}) {
-  return {
-    init(_config, state) {
-      const decorations = buildPlaceholderDecorations({
-        editor,
-        options,
-        dataAttribute,
-        doc: state.doc,
-        selection: state.selection
-      });
-      return decorations != null ? decorations : DecorationSet.empty;
-    },
-    apply(tr, prev, oldState, newState) {
-      if (!tr.docChanged && !tr.selectionSet) {
-        return prev;
-      }
-      const mapped = prev.map(tr.mapping, tr.doc);
-      const ranges = collectRescanRanges(tr, oldState, newState);
-      return updateDecorationsInRanges({
-        decorations: mapped,
-        ranges,
-        editor,
-        options,
-        dataAttribute,
-        doc: newState.doc,
-        selection: newState.selection
-      });
-    }
-  };
 }
 
 // src/placeholder/utils/preparePlaceholderAttribute.ts
@@ -21768,23 +21528,170 @@ function preparePlaceholderAttribute(attr) {
   return attr.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-]/g, "").replace(/^[0-9-]+/, "").replace(/^-+/, "").toLowerCase();
 }
 
+// src/placeholder/utils/findScrollParent.ts
+function isScrollable(el) {
+  const style = getComputedStyle(el);
+  const overflow = `${style.overflow} ${style.overflowY} ${style.overflowX}`;
+  return /auto|scroll|overlay/.test(overflow);
+}
+function findScrollParent(element) {
+  let el = element;
+  while (el) {
+    if (isScrollable(el)) {
+      return el;
+    }
+    const parent = el.parentElement;
+    if (!parent) {
+      const root = el.getRootNode();
+      if (root instanceof ShadowRoot) {
+        el = root.host;
+        continue;
+      }
+      return window;
+    }
+    el = parent;
+  }
+  return window;
+}
+
+// src/placeholder/utils/getViewportBoundaryPositions.ts
+function getContainerRect(container) {
+  if (container === window) {
+    return { top: 0, bottom: window.innerHeight };
+  }
+  return container.getBoundingClientRect();
+}
+function getViewportBoundaryPositions({
+  view,
+  scrollContainer
+}) {
+  const editorRect = view.dom.getBoundingClientRect();
+  if (editorRect.width <= 0 || editorRect.height <= 0) {
+    return null;
+  }
+  const containerRect = scrollContainer ? getContainerRect(scrollContainer) : { top: 0, bottom: window.innerHeight };
+  const visibleTop = Math.max(editorRect.top, containerRect.top) - VIEWPORT_OVERSCAN_PX;
+  const visibleBottom = Math.min(editorRect.bottom, containerRect.bottom) + VIEWPORT_OVERSCAN_PX;
+  if (visibleTop >= visibleBottom) {
+    return null;
+  }
+  const minX = editorRect.left + 1;
+  const maxX = editorRect.right - 1;
+  if (minX > maxX) {
+    return null;
+  }
+  const isRTL = getComputedStyle(view.dom).direction === "rtl";
+  const targetX = isRTL ? editorRect.right - 2 : editorRect.left + 2;
+  const x = Math.min(Math.max(targetX, minX), maxX);
+  const probeTop = Math.max(visibleTop + 2, editorRect.top + 1);
+  const probeBottom = Math.min(visibleBottom - 2, editorRect.bottom - 1);
+  if (probeTop > probeBottom) {
+    return null;
+  }
+  const topPos = view.posAtCoords({ left: x, top: probeTop });
+  const bottomPos = view.posAtCoords({ left: x, top: probeBottom });
+  if (!topPos || !bottomPos) {
+    return null;
+  }
+  return { top: topPos.pos, bottom: bottomPos.pos };
+}
+
+// src/placeholder/utils/viewportTracking.ts
+var viewportPluginState = {
+  /**
+   * Initialises the viewport state with no known positions.
+   * @returns The initial viewport state.
+   */
+  init() {
+    return { topPos: null, bottomPos: null };
+  },
+  /**
+   * Updates the viewport state from incoming transactions.
+   * @param tr - The transaction being applied.
+   * @param prev - The previous viewport state.
+   * @returns The next viewport state.
+   */
+  apply(tr, prev) {
+    const meta = tr.getMeta(PLUGIN_KEY);
+    if (meta == null ? void 0 : meta.positions) {
+      return { topPos: meta.positions.top, bottomPos: meta.positions.bottom };
+    }
+    if (!tr.docChanged) {
+      return prev;
+    }
+    return {
+      topPos: prev.topPos !== null ? tr.mapping.map(prev.topPos) : null,
+      bottomPos: prev.bottomPos !== null ? tr.mapping.map(prev.bottomPos) : null
+    };
+  }
+};
+function createViewportPluginView(view) {
+  const scrollContainer = findScrollParent(view.dom);
+  const computeAndDispatch = () => {
+    const positions = getViewportBoundaryPositions({
+      view,
+      scrollContainer
+    });
+    if (positions === null) {
+      return;
+    }
+    const prev = PLUGIN_KEY.getState(view.state);
+    if ((prev == null ? void 0 : prev.topPos) === positions.top && (prev == null ? void 0 : prev.bottomPos) === positions.bottom) {
+      return;
+    }
+    const tr = view.state.tr.setMeta(PLUGIN_KEY, { positions });
+    view.dispatch(tr);
+  };
+  let frame = null;
+  let lastCompute = 0;
+  const MIN_SCROLL_INTERVAL = 150;
+  const scheduleFrame = () => {
+    if (frame !== null) return;
+    frame = requestAnimationFrame(() => {
+      frame = null;
+      const now = performance.now();
+      if (now - lastCompute >= MIN_SCROLL_INTERVAL) {
+        lastCompute = now;
+        computeAndDispatch();
+      } else {
+        scheduleFrame();
+      }
+    });
+  };
+  scrollContainer.addEventListener("scroll", scheduleFrame, { passive: true });
+  const resizeObserver = typeof ResizeObserver !== "undefined" ? new ResizeObserver(scheduleFrame) : null;
+  resizeObserver == null ? void 0 : resizeObserver.observe(view.dom);
+  const intersectionObserver = typeof IntersectionObserver !== "undefined" ? new IntersectionObserver(scheduleFrame) : null;
+  intersectionObserver == null ? void 0 : intersectionObserver.observe(view.dom);
+  view.dom.addEventListener("focus", scheduleFrame);
+  computeAndDispatch();
+  return {
+    update(_view, prevState) {
+      if (view.state.doc.content.size !== prevState.doc.content.size) {
+        scheduleFrame();
+      }
+    },
+    destroy: () => {
+      if (frame !== null) {
+        cancelAnimationFrame(frame);
+      }
+      scrollContainer.removeEventListener("scroll", scheduleFrame);
+      resizeObserver == null ? void 0 : resizeObserver.disconnect();
+      intersectionObserver == null ? void 0 : intersectionObserver.disconnect();
+      view.dom.removeEventListener("focus", scheduleFrame);
+    }
+  };
+}
+
 // src/placeholder/plugins/PlaceholderPlugin.ts
 function createPlaceholderPlugin({ editor, options }) {
   const dataAttribute = options.dataAttribute ? `data-${preparePlaceholderAttribute(options.dataAttribute)}` : `data-${DEFAULT_DATA_ATTRIBUTE}`;
-  const useResolvedPath = options.showOnlyCurrent && !options.includeChildren;
   return new Plugin({
     key: PLUGIN_KEY,
-    ...useResolvedPath ? {} : {
-      state: createPlaceholderStateField({ editor, options, dataAttribute })
-    },
+    state: viewportPluginState,
+    view: createViewportPluginView,
     props: {
-      decorations: useResolvedPath ? ({ doc, selection }) => buildPlaceholderDecorations({ editor, options, dataAttribute, doc, selection }) : (state) => {
-        var _a;
-        if (options.showOnlyWhenEditable && !editor.isEditable) {
-          return DecorationSet.empty;
-        }
-        return (_a = PLUGIN_KEY.getState(state)) != null ? _a : DecorationSet.empty;
-      }
+      decorations: ({ doc, selection }) => buildPlaceholderDecorations({ editor, options, dataAttribute, doc, selection })
     }
   });
 }
@@ -21807,19 +21714,13 @@ Extension.create({
     return [createPlaceholderPlugin({ editor: this.editor, options: this.options })];
   }
 });
-function shouldSyncDomSelection(state, editor) {
-  return !state.selection.empty && !isNodeSelection(state.selection) && editor.isEditable;
+var selectionStyle = `.ProseMirror:not(.ProseMirror-focused) *::selection {
+  background: transparent;
 }
-function shouldPreserveSelection(state, editor) {
-  return shouldSyncDomSelection(state, editor) && !editor.isFocused && !editor.view.dragging;
-}
-function clearDomSelection() {
-  var _a;
-  (_a = window.getSelection()) == null ? void 0 : _a.removeAllRanges();
-}
-function restoreDomSelection(view) {
-  view.focus();
-}
+
+.ProseMirror:not(.ProseMirror-focused) *::-moz-selection {
+  background: transparent;
+}`;
 Extension.create({
   name: "selection",
   addOptions() {
@@ -21829,12 +21730,15 @@ Extension.create({
   },
   addProseMirrorPlugins() {
     const { editor, options } = this;
+    if (editor.options.injectCSS && typeof document !== "undefined") {
+      createStyleTag(selectionStyle, editor.options.injectNonce, "selection");
+    }
     return [
       new Plugin({
         key: new PluginKey("selection"),
         props: {
           decorations(state) {
-            if (!shouldPreserveSelection(state, editor)) {
+            if (state.selection.empty || editor.isFocused || !editor.isEditable || isNodeSelection(state.selection) || editor.view.dragging) {
               return null;
             }
             return DecorationSet.create(state.doc, [
@@ -21842,26 +21746,6 @@ Extension.create({
                 class: options.className
               })
             ]);
-          },
-          handleDOMEvents: {
-            blur(view) {
-              if (!shouldSyncDomSelection(view.state, editor)) {
-                return false;
-              }
-              clearDomSelection();
-              return false;
-            },
-            focus(view) {
-              if (!shouldSyncDomSelection(view.state, editor)) {
-                return false;
-              }
-              requestAnimationFrame(() => {
-                if (!editor.isDestroyed && view.hasFocus()) {
-                  restoreDomSelection(view);
-                }
-              });
-              return false;
-            }
           }
         }
       })
@@ -21975,6 +21859,1643 @@ var h = (tag, attributes) => {
 };
 
 // src/blockquote.tsx
+
+// ../../node_modules/.pnpm/prosemirror-model@1.25.7/node_modules/prosemirror-model/dist/index.js
+function findDiffStart(a, b, pos) {
+  for (let i = 0; ; i++) {
+    if (i == a.childCount || i == b.childCount)
+      return a.childCount == b.childCount ? null : pos;
+    let childA = a.child(i), childB = b.child(i);
+    if (childA == childB) {
+      pos += childA.nodeSize;
+      continue;
+    }
+    if (!childA.sameMarkup(childB))
+      return pos;
+    if (childA.isText && childA.text != childB.text) {
+      for (let j = 0; childA.text[j] == childB.text[j]; j++)
+        pos++;
+      return pos;
+    }
+    if (childA.content.size || childB.content.size) {
+      let inner = findDiffStart(childA.content, childB.content, pos + 1);
+      if (inner != null)
+        return inner;
+    }
+    pos += childA.nodeSize;
+  }
+}
+function findDiffEnd(a, b, posA, posB) {
+  for (let iA = a.childCount, iB = b.childCount; ; ) {
+    if (iA == 0 || iB == 0)
+      return iA == iB ? null : { a: posA, b: posB };
+    let childA = a.child(--iA), childB = b.child(--iB), size = childA.nodeSize;
+    if (childA == childB) {
+      posA -= size;
+      posB -= size;
+      continue;
+    }
+    if (!childA.sameMarkup(childB))
+      return { a: posA, b: posB };
+    if (childA.isText && childA.text != childB.text) {
+      let same = 0, minSize = Math.min(childA.text.length, childB.text.length);
+      while (same < minSize && childA.text[childA.text.length - same - 1] == childB.text[childB.text.length - same - 1]) {
+        same++;
+        posA--;
+        posB--;
+      }
+      return { a: posA, b: posB };
+    }
+    if (childA.content.size || childB.content.size) {
+      let inner = findDiffEnd(childA.content, childB.content, posA - 1, posB - 1);
+      if (inner)
+        return inner;
+    }
+    posA -= size;
+    posB -= size;
+  }
+}
+var Fragment = class _Fragment {
+  /**
+  @internal
+  */
+  constructor(content, size) {
+    this.content = content;
+    this.size = size || 0;
+    if (size == null)
+      for (let i = 0; i < content.length; i++)
+        this.size += content[i].nodeSize;
+  }
+  /**
+  Invoke a callback for all descendant nodes between the given two
+  positions (relative to start of this fragment). Doesn't descend
+  into a node when the callback returns `false`.
+  */
+  nodesBetween(from, to, f, nodeStart = 0, parent) {
+    for (let i = 0, pos = 0; pos < to; i++) {
+      let child = this.content[i], end = pos + child.nodeSize;
+      if (end > from && f(child, nodeStart + pos, parent || null, i) !== false && child.content.size) {
+        let start = pos + 1;
+        child.nodesBetween(Math.max(0, from - start), Math.min(child.content.size, to - start), f, nodeStart + start);
+      }
+      pos = end;
+    }
+  }
+  /**
+  Call the given callback for every descendant node. `pos` will be
+  relative to the start of the fragment. The callback may return
+  `false` to prevent traversal of a given node's children.
+  */
+  descendants(f) {
+    this.nodesBetween(0, this.size, f);
+  }
+  /**
+  Extract the text between `from` and `to`. See the same method on
+  [`Node`](https://prosemirror.net/docs/ref/#model.Node.textBetween).
+  */
+  textBetween(from, to, blockSeparator, leafText) {
+    let text = "", first = true;
+    this.nodesBetween(from, to, (node, pos) => {
+      let nodeText = node.isText ? node.text.slice(Math.max(from, pos) - pos, to - pos) : !node.isLeaf ? "" : leafText ? typeof leafText === "function" ? leafText(node) : leafText : node.type.spec.leafText ? node.type.spec.leafText(node) : "";
+      if (node.isBlock && (node.isLeaf && nodeText || node.isTextblock) && blockSeparator) {
+        if (first)
+          first = false;
+        else
+          text += blockSeparator;
+      }
+      text += nodeText;
+    }, 0);
+    return text;
+  }
+  /**
+  Create a new fragment containing the combined content of this
+  fragment and the other.
+  */
+  append(other) {
+    if (!other.size)
+      return this;
+    if (!this.size)
+      return other;
+    let last = this.lastChild, first = other.firstChild, content = this.content.slice(), i = 0;
+    if (last.isText && last.sameMarkup(first)) {
+      content[content.length - 1] = last.withText(last.text + first.text);
+      i = 1;
+    }
+    for (; i < other.content.length; i++)
+      content.push(other.content[i]);
+    return new _Fragment(content, this.size + other.size);
+  }
+  /**
+  Cut out the sub-fragment between the two given positions.
+  */
+  cut(from, to = this.size) {
+    if (from == 0 && to == this.size)
+      return this;
+    let result = [], size = 0;
+    if (to > from)
+      for (let i = 0, pos = 0; pos < to; i++) {
+        let child = this.content[i], end = pos + child.nodeSize;
+        if (end > from) {
+          if (pos < from || end > to) {
+            if (child.isText)
+              child = child.cut(Math.max(0, from - pos), Math.min(child.text.length, to - pos));
+            else
+              child = child.cut(Math.max(0, from - pos - 1), Math.min(child.content.size, to - pos - 1));
+          }
+          result.push(child);
+          size += child.nodeSize;
+        }
+        pos = end;
+      }
+    return new _Fragment(result, size);
+  }
+  /**
+  @internal
+  */
+  cutByIndex(from, to) {
+    if (from == to)
+      return _Fragment.empty;
+    if (from == 0 && to == this.content.length)
+      return this;
+    return new _Fragment(this.content.slice(from, to));
+  }
+  /**
+  Create a new fragment in which the node at the given index is
+  replaced by the given node.
+  */
+  replaceChild(index, node) {
+    let current = this.content[index];
+    if (current == node)
+      return this;
+    let copy = this.content.slice();
+    let size = this.size + node.nodeSize - current.nodeSize;
+    copy[index] = node;
+    return new _Fragment(copy, size);
+  }
+  /**
+  Create a new fragment by prepending the given node to this
+  fragment.
+  */
+  addToStart(node) {
+    return new _Fragment([node].concat(this.content), this.size + node.nodeSize);
+  }
+  /**
+  Create a new fragment by appending the given node to this
+  fragment.
+  */
+  addToEnd(node) {
+    return new _Fragment(this.content.concat(node), this.size + node.nodeSize);
+  }
+  /**
+  Compare this fragment to another one.
+  */
+  eq(other) {
+    if (this.content.length != other.content.length)
+      return false;
+    for (let i = 0; i < this.content.length; i++)
+      if (!this.content[i].eq(other.content[i]))
+        return false;
+    return true;
+  }
+  /**
+  The first child of the fragment, or `null` if it is empty.
+  */
+  get firstChild() {
+    return this.content.length ? this.content[0] : null;
+  }
+  /**
+  The last child of the fragment, or `null` if it is empty.
+  */
+  get lastChild() {
+    return this.content.length ? this.content[this.content.length - 1] : null;
+  }
+  /**
+  The number of child nodes in this fragment.
+  */
+  get childCount() {
+    return this.content.length;
+  }
+  /**
+  Get the child node at the given index. Raise an error when the
+  index is out of range.
+  */
+  child(index) {
+    let found2 = this.content[index];
+    if (!found2)
+      throw new RangeError("Index " + index + " out of range for " + this);
+    return found2;
+  }
+  /**
+  Get the child node at the given index, if it exists.
+  */
+  maybeChild(index) {
+    return this.content[index] || null;
+  }
+  /**
+  Call `f` for every child node, passing the node, its offset
+  into this parent node, and its index.
+  */
+  forEach(f) {
+    for (let i = 0, p = 0; i < this.content.length; i++) {
+      let child = this.content[i];
+      f(child, p, i);
+      p += child.nodeSize;
+    }
+  }
+  /**
+  Find the first position at which this fragment and another
+  fragment differ, or `null` if they are the same.
+  */
+  findDiffStart(other, pos = 0) {
+    return findDiffStart(this, other, pos);
+  }
+  /**
+  Find the first position, searching from the end, at which this
+  fragment and the given fragment differ, or `null` if they are
+  the same. Since this position will not be the same in both
+  nodes, an object with two separate positions is returned.
+  */
+  findDiffEnd(other, pos = this.size, otherPos = other.size) {
+    return findDiffEnd(this, other, pos, otherPos);
+  }
+  /**
+  Find the index and inner offset corresponding to a given relative
+  position in this fragment. The result object will be reused
+  (overwritten) the next time the function is called. @internal
+  */
+  findIndex(pos) {
+    if (pos == 0)
+      return retIndex(0, pos);
+    if (pos == this.size)
+      return retIndex(this.content.length, pos);
+    if (pos > this.size || pos < 0)
+      throw new RangeError(`Position ${pos} outside of fragment (${this})`);
+    for (let i = 0, curPos = 0; ; i++) {
+      let cur = this.child(i), end = curPos + cur.nodeSize;
+      if (end >= pos) {
+        if (end == pos)
+          return retIndex(i + 1, end);
+        return retIndex(i, curPos);
+      }
+      curPos = end;
+    }
+  }
+  /**
+  Return a debugging string that describes this fragment.
+  */
+  toString() {
+    return "<" + this.toStringInner() + ">";
+  }
+  /**
+  @internal
+  */
+  toStringInner() {
+    return this.content.join(", ");
+  }
+  /**
+  Create a JSON-serializeable representation of this fragment.
+  */
+  toJSON() {
+    return this.content.length ? this.content.map((n) => n.toJSON()) : null;
+  }
+  /**
+  Deserialize a fragment from its JSON representation.
+  */
+  static fromJSON(schema, value) {
+    if (!value)
+      return _Fragment.empty;
+    if (!Array.isArray(value))
+      throw new RangeError("Invalid input for Fragment.fromJSON");
+    return _Fragment.fromArray(value.map(schema.nodeFromJSON));
+  }
+  /**
+  Build a fragment from an array of nodes. Ensures that adjacent
+  text nodes with the same marks are joined together.
+  */
+  static fromArray(array) {
+    if (!array.length)
+      return _Fragment.empty;
+    let joined, size = 0;
+    for (let i = 0; i < array.length; i++) {
+      let node = array[i];
+      size += node.nodeSize;
+      if (i && node.isText && array[i - 1].sameMarkup(node)) {
+        if (!joined)
+          joined = array.slice(0, i);
+        joined[joined.length - 1] = node.withText(joined[joined.length - 1].text + node.text);
+      } else if (joined) {
+        joined.push(node);
+      }
+    }
+    return new _Fragment(joined || array, size);
+  }
+  /**
+  Create a fragment from something that can be interpreted as a
+  set of nodes. For `null`, it returns the empty fragment. For a
+  fragment, the fragment itself. For a node or array of nodes, a
+  fragment containing those nodes.
+  */
+  static from(nodes) {
+    if (!nodes)
+      return _Fragment.empty;
+    if (nodes instanceof _Fragment)
+      return nodes;
+    if (Array.isArray(nodes))
+      return this.fromArray(nodes);
+    if (nodes.attrs)
+      return new _Fragment([nodes], nodes.nodeSize);
+    throw new RangeError("Can not convert " + nodes + " to a Fragment" + (nodes.nodesBetween ? " (looks like multiple versions of prosemirror-model were loaded)" : ""));
+  }
+};
+Fragment.empty = new Fragment([], 0);
+var found = { index: 0, offset: 0 };
+function retIndex(index, offset) {
+  found.index = index;
+  found.offset = offset;
+  return found;
+}
+var ReplaceError = class extends Error {
+};
+var Slice = class _Slice {
+  /**
+  Create a slice. When specifying a non-zero open depth, you must
+  make sure that there are nodes of at least that depth at the
+  appropriate side of the fragment—i.e. if the fragment is an
+  empty paragraph node, `openStart` and `openEnd` can't be greater
+  than 1.
+  
+  It is not necessary for the content of open nodes to conform to
+  the schema's content constraints, though it should be a valid
+  start/end/middle for such a node, depending on which sides are
+  open.
+  */
+  constructor(content, openStart, openEnd) {
+    this.content = content;
+    this.openStart = openStart;
+    this.openEnd = openEnd;
+  }
+  /**
+  The size this slice would add when inserted into a document.
+  */
+  get size() {
+    return this.content.size - this.openStart - this.openEnd;
+  }
+  /**
+  @internal
+  */
+  insertAt(pos, fragment) {
+    let content = insertInto(this.content, pos + this.openStart, fragment, this.openStart + 1, this.openEnd + 1);
+    return content && new _Slice(content, this.openStart, this.openEnd);
+  }
+  /**
+  @internal
+  */
+  removeBetween(from, to) {
+    return new _Slice(removeRange(this.content, from + this.openStart, to + this.openStart), this.openStart, this.openEnd);
+  }
+  /**
+  Tests whether this slice is equal to another slice.
+  */
+  eq(other) {
+    return this.content.eq(other.content) && this.openStart == other.openStart && this.openEnd == other.openEnd;
+  }
+  /**
+  @internal
+  */
+  toString() {
+    return this.content + "(" + this.openStart + "," + this.openEnd + ")";
+  }
+  /**
+  Convert a slice to a JSON-serializable representation.
+  */
+  toJSON() {
+    if (!this.content.size)
+      return null;
+    let json = { content: this.content.toJSON() };
+    if (this.openStart > 0)
+      json.openStart = this.openStart;
+    if (this.openEnd > 0)
+      json.openEnd = this.openEnd;
+    return json;
+  }
+  /**
+  Deserialize a slice from its JSON representation.
+  */
+  static fromJSON(schema, json) {
+    if (!json)
+      return _Slice.empty;
+    let openStart = json.openStart || 0, openEnd = json.openEnd || 0;
+    if (typeof openStart != "number" || typeof openEnd != "number")
+      throw new RangeError("Invalid input for Slice.fromJSON");
+    return new _Slice(Fragment.fromJSON(schema, json.content), openStart, openEnd);
+  }
+  /**
+  Create a slice from a fragment by taking the maximum possible
+  open value on both side of the fragment.
+  */
+  static maxOpen(fragment, openIsolating = true) {
+    let openStart = 0, openEnd = 0;
+    for (let n = fragment.firstChild; n && !n.isLeaf && (openIsolating || !n.type.spec.isolating); n = n.firstChild)
+      openStart++;
+    for (let n = fragment.lastChild; n && !n.isLeaf && (openIsolating || !n.type.spec.isolating); n = n.lastChild)
+      openEnd++;
+    return new _Slice(fragment, openStart, openEnd);
+  }
+};
+Slice.empty = new Slice(Fragment.empty, 0, 0);
+function removeRange(content, from, to) {
+  let { index, offset } = content.findIndex(from), child = content.maybeChild(index);
+  let { index: indexTo, offset: offsetTo } = content.findIndex(to);
+  if (offset == from || child.isText) {
+    if (offsetTo != to && !content.child(indexTo).isText)
+      throw new RangeError("Removing non-flat range");
+    return content.cut(0, from).append(content.cut(to));
+  }
+  if (index != indexTo)
+    throw new RangeError("Removing non-flat range");
+  return content.replaceChild(index, child.copy(removeRange(child.content, from - offset - 1, to - offset - 1)));
+}
+function insertInto(content, dist, insert, openStart, openEnd, parent) {
+  let { index, offset } = content.findIndex(dist), child = content.maybeChild(index);
+  if (offset == dist || child.isText) {
+    if (parent && openStart <= 0 && openEnd <= 0 && !parent.canReplace(index, index, insert))
+      return null;
+    return content.cut(0, dist).append(insert).append(content.cut(dist));
+  }
+  let inner = insertInto(child.content, dist - offset - 1, insert, index == 0 ? openStart - 1 : 0, index == content.childCount - 1 ? openEnd - 1 : 0, child);
+  return inner && content.replaceChild(index, child.copy(inner));
+}
+
+// ../../node_modules/.pnpm/prosemirror-transform@1.12.0/node_modules/prosemirror-transform/dist/index.js
+var lower16 = 65535;
+var factor16 = Math.pow(2, 16);
+function makeRecover(index, offset) {
+  return index + offset * factor16;
+}
+function recoverIndex(value) {
+  return value & lower16;
+}
+function recoverOffset(value) {
+  return (value - (value & lower16)) / factor16;
+}
+var DEL_BEFORE = 1;
+var DEL_AFTER = 2;
+var DEL_ACROSS = 4;
+var DEL_SIDE = 8;
+var MapResult = class {
+  /**
+  @internal
+  */
+  constructor(pos, delInfo, recover) {
+    this.pos = pos;
+    this.delInfo = delInfo;
+    this.recover = recover;
+  }
+  /**
+  Tells you whether the position was deleted, that is, whether the
+  step removed the token on the side queried (via the `assoc`)
+  argument from the document.
+  */
+  get deleted() {
+    return (this.delInfo & DEL_SIDE) > 0;
+  }
+  /**
+  Tells you whether the token before the mapped position was deleted.
+  */
+  get deletedBefore() {
+    return (this.delInfo & (DEL_BEFORE | DEL_ACROSS)) > 0;
+  }
+  /**
+  True when the token after the mapped position was deleted.
+  */
+  get deletedAfter() {
+    return (this.delInfo & (DEL_AFTER | DEL_ACROSS)) > 0;
+  }
+  /**
+  Tells whether any of the steps mapped through deletes across the
+  position (including both the token before and after the
+  position).
+  */
+  get deletedAcross() {
+    return (this.delInfo & DEL_ACROSS) > 0;
+  }
+};
+var StepMap = class _StepMap {
+  /**
+  Create a position map. The modifications to the document are
+  represented as an array of numbers, in which each group of three
+  represents a modified chunk as `[start, oldSize, newSize]`.
+  */
+  constructor(ranges, inverted = false) {
+    this.ranges = ranges;
+    this.inverted = inverted;
+    if (!ranges.length && _StepMap.empty)
+      return _StepMap.empty;
+  }
+  /**
+  @internal
+  */
+  recover(value) {
+    let diff = 0, index = recoverIndex(value);
+    if (!this.inverted)
+      for (let i = 0; i < index; i++)
+        diff += this.ranges[i * 3 + 2] - this.ranges[i * 3 + 1];
+    return this.ranges[index * 3] + diff + recoverOffset(value);
+  }
+  mapResult(pos, assoc = 1) {
+    return this._map(pos, assoc, false);
+  }
+  map(pos, assoc = 1) {
+    return this._map(pos, assoc, true);
+  }
+  /**
+  @internal
+  */
+  _map(pos, assoc, simple) {
+    let diff = 0, oldIndex = this.inverted ? 2 : 1, newIndex = this.inverted ? 1 : 2;
+    for (let i = 0; i < this.ranges.length; i += 3) {
+      let start = this.ranges[i] - (this.inverted ? diff : 0);
+      if (start > pos)
+        break;
+      let oldSize = this.ranges[i + oldIndex], newSize = this.ranges[i + newIndex], end = start + oldSize;
+      if (pos <= end) {
+        let side = !oldSize ? assoc : pos == start ? -1 : pos == end ? 1 : assoc;
+        let result = start + diff + (side < 0 ? 0 : newSize);
+        if (simple)
+          return result;
+        let recover = pos == (assoc < 0 ? start : end) ? null : makeRecover(i / 3, pos - start);
+        let del = pos == start ? DEL_AFTER : pos == end ? DEL_BEFORE : DEL_ACROSS;
+        if (assoc < 0 ? pos != start : pos != end)
+          del |= DEL_SIDE;
+        return new MapResult(result, del, recover);
+      }
+      diff += newSize - oldSize;
+    }
+    return simple ? pos + diff : new MapResult(pos + diff, 0, null);
+  }
+  /**
+  @internal
+  */
+  touches(pos, recover) {
+    let diff = 0, index = recoverIndex(recover);
+    let oldIndex = this.inverted ? 2 : 1, newIndex = this.inverted ? 1 : 2;
+    for (let i = 0; i < this.ranges.length; i += 3) {
+      let start = this.ranges[i] - (this.inverted ? diff : 0);
+      if (start > pos)
+        break;
+      let oldSize = this.ranges[i + oldIndex], end = start + oldSize;
+      if (pos <= end && i == index * 3)
+        return true;
+      diff += this.ranges[i + newIndex] - oldSize;
+    }
+    return false;
+  }
+  /**
+  Calls the given function on each of the changed ranges included in
+  this map.
+  */
+  forEach(f) {
+    let oldIndex = this.inverted ? 2 : 1, newIndex = this.inverted ? 1 : 2;
+    for (let i = 0, diff = 0; i < this.ranges.length; i += 3) {
+      let start = this.ranges[i], oldStart = start - (this.inverted ? diff : 0), newStart = start + (this.inverted ? 0 : diff);
+      let oldSize = this.ranges[i + oldIndex], newSize = this.ranges[i + newIndex];
+      f(oldStart, oldStart + oldSize, newStart, newStart + newSize);
+      diff += newSize - oldSize;
+    }
+  }
+  /**
+  Create an inverted version of this map. The result can be used to
+  map positions in the post-step document to the pre-step document.
+  */
+  invert() {
+    return new _StepMap(this.ranges, !this.inverted);
+  }
+  /**
+  @internal
+  */
+  toString() {
+    return (this.inverted ? "-" : "") + JSON.stringify(this.ranges);
+  }
+  /**
+  Create a map that moves all positions by offset `n` (which may be
+  negative). This can be useful when applying steps meant for a
+  sub-document to a larger document, or vice-versa.
+  */
+  static offset(n) {
+    return n == 0 ? _StepMap.empty : new _StepMap(n < 0 ? [0, -n, 0] : [0, 0, n]);
+  }
+};
+StepMap.empty = new StepMap([]);
+var stepsByID = /* @__PURE__ */ Object.create(null);
+var Step = class {
+  /**
+  Get the step map that represents the changes made by this step,
+  and which can be used to transform between positions in the old
+  and the new document.
+  */
+  getMap() {
+    return StepMap.empty;
+  }
+  /**
+  Try to merge this step with another one, to be applied directly
+  after it. Returns the merged step when possible, null if the
+  steps can't be merged.
+  */
+  merge(other) {
+    return null;
+  }
+  /**
+  Deserialize a step from its JSON representation. Will call
+  through to the step class' own implementation of this method.
+  */
+  static fromJSON(schema, json) {
+    if (!json || !json.stepType)
+      throw new RangeError("Invalid input for Step.fromJSON");
+    let type = stepsByID[json.stepType];
+    if (!type)
+      throw new RangeError(`No step type ${json.stepType} defined`);
+    return type.fromJSON(schema, json);
+  }
+  /**
+  To be able to serialize steps to JSON, each step needs a string
+  ID to attach to its JSON representation. Use this method to
+  register an ID for your step classes. Try to pick something
+  that's unlikely to clash with steps from other modules.
+  */
+  static jsonID(id, stepClass) {
+    if (id in stepsByID)
+      throw new RangeError("Duplicate use of step JSON ID " + id);
+    stepsByID[id] = stepClass;
+    stepClass.prototype.jsonID = id;
+    return stepClass;
+  }
+};
+var StepResult = class _StepResult {
+  /**
+  @internal
+  */
+  constructor(doc, failed) {
+    this.doc = doc;
+    this.failed = failed;
+  }
+  /**
+  Create a successful step result.
+  */
+  static ok(doc) {
+    return new _StepResult(doc, null);
+  }
+  /**
+  Create a failed step result.
+  */
+  static fail(message) {
+    return new _StepResult(null, message);
+  }
+  /**
+  Call [`Node.replace`](https://prosemirror.net/docs/ref/#model.Node.replace) with the given
+  arguments. Create a successful result if it succeeds, and a
+  failed one if it throws a `ReplaceError`.
+  */
+  static fromReplace(doc, from, to, slice) {
+    try {
+      return _StepResult.ok(doc.replace(from, to, slice));
+    } catch (e) {
+      if (e instanceof ReplaceError)
+        return _StepResult.fail(e.message);
+      throw e;
+    }
+  }
+};
+function mapFragment(fragment, f, parent) {
+  let mapped = [];
+  for (let i = 0; i < fragment.childCount; i++) {
+    let child = fragment.child(i);
+    if (child.content.size)
+      child = child.copy(mapFragment(child.content, f, child));
+    if (child.isInline)
+      child = f(child, parent, i);
+    mapped.push(child);
+  }
+  return Fragment.fromArray(mapped);
+}
+var AddMarkStep = class _AddMarkStep extends Step {
+  /**
+  Create a mark step.
+  */
+  constructor(from, to, mark) {
+    super();
+    this.from = from;
+    this.to = to;
+    this.mark = mark;
+  }
+  apply(doc) {
+    let oldSlice = doc.slice(this.from, this.to), $from = doc.resolve(this.from);
+    let parent = $from.node($from.sharedDepth(this.to));
+    let slice = new Slice(mapFragment(oldSlice.content, (node, parent2) => {
+      if (!node.isAtom || !parent2.type.allowsMarkType(this.mark.type))
+        return node;
+      return node.mark(this.mark.addToSet(node.marks));
+    }, parent), oldSlice.openStart, oldSlice.openEnd);
+    return StepResult.fromReplace(doc, this.from, this.to, slice);
+  }
+  invert() {
+    return new RemoveMarkStep(this.from, this.to, this.mark);
+  }
+  map(mapping) {
+    let from = mapping.mapResult(this.from, 1), to = mapping.mapResult(this.to, -1);
+    if (from.deleted && to.deleted || from.pos >= to.pos)
+      return null;
+    return new _AddMarkStep(from.pos, to.pos, this.mark);
+  }
+  merge(other) {
+    if (other instanceof _AddMarkStep && other.mark.eq(this.mark) && this.from <= other.to && this.to >= other.from)
+      return new _AddMarkStep(Math.min(this.from, other.from), Math.max(this.to, other.to), this.mark);
+    return null;
+  }
+  toJSON() {
+    return {
+      stepType: "addMark",
+      mark: this.mark.toJSON(),
+      from: this.from,
+      to: this.to
+    };
+  }
+  /**
+  @internal
+  */
+  static fromJSON(schema, json) {
+    if (typeof json.from != "number" || typeof json.to != "number")
+      throw new RangeError("Invalid input for AddMarkStep.fromJSON");
+    return new _AddMarkStep(json.from, json.to, schema.markFromJSON(json.mark));
+  }
+};
+Step.jsonID("addMark", AddMarkStep);
+var RemoveMarkStep = class _RemoveMarkStep extends Step {
+  /**
+  Create a mark-removing step.
+  */
+  constructor(from, to, mark) {
+    super();
+    this.from = from;
+    this.to = to;
+    this.mark = mark;
+  }
+  apply(doc) {
+    let oldSlice = doc.slice(this.from, this.to);
+    let slice = new Slice(mapFragment(oldSlice.content, (node) => {
+      return node.mark(this.mark.removeFromSet(node.marks));
+    }, doc), oldSlice.openStart, oldSlice.openEnd);
+    return StepResult.fromReplace(doc, this.from, this.to, slice);
+  }
+  invert() {
+    return new AddMarkStep(this.from, this.to, this.mark);
+  }
+  map(mapping) {
+    let from = mapping.mapResult(this.from, 1), to = mapping.mapResult(this.to, -1);
+    if (from.deleted && to.deleted || from.pos >= to.pos)
+      return null;
+    return new _RemoveMarkStep(from.pos, to.pos, this.mark);
+  }
+  merge(other) {
+    if (other instanceof _RemoveMarkStep && other.mark.eq(this.mark) && this.from <= other.to && this.to >= other.from)
+      return new _RemoveMarkStep(Math.min(this.from, other.from), Math.max(this.to, other.to), this.mark);
+    return null;
+  }
+  toJSON() {
+    return {
+      stepType: "removeMark",
+      mark: this.mark.toJSON(),
+      from: this.from,
+      to: this.to
+    };
+  }
+  /**
+  @internal
+  */
+  static fromJSON(schema, json) {
+    if (typeof json.from != "number" || typeof json.to != "number")
+      throw new RangeError("Invalid input for RemoveMarkStep.fromJSON");
+    return new _RemoveMarkStep(json.from, json.to, schema.markFromJSON(json.mark));
+  }
+};
+Step.jsonID("removeMark", RemoveMarkStep);
+var AddNodeMarkStep = class _AddNodeMarkStep extends Step {
+  /**
+  Create a node mark step.
+  */
+  constructor(pos, mark) {
+    super();
+    this.pos = pos;
+    this.mark = mark;
+  }
+  apply(doc) {
+    let node = doc.nodeAt(this.pos);
+    if (!node)
+      return StepResult.fail("No node at mark step's position");
+    let updated = node.type.create(node.attrs, null, this.mark.addToSet(node.marks));
+    return StepResult.fromReplace(doc, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1));
+  }
+  invert(doc) {
+    let node = doc.nodeAt(this.pos);
+    if (node) {
+      let newSet = this.mark.addToSet(node.marks);
+      if (newSet.length == node.marks.length) {
+        for (let i = 0; i < node.marks.length; i++)
+          if (!node.marks[i].isInSet(newSet))
+            return new _AddNodeMarkStep(this.pos, node.marks[i]);
+        return new _AddNodeMarkStep(this.pos, this.mark);
+      }
+    }
+    return new RemoveNodeMarkStep(this.pos, this.mark);
+  }
+  map(mapping) {
+    let pos = mapping.mapResult(this.pos, 1);
+    return pos.deletedAfter ? null : new _AddNodeMarkStep(pos.pos, this.mark);
+  }
+  toJSON() {
+    return { stepType: "addNodeMark", pos: this.pos, mark: this.mark.toJSON() };
+  }
+  /**
+  @internal
+  */
+  static fromJSON(schema, json) {
+    if (typeof json.pos != "number")
+      throw new RangeError("Invalid input for AddNodeMarkStep.fromJSON");
+    return new _AddNodeMarkStep(json.pos, schema.markFromJSON(json.mark));
+  }
+};
+Step.jsonID("addNodeMark", AddNodeMarkStep);
+var RemoveNodeMarkStep = class _RemoveNodeMarkStep extends Step {
+  /**
+  Create a mark-removing step.
+  */
+  constructor(pos, mark) {
+    super();
+    this.pos = pos;
+    this.mark = mark;
+  }
+  apply(doc) {
+    let node = doc.nodeAt(this.pos);
+    if (!node)
+      return StepResult.fail("No node at mark step's position");
+    let updated = node.type.create(node.attrs, null, this.mark.removeFromSet(node.marks));
+    return StepResult.fromReplace(doc, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1));
+  }
+  invert(doc) {
+    let node = doc.nodeAt(this.pos);
+    if (!node || !this.mark.isInSet(node.marks))
+      return this;
+    return new AddNodeMarkStep(this.pos, this.mark);
+  }
+  map(mapping) {
+    let pos = mapping.mapResult(this.pos, 1);
+    return pos.deletedAfter ? null : new _RemoveNodeMarkStep(pos.pos, this.mark);
+  }
+  toJSON() {
+    return { stepType: "removeNodeMark", pos: this.pos, mark: this.mark.toJSON() };
+  }
+  /**
+  @internal
+  */
+  static fromJSON(schema, json) {
+    if (typeof json.pos != "number")
+      throw new RangeError("Invalid input for RemoveNodeMarkStep.fromJSON");
+    return new _RemoveNodeMarkStep(json.pos, schema.markFromJSON(json.mark));
+  }
+};
+Step.jsonID("removeNodeMark", RemoveNodeMarkStep);
+var ReplaceStep = class _ReplaceStep extends Step {
+  /**
+  The given `slice` should fit the 'gap' between `from` and
+  `to`—the depths must line up, and the surrounding nodes must be
+  able to be joined with the open sides of the slice. When
+  `structure` is true, the step will fail if the content between
+  from and to is not just a sequence of closing and then opening
+  tokens (this is to guard against rebased replace steps
+  overwriting something they weren't supposed to).
+  */
+  constructor(from, to, slice, structure = false) {
+    super();
+    this.from = from;
+    this.to = to;
+    this.slice = slice;
+    this.structure = structure;
+  }
+  apply(doc) {
+    if (this.structure && contentBetween(doc, this.from, this.to))
+      return StepResult.fail("Structure replace would overwrite content");
+    return StepResult.fromReplace(doc, this.from, this.to, this.slice);
+  }
+  getMap() {
+    return new StepMap([this.from, this.to - this.from, this.slice.size]);
+  }
+  invert(doc) {
+    return new _ReplaceStep(this.from, this.from + this.slice.size, doc.slice(this.from, this.to));
+  }
+  map(mapping) {
+    let to = mapping.mapResult(this.to, -1);
+    let from = this.from == this.to && _ReplaceStep.MAP_BIAS < 0 ? to : mapping.mapResult(this.from, 1);
+    if (from.deletedAcross && to.deletedAcross)
+      return null;
+    return new _ReplaceStep(from.pos, Math.max(from.pos, to.pos), this.slice, this.structure);
+  }
+  merge(other) {
+    if (!(other instanceof _ReplaceStep) || other.structure || this.structure)
+      return null;
+    if (this.from + this.slice.size == other.from && !this.slice.openEnd && !other.slice.openStart) {
+      let slice = this.slice.size + other.slice.size == 0 ? Slice.empty : new Slice(this.slice.content.append(other.slice.content), this.slice.openStart, other.slice.openEnd);
+      return new _ReplaceStep(this.from, this.to + (other.to - other.from), slice, this.structure);
+    } else if (other.to == this.from && !this.slice.openStart && !other.slice.openEnd) {
+      let slice = this.slice.size + other.slice.size == 0 ? Slice.empty : new Slice(other.slice.content.append(this.slice.content), other.slice.openStart, this.slice.openEnd);
+      return new _ReplaceStep(other.from, this.to, slice, this.structure);
+    } else {
+      return null;
+    }
+  }
+  toJSON() {
+    let json = { stepType: "replace", from: this.from, to: this.to };
+    if (this.slice.size)
+      json.slice = this.slice.toJSON();
+    if (this.structure)
+      json.structure = true;
+    return json;
+  }
+  /**
+  @internal
+  */
+  static fromJSON(schema, json) {
+    if (typeof json.from != "number" || typeof json.to != "number")
+      throw new RangeError("Invalid input for ReplaceStep.fromJSON");
+    return new _ReplaceStep(json.from, json.to, Slice.fromJSON(schema, json.slice), !!json.structure);
+  }
+};
+ReplaceStep.MAP_BIAS = 1;
+Step.jsonID("replace", ReplaceStep);
+var ReplaceAroundStep = class _ReplaceAroundStep extends Step {
+  /**
+  Create a replace-around step with the given range and gap.
+  `insert` should be the point in the slice into which the content
+  of the gap should be moved. `structure` has the same meaning as
+  it has in the [`ReplaceStep`](https://prosemirror.net/docs/ref/#transform.ReplaceStep) class.
+  */
+  constructor(from, to, gapFrom, gapTo, slice, insert, structure = false) {
+    super();
+    this.from = from;
+    this.to = to;
+    this.gapFrom = gapFrom;
+    this.gapTo = gapTo;
+    this.slice = slice;
+    this.insert = insert;
+    this.structure = structure;
+  }
+  apply(doc) {
+    if (this.structure && (contentBetween(doc, this.from, this.gapFrom) || contentBetween(doc, this.gapTo, this.to)))
+      return StepResult.fail("Structure gap-replace would overwrite content");
+    let gap = doc.slice(this.gapFrom, this.gapTo);
+    if (gap.openStart || gap.openEnd)
+      return StepResult.fail("Gap is not a flat range");
+    let inserted = this.slice.insertAt(this.insert, gap.content);
+    if (!inserted)
+      return StepResult.fail("Content does not fit in gap");
+    return StepResult.fromReplace(doc, this.from, this.to, inserted);
+  }
+  getMap() {
+    return new StepMap([
+      this.from,
+      this.gapFrom - this.from,
+      this.insert,
+      this.gapTo,
+      this.to - this.gapTo,
+      this.slice.size - this.insert
+    ]);
+  }
+  invert(doc) {
+    let gap = this.gapTo - this.gapFrom;
+    return new _ReplaceAroundStep(this.from, this.from + this.slice.size + gap, this.from + this.insert, this.from + this.insert + gap, doc.slice(this.from, this.to).removeBetween(this.gapFrom - this.from, this.gapTo - this.from), this.gapFrom - this.from, this.structure);
+  }
+  map(mapping) {
+    let from = mapping.mapResult(this.from, 1), to = mapping.mapResult(this.to, -1);
+    let gapFrom = this.from == this.gapFrom ? from.pos : mapping.map(this.gapFrom, -1);
+    let gapTo = this.to == this.gapTo ? to.pos : mapping.map(this.gapTo, 1);
+    if (from.deletedAcross && to.deletedAcross || gapFrom < from.pos || gapTo > to.pos)
+      return null;
+    return new _ReplaceAroundStep(from.pos, to.pos, gapFrom, gapTo, this.slice, this.insert, this.structure);
+  }
+  toJSON() {
+    let json = {
+      stepType: "replaceAround",
+      from: this.from,
+      to: this.to,
+      gapFrom: this.gapFrom,
+      gapTo: this.gapTo,
+      insert: this.insert
+    };
+    if (this.slice.size)
+      json.slice = this.slice.toJSON();
+    if (this.structure)
+      json.structure = true;
+    return json;
+  }
+  /**
+  @internal
+  */
+  static fromJSON(schema, json) {
+    if (typeof json.from != "number" || typeof json.to != "number" || typeof json.gapFrom != "number" || typeof json.gapTo != "number" || typeof json.insert != "number")
+      throw new RangeError("Invalid input for ReplaceAroundStep.fromJSON");
+    return new _ReplaceAroundStep(json.from, json.to, json.gapFrom, json.gapTo, Slice.fromJSON(schema, json.slice), json.insert, !!json.structure);
+  }
+};
+Step.jsonID("replaceAround", ReplaceAroundStep);
+function contentBetween(doc, from, to) {
+  let $from = doc.resolve(from), dist = to - from, depth = $from.depth;
+  while (dist > 0 && depth > 0 && $from.indexAfter(depth) == $from.node(depth).childCount) {
+    depth--;
+    dist--;
+  }
+  if (dist > 0) {
+    let next = $from.node(depth).maybeChild($from.indexAfter(depth));
+    while (dist > 0) {
+      if (!next || next.isLeaf)
+        return true;
+      next = next.firstChild;
+      dist--;
+    }
+  }
+  return false;
+}
+var AttrStep = class _AttrStep extends Step {
+  /**
+  Construct an attribute step.
+  */
+  constructor(pos, attr, value) {
+    super();
+    this.pos = pos;
+    this.attr = attr;
+    this.value = value;
+  }
+  apply(doc) {
+    let node = doc.nodeAt(this.pos);
+    if (!node)
+      return StepResult.fail("No node at attribute step's position");
+    let attrs = /* @__PURE__ */ Object.create(null);
+    for (let name in node.attrs)
+      attrs[name] = node.attrs[name];
+    attrs[this.attr] = this.value;
+    let updated = node.type.create(attrs, null, node.marks);
+    return StepResult.fromReplace(doc, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1));
+  }
+  getMap() {
+    return StepMap.empty;
+  }
+  invert(doc) {
+    return new _AttrStep(this.pos, this.attr, doc.nodeAt(this.pos).attrs[this.attr]);
+  }
+  map(mapping) {
+    let pos = mapping.mapResult(this.pos, 1);
+    return pos.deletedAfter ? null : new _AttrStep(pos.pos, this.attr, this.value);
+  }
+  toJSON() {
+    return { stepType: "attr", pos: this.pos, attr: this.attr, value: this.value };
+  }
+  static fromJSON(schema, json) {
+    if (typeof json.pos != "number" || typeof json.attr != "string")
+      throw new RangeError("Invalid input for AttrStep.fromJSON");
+    return new _AttrStep(json.pos, json.attr, json.value);
+  }
+};
+Step.jsonID("attr", AttrStep);
+var DocAttrStep = class _DocAttrStep extends Step {
+  /**
+  Construct an attribute step.
+  */
+  constructor(attr, value) {
+    super();
+    this.attr = attr;
+    this.value = value;
+  }
+  apply(doc) {
+    let attrs = /* @__PURE__ */ Object.create(null);
+    for (let name in doc.attrs)
+      attrs[name] = doc.attrs[name];
+    attrs[this.attr] = this.value;
+    let updated = doc.type.create(attrs, doc.content, doc.marks);
+    return StepResult.ok(updated);
+  }
+  getMap() {
+    return StepMap.empty;
+  }
+  invert(doc) {
+    return new _DocAttrStep(this.attr, doc.attrs[this.attr]);
+  }
+  map(mapping) {
+    return this;
+  }
+  toJSON() {
+    return { stepType: "docAttr", attr: this.attr, value: this.value };
+  }
+  static fromJSON(schema, json) {
+    if (typeof json.attr != "string")
+      throw new RangeError("Invalid input for DocAttrStep.fromJSON");
+    return new _DocAttrStep(json.attr, json.value);
+  }
+};
+Step.jsonID("docAttr", DocAttrStep);
+var TransformError = class extends Error {
+};
+TransformError = function TransformError2(message) {
+  let err = Error.call(this, message);
+  err.__proto__ = TransformError2.prototype;
+  return err;
+};
+TransformError.prototype = Object.create(Error.prototype);
+TransformError.prototype.constructor = TransformError;
+TransformError.prototype.name = "TransformError";
+
+// ../../node_modules/.pnpm/prosemirror-state@1.4.4/node_modules/prosemirror-state/dist/index.js
+var classesById = /* @__PURE__ */ Object.create(null);
+var Selection = class {
+  /**
+  Initialize a selection with the head and anchor and ranges. If no
+  ranges are given, constructs a single range across `$anchor` and
+  `$head`.
+  */
+  constructor($anchor, $head, ranges) {
+    this.$anchor = $anchor;
+    this.$head = $head;
+    this.ranges = ranges || [new SelectionRange($anchor.min($head), $anchor.max($head))];
+  }
+  /**
+  The selection's anchor, as an unresolved position.
+  */
+  get anchor() {
+    return this.$anchor.pos;
+  }
+  /**
+  The selection's head.
+  */
+  get head() {
+    return this.$head.pos;
+  }
+  /**
+  The lower bound of the selection's main range.
+  */
+  get from() {
+    return this.$from.pos;
+  }
+  /**
+  The upper bound of the selection's main range.
+  */
+  get to() {
+    return this.$to.pos;
+  }
+  /**
+  The resolved lower  bound of the selection's main range.
+  */
+  get $from() {
+    return this.ranges[0].$from;
+  }
+  /**
+  The resolved upper bound of the selection's main range.
+  */
+  get $to() {
+    return this.ranges[0].$to;
+  }
+  /**
+  Indicates whether the selection contains any content.
+  */
+  get empty() {
+    let ranges = this.ranges;
+    for (let i = 0; i < ranges.length; i++)
+      if (ranges[i].$from.pos != ranges[i].$to.pos)
+        return false;
+    return true;
+  }
+  /**
+  Get the content of this selection as a slice.
+  */
+  content() {
+    return this.$from.doc.slice(this.from, this.to, true);
+  }
+  /**
+  Replace the selection with a slice or, if no slice is given,
+  delete the selection. Will append to the given transaction.
+  */
+  replace(tr, content = Slice.empty) {
+    let lastNode = content.content.lastChild, lastParent = null;
+    for (let i = 0; i < content.openEnd; i++) {
+      lastParent = lastNode;
+      lastNode = lastNode.lastChild;
+    }
+    let mapFrom = tr.steps.length, ranges = this.ranges;
+    for (let i = 0; i < ranges.length; i++) {
+      let { $from, $to } = ranges[i], mapping = tr.mapping.slice(mapFrom);
+      tr.replaceRange(mapping.map($from.pos), mapping.map($to.pos), i ? Slice.empty : content);
+      if (i == 0)
+        selectionToInsertionEnd(tr, mapFrom, (lastNode ? lastNode.isInline : lastParent && lastParent.isTextblock) ? -1 : 1);
+    }
+  }
+  /**
+  Replace the selection with the given node, appending the changes
+  to the given transaction.
+  */
+  replaceWith(tr, node) {
+    let mapFrom = tr.steps.length, ranges = this.ranges;
+    for (let i = 0; i < ranges.length; i++) {
+      let { $from, $to } = ranges[i], mapping = tr.mapping.slice(mapFrom);
+      let from = mapping.map($from.pos), to = mapping.map($to.pos);
+      if (i) {
+        tr.deleteRange(from, to);
+      } else {
+        tr.replaceRangeWith(from, to, node);
+        selectionToInsertionEnd(tr, mapFrom, node.isInline ? -1 : 1);
+      }
+    }
+  }
+  /**
+  Find a valid cursor or leaf node selection starting at the given
+  position and searching back if `dir` is negative, and forward if
+  positive. When `textOnly` is true, only consider cursor
+  selections. Will return null when no valid selection position is
+  found.
+  */
+  static findFrom($pos, dir, textOnly = false) {
+    let inner = $pos.parent.inlineContent ? new TextSelection($pos) : findSelectionIn($pos.node(0), $pos.parent, $pos.pos, $pos.index(), dir, textOnly);
+    if (inner)
+      return inner;
+    for (let depth = $pos.depth - 1; depth >= 0; depth--) {
+      let found2 = dir < 0 ? findSelectionIn($pos.node(0), $pos.node(depth), $pos.before(depth + 1), $pos.index(depth), dir, textOnly) : findSelectionIn($pos.node(0), $pos.node(depth), $pos.after(depth + 1), $pos.index(depth) + 1, dir, textOnly);
+      if (found2)
+        return found2;
+    }
+    return null;
+  }
+  /**
+  Find a valid cursor or leaf node selection near the given
+  position. Searches forward first by default, but if `bias` is
+  negative, it will search backwards first.
+  */
+  static near($pos, bias = 1) {
+    return this.findFrom($pos, bias) || this.findFrom($pos, -bias) || new AllSelection($pos.node(0));
+  }
+  /**
+  Find the cursor or leaf node selection closest to the start of
+  the given document. Will return an
+  [`AllSelection`](https://prosemirror.net/docs/ref/#state.AllSelection) if no valid position
+  exists.
+  */
+  static atStart(doc) {
+    return findSelectionIn(doc, doc, 0, 0, 1) || new AllSelection(doc);
+  }
+  /**
+  Find the cursor or leaf node selection closest to the end of the
+  given document.
+  */
+  static atEnd(doc) {
+    return findSelectionIn(doc, doc, doc.content.size, doc.childCount, -1) || new AllSelection(doc);
+  }
+  /**
+  Deserialize the JSON representation of a selection. Must be
+  implemented for custom classes (as a static class method).
+  */
+  static fromJSON(doc, json) {
+    if (!json || !json.type)
+      throw new RangeError("Invalid input for Selection.fromJSON");
+    let cls = classesById[json.type];
+    if (!cls)
+      throw new RangeError(`No selection type ${json.type} defined`);
+    return cls.fromJSON(doc, json);
+  }
+  /**
+  To be able to deserialize selections from JSON, custom selection
+  classes must register themselves with an ID string, so that they
+  can be disambiguated. Try to pick something that's unlikely to
+  clash with classes from other modules.
+  */
+  static jsonID(id, selectionClass) {
+    if (id in classesById)
+      throw new RangeError("Duplicate use of selection JSON ID " + id);
+    classesById[id] = selectionClass;
+    selectionClass.prototype.jsonID = id;
+    return selectionClass;
+  }
+  /**
+  Get a [bookmark](https://prosemirror.net/docs/ref/#state.SelectionBookmark) for this selection,
+  which is a value that can be mapped without having access to a
+  current document, and later resolved to a real selection for a
+  given document again. (This is used mostly by the history to
+  track and restore old selections.) The default implementation of
+  this method just converts the selection to a text selection and
+  returns the bookmark for that.
+  */
+  getBookmark() {
+    return TextSelection.between(this.$anchor, this.$head).getBookmark();
+  }
+};
+Selection.prototype.visible = true;
+var SelectionRange = class {
+  /**
+  Create a range.
+  */
+  constructor($from, $to) {
+    this.$from = $from;
+    this.$to = $to;
+  }
+};
+var warnedAboutTextSelection = false;
+function checkTextSelection($pos) {
+  if (!warnedAboutTextSelection && !$pos.parent.inlineContent) {
+    warnedAboutTextSelection = true;
+    console["warn"]("TextSelection endpoint not pointing into a node with inline content (" + $pos.parent.type.name + ")");
+  }
+}
+var TextSelection = class _TextSelection extends Selection {
+  /**
+  Construct a text selection between the given points.
+  */
+  constructor($anchor, $head = $anchor) {
+    checkTextSelection($anchor);
+    checkTextSelection($head);
+    super($anchor, $head);
+  }
+  /**
+  Returns a resolved position if this is a cursor selection (an
+  empty text selection), and null otherwise.
+  */
+  get $cursor() {
+    return this.$anchor.pos == this.$head.pos ? this.$head : null;
+  }
+  map(doc, mapping) {
+    let $head = doc.resolve(mapping.map(this.head));
+    if (!$head.parent.inlineContent)
+      return Selection.near($head);
+    let $anchor = doc.resolve(mapping.map(this.anchor));
+    return new _TextSelection($anchor.parent.inlineContent ? $anchor : $head, $head);
+  }
+  replace(tr, content = Slice.empty) {
+    super.replace(tr, content);
+    if (content == Slice.empty) {
+      let marks = this.$from.marksAcross(this.$to);
+      if (marks)
+        tr.ensureMarks(marks);
+    }
+  }
+  eq(other) {
+    return other instanceof _TextSelection && other.anchor == this.anchor && other.head == this.head;
+  }
+  getBookmark() {
+    return new TextBookmark(this.anchor, this.head);
+  }
+  toJSON() {
+    return { type: "text", anchor: this.anchor, head: this.head };
+  }
+  /**
+  @internal
+  */
+  static fromJSON(doc, json) {
+    if (typeof json.anchor != "number" || typeof json.head != "number")
+      throw new RangeError("Invalid input for TextSelection.fromJSON");
+    return new _TextSelection(doc.resolve(json.anchor), doc.resolve(json.head));
+  }
+  /**
+  Create a text selection from non-resolved positions.
+  */
+  static create(doc, anchor, head = anchor) {
+    let $anchor = doc.resolve(anchor);
+    return new this($anchor, head == anchor ? $anchor : doc.resolve(head));
+  }
+  /**
+  Return a text selection that spans the given positions or, if
+  they aren't text positions, find a text selection near them.
+  `bias` determines whether the method searches forward (default)
+  or backwards (negative number) first. Will fall back to calling
+  [`Selection.near`](https://prosemirror.net/docs/ref/#state.Selection^near) when the document
+  doesn't contain a valid text position.
+  */
+  static between($anchor, $head, bias) {
+    let dPos = $anchor.pos - $head.pos;
+    if (!bias || dPos)
+      bias = dPos >= 0 ? 1 : -1;
+    if (!$head.parent.inlineContent) {
+      let found2 = Selection.findFrom($head, bias, true) || Selection.findFrom($head, -bias, true);
+      if (found2)
+        $head = found2.$head;
+      else
+        return Selection.near($head, bias);
+    }
+    if (!$anchor.parent.inlineContent) {
+      if (dPos == 0) {
+        $anchor = $head;
+      } else {
+        $anchor = (Selection.findFrom($anchor, -bias, true) || Selection.findFrom($anchor, bias, true)).$anchor;
+        if ($anchor.pos < $head.pos != dPos < 0)
+          $anchor = $head;
+      }
+    }
+    return new _TextSelection($anchor, $head);
+  }
+};
+Selection.jsonID("text", TextSelection);
+var TextBookmark = class _TextBookmark {
+  constructor(anchor, head) {
+    this.anchor = anchor;
+    this.head = head;
+  }
+  map(mapping) {
+    return new _TextBookmark(mapping.map(this.anchor), mapping.map(this.head));
+  }
+  resolve(doc) {
+    return TextSelection.between(doc.resolve(this.anchor), doc.resolve(this.head));
+  }
+};
+var NodeSelection = class _NodeSelection extends Selection {
+  /**
+  Create a node selection. Does not verify the validity of its
+  argument.
+  */
+  constructor($pos) {
+    let node = $pos.nodeAfter;
+    let $end = $pos.node(0).resolve($pos.pos + node.nodeSize);
+    super($pos, $end);
+    this.node = node;
+  }
+  map(doc, mapping) {
+    let { deleted, pos } = mapping.mapResult(this.anchor);
+    let $pos = doc.resolve(pos);
+    if (deleted)
+      return Selection.near($pos);
+    return new _NodeSelection($pos);
+  }
+  content() {
+    return new Slice(Fragment.from(this.node), 0, 0);
+  }
+  eq(other) {
+    return other instanceof _NodeSelection && other.anchor == this.anchor;
+  }
+  toJSON() {
+    return { type: "node", anchor: this.anchor };
+  }
+  getBookmark() {
+    return new NodeBookmark(this.anchor);
+  }
+  /**
+  @internal
+  */
+  static fromJSON(doc, json) {
+    if (typeof json.anchor != "number")
+      throw new RangeError("Invalid input for NodeSelection.fromJSON");
+    return new _NodeSelection(doc.resolve(json.anchor));
+  }
+  /**
+  Create a node selection from non-resolved positions.
+  */
+  static create(doc, from) {
+    return new _NodeSelection(doc.resolve(from));
+  }
+  /**
+  Determines whether the given node may be selected as a node
+  selection.
+  */
+  static isSelectable(node) {
+    return !node.isText && node.type.spec.selectable !== false;
+  }
+};
+NodeSelection.prototype.visible = false;
+Selection.jsonID("node", NodeSelection);
+var NodeBookmark = class _NodeBookmark {
+  constructor(anchor) {
+    this.anchor = anchor;
+  }
+  map(mapping) {
+    let { deleted, pos } = mapping.mapResult(this.anchor);
+    return deleted ? new TextBookmark(pos, pos) : new _NodeBookmark(pos);
+  }
+  resolve(doc) {
+    let $pos = doc.resolve(this.anchor), node = $pos.nodeAfter;
+    if (node && NodeSelection.isSelectable(node))
+      return new NodeSelection($pos);
+    return Selection.near($pos);
+  }
+};
+var AllSelection = class _AllSelection extends Selection {
+  /**
+  Create an all-selection over the given document.
+  */
+  constructor(doc) {
+    super(doc.resolve(0), doc.resolve(doc.content.size));
+  }
+  replace(tr, content = Slice.empty) {
+    if (content == Slice.empty) {
+      tr.delete(0, tr.doc.content.size);
+      let sel = Selection.atStart(tr.doc);
+      if (!sel.eq(tr.selection))
+        tr.setSelection(sel);
+    } else {
+      super.replace(tr, content);
+    }
+  }
+  toJSON() {
+    return { type: "all" };
+  }
+  /**
+  @internal
+  */
+  static fromJSON(doc) {
+    return new _AllSelection(doc);
+  }
+  map(doc) {
+    return new _AllSelection(doc);
+  }
+  eq(other) {
+    return other instanceof _AllSelection;
+  }
+  getBookmark() {
+    return AllBookmark;
+  }
+};
+Selection.jsonID("all", AllSelection);
+var AllBookmark = {
+  map() {
+    return this;
+  },
+  resolve(doc) {
+    return new AllSelection(doc);
+  }
+};
+function findSelectionIn(doc, node, pos, index, dir, text = false) {
+  if (node.inlineContent)
+    return TextSelection.create(doc, pos);
+  for (let i = index - (dir > 0 ? 0 : 1); dir > 0 ? i < node.childCount : i >= 0; i += dir) {
+    let child = node.child(i);
+    if (!child.isAtom) {
+      let inner = findSelectionIn(doc, child, pos + dir, dir < 0 ? child.childCount : 0, dir, text);
+      if (inner)
+        return inner;
+    } else if (!text && NodeSelection.isSelectable(child)) {
+      return NodeSelection.create(doc, pos - (dir < 0 ? child.nodeSize : 0));
+    }
+    pos += child.nodeSize * dir;
+  }
+  return null;
+}
+function selectionToInsertionEnd(tr, startLen, bias) {
+  let last = tr.steps.length - 1;
+  if (last < startLen)
+    return;
+  let step = tr.steps[last];
+  if (!(step instanceof ReplaceStep || step instanceof ReplaceAroundStep))
+    return;
+  let map = tr.mapping.maps[last], end;
+  map.forEach((_from, _to, _newFrom, newTo) => {
+    if (end == null)
+      end = newTo;
+  });
+  tr.setSelection(Selection.near(tr.doc.resolve(end), bias));
+}
+function bind(f, self) {
+  return !self || !f ? f : f.bind(self);
+}
+var FieldDesc = class {
+  constructor(name, desc, self) {
+    this.name = name;
+    this.init = bind(desc.init, self);
+    this.apply = bind(desc.apply, self);
+  }
+};
+[
+  new FieldDesc("doc", {
+    init(config) {
+      return config.doc || config.schema.topNodeType.createAndFill();
+    },
+    apply(tr) {
+      return tr.doc;
+    }
+  }),
+  new FieldDesc("selection", {
+    init(config, instance) {
+      return config.selection || Selection.atStart(instance.doc);
+    },
+    apply(tr) {
+      return tr.selection;
+    }
+  }),
+  new FieldDesc("storedMarks", {
+    init(config) {
+      return config.storedMarks || null;
+    },
+    apply(tr, _marks, _old, state) {
+      return state.selection.$cursor ? tr.storedMarks : null;
+    }
+  }),
+  new FieldDesc("scrollToSelection", {
+    init() {
+      return 0;
+    },
+    apply(tr, prev) {
+      return tr.scrolledIntoView ? prev + 1 : prev;
+    }
+  })
+];
+
+// src/handleBackspace.ts
 var handleBackspace$1 = (editor, type) => {
   var _a;
   const { state, view } = editor;
@@ -21983,7 +23504,6 @@ var handleBackspace$1 = (editor, type) => {
   const { $from } = selection;
   if ($from.parentOffset !== 0) return false;
   const parentDepth = $from.depth - 1;
-  if (parentDepth < 0) return false;
   const parent = $from.node(parentDepth);
   const index = $from.index(parentDepth);
   if (index === 0) return false;
@@ -22447,7 +23967,7 @@ var CodeBlock = Node3.create({
             tr.delete(lineStartPos, lineStartPos + spacesToRemove);
             const cursorPosInLine = pos - lineStartPos;
             if (cursorPosInLine <= spacesToRemove) {
-              tr.setSelection(TextSelection.create(tr.doc, lineStartPos));
+              tr.setSelection(TextSelection$1.create(tr.doc, lineStartPos));
             }
             return true;
           });
@@ -22509,7 +24029,7 @@ var CodeBlock = Node3.create({
         const nodeAfter = doc.nodeAt(after);
         if (nodeAfter) {
           return editor.commands.command(({ tr }) => {
-            tr.setSelection(Selection.near(doc.resolve(after)));
+            tr.setSelection(Selection$1.near(doc.resolve(after)));
             return true;
           });
         }
@@ -22561,7 +24081,7 @@ var CodeBlock = Node3.create({
             tr.replaceSelectionWith(this.type.create({ language }, textNode));
             if (tr.selection.$from.parent.type !== this.type) {
               tr.setSelection(
-                TextSelection.near(tr.doc.resolve(Math.max(0, tr.selection.from - 2)))
+                TextSelection$1.near(tr.doc.resolve(Math.max(0, tr.selection.from - 2)))
               );
             }
             tr.setMeta("paste", true);
@@ -22782,18 +24302,18 @@ var HorizontalRule = Node3.create({
             const posAfter = $to.end();
             if ($to.nodeAfter) {
               if ($to.nodeAfter.isTextblock) {
-                tr.setSelection(TextSelection.create(tr.doc, $to.pos + 1));
+                tr.setSelection(TextSelection$1.create(tr.doc, $to.pos + 1));
               } else if ($to.nodeAfter.isBlock) {
-                tr.setSelection(NodeSelection.create(tr.doc, $to.pos));
+                tr.setSelection(NodeSelection$1.create(tr.doc, $to.pos));
               } else {
-                tr.setSelection(TextSelection.create(tr.doc, $to.pos));
+                tr.setSelection(TextSelection$1.create(tr.doc, $to.pos));
               }
             } else {
               const nodeType = chainState.schema.nodes[this.options.nextNodeType] || $to.parent.type.contentMatch.defaultType;
               const node = nodeType == null ? void 0 : nodeType.create();
               if (node) {
                 tr.insert(posAfter, node);
-                tr.setSelection(TextSelection.create(tr.doc, posAfter + 1));
+                tr.setSelection(TextSelection$1.create(tr.doc, posAfter + 1));
               }
             }
             tr.scrollIntoView();
@@ -24916,7 +26436,6 @@ var Link = Mark.create({
     };
   },
   addAttributes() {
-    var _a, _b, _c;
     return {
       href: {
         default: null,
@@ -24925,16 +26444,13 @@ var Link = Mark.create({
         }
       },
       target: {
-        // Coerce `undefined` to `null` because `undefined` is an invalid attribute value
-        default: (_a = this.options.HTMLAttributes.target) != null ? _a : null
+        default: this.options.HTMLAttributes.target
       },
       rel: {
-        // Coerce `undefined` to `null` because `undefined` is an invalid attribute value
-        default: (_b = this.options.HTMLAttributes.rel) != null ? _b : null
+        default: this.options.HTMLAttributes.rel
       },
       class: {
-        // Coerce `undefined` to `null` because `undefined` is an invalid attribute value
-        default: (_c = this.options.HTMLAttributes.class) != null ? _c : null
+        default: this.options.HTMLAttributes.class
       },
       title: {
         default: null
@@ -25248,7 +26764,7 @@ var hoistBranchingNestedList = (state, dispatch, itemName, wrapperNames) => {
   const tr = state.tr;
   tr.delete(nestedListPos, nestedListPos + nestedList.nodeSize);
   const mappedInsertPos = tr.mapping.map(insertPos);
-  tr.insert(mappedInsertPos, Fragment.from(items));
+  tr.insert(mappedInsertPos, Fragment$1.from(items));
   tr.setSelection(selection.map(tr.doc, tr.mapping));
   if (dispatch) {
     dispatch(tr);
@@ -25850,25 +27366,22 @@ var ListKeymap = Extension.create({
 var ORDERED_LIST_ITEM_REGEX = new RegExp(
   `^(\\s*)(${ORDERED_LIST_MARKER_PATTERN})([.)])\\s+(.*)$`
 );
+var ORDERED_LIST_LINE_START_REGEX = new RegExp(
+  `^(\\s*)(${ORDERED_LIST_MARKER_PATTERN})([.)])\\s+`
+);
 var INDENTED_LINE_REGEX = /^\s/;
-var PARAGRAPH_INTERRUPTERS = {
-  heading: /^#{1,6}(?:\s|$)/,
-  bulletItem: /^[-+*]\s+/,
-  codeFence: /^(?:```|~~~)/,
-  thematicBreak: /^(?:(?:-[ \t]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})$/
-};
 function isOrderedListMarkerLine(line) {
   return ORDERED_LIST_ITEM_REGEX.test(line.trimStart());
 }
 function isBlockContentLine(line) {
   const trimmedLine = line.trimStart();
-  return PARAGRAPH_INTERRUPTERS.bulletItem.test(trimmedLine) || isOrderedListMarkerLine(trimmedLine) || PARAGRAPH_INTERRUPTERS.heading.test(trimmedLine) || // dash breaks are excluded: "---" directly below paragraph text is a
-  // setext heading underline, not a thematic break
-  PARAGRAPH_INTERRUPTERS.thematicBreak.test(trimmedLine) && !trimmedLine.startsWith("-") || // oxlint-disable-next-line prefer-string-starts-ends-with
-  /^>\s?/.test(trimmedLine) || PARAGRAPH_INTERRUPTERS.codeFence.test(trimmedLine);
-}
-function interruptsLazyContinuation(line) {
-  return Object.values(PARAGRAPH_INTERRUPTERS).some((pattern) => pattern.test(line));
+  return (
+    // oxlint-disable-next-line prefer-string-starts-ends-with
+    /^[-+*]\s+/.test(trimmedLine) || isOrderedListMarkerLine(trimmedLine) || // oxlint-disable-next-line prefer-string-starts-ends-with
+    /^>\s?/.test(trimmedLine) || // oxlint-disable-next-line prefer-string-starts-ends-with
+    /^```/.test(trimmedLine) || // oxlint-disable-next-line prefer-string-starts-ends-with
+    /^~~~/.test(trimmedLine)
+  );
 }
 function splitItemContent(contentLines) {
   const paragraphLines = [];
@@ -25933,7 +27446,7 @@ function collectOrderedListItems(lines) {
         itemContentLines.push(nextLine.slice(Math.min(leadingWhitespace, contentIndent)));
         nextLineIndex += 1;
       } else {
-        if (sawBlankLine || interruptsLazyContinuation(nextLine)) {
+        if (sawBlankLine) {
           break;
         }
         itemLines.push(nextLine);
@@ -26204,12 +27717,11 @@ var OrderedList = Node3.create({
   markdownTokenizer: {
     name: "orderedList",
     level: "block",
-    // marked already breaks paragraphs before a start-of-line list marker. It
-    // probes this with `src.slice(1)`, so any marker it surfaces here is
-    // mid-line (like the "216)" in "(216) 555-1234") and must not start a list.
-    // We still define the callback so marked does not fall back to probing
-    // `tokenize`, which would re-introduce the mid-line split.
-    start: () => -1,
+    start: (src) => {
+      const match = src.match(ORDERED_LIST_LINE_START_REGEX);
+      const index = match == null ? void 0 : match.index;
+      return index !== void 0 ? index : -1;
+    },
     tokenize: (src, _tokens, lexer) => {
       var _a, _b;
       const lines = src.split("\n");
@@ -26217,7 +27729,7 @@ var OrderedList = Node3.create({
       if (listItems.length === 0) {
         return void 0;
       }
-      const items = buildNestedStructure(listItems, listItems[0].indent, lexer);
+      const items = buildNestedStructure(listItems, 0, lexer);
       if (items.length === 0) {
         return void 0;
       }
@@ -26580,16 +28092,13 @@ var TaskList = Node3.create({
           lexer
         );
         if (nestedResult) {
-          const taskListToken = {
-            type: "taskList",
-            raw: nestedResult.raw,
-            items: nestedResult.items
-          };
-          const remainder = content.slice(nestedResult.raw.length);
-          if (remainder.trim()) {
-            return [taskListToken, ...lexer.blockTokens(remainder)];
-          }
-          return [taskListToken];
+          return [
+            {
+              type: "taskList",
+              raw: nestedResult.raw,
+              items: nestedResult.items
+            }
+          ];
         }
         return lexer.blockTokens(content);
       };
@@ -27129,8 +28638,7 @@ var FileHandlePlugin = ({
   editor,
   onPaste,
   onDrop,
-  allowedMimeTypes,
-  consumePasteEvent
+  allowedMimeTypes
 }) => {
   return new Plugin({
     key: key || new PluginKey("fileHandler"),
@@ -27181,7 +28689,7 @@ var FileHandlePlugin = ({
         event.preventDefault();
         event.stopPropagation();
         onPaste(editor, filesArray, htmlContent);
-        if (htmlContent.length > 0 && !consumePasteEvent) {
+        if (htmlContent.length > 0) {
           return false;
         }
         return true;
@@ -27197,8 +28705,7 @@ var FileHandler = Extension.create({
     return {
       onPaste: void 0,
       onDrop: void 0,
-      allowedMimeTypes: void 0,
-      consumePasteEvent: false
+      allowedMimeTypes: void 0
     };
   },
   addProseMirrorPlugins() {
@@ -27208,8 +28715,7 @@ var FileHandler = Extension.create({
         editor: this.editor,
         allowedMimeTypes: this.options.allowedMimeTypes,
         onDrop: this.options.onDrop,
-        onPaste: this.options.onPaste,
-        consumePasteEvent: this.options.consumePasteEvent
+        onPaste: this.options.onPaste
       })
     ];
   }
@@ -27223,10 +28729,10 @@ var index_default$2 = FileHandler;
  * @see https://floating-ui.com/docs/virtual-elements
  */
 
-const min$1 = Math.min;
-const max$1 = Math.max;
+const min$2 = Math.min;
+const max$2 = Math.max;
 const round = Math.round;
-const floor$1 = Math.floor;
+const floor$2 = Math.floor;
 const createCoords = v => ({
   x: v,
   y: v
@@ -27312,12 +28818,12 @@ function getOppositePlacement(placement) {
   return oppositeSideMap[side] + placement.slice(side.length);
 }
 function expandPaddingObject(padding) {
-  var _padding$top, _padding$right, _padding$bottom, _padding$left;
   return {
-    top: (_padding$top = padding.top) != null ? _padding$top : 0,
-    right: (_padding$right = padding.right) != null ? _padding$right : 0,
-    bottom: (_padding$bottom = padding.bottom) != null ? _padding$bottom : 0,
-    left: (_padding$left = padding.left) != null ? _padding$left : 0
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    ...padding
   };
 }
 function getPaddingObject(padding) {
@@ -27392,9 +28898,13 @@ function computeCoordsFromPlacement(_ref, placement, rtl) {
         y: reference.y
       };
   }
-  const alignment = getAlignment(placement);
-  if (alignment) {
-    coords[alignmentAxis] += commonAlign * (alignment === 'end' ? 1 : -1) * (rtl && isVertical ? -1 : 1);
+  switch (getAlignment(placement)) {
+    case 'start':
+      coords[alignmentAxis] -= commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
+    case 'end':
+      coords[alignmentAxis] += commonAlign * (rtl && isVertical ? -1 : 1);
+      break;
   }
   return coords;
 }
@@ -27443,7 +28953,10 @@ async function detectOverflow(state, options) {
     height: rects.floating.height
   } : rects.reference;
   const offsetParent = await (platform.getOffsetParent == null ? void 0 : platform.getOffsetParent(elements.floating));
-  const offsetScale = (await (platform.isElement == null ? void 0 : platform.isElement(offsetParent))) && (await (platform.getScale == null ? void 0 : platform.getScale(offsetParent))) || {
+  const offsetScale = (await (platform.isElement == null ? void 0 : platform.isElement(offsetParent))) ? (await (platform.getScale == null ? void 0 : platform.getScale(offsetParent))) || {
+    x: 1,
+    y: 1
+  } : {
     x: 1,
     y: 1
   };
@@ -27781,7 +29294,7 @@ function hasWindow() {
   return typeof window !== 'undefined';
 }
 function getNodeName(node) {
-  if (isNode$1(node)) {
+  if (isNode$2(node)) {
     return (node.nodeName || '').toLowerCase();
   }
   // Mocked nodes in testing environments may not be instances of Node. By
@@ -27795,9 +29308,9 @@ function getWindow(node) {
 }
 function getDocumentElement(node) {
   var _ref;
-  return (_ref = (isNode$1(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
+  return (_ref = (isNode$2(node) ? node.ownerDocument : node.document) || window.document) == null ? void 0 : _ref.documentElement;
 }
-function isNode$1(value) {
+function isNode$2(value) {
   if (!hasWindow()) {
     return false;
   }
@@ -27912,7 +29425,7 @@ function getParentNode(node) {
 function getNearestOverflowAncestor(node) {
   const parentNode = getParentNode(node);
   if (isLastTraversableNode(parentNode)) {
-    return (node.ownerDocument || node).body;
+    return node.ownerDocument ? node.ownerDocument.body : node.body;
   }
   if (isHTMLElement(parentNode) && isOverflowElement(parentNode)) {
     return parentNode;
@@ -28009,7 +29522,10 @@ function shouldAddVisualOffsets(element, isFixed, floatingOffsetParent) {
   if (isFixed === void 0) {
     isFixed = false;
   }
-  return !!floatingOffsetParent && isFixed && floatingOffsetParent === getWindow(element);
+  if (!floatingOffsetParent || isFixed && floatingOffsetParent !== getWindow(element)) {
+    return false;
+  }
+  return isFixed;
 }
 
 function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetParent) {
@@ -28036,12 +29552,12 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
   let y = (clientRect.top + visualOffsets.y) / scale.y;
   let width = clientRect.width / scale.x;
   let height = clientRect.height / scale.y;
-  if (domElement && offsetParent) {
+  if (domElement) {
     const win = getWindow(domElement);
-    const offsetWin = isElement(offsetParent) ? getWindow(offsetParent) : offsetParent;
+    const offsetWin = offsetParent && isElement(offsetParent) ? getWindow(offsetParent) : offsetParent;
     let currentWin = win;
     let currentIFrame = getFrameElement(currentWin);
-    while (currentIFrame && offsetWin !== currentWin) {
+    while (currentIFrame && offsetParent && offsetWin !== currentWin) {
       const iframeScale = getScale(currentIFrame);
       const iframeRect = currentIFrame.getBoundingClientRect();
       const css = getComputedStyle$1(currentIFrame);
@@ -28105,7 +29621,7 @@ function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
   let scale = createCoords(1);
   const offsets = createCoords(0);
   const isOffsetParentAnElement = isHTMLElement(offsetParent);
-  if (isOffsetParentAnElement || !isFixed) {
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
     if (getNodeName(offsetParent) !== 'body' || isOverflowElement(documentElement)) {
       scroll = getNodeScroll(offsetParent);
     }
@@ -28126,20 +29642,21 @@ function convertOffsetParentRelativeRectToViewportRelativeRect(_ref) {
 }
 
 function getClientRects(element) {
-  return element.getClientRects ? Array.from(element.getClientRects()) : [];
+  return Array.from(element.getClientRects());
 }
 
 // Gets the entire size of the scrollable document area, even extending outside
 // of the `<html>` and `<body>` rect bounds if horizontally scrollable.
-function getDocumentRect(html) {
-  const scroll = getNodeScroll(html);
-  const body = html.ownerDocument.body;
-  const width = max$1(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
-  const height = max$1(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
-  let x = -scroll.scrollLeft + getWindowScrollBarX(html);
+function getDocumentRect(element) {
+  const html = getDocumentElement(element);
+  const scroll = getNodeScroll(element);
+  const body = element.ownerDocument.body;
+  const width = max$2(html.scrollWidth, html.clientWidth, body.scrollWidth, body.clientWidth);
+  const height = max$2(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
+  let x = -scroll.scrollLeft + getWindowScrollBarX(element);
   const y = -scroll.scrollTop;
   if (getComputedStyle$1(body).direction === 'rtl') {
-    x += max$1(html.clientWidth, body.clientWidth) - width;
+    x += max$2(html.clientWidth, body.clientWidth) - width;
   }
   return {
     width,
@@ -28153,11 +29670,7 @@ function getDocumentRect(html) {
 // calculation is affected by unusual styles.
 // Most scrollbars leave 15-18px of space.
 const SCROLLBAR_MAX = 25;
-function getViewportRect(element, strategy, rootBoundary) {
-  if (rootBoundary === void 0) {
-    rootBoundary = 'viewport';
-  }
-  const isLayoutViewport = rootBoundary === 'layoutViewport';
+function getViewportRect(element, strategy) {
   const win = getWindow(element);
   const html = getDocumentElement(element);
   const visualViewport = win.visualViewport;
@@ -28166,42 +29679,31 @@ function getViewportRect(element, strategy, rootBoundary) {
   let x = 0;
   let y = 0;
   if (visualViewport) {
-    // Client coordinates are relative to the layout viewport, except in
-    // WebKit with an `absolute` strategy, where they are relative to the
-    // visual viewport.
-    const layoutRelativeClientCoords = !isWebKit() || strategy === 'fixed';
-    if (isLayoutViewport) {
-      if (!layoutRelativeClientCoords) {
-        x = -visualViewport.offsetLeft;
-        y = -visualViewport.offsetTop;
-      }
-    } else {
-      width = visualViewport.width;
-      height = visualViewport.height;
-      if (layoutRelativeClientCoords) {
-        x = visualViewport.offsetLeft;
-        y = visualViewport.offsetTop;
-      }
+    width = visualViewport.width;
+    height = visualViewport.height;
+    const visualViewportBased = isWebKit();
+    if (!visualViewportBased || visualViewportBased && strategy === 'fixed') {
+      x = visualViewport.offsetLeft;
+      y = visualViewport.offsetTop;
     }
   }
   const windowScrollbarX = getWindowScrollBarX(html);
-  // `scrollbar-gutter: stable` on the <html> reserves gutter space that shrinks
-  // the visual width but isn't reflected in `html.clientWidth`, so subtract it.
-  // Only the inline-end (right) gutter can hold the scrollbar; `both-edges` also
-  // reserves an empty inline-start gutter that clips nothing, so exclude just
-  // the one scrollbar-side gutter — halve the measured (two-gutter) total. A
-  // left-side scrollbar (`windowScrollbarX > 0`) is already handled by
-  // `getHTMLOffset`/`visualViewport.width`; skip it here.
+  // <html> `overflow: hidden` + `scrollbar-gutter: stable` reduces the
+  // visual width of the <html> but this is not considered in the size
+  // of `html.clientWidth`.
   if (windowScrollbarX <= 0) {
     const doc = html.ownerDocument;
     const body = doc.body;
     const bodyStyles = getComputedStyle(body);
     const bodyMarginInline = doc.compatMode === 'CSS1Compat' ? parseFloat(bodyStyles.marginLeft) + parseFloat(bodyStyles.marginRight) || 0 : 0;
-    const reservedWidth = Math.abs(html.clientWidth - body.clientWidth - bodyMarginInline);
-    const gutter = getComputedStyle(html).scrollbarGutter === 'stable both-edges' ? reservedWidth / 2 : reservedWidth;
-    if (gutter <= SCROLLBAR_MAX) {
-      width -= gutter;
+    const clippingStableScrollbarWidth = Math.abs(html.clientWidth - body.clientWidth - bodyMarginInline);
+    if (clippingStableScrollbarWidth <= SCROLLBAR_MAX) {
+      width -= clippingStableScrollbarWidth;
     }
+  } else if (windowScrollbarX <= SCROLLBAR_MAX) {
+    // If the <body> scrollbar is on the left, the width needs to be extended
+    // by the scrollbar amount so there isn't extra space on the right.
+    width += windowScrollbarX;
   }
   return {
     width,
@@ -28216,7 +29718,7 @@ function getInnerBoundingClientRect(element, strategy) {
   const clientRect = getBoundingClientRect(element, true, strategy === 'fixed');
   const top = clientRect.top + element.clientTop;
   const left = clientRect.left + element.clientLeft;
-  const scale = getScale(element);
+  const scale = isHTMLElement(element) ? getScale(element) : createCoords(1);
   const width = element.clientWidth * scale.x;
   const height = element.clientHeight * scale.y;
   const x = left * scale.x;
@@ -28230,8 +29732,8 @@ function getInnerBoundingClientRect(element, strategy) {
 }
 function getClientRectFromClippingAncestor(element, clippingAncestor, strategy) {
   let rect;
-  if (clippingAncestor === 'viewport' || clippingAncestor === 'layoutViewport') {
-    rect = getViewportRect(element, strategy, clippingAncestor);
+  if (clippingAncestor === 'viewport') {
+    rect = getViewportRect(element, strategy);
   } else if (clippingAncestor === 'document') {
     rect = getDocumentRect(getDocumentElement(element));
   } else if (isElement(clippingAncestor)) {
@@ -28247,6 +29749,13 @@ function getClientRectFromClippingAncestor(element, clippingAncestor, strategy) 
   }
   return rectToClientRect(rect);
 }
+function hasFixedPositionAncestor(element, stopNode) {
+  const parentNode = getParentNode(element);
+  if (parentNode === stopNode || !isElement(parentNode) || isLastTraversableNode(parentNode)) {
+    return false;
+  }
+  return getComputedStyle$1(parentNode).position === 'fixed' || hasFixedPositionAncestor(parentNode, stopNode);
+}
 
 // A "clipping ancestor" is an `overflow` element with the characteristic of
 // clipping (or hiding) child elements. This returns all clipping ancestors
@@ -28257,7 +29766,7 @@ function getClippingElementAncestors(element, cache) {
     return cachedResult;
   }
   let result = getOverflowAncestors(element, [], false).filter(el => isElement(el) && getNodeName(el) !== 'body');
-  let lastKeptComputedStyle = null;
+  let currentContainingBlockComputedStyle = null;
   const elementIsFixed = getComputedStyle$1(element).position === 'fixed';
   let currentNode = elementIsFixed ? getParentNode(element) : element;
 
@@ -28265,20 +29774,16 @@ function getClippingElementAncestors(element, cache) {
   while (isElement(currentNode) && !isLastTraversableNode(currentNode)) {
     const computedStyle = getComputedStyle$1(currentNode);
     const currentNodeIsContaining = isContainingBlock(currentNode);
-    // Position of the containing block chain below the current node. A fixed
-    // element whose containing block hasn't been found yet is a fixed chain.
-    const lastPosition = lastKeptComputedStyle ? lastKeptComputedStyle.position : elementIsFixed ? 'fixed' : '';
-
-    // A non-containing ancestor does not clip the element when the chain
-    // below it escapes it: a fixed chain escapes all ancestors up to the
-    // next containing block, an absolute chain escapes static ancestors.
-    const shouldDropCurrentNode = !currentNodeIsContaining && (lastPosition === 'fixed' || lastPosition === 'absolute' && computedStyle.position === 'static');
+    if (!currentNodeIsContaining && computedStyle.position === 'fixed') {
+      currentContainingBlockComputedStyle = null;
+    }
+    const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === 'static' && !!currentContainingBlockComputedStyle && (currentContainingBlockComputedStyle.position === 'absolute' || currentContainingBlockComputedStyle.position === 'fixed') || isOverflowElement(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
     if (shouldDropCurrentNode) {
       // Drop non-containing blocks.
       result = result.filter(ancestor => ancestor !== currentNode);
     } else {
-      // The kept node carries the chain position for the next iteration.
-      lastKeptComputedStyle = computedStyle;
+      // Record last containing block for next iteration.
+      currentContainingBlockComputedStyle = computedStyle;
     }
     currentNode = getParentNode(currentNode);
   }
@@ -28304,10 +29809,10 @@ function getClippingRect(_ref) {
   let left = firstRect.left;
   for (let i = 1; i < clippingAncestors.length; i++) {
     const rect = getClientRectFromClippingAncestor(element, clippingAncestors[i], strategy);
-    top = max$1(rect.top, top);
-    right = min$1(rect.right, right);
-    bottom = min$1(rect.bottom, bottom);
-    left = max$1(rect.left, left);
+    top = max$2(rect.top, top);
+    right = min$2(rect.right, right);
+    bottom = min$2(rect.bottom, bottom);
+    left = max$2(rect.left, left);
   }
   return {
     width: right - left,
@@ -28338,7 +29843,13 @@ function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
     scrollTop: 0
   };
   const offsets = createCoords(0);
-  if (isOffsetParentAnElement || !isFixed) {
+
+  // If the <body> scrollbar appears on the left (e.g. RTL systems). Use
+  // Firefox with layout.scrollbar.side = 3 in about:config to test this.
+  function setLeftRTLScrollbarOffset() {
+    offsets.x = getWindowScrollBarX(documentElement);
+  }
+  if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
     if (getNodeName(offsetParent) !== 'body' || isOverflowElement(documentElement)) {
       scroll = getNodeScroll(offsetParent);
     }
@@ -28346,13 +29857,12 @@ function getRectRelativeToOffsetParent(element, offsetParent, strategy) {
       const offsetRect = getBoundingClientRect(offsetParent, true, isFixed, offsetParent);
       offsets.x = offsetRect.x + offsetParent.clientLeft;
       offsets.y = offsetRect.y + offsetParent.clientTop;
+    } else if (documentElement) {
+      setLeftRTLScrollbarOffset();
     }
   }
-
-  // If the <body> scrollbar appears on the left (e.g. RTL systems). Use
-  // Firefox with layout.scrollbar.side = 3 in about:config to test this.
-  if (!isOffsetParentAnElement && documentElement) {
-    offsets.x = getWindowScrollBarX(documentElement);
+  if (isFixed && !isOffsetParentAnElement && documentElement) {
+    setLeftRTLScrollbarOffset();
   }
   const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
   const x = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
@@ -28452,7 +29962,7 @@ function rectsAreEqual(a, b) {
 }
 
 // https://samthor.au/2021/observing-dom/
-function observeMove(element, onMove, ancestorResize) {
+function observeMove(element, onMove) {
   let io = null;
   let timeoutId;
   const root = getDocumentElement(element);
@@ -28483,40 +29993,41 @@ function observeMove(element, onMove, ancestorResize) {
     if (!width || !height) {
       return;
     }
-    const insetTop = floor$1(top);
-    const insetRight = floor$1(root.clientWidth - (left + width));
-    const insetBottom = floor$1(root.clientHeight - (top + height));
-    const insetLeft = floor$1(left);
+    const insetTop = floor$2(top);
+    const insetRight = floor$2(root.clientWidth - (left + width));
+    const insetBottom = floor$2(root.clientHeight - (top + height));
+    const insetLeft = floor$2(left);
     const rootMargin = -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px";
     const options = {
       rootMargin,
-      threshold: max$1(0, min$1(1, threshold)) || 1
+      threshold: max$2(0, min$2(1, threshold)) || 1
     };
     let isFirstUpdate = true;
     function handleObserve(entries) {
       const ratio = entries[0].intersectionRatio;
-
-      // The entry is a snapshot, so the reference may have moved since the
-      // intersection was computed (under performance constraints, or between
-      // consecutive frames of a multi-frame layout shift). The reported ratio
-      // and the observed area are stale in that case and cannot be trusted to
-      // detect subsequent movement, so refresh regardless of the ratio.
-      if (!rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
-        return refresh();
-      }
       if (ratio !== threshold) {
         if (!isFirstUpdate) {
           return refresh();
         }
         if (!ratio) {
-          // If the reference is clipped in place, the ratio is 0. Throttle
-          // the refresh to prevent an infinite loop of updates.
+          // If the reference is clipped, the ratio is 0. Throttle the refresh
+          // to prevent an infinite loop of updates.
           timeoutId = setTimeout(() => {
             refresh(false, 1e-7);
           }, 1000);
         } else {
           refresh(false, ratio);
         }
+      }
+      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
+        // It's possible that even though the ratio is reported as 1, the
+        // element is not actually fully within the IntersectionObserver's root
+        // area anymore. This can happen under performance constraints. This may
+        // be a bug in the browser's IntersectionObserver implementation. To
+        // work around this, we compare the element's bounding rect now with
+        // what it was at the time we created the IntersectionObserver. If they
+        // are not equal then the element moved, so we refresh.
+        refresh();
       }
       isFirstUpdate = false;
     }
@@ -28534,18 +30045,8 @@ function observeMove(element, onMove, ancestorResize) {
     }
     io.observe(element);
   }
-  const win = getWindow(element);
-  // The window is a resize ancestor, so when `ancestorResize` is enabled its
-  // listener already runs the update on resize. Here we only need to rebuild
-  // the `IntersectionObserver` for the new root size, skipping a redundant
-  // update. When `ancestorResize` is disabled, this becomes the sole update.
-  const handleResize = () => refresh(ancestorResize);
-  win.addEventListener('resize', handleResize);
   refresh(true);
-  return () => {
-    win.removeEventListener('resize', handleResize);
-    cleanup();
-  };
+  return cleanup;
 }
 
 /**
@@ -28570,10 +30071,12 @@ function autoUpdate(reference, floating, update, options) {
   const referenceEl = unwrapElement(reference);
   const ancestors = ancestorScroll || ancestorResize ? [...(referenceEl ? getOverflowAncestors(referenceEl) : []), ...(floating ? getOverflowAncestors(floating) : [])] : [];
   ancestors.forEach(ancestor => {
-    ancestorScroll && ancestor.addEventListener('scroll', update);
+    ancestorScroll && ancestor.addEventListener('scroll', update, {
+      passive: true
+    });
     ancestorResize && ancestor.addEventListener('resize', update);
   });
-  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update, ancestorResize) : null;
+  const cleanupIo = referenceEl && layoutShift ? observeMove(referenceEl, update) : null;
   let reobserveFrame = -1;
   let resizeObserver = null;
   if (elementResize) {
@@ -28653,9 +30156,11 @@ const computePosition = (reference, floating, options) => {
   // multiple lifecycle resets re-use the same result. It only lives for a
   // single call. If other functions become expensive, we can add them as well.
   const cache = new Map();
-  const mergedOptions = options != null ? options : {};
+  const mergedOptions = {
+    platform,
+    ...options
+  };
   const platformWithCache = {
-    ...platform,
     ...mergedOptions.platform,
     _c: cache
   };
@@ -28685,7 +30190,7 @@ const computePosition = (reference, floating, options) => {
  *
  * @function
  */
-const create$5 = () => new Map();
+const create$8 = () => new Map();
 
 /**
  * Copy a Map object into a fresh Map object.
@@ -28696,7 +30201,7 @@ const create$5 = () => new Map();
  * @return {Map<K,V>}
  */
 const copy = m => {
-  const r = create$5();
+  const r = create$8();
   m.forEach((v, k) => { r.set(k, v); });
   return r
 };
@@ -28717,7 +30222,7 @@ const copy = m => {
  * @param {CF} createT
  * @return {ReturnType<CF>}
  */
-const setIfUndefined = (map, key, createT) => {
+const setIfUndefined$1 = (map, key, createT) => {
   let set = map.get(key);
   if (set === undefined) {
     map.set(key, set = createT());
@@ -28771,7 +30276,7 @@ const any = (m, f) => {
  * @module set
  */
 
-const create$4 = () => new Set();
+const create$7 = () => new Set();
 
 /**
  * Utility module to work with Arrays.
@@ -28822,7 +30327,7 @@ const from = Array.from;
  * @param {ARR extends ArrayLike<infer S> ? ((value:S, index:number, arr:ARR) => boolean) : any} f
  * @return {boolean}
  */
-const every$1 = (arr, f) => {
+const every$3 = (arr, f) => {
   for (let i = 0; i < arr.length; i++) {
     if (!f(arr[i], i, arr)) {
       return false
@@ -28841,7 +30346,7 @@ const every$1 = (arr, f) => {
  * @param {ARR extends ArrayLike<infer S> ? ((value:S, index:number, arr:ARR) => boolean) : never} f
  * @return {boolean}
  */
-const some = (arr, f) => {
+const some$1 = (arr, f) => {
   for (let i = 0; i < arr.length; i++) {
     if (f(arr[i], i, arr)) {
       return true
@@ -28856,7 +30361,7 @@ const some = (arr, f) => {
  * @param {function(number, Array<T>):T} f
  * @return {Array<T>}
  */
-const unfold = (len, f) => {
+const unfold$1 = (len, f) => {
   const array = new Array(len);
   for (let i = 0; i < len; i++) {
     array[i] = f(i, array);
@@ -28864,7 +30369,7 @@ const unfold = (len, f) => {
   return array
 };
 
-const isArray = Array.isArray;
+const isArray$1 = Array.isArray;
 
 /**
  * Observable class prototype.
@@ -28888,7 +30393,7 @@ class ObservableV2 {
      * Some desc.
      * @type {Map<string, Set<any>>}
      */
-    this._observers = create$5();
+    this._observers = create$8();
   }
 
   /**
@@ -28897,7 +30402,7 @@ class ObservableV2 {
    * @param {EVENTS[NAME]} f
    */
   on (name, f) {
-    setIfUndefined(this._observers, /** @type {string} */ (name), create$4).add(f);
+    setIfUndefined$1(this._observers, /** @type {string} */ (name), create$7).add(f);
     return f
   }
 
@@ -28944,11 +30449,11 @@ class ObservableV2 {
    */
   emit (name, args) {
     // copy all listeners to an array first to make sure that no event is emitted to listeners that are subscribed while the event handler is called.
-    return from((this._observers.get(name) || create$5()).values()).forEach(f => f(...args))
+    return from((this._observers.get(name) || create$8()).values()).forEach(f => f(...args))
   }
 
   destroy () {
-    this._observers = create$5();
+    this._observers = create$8();
   }
 }
 /* c8 ignore end */
@@ -28959,8 +30464,8 @@ class ObservableV2 {
  * @module math
  */
 
-const floor = Math.floor;
-const abs = Math.abs;
+const floor$1 = Math.floor;
+const abs$1 = Math.abs;
 
 /**
  * @function
@@ -28968,7 +30473,7 @@ const abs = Math.abs;
  * @param {number} b
  * @return {number} The smaller element of a and b
  */
-const min = (a, b) => a < b ? a : b;
+const min$1 = (a, b) => a < b ? a : b;
 
 /**
  * @function
@@ -28976,7 +30481,7 @@ const min = (a, b) => a < b ? a : b;
  * @param {number} b
  * @return {number} The bigger element of a and b
  */
-const max = (a, b) => a > b ? a : b;
+const max$1 = (a, b) => a > b ? a : b;
 
 /**
  * Check whether n is negative, while considering the -0 edge case. While `-0 < 0` is false, this
@@ -28984,7 +30489,7 @@ const max = (a, b) => a > b ? a : b;
  * @param {number} n
  * @return {boolean} Wether n is negative. This function also distinguishes between -0 and +0
  */
-const isNegativeZero = n => n !== 0 ? n < 0 : 1 / n < 0;
+const isNegativeZero$1 = n => n !== 0 ? n < 0 : 1 / n < 0;
 
 /* eslint-env browser */
 
@@ -29004,16 +30509,15 @@ const BIT2 = 2;
 const BIT3 = 4;
 const BIT4 = 8;
 const BIT6 = 32;
-const BIT7 = 64;
-const BIT8 = 128;
-const BIT30 = 1 << 29;
+const BIT7$1 = 64;
+const BIT8$1 = 128;
 const BITS5 = 31;
-const BITS6 = 63;
-const BITS7 = 127;
+const BITS6$1 = 63;
+const BITS7$1 = 127;
 /**
  * @type {number}
  */
-const BITS31 = 0x7FFFFFFF;
+const BITS31$1 = 0x7FFFFFFF;
 
 /**
  * Utility helpers for working with numbers.
@@ -29022,11 +30526,11 @@ const BITS31 = 0x7FFFFFFF;
  */
 
 
-const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER;
-const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER;
+const MAX_SAFE_INTEGER$1 = Number.MAX_SAFE_INTEGER;
+const MIN_SAFE_INTEGER$1 = Number.MIN_SAFE_INTEGER;
 
 /* c8 ignore next */
-const isInteger = Number.isInteger || (num => typeof num === 'number' && isFinite(num) && floor(num) === num);
+const isInteger$1 = Number.isInteger || (num => typeof num === 'number' && isFinite(num) && floor$1(num) === num);
 
 /**
  * Utility module to work with strings.
@@ -29034,36 +30538,36 @@ const isInteger = Number.isInteger || (num => typeof num === 'number' && isFinit
  * @module string
  */
 
-const fromCharCode = String.fromCharCode;
+const fromCharCode$1 = String.fromCharCode;
 
 /**
  * @param {string} s
  * @return {string}
  */
-const toLowerCase = s => s.toLowerCase();
+const toLowerCase$1 = s => s.toLowerCase();
 
-const trimLeftRegex = /^\s*/g;
+const trimLeftRegex$1 = /^\s*/g;
 
 /**
  * @param {string} s
  * @return {string}
  */
-const trimLeft = s => s.replace(trimLeftRegex, '');
+const trimLeft$1 = s => s.replace(trimLeftRegex$1, '');
 
-const fromCamelCaseRegex = /([A-Z])/g;
+const fromCamelCaseRegex$1 = /([A-Z])/g;
 
 /**
  * @param {string} s
  * @param {string} separator
  * @return {string}
  */
-const fromCamelCase = (s, separator) => trimLeft(s.replace(fromCamelCaseRegex, match => `${separator}${toLowerCase(match)}`));
+const fromCamelCase$1 = (s, separator) => trimLeft$1(s.replace(fromCamelCaseRegex$1, match => `${separator}${toLowerCase$1(match)}`));
 
 /**
  * @param {string} str
  * @return {Uint8Array<ArrayBuffer>}
  */
-const _encodeUtf8Polyfill = str => {
+const _encodeUtf8Polyfill$1 = str => {
   const encodedString = unescape(encodeURIComponent(str));
   const len = encodedString.length;
   const buf = new Uint8Array(len);
@@ -29074,40 +30578,40 @@ const _encodeUtf8Polyfill = str => {
 };
 
 /* c8 ignore next */
-const utf8TextEncoder = /** @type {TextEncoder} */ (typeof TextEncoder !== 'undefined' ? new TextEncoder() : null);
+const utf8TextEncoder$1 = /** @type {TextEncoder} */ (typeof TextEncoder !== 'undefined' ? new TextEncoder() : null);
 
 /**
  * @param {string} str
  * @return {Uint8Array<ArrayBuffer>}
  */
-const _encodeUtf8Native = str => utf8TextEncoder.encode(str);
+const _encodeUtf8Native$1 = str => utf8TextEncoder$1.encode(str);
 
 /**
  * @param {string} str
  * @return {Uint8Array}
  */
 /* c8 ignore next */
-const encodeUtf8 = utf8TextEncoder ? _encodeUtf8Native : _encodeUtf8Polyfill;
+const encodeUtf8$1 = utf8TextEncoder$1 ? _encodeUtf8Native$1 : _encodeUtf8Polyfill$1;
 
 /* c8 ignore next */
-let utf8TextDecoder = typeof TextDecoder === 'undefined' ? null : new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
+let utf8TextDecoder$1 = typeof TextDecoder === 'undefined' ? null : new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
 
 /* c8 ignore start */
-if (utf8TextDecoder && utf8TextDecoder.decode(new Uint8Array()).length === 1) {
+if (utf8TextDecoder$1 && utf8TextDecoder$1.decode(new Uint8Array()).length === 1) {
   // Safari doesn't handle BOM correctly.
   // This fixes a bug in Safari 13.0.5 where it produces a BOM the first time it is called.
   // utf8TextDecoder.decode(new Uint8Array()).length === 1 on the first call and
   // utf8TextDecoder.decode(new Uint8Array()).length === 1 on the second call
   // Another issue is that from then on no BOM chars are recognized anymore
   /* c8 ignore next */
-  utf8TextDecoder = null;
+  utf8TextDecoder$1 = null;
 }
 
 /**
  * @param {string} source
  * @param {number} n
  */
-const repeat = (source, n) => unfold(n, () => source).join('');
+const repeat$1 = (source, n) => unfold$1(n, () => source).join('');
 
 /**
  * Efficient schema-less binary encoding with support for variable length encoding.
@@ -29141,7 +30645,7 @@ const repeat = (source, n) => unfold(n, () => source).join('');
 /**
  * A BinaryEncoder handles the encoding to an Uint8Array.
  */
-class Encoder {
+let Encoder$1 = class Encoder {
   constructor () {
     this.cpos = 0;
     this.cbuf = new Uint8Array(100);
@@ -29150,22 +30654,13 @@ class Encoder {
      */
     this.bufs = [];
   }
-}
+};
 
 /**
  * @function
  * @return {Encoder}
  */
-const createEncoder = () => new Encoder();
-
-/**
- * @param {function(Encoder):void} f
- */
-const encode = (f) => {
-  const encoder = createEncoder();
-  f(encoder);
-  return toUint8Array(encoder)
-};
+const createEncoder$1 = () => new Encoder$1();
 
 /**
  * The current length of the encoded data.
@@ -29174,7 +30669,7 @@ const encode = (f) => {
  * @param {Encoder} encoder
  * @return {number}
  */
-const length = encoder => {
+const length$1 = encoder => {
   let len = encoder.cpos;
   for (let i = 0; i < encoder.bufs.length; i++) {
     len += encoder.bufs[i].length;
@@ -29189,8 +30684,8 @@ const length = encoder => {
  * @param {Encoder} encoder
  * @return {Uint8Array<ArrayBuffer>} The created ArrayBuffer.
  */
-const toUint8Array = encoder => {
-  const uint8arr = new Uint8Array(length(encoder));
+const toUint8Array$1 = encoder => {
+  const uint8arr = new Uint8Array(length$1(encoder));
   let curPos = 0;
   for (let i = 0; i < encoder.bufs.length; i++) {
     const d = encoder.bufs[i];
@@ -29208,11 +30703,11 @@ const toUint8Array = encoder => {
  * @param {Encoder} encoder
  * @param {number} len
  */
-const verifyLen = (encoder, len) => {
+const verifyLen$1 = (encoder, len) => {
   const bufferLen = encoder.cbuf.length;
   if (bufferLen - encoder.cpos < len) {
     encoder.bufs.push(new Uint8Array(encoder.cbuf.buffer, 0, encoder.cpos));
-    encoder.cbuf = new Uint8Array(max(bufferLen, len) * 2);
+    encoder.cbuf = new Uint8Array(max$1(bufferLen, len) * 2);
     encoder.cpos = 0;
   }
 };
@@ -29224,7 +30719,7 @@ const verifyLen = (encoder, len) => {
  * @param {Encoder} encoder
  * @param {number} num The byte that is to be encoded.
  */
-const write = (encoder, num) => {
+const write$1 = (encoder, num) => {
   const bufferLen = encoder.cbuf.length;
   if (encoder.cpos === bufferLen) {
     encoder.bufs.push(encoder.cbuf);
@@ -29241,7 +30736,7 @@ const write = (encoder, num) => {
  * @param {Encoder} encoder
  * @param {number} num The number that is to be encoded.
  */
-const writeUint8 = write;
+const writeUint8 = write$1;
 
 /**
  * Write a variable length unsigned integer. Max encodable integer is 2^53.
@@ -29250,12 +30745,12 @@ const writeUint8 = write;
  * @param {Encoder} encoder
  * @param {number} num The number that is to be encoded.
  */
-const writeVarUint = (encoder, num) => {
-  while (num > BITS7) {
-    write(encoder, BIT8 | (BITS7 & num));
-    num = floor(num / 128); // shift >>> 7
+const writeVarUint$1 = (encoder, num) => {
+  while (num > BITS7$1) {
+    write$1(encoder, BIT8$1 | (BITS7$1 & num));
+    num = floor$1(num / 128); // shift >>> 7
   }
-  write(encoder, BITS7 & num);
+  write$1(encoder, BITS7$1 & num);
 };
 
 /**
@@ -29267,27 +30762,27 @@ const writeVarUint = (encoder, num) => {
  * @param {Encoder} encoder
  * @param {number} num The number that is to be encoded.
  */
-const writeVarInt = (encoder, num) => {
-  const isNegative = isNegativeZero(num);
+const writeVarInt$1 = (encoder, num) => {
+  const isNegative = isNegativeZero$1(num);
   if (isNegative) {
     num = -num;
   }
   //             |- whether to continue reading         |- whether is negative     |- number
-  write(encoder, (num > BITS6 ? BIT8 : 0) | (isNegative ? BIT7 : 0) | (BITS6 & num));
-  num = floor(num / 64); // shift >>> 6
+  write$1(encoder, (num > BITS6$1 ? BIT8$1 : 0) | (isNegative ? BIT7$1 : 0) | (BITS6$1 & num));
+  num = floor$1(num / 64); // shift >>> 6
   // We don't need to consider the case of num === 0 so we can use a different
   // pattern here than above.
   while (num > 0) {
-    write(encoder, (num > BITS7 ? BIT8 : 0) | (BITS7 & num));
-    num = floor(num / 128); // shift >>> 7
+    write$1(encoder, (num > BITS7$1 ? BIT8$1 : 0) | (BITS7$1 & num));
+    num = floor$1(num / 128); // shift >>> 7
   }
 };
 
 /**
  * A cache to store strings temporarily
  */
-const _strBuffer = new Uint8Array(30000);
-const _maxStrBSize = _strBuffer.length / 3;
+const _strBuffer$1 = new Uint8Array(30000);
+const _maxStrBSize$1 = _strBuffer$1.length / 3;
 
 /**
  * Write a variable length string.
@@ -29296,17 +30791,17 @@ const _maxStrBSize = _strBuffer.length / 3;
  * @param {Encoder} encoder
  * @param {String} str The string that is to be encoded.
  */
-const _writeVarStringNative = (encoder, str) => {
-  if (str.length < _maxStrBSize) {
+const _writeVarStringNative$1 = (encoder, str) => {
+  if (str.length < _maxStrBSize$1) {
     // We can encode the string into the existing buffer
     /* c8 ignore next */
-    const written = utf8TextEncoder.encodeInto(str, _strBuffer).written || 0;
-    writeVarUint(encoder, written);
+    const written = utf8TextEncoder$1.encodeInto(str, _strBuffer$1).written || 0;
+    writeVarUint$1(encoder, written);
     for (let i = 0; i < written; i++) {
-      write(encoder, _strBuffer[i]);
+      write$1(encoder, _strBuffer$1[i]);
     }
   } else {
-    writeVarUint8Array(encoder, encodeUtf8(str));
+    writeVarUint8Array$1(encoder, encodeUtf8$1(str));
   }
 };
 
@@ -29317,12 +30812,12 @@ const _writeVarStringNative = (encoder, str) => {
  * @param {Encoder} encoder
  * @param {String} str The string that is to be encoded.
  */
-const _writeVarStringPolyfill = (encoder, str) => {
+const _writeVarStringPolyfill$1 = (encoder, str) => {
   const encodedString = unescape(encodeURIComponent(str));
   const len = encodedString.length;
-  writeVarUint(encoder, len);
+  writeVarUint$1(encoder, len);
   for (let i = 0; i < len; i++) {
-    write(encoder, /** @type {number} */ (encodedString.codePointAt(i)));
+    write$1(encoder, /** @type {number} */ (encodedString.codePointAt(i)));
   }
 };
 
@@ -29334,7 +30829,7 @@ const _writeVarStringPolyfill = (encoder, str) => {
  * @param {String} str The string that is to be encoded.
  */
 /* c8 ignore next */
-const writeVarString = (utf8TextEncoder && /** @type {any} */ (utf8TextEncoder).encodeInto) ? _writeVarStringNative : _writeVarStringPolyfill;
+const writeVarString$1 = (utf8TextEncoder$1 && /** @type {any} */ (utf8TextEncoder$1).encodeInto) ? _writeVarStringNative$1 : _writeVarStringPolyfill$1;
 
 /**
  * Append fixed-length Uint8Array to the encoder.
@@ -29343,10 +30838,10 @@ const writeVarString = (utf8TextEncoder && /** @type {any} */ (utf8TextEncoder).
  * @param {Encoder} encoder
  * @param {Uint8Array} uint8Array
  */
-const writeUint8Array = (encoder, uint8Array) => {
+const writeUint8Array$1 = (encoder, uint8Array) => {
   const bufferLen = encoder.cbuf.length;
   const cpos = encoder.cpos;
-  const leftCopyLen = min(bufferLen - cpos, uint8Array.length);
+  const leftCopyLen = min$1(bufferLen - cpos, uint8Array.length);
   const rightCopyLen = uint8Array.length - leftCopyLen;
   encoder.cbuf.set(uint8Array.subarray(0, leftCopyLen), cpos);
   encoder.cpos += leftCopyLen;
@@ -29355,7 +30850,7 @@ const writeUint8Array = (encoder, uint8Array) => {
     // Append new buffer
     encoder.bufs.push(encoder.cbuf);
     // must have at least size of remaining buffer
-    encoder.cbuf = new Uint8Array(max(bufferLen * 2, rightCopyLen));
+    encoder.cbuf = new Uint8Array(max$1(bufferLen * 2, rightCopyLen));
     // copy array
     encoder.cbuf.set(uint8Array.subarray(leftCopyLen));
     encoder.cpos = rightCopyLen;
@@ -29369,9 +30864,9 @@ const writeUint8Array = (encoder, uint8Array) => {
  * @param {Encoder} encoder
  * @param {Uint8Array} uint8Array
  */
-const writeVarUint8Array = (encoder, uint8Array) => {
-  writeVarUint(encoder, uint8Array.byteLength);
-  writeUint8Array(encoder, uint8Array);
+const writeVarUint8Array$1 = (encoder, uint8Array) => {
+  writeVarUint$1(encoder, uint8Array.byteLength);
+  writeUint8Array$1(encoder, uint8Array);
 };
 
 /**
@@ -29391,8 +30886,8 @@ const writeVarUint8Array = (encoder, uint8Array) => {
  * @param {number} len
  * @return {DataView}
  */
-const writeOnDataView = (encoder, len) => {
-  verifyLen(encoder, len);
+const writeOnDataView$1 = (encoder, len) => {
+  verifyLen$1(encoder, len);
   const dview = new DataView(encoder.cbuf.buffer, encoder.cpos, len);
   encoder.cpos += len;
   return dview
@@ -29402,30 +30897,30 @@ const writeOnDataView = (encoder, len) => {
  * @param {Encoder} encoder
  * @param {number} num
  */
-const writeFloat32 = (encoder, num) => writeOnDataView(encoder, 4).setFloat32(0, num, false);
+const writeFloat32$1 = (encoder, num) => writeOnDataView$1(encoder, 4).setFloat32(0, num, false);
 
 /**
  * @param {Encoder} encoder
  * @param {number} num
  */
-const writeFloat64 = (encoder, num) => writeOnDataView(encoder, 8).setFloat64(0, num, false);
+const writeFloat64$1 = (encoder, num) => writeOnDataView$1(encoder, 8).setFloat64(0, num, false);
 
 /**
  * @param {Encoder} encoder
  * @param {bigint} num
  */
-const writeBigInt64 = (encoder, num) => /** @type {any} */ (writeOnDataView(encoder, 8)).setBigInt64(0, num, false);
+const writeBigInt64$1 = (encoder, num) => /** @type {any} */ (writeOnDataView$1(encoder, 8)).setBigInt64(0, num, false);
 
-const floatTestBed = new DataView(new ArrayBuffer(4));
+const floatTestBed$1 = new DataView(new ArrayBuffer(4));
 /**
  * Check if a number can be encoded as a 32 bit float.
  *
  * @param {number} num
  * @return {boolean}
  */
-const isFloat32 = num => {
-  floatTestBed.setFloat32(0, num);
-  return floatTestBed.getFloat32(0) === num
+const isFloat32$1 = num => {
+  floatTestBed$1.setFloat32(0, num);
+  return floatTestBed$1.getFloat32(0) === num
 };
 
 /**
@@ -29473,67 +30968,67 @@ const isFloat32 = num => {
  * @param {Encoder} encoder
  * @param {AnyEncodable} data
  */
-const writeAny = (encoder, data) => {
+const writeAny$1 = (encoder, data) => {
   switch (typeof data) {
     case 'string':
       // TYPE 119: STRING
-      write(encoder, 119);
-      writeVarString(encoder, data);
+      write$1(encoder, 119);
+      writeVarString$1(encoder, data);
       break
     case 'number':
-      if (isInteger(data) && abs(data) <= BITS31) {
+      if (isInteger$1(data) && abs$1(data) <= BITS31$1) {
         // TYPE 125: INTEGER
-        write(encoder, 125);
-        writeVarInt(encoder, data);
-      } else if (isFloat32(data)) {
+        write$1(encoder, 125);
+        writeVarInt$1(encoder, data);
+      } else if (isFloat32$1(data)) {
         // TYPE 124: FLOAT32
-        write(encoder, 124);
-        writeFloat32(encoder, data);
+        write$1(encoder, 124);
+        writeFloat32$1(encoder, data);
       } else {
         // TYPE 123: FLOAT64
-        write(encoder, 123);
-        writeFloat64(encoder, data);
+        write$1(encoder, 123);
+        writeFloat64$1(encoder, data);
       }
       break
     case 'bigint':
       // TYPE 122: BigInt
-      write(encoder, 122);
-      writeBigInt64(encoder, data);
+      write$1(encoder, 122);
+      writeBigInt64$1(encoder, data);
       break
     case 'object':
       if (data === null) {
         // TYPE 126: null
-        write(encoder, 126);
-      } else if (isArray(data)) {
+        write$1(encoder, 126);
+      } else if (isArray$1(data)) {
         // TYPE 117: Array
-        write(encoder, 117);
-        writeVarUint(encoder, data.length);
+        write$1(encoder, 117);
+        writeVarUint$1(encoder, data.length);
         for (let i = 0; i < data.length; i++) {
-          writeAny(encoder, data[i]);
+          writeAny$1(encoder, data[i]);
         }
       } else if (data instanceof Uint8Array) {
         // TYPE 116: ArrayBuffer
-        write(encoder, 116);
-        writeVarUint8Array(encoder, data);
+        write$1(encoder, 116);
+        writeVarUint8Array$1(encoder, data);
       } else {
         // TYPE 118: Object
-        write(encoder, 118);
+        write$1(encoder, 118);
         const keys = Object.keys(data);
-        writeVarUint(encoder, keys.length);
+        writeVarUint$1(encoder, keys.length);
         for (let i = 0; i < keys.length; i++) {
           const key = keys[i];
-          writeVarString(encoder, key);
-          writeAny(encoder, data[key]);
+          writeVarString$1(encoder, key);
+          writeAny$1(encoder, data[key]);
         }
       }
       break
     case 'boolean':
       // TYPE 120/121: boolean (true/false)
-      write(encoder, data ? 120 : 121);
+      write$1(encoder, data ? 120 : 121);
       break
     default:
       // TYPE 127: undefined
-      write(encoder, 127);
+      write$1(encoder, 127);
   }
 };
 
@@ -29552,7 +31047,7 @@ const writeAny = (encoder, data) => {
  *
  * @template T
  */
-class RleEncoder extends Encoder {
+class RleEncoder extends Encoder$1 {
   /**
    * @param {function(Encoder, T):void} writer
    */
@@ -29579,7 +31074,7 @@ class RleEncoder extends Encoder {
     } else {
       if (this.count > 0) {
         // flush counter, unless this is the first value (count = 0)
-        writeVarUint(this, this.count - 1); // since count is always > 0, we can decrement by one. non-standard encoding ftw
+        writeVarUint$1(this, this.count - 1); // since count is always > 0, we can decrement by one. non-standard encoding ftw
       }
       this.count = 1;
       // write first value
@@ -29597,9 +31092,9 @@ const flushUintOptRleEncoder = encoder => {
     // flush counter, unless this is the first value (count = 0)
     // case 1: just a single value. set sign to positive
     // case 2: write several values. set sign to negative to indicate that there is a length coming
-    writeVarInt(encoder.encoder, encoder.count === 1 ? encoder.s : -encoder.s);
+    writeVarInt$1(encoder.encoder, encoder.count === 1 ? encoder.s : -encoder.s);
     if (encoder.count > 1) {
-      writeVarUint(encoder.encoder, encoder.count - 2); // since count is always > 1, we can decrement by one. non-standard encoding ftw
+      writeVarUint$1(encoder.encoder, encoder.count - 2); // since count is always > 1, we can decrement by one. non-standard encoding ftw
     }
   }
 };
@@ -29614,7 +31109,7 @@ const flushUintOptRleEncoder = encoder => {
  */
 class UintOptRleEncoder {
   constructor () {
-    this.encoder = new Encoder();
+    this.encoder = new Encoder$1();
     /**
      * @type {number}
      */
@@ -29642,7 +31137,7 @@ class UintOptRleEncoder {
    */
   toUint8Array () {
     flushUintOptRleEncoder(this);
-    return toUint8Array(this.encoder)
+    return toUint8Array$1(this.encoder)
   }
 }
 
@@ -29657,9 +31152,9 @@ const flushIntDiffOptRleEncoder = encoder => {
     // flush counter, unless this is the first value (count = 0)
     // case 1: just a single value. set first bit to positive
     // case 2: write several values. set first bit to negative to indicate that there is a length coming
-    writeVarInt(encoder.encoder, encodedDiff);
+    writeVarInt$1(encoder.encoder, encodedDiff);
     if (encoder.count > 1) {
-      writeVarUint(encoder.encoder, encoder.count - 2); // since count is always > 1, we can decrement by one. non-standard encoding ftw
+      writeVarUint$1(encoder.encoder, encoder.count - 2); // since count is always > 1, we can decrement by one. non-standard encoding ftw
     }
   }
 };
@@ -29683,7 +31178,7 @@ const flushIntDiffOptRleEncoder = encoder => {
  */
 class IntDiffOptRleEncoder {
   constructor () {
-    this.encoder = new Encoder();
+    this.encoder = new Encoder$1();
     /**
      * @type {number}
      */
@@ -29714,7 +31209,7 @@ class IntDiffOptRleEncoder {
    */
   toUint8Array () {
     flushIntDiffOptRleEncoder(this);
-    return toUint8Array(this.encoder)
+    return toUint8Array$1(this.encoder)
   }
 }
 
@@ -29751,12 +31246,12 @@ class StringEncoder {
   }
 
   toUint8Array () {
-    const encoder = new Encoder();
+    const encoder = new Encoder$1();
     this.sarr.push(this.s);
     this.s = '';
-    writeVarString(encoder, this.sarr.join(''));
-    writeUint8Array(encoder, this.lensE.toUint8Array());
-    return toUint8Array(encoder)
+    writeVarString$1(encoder, this.sarr.join(''));
+    writeUint8Array$1(encoder, this.lensE.toUint8Array());
+    return toUint8Array$1(encoder)
   }
 }
 
@@ -29771,15 +31266,15 @@ class StringEncoder {
  * @return {Error}
  */
 /* c8 ignore next */
-const create$3 = s => new Error(s);
+const create$6 = s => new Error(s);
 
 /**
  * @throws {Error}
  * @return {never}
  */
 /* c8 ignore next 3 */
-const methodUnimplemented = () => {
-  throw create$3('Method unimplemented')
+const methodUnimplemented$1 = () => {
+  throw create$6('Method unimplemented')
 };
 
 /**
@@ -29787,8 +31282,8 @@ const methodUnimplemented = () => {
  * @return {never}
  */
 /* c8 ignore next 3 */
-const unexpectedCase = () => {
-  throw create$3('Unexpected case')
+const unexpectedCase$1 = () => {
+  throw create$6('Unexpected case')
 };
 
 /**
@@ -29820,8 +31315,8 @@ const unexpectedCase = () => {
  */
 
 
-const errorUnexpectedEndOfArray = create$3('Unexpected end of array');
-const errorIntegerOutOfRange = create$3('Integer out of Range');
+const errorUnexpectedEndOfArray = create$6('Unexpected end of array');
+const errorIntegerOutOfRange = create$6('Integer out of Range');
 
 /**
  * A Decoder handles the decoding of an Uint8Array.
@@ -29918,13 +31413,13 @@ const readVarUint = decoder => {
   while (decoder.pos < len) {
     const r = decoder.arr[decoder.pos++];
     // num = num | ((r & binary.BITS7) << len)
-    num = num + (r & BITS7) * mult; // shift $r << (7*#iterations) and add it to num
+    num = num + (r & BITS7$1) * mult; // shift $r << (7*#iterations) and add it to num
     mult *= 128; // next iteration, shift 7 "more" to the left
-    if (r < BIT8) {
+    if (r < BIT8$1) {
       return num
     }
     /* c8 ignore start */
-    if (num > MAX_SAFE_INTEGER) {
+    if (num > MAX_SAFE_INTEGER$1) {
       throw errorIntegerOutOfRange
     }
     /* c8 ignore stop */
@@ -29945,10 +31440,10 @@ const readVarUint = decoder => {
  */
 const readVarInt = decoder => {
   let r = decoder.arr[decoder.pos++];
-  let num = r & BITS6;
+  let num = r & BITS6$1;
   let mult = 64;
-  const sign = (r & BIT7) > 0 ? -1 : 1;
-  if ((r & BIT8) === 0) {
+  const sign = (r & BIT7$1) > 0 ? -1 : 1;
+  if ((r & BIT8$1) === 0) {
     // don't continue reading
     return sign * num
   }
@@ -29956,13 +31451,13 @@ const readVarInt = decoder => {
   while (decoder.pos < len) {
     r = decoder.arr[decoder.pos++];
     // num = num | ((r & binary.BITS7) << len)
-    num = num + (r & BITS7) * mult;
+    num = num + (r & BITS7$1) * mult;
     mult *= 128;
-    if (r < BIT8) {
+    if (r < BIT8$1) {
       return sign * num
     }
     /* c8 ignore start */
-    if (num > MAX_SAFE_INTEGER) {
+    if (num > MAX_SAFE_INTEGER$1) {
       throw errorIntegerOutOfRange
     }
     /* c8 ignore stop */
@@ -30016,7 +31511,7 @@ const _readVarStringPolyfill = decoder => {
  * @return {String} The read String
  */
 const _readVarStringNative = decoder =>
-  /** @type any */ (utf8TextDecoder).decode(readVarUint8Array(decoder));
+  /** @type any */ (utf8TextDecoder$1).decode(readVarUint8Array(decoder));
 
 /**
  * Read string of variable length
@@ -30028,7 +31523,7 @@ const _readVarStringNative = decoder =>
  *
  */
 /* c8 ignore next */
-const readVarString = utf8TextDecoder ? _readVarStringNative : _readVarStringPolyfill;
+const readVarString = utf8TextDecoder$1 ? _readVarStringNative : _readVarStringPolyfill;
 
 /**
  * @param {Decoder} decoder
@@ -30152,7 +31647,7 @@ class UintOptRleDecoder extends Decoder {
     if (this.count === 0) {
       this.s = readVarInt(this);
       // if the sign is negative, we read the count too, otherwise count is 1
-      const isNegative = isNegativeZero(this.s);
+      const isNegative = isNegativeZero$1(this.s);
       this.count = 1;
       if (isNegative) {
         this.s = -this.s;
@@ -30186,7 +31681,7 @@ class IntDiffOptRleDecoder extends Decoder {
       const diff = readVarInt(this);
       // if the first bit is set, we read more data
       const hasCount = diff & 1;
-      this.diff = floor(diff / 2); // shift >> 1
+      this.diff = floor$1(diff / 2); // shift >> 1
       this.count = 1;
       if (hasCount) {
         this.count = readVarUint(this) + 2;
@@ -30235,16 +31730,7 @@ const getRandomValues = crypto.getRandomValues.bind(crypto);
  */
 
 
-const rand = Math.random;
-
 const uint32 = () => getRandomValues(new Uint32Array(1))[0];
-
-/**
- * @template T
- * @param {Array<T>} arr
- * @return {T}
- */
-const oneOf$1 = arr => arr[floor(rand() * arr.length)];
 
 // @ts-ignore
 const uuidv4Template = [1e7] + -1e3 + -4e3 + -8e3 + -1e11;
@@ -30288,7 +31774,7 @@ const getUnixTime = Date.now;
  * @param {function(PromiseResolve<T>,function(Error):void):any} f
  * @return {Promise<T>}
  */
-const create$2 = f => /** @type {Promise<T>} */ (new Promise(f));
+const create$5 = f => /** @type {Promise<T>} */ (new Promise(f));
 
 /**
  * `Promise.all` wait for all promises in the array to resolve and return the result
@@ -30311,7 +31797,7 @@ Promise.all.bind(Promise);
  * @return {T|null}
  */
 /* c8 ignore next */
-const undefinedToNull = v => v === undefined ? null : v;
+const undefinedToNull$1 = v => v === undefined ? null : v;
 
 /* eslint-env browser */
 
@@ -30324,7 +31810,7 @@ const undefinedToNull = v => v === undefined ? null : v;
  */
 
 /* c8 ignore start */
-class VarStoragePolyfill {
+let VarStoragePolyfill$1 = class VarStoragePolyfill {
   constructor () {
     this.map = new Map();
   }
@@ -30343,21 +31829,21 @@ class VarStoragePolyfill {
   getItem (key) {
     return this.map.get(key)
   }
-}
+};
 /* c8 ignore stop */
 
 /**
  * @type {any}
  */
-let _localStorage = new VarStoragePolyfill();
-let usePolyfill = true;
+let _localStorage$1 = new VarStoragePolyfill$1();
+let usePolyfill$1 = true;
 
 /* c8 ignore start */
 try {
   // if the same-origin rule is violated, accessing localStorage might thrown an error
   if (typeof localStorage !== 'undefined' && localStorage) {
-    _localStorage = localStorage;
-    usePolyfill = false;
+    _localStorage$1 = localStorage;
+    usePolyfill$1 = false;
   }
 } catch (e) { }
 /* c8 ignore stop */
@@ -30366,9 +31852,9 @@ try {
  * This is basically localStorage in browser, or a polyfill in nodejs
  */
 /* c8 ignore next */
-const varStorage = _localStorage;
+const varStorage$1 = _localStorage$1;
 
-const EqualityTraitSymbol = Symbol('Equality');
+const EqualityTraitSymbol$1 = Symbol('Equality');
 
 /**
  * @typedef {{ [EqualityTraitSymbol]:(other:EqualityTrait)=>boolean }} EqualityTrait
@@ -30393,13 +31879,13 @@ const EqualityTraitSymbol = Symbol('Equality');
  * @param {T} b
  * @return {boolean}
  */
-const equals = (a, b) => a === b || !!a?.[EqualityTraitSymbol]?.(b) || false;
+const equals$1 = (a, b) => a === b || !!a?.[EqualityTraitSymbol$1]?.(b) || false;
 
 /**
  * @param {any} o
  * @return {o is { [k:string]:any }}
  */
-const isObject$1 = o => typeof o === 'object';
+const isObject$2 = o => typeof o === 'object';
 
 /**
  * Object.assign
@@ -30409,7 +31895,7 @@ const assign = Object.assign;
 /**
  * @param {Object<string,any>} obj
  */
-const keys = Object.keys;
+const keys$1 = Object.keys;
 
 /**
  * @template V
@@ -30426,7 +31912,7 @@ const forEach = (obj, f) => {
  * @param {Object<string,any>} obj
  * @return {number}
  */
-const size = obj => keys(obj).length;
+const size$1 = obj => keys$1(obj).length;
 
 /**
  * @param {Object|null|undefined} obj
@@ -30445,7 +31931,7 @@ const isEmpty = obj => {
  * @param {(v:T[keyof T],k:keyof T)=>boolean} f
  * @return {boolean}
  */
-const every = (obj, f) => {
+const every$2 = (obj, f) => {
   for (const key in obj) {
     if (!f(obj[key], key)) {
       return false
@@ -30461,14 +31947,14 @@ const every = (obj, f) => {
  * @param {string|number|symbol} key
  * @return {boolean}
  */
-const hasProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+const hasProperty$1 = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
 /**
  * @param {Object<string,any>} a
  * @param {Object<string,any>} b
  * @return {boolean}
  */
-const equalFlat = (a, b) => a === b || (size(a) === size(b) && every(a, (val, key) => (val !== undefined || hasProperty(b, key)) && equals(b[key], val)));
+const equalFlat = (a, b) => a === b || (size$1(a) === size$1(b) && every$2(a, (val, key) => (val !== undefined || hasProperty$1(b, key)) && equals$1(b[key], val)));
 
 /**
  * Make an object immutable. This hurts performance and is usually not needed if you perform good
@@ -30526,15 +32012,15 @@ const callAll = (fs, args, i = 0) => {
  * @param {any} b
  * @return {boolean}
  */
-const equalityDeep = (a, b) => {
+const equalityDeep$1 = (a, b) => {
   if (a === b) {
     return true
   }
   if (a == null || b == null || (a.constructor !== b.constructor && (a.constructor || Object) !== (b.constructor || Object))) {
     return false
   }
-  if (a[EqualityTraitSymbol] != null) {
-    return a[EqualityTraitSymbol](b)
+  if (a[EqualityTraitSymbol$1] != null) {
+    return a[EqualityTraitSymbol$1](b)
   }
   switch (a.constructor) {
     case ArrayBuffer:
@@ -30568,7 +32054,7 @@ const equalityDeep = (a, b) => {
         return false
       }
       for (const key of a.keys()) {
-        if (!b.has(key) || !equalityDeep(a.get(key), b.get(key))) {
+        if (!b.has(key) || !equalityDeep$1(a.get(key), b.get(key))) {
           return false
         }
       }
@@ -30576,11 +32062,11 @@ const equalityDeep = (a, b) => {
     }
     case undefined:
     case Object:
-      if (size(a) !== size(b)) {
+      if (size$1(a) !== size$1(b)) {
         return false
       }
       for (const key in a) {
-        if (!hasProperty(a, key) || !equalityDeep(a[key], b[key])) {
+        if (!hasProperty$1(a, key) || !equalityDeep$1(a[key], b[key])) {
           return false
         }
       }
@@ -30590,7 +32076,7 @@ const equalityDeep = (a, b) => {
         return false
       }
       for (let i = 0; i < a.length; i++) {
-        if (!equalityDeep(a[i], b[i])) {
+        if (!equalityDeep$1(a[i], b[i])) {
           return false
         }
       }
@@ -30609,7 +32095,7 @@ const equalityDeep = (a, b) => {
  * @param {Array<OPTS>} options
  */
 // @ts-ignore
-const isOneOf = (value, options) => options.includes(value);
+const isOneOf$1 = (value, options) => options.includes(value);
 
 /**
  * Isomorphic module to work access the environment (query params, env variables).
@@ -30620,55 +32106,52 @@ const isOneOf = (value, options) => options.includes(value);
 
 /* c8 ignore next 2 */
 // @ts-ignore
-const isNode = typeof process !== 'undefined' && process.release && /node|io\.js/.test(process.release.name) && Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]';
-
-/* c8 ignore next */
-const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && !isNode;
+const isNode$1 = typeof process !== 'undefined' && process.release && /node|io\.js/.test(process.release.name) && Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]';
 
 /**
  * @type {Map<string,string>}
  */
-let params;
+let params$1;
 
 /* c8 ignore start */
-const computeParams = () => {
-  if (params === undefined) {
-    if (isNode) {
-      params = create$5();
+const computeParams$1 = () => {
+  if (params$1 === undefined) {
+    if (isNode$1) {
+      params$1 = create$8();
       const pargs = process.argv;
       let currParamName = null;
       for (let i = 0; i < pargs.length; i++) {
         const parg = pargs[i];
         if (parg[0] === '-') {
           if (currParamName !== null) {
-            params.set(currParamName, '');
+            params$1.set(currParamName, '');
           }
           currParamName = parg;
         } else {
           if (currParamName !== null) {
-            params.set(currParamName, parg);
+            params$1.set(currParamName, parg);
             currParamName = null;
           }
         }
       }
       if (currParamName !== null) {
-        params.set(currParamName, '');
+        params$1.set(currParamName, '');
       }
       // in ReactNative for example this would not be true (unless connected to the Remote Debugger)
     } else if (typeof location === 'object') {
-      params = create$5(); // eslint-disable-next-line no-undef
+      params$1 = create$8(); // eslint-disable-next-line no-undef
       (location.search || '?').slice(1).split('&').forEach((kv) => {
         if (kv.length !== 0) {
           const [key, value] = kv.split('=');
-          params.set(`--${fromCamelCase(key, '-')}`, value);
-          params.set(`-${fromCamelCase(key, '-')}`, value);
+          params$1.set(`--${fromCamelCase$1(key, '-')}`, value);
+          params$1.set(`-${fromCamelCase$1(key, '-')}`, value);
         }
       });
     } else {
-      params = create$5();
+      params$1 = create$8();
     }
   }
-  return params
+  return params$1
 };
 /* c8 ignore stop */
 
@@ -30677,32 +32160,32 @@ const computeParams = () => {
  * @return {boolean}
  */
 /* c8 ignore next */
-const hasParam = (name) => computeParams().has(name);
+const hasParam$1 = (name) => computeParams$1().has(name);
 
 /**
  * @param {string} name
  * @return {string|null}
  */
 /* c8 ignore next 4 */
-const getVariable = (name) =>
-  isNode
-    ? undefinedToNull(process.env[name.toUpperCase().replaceAll('-', '_')])
-    : undefinedToNull(varStorage.getItem(name));
+const getVariable$1 = (name) =>
+  isNode$1
+    ? undefinedToNull$1(process.env[name.toUpperCase().replaceAll('-', '_')])
+    : undefinedToNull$1(varStorage$1.getItem(name));
 
 /**
  * @param {string} name
  * @return {boolean}
  */
 /* c8 ignore next 2 */
-const hasConf = (name) =>
-  hasParam('--' + name) || getVariable(name) !== null;
+const hasConf$1 = (name) =>
+  hasParam$1('--' + name) || getVariable$1(name) !== null;
 
 /* c8 ignore next */
-const production = hasConf('production');
+const production$1 = hasConf$1('production');
 
 /* c8 ignore next 2 */
-const forceColor = isNode &&
-  isOneOf(process.env.FORCE_COLOR, ['true', '1', '2']);
+const forceColor$1 = isNode$1 &&
+  isOneOf$1(process.env.FORCE_COLOR, ['true', '1', '2']);
 
 /* c8 ignore start */
 /**
@@ -30712,58 +32195,17 @@ const forceColor = isNode &&
  * Disable color using `--no-color` parameter or using `NO_COLOR=1` environment variable.
  * `FORCE_COLOR=1` enables color and takes precedence over all.
  */
-const supportsColor = forceColor || (
-  !hasParam('--no-colors') && // @todo deprecate --no-colors
-  !hasConf('no-color') &&
-  (!isNode || process.stdout.isTTY) && (
-    !isNode ||
-    hasParam('--color') ||
-    getVariable('COLORTERM') !== null ||
-    (getVariable('TERM') || '').includes('color')
+const supportsColor = forceColor$1 || (
+  !hasParam$1('--no-colors') && // @todo deprecate --no-colors
+  !hasConf$1('no-color') &&
+  (!isNode$1 || process.stdout.isTTY) && (
+    !isNode$1 ||
+    hasParam$1('--color') ||
+    getVariable$1('COLORTERM') !== null ||
+    (getVariable$1('TERM') || '').includes('color')
   )
 );
 /* c8 ignore stop */
-
-/**
- * Utility functions to work with buffers (Uint8Array).
- *
- * @module buffer
- */
-
-
-/* c8 ignore start */
-/**
- * @param {Uint8Array} bytes
- * @return {string}
- */
-const toBase64Browser = bytes => {
-  let s = '';
-  for (let i = 0; i < bytes.byteLength; i++) {
-    s += fromCharCode(bytes[i]);
-  }
-  // eslint-disable-next-line no-undef
-  return btoa(s)
-};
-/* c8 ignore stop */
-
-/**
- * @param {Uint8Array} bytes
- * @return {string}
- */
-const toBase64Node = bytes => Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString('base64');
-
-/* c8 ignore next */
-const toBase64 = isBrowser ? toBase64Browser : toBase64Node;
-
-/**
- * Encode anything as a UInt8Array. It's a pun on typescripts's `any` type.
- * See encoding.writeAny for more information.
- *
- * @param {any} data
- * @return {Uint8Array}
- */
-const encodeAny = data =>
-  encode(encoder => writeAny(encoder, data));
 
 /**
  * Working with value pairs.
@@ -30791,7 +32233,7 @@ class Pair {
  * @param {R} right
  * @return {Pair<L,R>}
  */
-const create$1 = (left, right) => new Pair(left, right);
+const create$4 = (left, right) => new Pair(left, right);
 
 /**
  * Fast Pseudo Random Number Generators.
@@ -30809,7 +32251,7 @@ const create$1 = (left, right) => new Pair(left, right);
  * @param {PRNG} gen A random number generator.
  * @return {Boolean} A random boolean
  */
-const bool = gen => (gen.next() >= 0.5);
+const bool$1 = gen => (gen.next() >= 0.5);
 
 /**
  * Generates a random integer with 53 bit resolution.
@@ -30819,7 +32261,7 @@ const bool = gen => (gen.next() >= 0.5);
  * @param {Number} max The upper bound of the allowed return values (inclusive).
  * @return {Number} A random integer on [min, max]
  */
-const int53 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
+const int53$1 = (gen, min, max) => floor$1(gen.next() * (max + 1 - min) + min);
 
 /**
  * Generates a random integer with 32 bit resolution.
@@ -30829,7 +32271,7 @@ const int53 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
  * @param {Number} max The upper bound of the allowed return values (inclusive).
  * @return {Number} A random integer on [min, max]
  */
-const int32 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
+const int32$1 = (gen, min, max) => floor$1(gen.next() * (max + 1 - min) + min);
 
 /**
  * @deprecated
@@ -30841,13 +32283,13 @@ const int32 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
  * @param {Number} max The upper bound of the allowed return values (inclusive). The max inclusive number is `binary.BITS31-1`
  * @return {Number} A random integer on [min, max]
  */
-const int31 = (gen, min, max) => int32(gen, min, max);
+const int31$1 = (gen, min, max) => int32$1(gen, min, max);
 
 /**
  * @param {PRNG} gen
  * @return {string} A single letter (a-z)
  */
-const letter = gen => fromCharCode(int31(gen, 97, 122));
+const letter$1 = gen => fromCharCode$1(int31$1(gen, 97, 122));
 
 /**
  * @param {PRNG} gen
@@ -30855,11 +32297,11 @@ const letter = gen => fromCharCode(int31(gen, 97, 122));
  * @param {number} [maxLen=20]
  * @return {string} A random word (0-20 characters) without spaces consisting of letters (a-z)
  */
-const word = (gen, minLen = 0, maxLen = 20) => {
-  const len = int31(gen, minLen, maxLen);
+const word$1 = (gen, minLen = 0, maxLen = 20) => {
+  const len = int31$1(gen, minLen, maxLen);
   let str = '';
   for (let i = 0; i < len; i++) {
-    str += letter(gen);
+    str += letter$1(gen);
   }
   return str
 };
@@ -30872,7 +32314,7 @@ const word = (gen, minLen = 0, maxLen = 20) => {
  * @return {T} One of the values of the supplied Array.
  * @template T
  */
-const oneOf = (gen, array) => array[int31(gen, 0, array.length - 1)];
+const oneOf$2 = (gen, array) => array[int31$1(gen, 0, array.length - 1)];
 /* c8 ignore stop */
 
 /**
@@ -30932,9 +32374,9 @@ const oneOf = (gen, array) => array[int31(gen, 0, array.length - 1)];
  * } Intersect
  */
 
-const schemaSymbol = Symbol('0schema');
+const schemaSymbol$1 = Symbol('0schema');
 
-class ValidationError {
+let ValidationError$1 = class ValidationError {
   constructor () {
     /**
      * Reverse errors
@@ -30958,28 +32400,28 @@ class ValidationError {
     for (let i = this._rerrs.length - 1; i > 0; i--) {
       const r = this._rerrs[i];
       /* c8 ignore next */
-      s.push(repeat(' ', (this._rerrs.length - i) * 2) + `${r.path != null ? `[${r.path}] ` : ''}${r.has} doesn't match ${r.expected}. ${r.message}`);
+      s.push(repeat$1(' ', (this._rerrs.length - i) * 2) + `${r.path != null ? `[${r.path}] ` : ''}${r.has} doesn't match ${r.expected}. ${r.message}`);
     }
     return s.join('\n')
   }
-}
+};
 
 /**
  * @param {any} a
  * @param {any} b
  * @return {boolean}
  */
-const shapeExtends = (a, b) => {
+const shapeExtends$1 = (a, b) => {
   if (a === b) return true
   if (a == null || b == null || a.constructor !== b.constructor) return false
-  if (a[EqualityTraitSymbol]) return equals(a, b) // last resort: check equality (do this before array and obj check which don't implement the equality trait)
-  if (isArray(a)) {
-    return every$1(a, aitem =>
-      some(b, bitem => shapeExtends(aitem, bitem))
+  if (a[EqualityTraitSymbol$1]) return equals$1(a, b) // last resort: check equality (do this before array and obj check which don't implement the equality trait)
+  if (isArray$1(a)) {
+    return every$3(a, aitem =>
+      some$1(b, bitem => shapeExtends$1(aitem, bitem))
     )
-  } else if (isObject$1(a)) {
-    return every(a, (aitem, akey) =>
-      shapeExtends(aitem, b[akey])
+  } else if (isObject$2(a)) {
+    return every$2(a, (aitem, akey) =>
+      shapeExtends$1(aitem, b[akey])
     )
   }
   /* c8 ignore next */
@@ -30990,7 +32432,7 @@ const shapeExtends = (a, b) => {
  * @template T
  * @implements {equalityTraits.EqualityTrait}
  */
-class Schema {
+let Schema$1 = class Schema {
   // this.shape must not be defined on Schema. Otherwise typecheck on metatypes (e.g. $$object) won't work as expected anymore
   /**
    * If true, the more things are added to the shape the more objects this schema will accept (e.g.
@@ -31005,7 +32447,7 @@ class Schema {
   extends (other) {
     let [a, b] = [/** @type {any} */(this).shape, /** @type {any} */ (other).shape];
     if (/** @type {typeof Schema<any>} */ (this.constructor)._dilutes) [b, a] = [a, b];
-    return shapeExtends(a, b)
+    return shapeExtends$1(a, b)
   }
 
   /**
@@ -31015,15 +32457,15 @@ class Schema {
    */
   equals (other) {
     // @ts-ignore
-    return this.constructor === other.constructor && equalityDeep(this.shape, other.shape)
+    return this.constructor === other.constructor && equalityDeep$1(this.shape, other.shape)
   }
 
-  [schemaSymbol] () { return true }
+  [schemaSymbol$1] () { return true }
 
   /**
    * @param {object} other
    */
-  [EqualityTraitSymbol] (other) {
+  [EqualityTraitSymbol$1] (other) {
     return this.equals(/** @type {any} */ (other))
   }
 
@@ -31048,7 +32490,7 @@ class Schema {
    * @return {_o is T}
    */
   check (_o, _err) {
-    methodUnimplemented();
+    methodUnimplemented$1();
   }
   /* c8 ignore stop */
 
@@ -31057,14 +32499,14 @@ class Schema {
    */
   get nullable () {
     // @ts-ignore
-    return $union(this, $null)
+    return $union$1(this, $null$1)
   }
 
   /**
    * @type {$Optional<Schema<T>>}
    */
   get optional () {
-    return new $Optional(/** @type {Schema<T>} */ (this))
+    return new $Optional$1(/** @type {Schema<T>} */ (this))
   }
 
   /**
@@ -31080,7 +32522,7 @@ class Schema {
    * @return {Extract<OO, T> extends never ? T : (OO extends Array<never> ? T : Extract<OO,T>)}
    */
   cast (o) {
-    assert(o, this);
+    assert$1(o, this);
     return /** @type {any} */ (o)
   }
 
@@ -31104,10 +32546,10 @@ class Schema {
    * @return {o extends T ? T : never}
    */
   expect (o) {
-    assert(o, this);
+    assert$1(o, this);
     return o
   }
-}
+};
 
 /**
  * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} Constr
@@ -31118,7 +32560,7 @@ class Schema {
  * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} C
  * @extends {Schema<Instance<C>>}
  */
-class $ConstructedBy extends Schema {
+let $ConstructedBy$1 = class $ConstructedBy extends Schema$1 {
   /**
    * @param {C} c
    * @param {((o:Instance<C>)=>boolean)|null} check
@@ -31140,7 +32582,7 @@ class $ConstructedBy extends Schema {
     !c && err?.extend(null, this.shape.name, o?.constructor.name, o?.constructor !== this.shape ? 'Constructor match failed' : 'Check failed');
     return c
   }
-}
+};
 
 /**
  * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} C
@@ -31148,15 +32590,15 @@ class $ConstructedBy extends Schema {
  * @param {((o:Instance<C>) => boolean)|null} check
  * @return {CastToSchema<$ConstructedBy<C>>}
  */
-const $constructedBy = (c, check = null) => new $ConstructedBy(c, check);
-$constructedBy($ConstructedBy);
+const $constructedBy$1 = (c, check = null) => new $ConstructedBy$1(c, check);
+$constructedBy$1($ConstructedBy$1);
 
 /**
  * Check custom properties on any object. You may want to overwrite the generated Schema<any>.
  *
  * @extends {Schema<any>}
  */
-class $Custom extends Schema {
+let $Custom$1 = class $Custom extends Schema$1 {
   /**
    * @param {(o:any) => boolean} check
    */
@@ -31179,20 +32621,20 @@ class $Custom extends Schema {
     !c && err?.extend(null, 'custom prop', o?.constructor.name, 'failed to check custom prop');
     return c
   }
-}
+};
 
 /**
  * @param {(o:any) => boolean} check
  * @return {Schema<any>}
  */
-const $custom = (check) => new $Custom(check);
-$constructedBy($Custom);
+const $custom$1 = (check) => new $Custom$1(check);
+$constructedBy$1($Custom$1);
 
 /**
  * @template {Primitive} T
  * @extends {Schema<T>}
  */
-class $Literal extends Schema {
+let $Literal$1 = class $Literal extends Schema$1 {
   /**
    * @param {Array<T>} literals
    */
@@ -31213,15 +32655,15 @@ class $Literal extends Schema {
     !c && err?.extend(null, this.shape.join(' | '), o.toString());
     return c
   }
-}
+};
 
 /**
  * @template {Primitive[]} T
  * @param {T} literals
  * @return {CastToSchema<$Literal<T[number]>>}
  */
-const $literal = (...literals) => new $Literal(literals);
-const $$literal = $constructedBy($Literal);
+const $literal$1 = (...literals) => new $Literal$1(literals);
+const $$literal$1 = $constructedBy$1($Literal$1);
 
 /**
  * @template {Array<string|Schema<string|number>>} Ts
@@ -31232,7 +32674,7 @@ const $$literal = $constructedBy($Literal);
  * @param {string} str
  * @return {string}
  */
-const _regexEscape = /** @type {any} */ (RegExp).escape || /** @type {(str:string) => string} */ (str =>
+const _regexEscape$1 = /** @type {any} */ (RegExp).escape || /** @type {(str:string) => string} */ (str =>
   str.replace(/[().|&,$^[\]]/g, s => '\\' + s)
 );
 
@@ -31240,39 +32682,39 @@ const _regexEscape = /** @type {any} */ (RegExp).escape || /** @type {(str:strin
  * @param {string|Schema<any>} s
  * @return {string[]}
  */
-const _schemaStringTemplateToRegex = s => {
-  if ($string.check(s)) {
-    return [_regexEscape(s)]
+const _schemaStringTemplateToRegex$1 = s => {
+  if ($string$1.check(s)) {
+    return [_regexEscape$1(s)]
   }
-  if ($$literal.check(s)) {
+  if ($$literal$1.check(s)) {
     return /** @type {Array<string|number>} */ (s.shape).map(v => v + '')
   }
-  if ($$number.check(s)) {
+  if ($$number$1.check(s)) {
     return ['[+-]?\\d+.?\\d*']
   }
-  if ($$string.check(s)) {
+  if ($$string$1.check(s)) {
     return ['.*']
   }
-  if ($$union.check(s)) {
-    return s.shape.map(_schemaStringTemplateToRegex).flat(1)
+  if ($$union$1.check(s)) {
+    return s.shape.map(_schemaStringTemplateToRegex$1).flat(1)
   }
   /* c8 ignore next 2 */
   // unexpected schema structure (only supports unions and string in literal types)
-  unexpectedCase();
+  unexpectedCase$1();
 };
 
 /**
  * @template {Array<string|Schema<string|number>>} T
  * @extends {Schema<CastStringTemplateArgsToTemplate<T>>}
  */
-class $StringTemplate extends Schema {
+let $StringTemplate$1 = class $StringTemplate extends Schema$1 {
   /**
    * @param {T} shape
    */
   constructor (shape) {
     super();
     this.shape = shape;
-    this._r = new RegExp('^' + shape.map(_schemaStringTemplateToRegex).map(opts => `(${opts.join('|')})`).join('') + '$');
+    this._r = new RegExp('^' + shape.map(_schemaStringTemplateToRegex$1).map(opts => `(${opts.join('|')})`).join('') + '$');
   }
 
   /**
@@ -31286,15 +32728,15 @@ class $StringTemplate extends Schema {
     !c && err?.extend(null, this._r.toString(), o.toString(), 'String doesn\'t match string template.');
     return c
   }
-}
-$constructedBy($StringTemplate);
+};
+$constructedBy$1($StringTemplate$1);
 
-const isOptionalSymbol = Symbol('optional');
+const isOptionalSymbol$1 = Symbol('optional');
 /**
  * @template {Schema<any>} S
  * @extends Schema<Unwrap<S>|undefined>
  */
-class $Optional extends Schema {
+let $Optional$1 = class $Optional extends Schema$1 {
   /**
    * @param {S} shape
    */
@@ -31315,14 +32757,14 @@ class $Optional extends Schema {
     return c
   }
 
-  get [isOptionalSymbol] () { return true }
-}
-const $$optional = $constructedBy($Optional);
+  get [isOptionalSymbol$1] () { return true }
+};
+const $$optional$1 = $constructedBy$1($Optional$1);
 
 /**
  * @extends Schema<never>
  */
-class $Never extends Schema {
+let $Never$1 = class $Never extends Schema$1 {
   /**
    * @param {any} _o
    * @param {ValidationError} [err]
@@ -31333,8 +32775,8 @@ class $Never extends Schema {
     err?.extend(null, 'never', typeof _o);
     return false
   }
-}
-$constructedBy($Never);
+};
+$constructedBy$1($Never$1);
 
 /**
  * @template {{ [key: string|symbol|number]: Schema<any> }} S
@@ -31345,7 +32787,7 @@ $constructedBy($Never);
  * @template {{[key:string|symbol|number]: Schema<any>}} S
  * @extends {Schema<$ObjectToType<S>>}
  */
-class $Object extends Schema {
+let $Object$1 = class $Object extends Schema$1 {
   /**
    * @param {S} shape
    * @param {boolean} partial
@@ -31379,13 +32821,13 @@ class $Object extends Schema {
       err?.extend(null, 'object', 'null');
       return false
     }
-    return every(this.shape, (vv, vk) => {
-      const c = (this._isPartial && !hasProperty(o, vk)) || vv.check(o[vk], err);
+    return every$2(this.shape, (vv, vk) => {
+      const c = (this._isPartial && !hasProperty$1(o, vk)) || vv.check(o[vk], err);
       !c && err?.extend(vk.toString(), vv.toString(), typeof o[vk], 'Object property does not match');
       return c
     })
   }
-}
+};
 
 /**
  * @template S
@@ -31399,19 +32841,19 @@ class $Object extends Schema {
  * @param {S} def
  * @return {_ObjectDefToSchema<S> extends Schema<infer S> ? Schema<{ [K in keyof S]: S[K] }> : never}
  */
-const $object = def => /** @type {any} */ (new $Object(def));
-const $$object = $constructedBy($Object);
+const $object$1 = def => /** @type {any} */ (new $Object$1(def));
+const $$object$1 = $constructedBy$1($Object$1);
 /**
  * @type {Schema<{[key:string]: any}>}
  */
-const $objectAny = $custom(o => o != null && (o.constructor === Object || o.constructor == null));
+const $objectAny$1 = $custom$1(o => o != null && (o.constructor === Object || o.constructor == null));
 
 /**
  * @template {Schema<string|number|symbol>} Keys
  * @template {Schema<any>} Values
  * @extends {Schema<{ [key in Unwrap<Keys>]: Unwrap<Values> }>}
  */
-class $Record extends Schema {
+let $Record$1 = class $Record extends Schema$1 {
   /**
    * @param {Keys} keys
    * @param {Values} values
@@ -31429,14 +32871,14 @@ class $Record extends Schema {
    * @return {o is { [key in Unwrap<Keys>]: Unwrap<Values> }}
    */
   check (o, err) {
-    return o != null && every(o, (vv, vk) => {
+    return o != null && every$2(o, (vv, vk) => {
       const ck = this.shape.keys.check(vk, err);
       /* c8 ignore next */
       !ck && err?.extend(vk + '', 'Record', typeof o, ck ? 'Key doesn\'t match schema' : 'Value doesn\'t match value');
       return ck && this.shape.values.check(vv, err)
     })
   }
-}
+};
 
 /**
  * @template {Schema<string|number|symbol>} Keys
@@ -31445,14 +32887,14 @@ class $Record extends Schema {
  * @param {Values} values
  * @return {CastToSchema<$Record<Keys,Values>>}
  */
-const $record = (keys, values) => new $Record(keys, values);
-const $$record = $constructedBy($Record);
+const $record$1 = (keys, values) => new $Record$1(keys, values);
+const $$record$1 = $constructedBy$1($Record$1);
 
 /**
  * @template {Schema<any>[]} S
  * @extends {Schema<{ [Key in keyof S]: S[Key] extends Schema<infer Type> ? Type : never }>}
  */
-class $Tuple extends Schema {
+let $Tuple$1 = class $Tuple extends Schema$1 {
   /**
    * @param {S} shape
    */
@@ -31467,28 +32909,28 @@ class $Tuple extends Schema {
    * @return {o is { [K in keyof S]: S[K] extends Schema<infer Type> ? Type : never }}
    */
   check (o, err) {
-    return o != null && every(this.shape, (vv, vk) => {
+    return o != null && every$2(this.shape, (vv, vk) => {
       const c = /** @type {Schema<any>} */ (vv).check(o[vk], err);
       /* c8 ignore next */
       !c && err?.extend(vk.toString(), 'Tuple', typeof vv);
       return c
     })
   }
-}
+};
 
 /**
  * @template {Array<Schema<any>>} T
  * @param {T} def
  * @return {CastToSchema<$Tuple<T>>}
  */
-const $tuple = (...def) => new $Tuple(def);
-$constructedBy($Tuple);
+const $tuple$1 = (...def) => new $Tuple$1(def);
+$constructedBy$1($Tuple$1);
 
 /**
  * @template {Schema<any>} S
  * @extends {Schema<Array<S extends Schema<infer T> ? T : never>>}
  */
-class $Array extends Schema {
+let $Array$1 = class $Array extends Schema$1 {
   /**
    * @param {Array<S>} v
    */
@@ -31497,7 +32939,7 @@ class $Array extends Schema {
     /**
      * @type {Schema<S extends Schema<infer T> ? T : never>}
      */
-    this.shape = v.length === 1 ? v[0] : new $Union(v);
+    this.shape = v.length === 1 ? v[0] : new $Union$1(v);
   }
 
   /**
@@ -31506,30 +32948,30 @@ class $Array extends Schema {
    * @return {o is Array<S extends Schema<infer T> ? T : never>} o
    */
   check (o, err) {
-    const c = isArray(o) && every$1(o, oi => this.shape.check(oi));
+    const c = isArray$1(o) && every$3(o, oi => this.shape.check(oi));
     /* c8 ignore next */
     !c && err?.extend(null, 'Array', '');
     return c
   }
-}
+};
 
 /**
  * @template {Array<Schema<any>>} T
  * @param {T} def
  * @return {Schema<Array<T extends Array<Schema<infer S>> ? S : never>>}
  */
-const $array = (...def) => new $Array(def);
-const $$array = $constructedBy($Array);
+const $array$1 = (...def) => new $Array$1(def);
+const $$array$1 = $constructedBy$1($Array$1);
 /**
  * @type {Schema<Array<any>>}
  */
-const $arrayAny = $custom(o => isArray(o));
+const $arrayAny$1 = $custom$1(o => isArray$1(o));
 
 /**
  * @template T
  * @extends {Schema<T>}
  */
-class $InstanceOf extends Schema {
+let $InstanceOf$1 = class $InstanceOf extends Schema$1 {
   /**
    * @param {new (...args:any) => T} constructor
    * @param {((o:T) => boolean)|null} check
@@ -31551,7 +32993,7 @@ class $InstanceOf extends Schema {
     !c && err?.extend(null, this.shape.name, o?.constructor.name);
     return c
   }
-}
+};
 
 /**
  * @template T
@@ -31559,10 +33001,10 @@ class $InstanceOf extends Schema {
  * @param {((o:T) => boolean)|null} check
  * @return {Schema<T>}
  */
-const $instanceOf = (c, check = null) => new $InstanceOf(c, check);
-$constructedBy($InstanceOf);
+const $instanceOf$1 = (c, check = null) => new $InstanceOf$1(c, check);
+$constructedBy$1($InstanceOf$1);
 
-const $$schema = $instanceOf(Schema);
+const $$schema$1 = $instanceOf$1(Schema$1);
 
 /**
  * @template {Schema<any>[]} Args
@@ -31573,14 +33015,14 @@ const $$schema = $instanceOf(Schema);
  * @template {Array<Schema<any>>} Args
  * @extends {Schema<_LArgsToLambdaDef<Args>>}
  */
-class $Lambda extends Schema {
+let $Lambda$1 = class $Lambda extends Schema$1 {
   /**
    * @param {Args} args
    */
   constructor (args) {
     super();
     this.len = args.length - 1;
-    this.args = $tuple(...args.slice(-1));
+    this.args = $tuple$1(...args.slice(-1));
     this.res = args[this.len];
   }
 
@@ -31595,19 +33037,19 @@ class $Lambda extends Schema {
     !c && err?.extend(null, 'function', typeof f);
     return c
   }
-}
-const $$lambda = $constructedBy($Lambda);
+};
+const $$lambda$1 = $constructedBy$1($Lambda$1);
 
 /**
  * @type {Schema<Function>}
  */
-const $function = $custom(o => typeof o === 'function');
+const $function$1 = $custom$1(o => typeof o === 'function');
 
 /**
  * @template {Array<Schema<any>>} T
  * @extends {Schema<Intersect<UnwrapArray<T>>>}
  */
-class $Intersection extends Schema {
+let $Intersection$1 = class $Intersection extends Schema$1 {
   /**
    * @param {T} v
    */
@@ -31626,19 +33068,19 @@ class $Intersection extends Schema {
    */
   check (o, err) {
     // @ts-ignore
-    const c = every$1(this.shape, check => check.check(o, err));
+    const c = every$3(this.shape, check => check.check(o, err));
     /* c8 ignore next */
     !c && err?.extend(null, 'Intersectinon', typeof o);
     return c
   }
-}
-$constructedBy($Intersection, o => o.shape.length > 0); // Intersection with length=0 is considered "any"
+};
+$constructedBy$1($Intersection$1, o => o.shape.length > 0); // Intersection with length=0 is considered "any"
 
 /**
  * @template S
  * @extends {Schema<S>}
  */
-class $Union extends Schema {
+let $Union$1 = class $Union extends Schema$1 {
   static _dilutes = true
 
   /**
@@ -31655,82 +33097,82 @@ class $Union extends Schema {
    * @return {o is S}
    */
   check (o, err) {
-    const c = some(this.shape, (vv) => vv.check(o, err));
+    const c = some$1(this.shape, (vv) => vv.check(o, err));
     err?.extend(null, 'Union', typeof o);
     return c
   }
-}
+};
 
 /**
  * @template {Array<any>} T
  * @param {T} schemas
  * @return {CastToSchema<$Union<Unwrap<ReadSchema<T>>>>}
  */
-const $union = (...schemas) => schemas.findIndex($s => $$union.check($s)) >= 0
-  ? $union(...schemas.map($s => $$1($s)).map($s => $$union.check($s) ? $s.shape : [$s]).flat(1))
+const $union$1 = (...schemas) => schemas.findIndex($s => $$union$1.check($s)) >= 0
+  ? $union$1(...schemas.map($s => $$2($s)).map($s => $$union$1.check($s) ? $s.shape : [$s]).flat(1))
   : (schemas.length === 1
       ? schemas[0]
-      : new $Union(schemas));
-const $$union = /** @type {Schema<$Union<any>>} */ ($constructedBy($Union));
+      : new $Union$1(schemas));
+const $$union$1 = /** @type {Schema<$Union<any>>} */ ($constructedBy$1($Union$1));
 
-const _t = () => true;
+const _t$1 = () => true;
 /**
  * @type {Schema<any>}
  */
-const $any = $custom(_t);
-const $$any = /** @type {Schema<Schema<any>>} */ ($constructedBy($Custom, o => o.shape === _t));
+const $any$1 = $custom$1(_t$1);
+const $$any$1 = /** @type {Schema<Schema<any>>} */ ($constructedBy$1($Custom$1, o => o.shape === _t$1));
 
 /**
  * @type {Schema<bigint>}
  */
-const $bigint = $custom(o => typeof o === 'bigint');
-const $$bigint = /** @type {Schema<Schema<BigInt>>} */ ($custom(o => o === $bigint));
+const $bigint$1 = $custom$1(o => typeof o === 'bigint');
+const $$bigint$1 = /** @type {Schema<Schema<BigInt>>} */ ($custom$1(o => o === $bigint$1));
 
 /**
  * @type {Schema<symbol>}
  */
-const $symbol = $custom(o => typeof o === 'symbol');
-/** @type {Schema<Schema<Symbol>>} */ ($custom(o => o === $symbol));
+const $symbol$1 = $custom$1(o => typeof o === 'symbol');
+/** @type {Schema<Schema<Symbol>>} */ ($custom$1(o => o === $symbol$1));
 
 /**
  * @type {Schema<number>}
  */
-const $number = $custom(o => typeof o === 'number');
-const $$number = /** @type {Schema<Schema<number>>} */ ($custom(o => o === $number));
+const $number$1 = $custom$1(o => typeof o === 'number');
+const $$number$1 = /** @type {Schema<Schema<number>>} */ ($custom$1(o => o === $number$1));
 
 /**
  * @type {Schema<string>}
  */
-const $string = $custom(o => typeof o === 'string');
-const $$string = /** @type {Schema<Schema<string>>} */ ($custom(o => o === $string));
+const $string$1 = $custom$1(o => typeof o === 'string');
+const $$string$1 = /** @type {Schema<Schema<string>>} */ ($custom$1(o => o === $string$1));
 
 /**
  * @type {Schema<boolean>}
  */
-const $boolean = $custom(o => typeof o === 'boolean');
-const $$boolean = /** @type {Schema<Schema<Boolean>>} */ ($custom(o => o === $boolean));
+const $boolean$1 = $custom$1(o => typeof o === 'boolean');
+const $$boolean$1 = /** @type {Schema<Schema<Boolean>>} */ ($custom$1(o => o === $boolean$1));
 
 /**
  * @type {Schema<undefined>}
  */
-const $undefined = $literal(undefined);
-/** @type {Schema<Schema<undefined>>} */ ($constructedBy($Literal, o => o.shape.length === 1 && o.shape[0] === undefined));
+const $undefined$1 = $literal$1(undefined);
+/** @type {Schema<Schema<undefined>>} */ ($constructedBy$1($Literal$1, o => o.shape.length === 1 && o.shape[0] === undefined));
 
 /**
  * @type {Schema<void>}
  */
-$literal(undefined);
+$literal$1(undefined);
 
-const $null = $literal(null);
-const $$null = /** @type {Schema<Schema<null>>} */ ($constructedBy($Literal, o => o.shape.length === 1 && o.shape[0] === null));
+const $null$1 = $literal$1(null);
+const $$null$1 = /** @type {Schema<Schema<null>>} */ ($constructedBy$1($Literal$1, o => o.shape.length === 1 && o.shape[0] === null));
 
-$constructedBy(Uint8Array);
-/** @type {Schema<Schema<Uint8Array>>} */ ($constructedBy($ConstructedBy, o => o.shape === Uint8Array));
+$constructedBy$1(Uint8Array);
+/** @type {Schema<Schema<Uint8Array>>} */ ($constructedBy$1($ConstructedBy$1, o => o.shape === Uint8Array));
 
 /**
  * @type {Schema<Primitive>}
  */
-const $primitive = $union($number, $string, $null, $undefined, $bigint, $boolean, $symbol);
+const $primitive$1 = $union$1($number$1, $string$1, $null$1, $undefined$1, $bigint$1, $boolean$1, $symbol$1);
 
 /**
  * @typedef {JSON[]} JSONArray
@@ -31742,9 +33184,9 @@ const $primitive = $union($number, $string, $null, $undefined, $bigint, $boolean
  * @type {Schema<null|number|string|boolean|JSON[]|{[key:string]:JSON}>}
  */
 (() => {
-  const $jsonArr = /** @type {$Array<$any>} */ ($array($any));
-  const $jsonRecord = /** @type {$Record<$string,$any>} */ ($record($string, $any));
-  const $json = $union($number, $string, $null, $boolean, $jsonArr, $jsonRecord);
+  const $jsonArr = /** @type {$Array<$any>} */ ($array$1($any$1));
+  const $jsonRecord = /** @type {$Record<$string,$any>} */ ($record$1($string$1, $any$1));
+  const $json = $union$1($number$1, $string$1, $null$1, $boolean$1, $jsonArr, $jsonRecord);
   $jsonArr.shape = $json;
   $jsonRecord.shape.values = $json;
   return $json
@@ -31786,27 +33228,27 @@ const $primitive = $union($number, $string, $null, $undefined, $bigint, $boolean
  * @param {IN} o
  * @return {ReadSchema<IN>}
  */
-const $$1 = o => {
-  if ($$schema.check(o)) {
+const $$2 = o => {
+  if ($$schema$1.check(o)) {
     return /** @type {any} */ (o)
-  } else if ($objectAny.check(o)) {
+  } else if ($objectAny$1.check(o)) {
     /**
      * @type {any}
      */
     const o2 = {};
     for (const k in o) {
-      o2[k] = $$1(o[k]);
+      o2[k] = $$2(o[k]);
     }
-    return /** @type {any} */ ($object(o2))
-  } else if ($arrayAny.check(o)) {
-    return /** @type {any} */ ($union(...o.map($$1)))
-  } else if ($primitive.check(o)) {
-    return /** @type {any} */ ($literal(o))
-  } else if ($function.check(o)) {
-    return /** @type {any} */ ($constructedBy(/** @type {any} */ (o)))
+    return /** @type {any} */ ($object$1(o2))
+  } else if ($arrayAny$1.check(o)) {
+    return /** @type {any} */ ($union$1(...o.map($$2)))
+  } else if ($primitive$1.check(o)) {
+    return /** @type {any} */ ($literal$1(o))
+  } else if ($function$1.check(o)) {
+    return /** @type {any} */ ($constructedBy$1(/** @type {any} */ (o)))
   }
   /* c8 ignore next */
-  unexpectedCase();
+  unexpectedCase$1();
 };
 
 /* c8 ignore start */
@@ -31816,12 +33258,12 @@ const $$1 = o => {
  *
  * @type {<T>(o:any,schema:Schema<T>) => asserts o is T}
  */
-const assert = production
+const assert$1 = production$1
   ? () => {}
   : (o, schema) => {
-      const err = new ValidationError();
+      const err = new ValidationError$1();
       if (!schema.check(o, err)) {
-        throw create$3(`Expected value to be of type ${schema.constructor.name}.\n${err.toString()}`)
+        throw create$6(`Expected value to be of type ${schema.constructor.name}.\n${err.toString()}`)
       }
     };
 /* c8 ignore end */
@@ -31843,7 +33285,7 @@ const assert = production
  * @template {any} [State=undefined]
  * @template {Pattern<any,any>} [Patterns=never]
  */
-class PatternMatcher {
+let PatternMatcher$1 = class PatternMatcher {
   /**
    * @param {Schema<State>} [$state]
    */
@@ -31864,7 +33306,7 @@ class PatternMatcher {
    */
   if (pattern, handler) {
     // @ts-ignore
-    this.patterns.push({ if: $$1(pattern), h: handler });
+    this.patterns.push({ if: $$2(pattern), h: handler });
     // @ts-ignore
     return this
   }
@@ -31874,7 +33316,7 @@ class PatternMatcher {
    * @param {(o:any,s:State)=>R} h
    */
   else (h) {
-    return this.if($any, h)
+    return this.if($any$1, h)
   }
 
   /**
@@ -31892,76 +33334,76 @@ class PatternMatcher {
           return p.h(o, s)
         }
       }
-      throw create$3('Unhandled pattern')
+      throw create$6('Unhandled pattern')
     }
   }
-}
+};
 
 /**
  * @template [State=undefined]
  * @param {State} [state]
  * @return {PatternMatcher<State extends undefined ? undefined : Unwrap<ReadSchema<State>>>}
  */
-const match = state => new PatternMatcher(/** @type {any} */ (state));
+const match$1 = state => new PatternMatcher$1(/** @type {any} */ (state));
 
 /**
  * Helper function to generate a (non-exhaustive) sample set from a gives schema.
  *
  * @type {<T>(o:T,gen:prng.PRNG)=>T}
  */
-const _random = /** @type {any} */ (match(/** @type {Schema<prng.PRNG>} */ ($any))
-  .if($$number, (_o, gen) => int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER))
-  .if($$string, (_o, gen) => word(gen))
-  .if($$boolean, (_o, gen) => bool(gen))
-  .if($$bigint, (_o, gen) => BigInt(int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER)))
-  .if($$union, (o, gen) => random(gen, oneOf(gen, o.shape)))
-  .if($$object, (o, gen) => {
+const _random$1 = /** @type {any} */ (match$1(/** @type {Schema<prng.PRNG>} */ ($any$1))
+  .if($$number$1, (_o, gen) => int53$1(gen, MIN_SAFE_INTEGER$1, MAX_SAFE_INTEGER$1))
+  .if($$string$1, (_o, gen) => word$1(gen))
+  .if($$boolean$1, (_o, gen) => bool$1(gen))
+  .if($$bigint$1, (_o, gen) => BigInt(int53$1(gen, MIN_SAFE_INTEGER$1, MAX_SAFE_INTEGER$1)))
+  .if($$union$1, (o, gen) => random$1(gen, oneOf$2(gen, o.shape)))
+  .if($$object$1, (o, gen) => {
     /**
      * @type {any}
      */
     const res = {};
     for (const k in o.shape) {
       let prop = o.shape[k];
-      if ($$optional.check(prop)) {
-        if (bool(gen)) { continue }
+      if ($$optional$1.check(prop)) {
+        if (bool$1(gen)) { continue }
         prop = prop.shape;
       }
-      res[k] = _random(prop, gen);
+      res[k] = _random$1(prop, gen);
     }
     return res
   })
-  .if($$array, (o, gen) => {
+  .if($$array$1, (o, gen) => {
     const arr = [];
-    const n = int32(gen, 0, 42);
+    const n = int32$1(gen, 0, 42);
     for (let i = 0; i < n; i++) {
-      arr.push(random(gen, o.shape));
+      arr.push(random$1(gen, o.shape));
     }
     return arr
   })
-  .if($$literal, (o, gen) => {
-    return oneOf(gen, o.shape)
+  .if($$literal$1, (o, gen) => {
+    return oneOf$2(gen, o.shape)
   })
-  .if($$null, (o, gen) => {
+  .if($$null$1, (o, gen) => {
     return null
   })
-  .if($$lambda, (o, gen) => {
-    const res = random(gen, o.res);
+  .if($$lambda$1, (o, gen) => {
+    const res = random$1(gen, o.res);
     return () => res
   })
-  .if($$any, (o, gen) => random(gen, oneOf(gen, [
-    $number, $string, $null, $undefined, $bigint, $boolean,
-    $array($number),
-    $record($union('a', 'b', 'c'), $number)
+  .if($$any$1, (o, gen) => random$1(gen, oneOf$2(gen, [
+    $number$1, $string$1, $null$1, $undefined$1, $bigint$1, $boolean$1,
+    $array$1($number$1),
+    $record$1($union$1('a', 'b', 'c'), $number$1)
   ])))
-  .if($$record, (o, gen) => {
+  .if($$record$1, (o, gen) => {
     /**
      * @type {any}
      */
     const res = {};
-    const keysN = int53(gen, 0, 3);
+    const keysN = int53$1(gen, 0, 3);
     for (let i = 0; i < keysN; i++) {
-      const key = random(gen, o.shape.keys);
-      const val = random(gen, o.shape.values);
+      const key = random$1(gen, o.shape.keys);
+      const val = random$1(gen, o.shape.values);
       res[key] = val;
     }
     return res
@@ -31974,7 +33416,7 @@ const _random = /** @type {any} */ (match(/** @type {Schema<prng.PRNG>} */ ($any
  * @param {S} schema
  * @return {Unwrap<ReadSchema<S>>}
  */
-const random = (gen, schema) => /** @type {any} */ (_random($$1(schema), gen));
+const random$1 = (gen, schema) => /** @type {any} */ (_random$1($$2(schema), gen));
 
 /* eslint-env browser */
 
@@ -31983,24 +33425,24 @@ const random = (gen, schema) => /** @type {any} */ (_random($$1(schema), gen));
 /**
  * @type {Document}
  */
-const doc = /** @type {Document} */ (typeof document !== 'undefined' ? document : {});
+const doc$1 = /** @type {Document} */ (typeof document !== 'undefined' ? document : {});
 
 /**
  * @type {$.Schema<DocumentFragment>}
  */
-$custom(el => el.nodeType === DOCUMENT_FRAGMENT_NODE);
+$custom$1(el => el.nodeType === DOCUMENT_FRAGMENT_NODE$1);
 
 /** @type {DOMParser} */ (typeof DOMParser !== 'undefined' ? new DOMParser() : null);
 
 /**
  * @type {$.Schema<Element>}
  */
-$custom(el => el.nodeType === ELEMENT_NODE);
+$custom$1(el => el.nodeType === ELEMENT_NODE$1);
 
 /**
  * @type {$.Schema<Text>}
  */
-$custom(el => el.nodeType === TEXT_NODE);
+$custom$1(el => el.nodeType === TEXT_NODE$1);
 
 /**
  * @param {Map<string,string>} m
@@ -32008,49 +33450,16 @@ $custom(el => el.nodeType === TEXT_NODE);
  */
 const mapToStyleString = m => map(m, (value, key) => `${key}:${value};`).join('');
 
-const ELEMENT_NODE = doc.ELEMENT_NODE;
-const TEXT_NODE = doc.TEXT_NODE;
-const DOCUMENT_NODE = doc.DOCUMENT_NODE;
-const DOCUMENT_FRAGMENT_NODE = doc.DOCUMENT_FRAGMENT_NODE;
+const ELEMENT_NODE$1 = doc$1.ELEMENT_NODE;
+const TEXT_NODE$1 = doc$1.TEXT_NODE;
+const DOCUMENT_NODE$1 = doc$1.DOCUMENT_NODE;
+const DOCUMENT_FRAGMENT_NODE$1 = doc$1.DOCUMENT_FRAGMENT_NODE;
 
 /**
  * @type {$.Schema<Node>}
  */
-$custom(el => el.nodeType === DOCUMENT_NODE);
+$custom$1(el => el.nodeType === DOCUMENT_NODE$1);
 /* c8 ignore stop */
-
-/* global requestIdleCallback, requestAnimationFrame, cancelIdleCallback, cancelAnimationFrame */
-
-
-/**
- * @typedef {Object} TimeoutObject
- * @property {function} TimeoutObject.destroy
- */
-
-/**
- * @param {function(number):void} clearFunction
- */
-const createTimeoutClass = clearFunction => class TT {
-  /**
-   * @param {number} timeoutId
-   */
-  constructor (timeoutId) {
-    this._ = timeoutId;
-  }
-
-  destroy () {
-    clearFunction(this._);
-  }
-};
-
-const Timeout = createTimeoutClass(clearTimeout);
-
-/**
- * @param {number} timeout
- * @param {function} callback
- * @return {TimeoutObject}
- */
-const timeout = (timeout, callback) => new Timeout(setTimeout(callback, timeout));
 
 /**
  * Utility module to work with EcmaScript Symbols.
@@ -32061,17 +33470,17 @@ const timeout = (timeout, callback) => new Timeout(setTimeout(callback, timeout)
 /**
  * Return fresh symbol.
  */
-const create = Symbol;
+const create$3 = Symbol;
 
-const BOLD = create();
-const UNBOLD = create();
-const BLUE = create();
-const GREY = create();
-const GREEN = create();
-const RED = create();
-const PURPLE = create();
-const ORANGE = create();
-const UNCOLOR = create();
+const BOLD = create$3();
+const UNBOLD = create$3();
+const BLUE = create$3();
+const GREY = create$3();
+const GREEN = create$3();
+const RED = create$3();
+const PURPLE = create$3();
+const ORANGE = create$3();
+const UNCOLOR = create$3();
 
 /* c8 ignore start */
 /**
@@ -32122,15 +33531,15 @@ const computeNoColorLoggingArgs = args => {
  * @type {Object<Symbol,pair.Pair<string,string>>}
  */
 const _browserStyleMap = {
-  [BOLD]: create$1('font-weight', 'bold'),
-  [UNBOLD]: create$1('font-weight', 'normal'),
-  [BLUE]: create$1('color', 'blue'),
-  [GREEN]: create$1('color', 'green'),
-  [GREY]: create$1('color', 'grey'),
-  [RED]: create$1('color', 'red'),
-  [PURPLE]: create$1('color', 'purple'),
-  [ORANGE]: create$1('color', 'orange'), // not well supported in chrome when debugging node with inspector - TODO: deprecate
-  [UNCOLOR]: create$1('color', 'black')
+  [BOLD]: create$4('font-weight', 'bold'),
+  [UNBOLD]: create$4('font-weight', 'normal'),
+  [BLUE]: create$4('color', 'blue'),
+  [GREEN]: create$4('color', 'green'),
+  [GREY]: create$4('color', 'grey'),
+  [RED]: create$4('color', 'red'),
+  [PURPLE]: create$4('color', 'purple'),
+  [ORANGE]: create$4('color', 'orange'), // not well supported in chrome when debugging node with inspector - TODO: deprecate
+  [UNCOLOR]: create$4('color', 'black')
 };
 
 /**
@@ -32144,7 +33553,7 @@ const computeBrowserLoggingArgs = (args) => {
   }
   const strBuilder = [];
   const styles = [];
-  const currentStyle = create$5();
+  const currentStyle = create$8();
   /**
    * @type {Array<string|Object|number>}
    */
@@ -32215,7 +33624,7 @@ const warn = (...args) => {
   vconsoles.forEach((vc) => vc.print(args));
 };
 
-const vconsoles = create$4();
+const vconsoles = create$7();
 
 /**
  * Utility module to create and manipulate Iterators.
@@ -32329,7 +33738,7 @@ const findIndexDS = (dis, clock) => {
   let left = 0;
   let right = dis.length - 1;
   while (left <= right) {
-    const midindex = floor((left + right) / 2);
+    const midindex = floor$1((left + right) / 2);
     const mid = dis[midindex];
     const midclock = mid.clock;
     if (midclock <= clock) {
@@ -32375,7 +33784,7 @@ const sortAndMergeDeleteSet = ds => {
       const left = dels[j - 1];
       const right = dels[i];
       if (left.clock + left.len >= right.clock) {
-        dels[j - 1] = new DeleteItem(left.clock, max(left.len, right.clock + right.len - left.clock));
+        dels[j - 1] = new DeleteItem(left.clock, max$1(left.len, right.clock + right.len - left.clock));
       } else {
         if (j < i) {
           dels[j] = right;
@@ -32423,7 +33832,7 @@ const mergeDeleteSets = dss => {
  * @function
  */
 const addToDeleteSet = (ds, client, clock, length) => {
-  setIfUndefined(ds.clients, client, () => /** @type {Array<DeleteItem>} */ ([])).push(new DeleteItem(clock, length));
+  setIfUndefined$1(ds.clients, client, () => /** @type {Array<DeleteItem>} */ ([])).push(new DeleteItem(clock, length));
 };
 
 const createDeleteSet = () => new DeleteSet();
@@ -32470,16 +33879,16 @@ const createDeleteSetFromStructStore = ss => {
  * @function
  */
 const writeDeleteSet = (encoder, ds) => {
-  writeVarUint(encoder.restEncoder, ds.clients.size);
+  writeVarUint$1(encoder.restEncoder, ds.clients.size);
 
   // Ensure that the delete set is written in a deterministic order
   from(ds.clients.entries())
     .sort((a, b) => b[0] - a[0])
     .forEach(([client, dsitems]) => {
       encoder.resetDsCurVal();
-      writeVarUint(encoder.restEncoder, client);
+      writeVarUint$1(encoder.restEncoder, client);
       const len = dsitems.length;
-      writeVarUint(encoder.restEncoder, len);
+      writeVarUint$1(encoder.restEncoder, len);
       for (let i = 0; i < len; i++) {
         const item = dsitems[i];
         encoder.writeDsClock(item.clock);
@@ -32503,7 +33912,7 @@ const readDeleteSet = decoder => {
     const client = readVarUint(decoder.restDecoder);
     const numberOfDeletes = readVarUint(decoder.restDecoder);
     if (numberOfDeletes > 0) {
-      const dsField = setIfUndefined(ds.clients, client, () => /** @type {Array<DeleteItem>} */ ([]));
+      const dsField = setIfUndefined$1(ds.clients, client, () => /** @type {Array<DeleteItem>} */ ([]));
       for (let i = 0; i < numberOfDeletes; i++) {
         dsField.push(new DeleteItem(decoder.readDsClock(), decoder.readDsLen()));
       }
@@ -32574,7 +33983,7 @@ const readAndApplyDeleteSet = (decoder, transaction, store) => {
   }
   if (unappliedDS.clients.size > 0) {
     const ds = new UpdateEncoderV2();
-    writeVarUint(ds.restEncoder, 0); // encode 0 structs
+    writeVarUint$1(ds.restEncoder, 0); // encode 0 structs
     writeDeleteSet(ds, unappliedDS);
     return ds.toUint8Array()
   }
@@ -32674,13 +34083,13 @@ class Doc extends ObservableV2 {
     /**
      * Promise that resolves once the document has been loaded from a persistence provider.
      */
-    this.whenLoaded = create$2(resolve => {
+    this.whenLoaded = create$5(resolve => {
       this.on('load', () => {
         this.isLoaded = true;
         resolve(this);
       });
     });
-    const provideSyncedPromise = () => create$2(resolve => {
+    const provideSyncedPromise = () => create$5(resolve => {
       /**
        * @param {boolean} isSynced
        */
@@ -32779,7 +34188,7 @@ class Doc extends ObservableV2 {
    * @public
    */
   get (name, TypeConstructor = /** @type {any} */ (AbstractType)) {
-    const type = setIfUndefined(this.share, name, () => {
+    const type = setIfUndefined$1(this.share, name, () => {
       // @ts-ignore
       const t = new TypeConstructor();
       t._integrate(this, null);
@@ -33072,11 +34481,11 @@ class UpdateDecoderV2 extends DSDecoderV2 {
 
 class DSEncoderV1 {
   constructor () {
-    this.restEncoder = createEncoder();
+    this.restEncoder = createEncoder$1();
   }
 
   toUint8Array () {
-    return toUint8Array(this.restEncoder)
+    return toUint8Array$1(this.restEncoder)
   }
 
   resetDsCurVal () {
@@ -33087,14 +34496,14 @@ class DSEncoderV1 {
    * @param {number} clock
    */
   writeDsClock (clock) {
-    writeVarUint(this.restEncoder, clock);
+    writeVarUint$1(this.restEncoder, clock);
   }
 
   /**
    * @param {number} len
    */
   writeDsLen (len) {
-    writeVarUint(this.restEncoder, len);
+    writeVarUint$1(this.restEncoder, len);
   }
 }
 
@@ -33103,16 +34512,16 @@ class UpdateEncoderV1 extends DSEncoderV1 {
    * @param {ID} id
    */
   writeLeftID (id) {
-    writeVarUint(this.restEncoder, id.client);
-    writeVarUint(this.restEncoder, id.clock);
+    writeVarUint$1(this.restEncoder, id.client);
+    writeVarUint$1(this.restEncoder, id.clock);
   }
 
   /**
    * @param {ID} id
    */
   writeRightID (id) {
-    writeVarUint(this.restEncoder, id.client);
-    writeVarUint(this.restEncoder, id.clock);
+    writeVarUint$1(this.restEncoder, id.client);
+    writeVarUint$1(this.restEncoder, id.clock);
   }
 
   /**
@@ -33120,7 +34529,7 @@ class UpdateEncoderV1 extends DSEncoderV1 {
    * @param {number} client
    */
   writeClient (client) {
-    writeVarUint(this.restEncoder, client);
+    writeVarUint$1(this.restEncoder, client);
   }
 
   /**
@@ -33134,21 +34543,21 @@ class UpdateEncoderV1 extends DSEncoderV1 {
    * @param {string} s
    */
   writeString (s) {
-    writeVarString(this.restEncoder, s);
+    writeVarString$1(this.restEncoder, s);
   }
 
   /**
    * @param {boolean} isYKey
    */
   writeParentInfo (isYKey) {
-    writeVarUint(this.restEncoder, isYKey ? 1 : 0);
+    writeVarUint$1(this.restEncoder, isYKey ? 1 : 0);
   }
 
   /**
    * @param {number} info An unsigned 8-bit integer
    */
   writeTypeRef (info) {
-    writeVarUint(this.restEncoder, info);
+    writeVarUint$1(this.restEncoder, info);
   }
 
   /**
@@ -33157,46 +34566,46 @@ class UpdateEncoderV1 extends DSEncoderV1 {
    * @param {number} len
    */
   writeLen (len) {
-    writeVarUint(this.restEncoder, len);
+    writeVarUint$1(this.restEncoder, len);
   }
 
   /**
    * @param {any} any
    */
   writeAny (any) {
-    writeAny(this.restEncoder, any);
+    writeAny$1(this.restEncoder, any);
   }
 
   /**
    * @param {Uint8Array} buf
    */
   writeBuf (buf) {
-    writeVarUint8Array(this.restEncoder, buf);
+    writeVarUint8Array$1(this.restEncoder, buf);
   }
 
   /**
    * @param {any} embed
    */
   writeJSON (embed) {
-    writeVarString(this.restEncoder, JSON.stringify(embed));
+    writeVarString$1(this.restEncoder, JSON.stringify(embed));
   }
 
   /**
    * @param {string} key
    */
   writeKey (key) {
-    writeVarString(this.restEncoder, key);
+    writeVarString$1(this.restEncoder, key);
   }
 }
 
 class DSEncoderV2 {
   constructor () {
-    this.restEncoder = createEncoder(); // encodes all the rest / non-optimized
+    this.restEncoder = createEncoder$1(); // encodes all the rest / non-optimized
     this.dsCurrVal = 0;
   }
 
   toUint8Array () {
-    return toUint8Array(this.restEncoder)
+    return toUint8Array$1(this.restEncoder)
   }
 
   resetDsCurVal () {
@@ -33209,7 +34618,7 @@ class DSEncoderV2 {
   writeDsClock (clock) {
     const diff = clock - this.dsCurrVal;
     this.dsCurrVal = clock;
-    writeVarUint(this.restEncoder, diff);
+    writeVarUint$1(this.restEncoder, diff);
   }
 
   /**
@@ -33217,9 +34626,9 @@ class DSEncoderV2 {
    */
   writeDsLen (len) {
     if (len === 0) {
-      unexpectedCase();
+      unexpectedCase$1();
     }
-    writeVarUint(this.restEncoder, len - 1);
+    writeVarUint$1(this.restEncoder, len - 1);
     this.dsCurrVal += len;
   }
 }
@@ -33250,20 +34659,20 @@ class UpdateEncoderV2 extends DSEncoderV2 {
   }
 
   toUint8Array () {
-    const encoder = createEncoder();
-    writeVarUint(encoder, 0); // this is a feature flag that we might use in the future
-    writeVarUint8Array(encoder, this.keyClockEncoder.toUint8Array());
-    writeVarUint8Array(encoder, this.clientEncoder.toUint8Array());
-    writeVarUint8Array(encoder, this.leftClockEncoder.toUint8Array());
-    writeVarUint8Array(encoder, this.rightClockEncoder.toUint8Array());
-    writeVarUint8Array(encoder, toUint8Array(this.infoEncoder));
-    writeVarUint8Array(encoder, this.stringEncoder.toUint8Array());
-    writeVarUint8Array(encoder, toUint8Array(this.parentInfoEncoder));
-    writeVarUint8Array(encoder, this.typeRefEncoder.toUint8Array());
-    writeVarUint8Array(encoder, this.lenEncoder.toUint8Array());
+    const encoder = createEncoder$1();
+    writeVarUint$1(encoder, 0); // this is a feature flag that we might use in the future
+    writeVarUint8Array$1(encoder, this.keyClockEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, this.clientEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, this.leftClockEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, this.rightClockEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, toUint8Array$1(this.infoEncoder));
+    writeVarUint8Array$1(encoder, this.stringEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, toUint8Array$1(this.parentInfoEncoder));
+    writeVarUint8Array$1(encoder, this.typeRefEncoder.toUint8Array());
+    writeVarUint8Array$1(encoder, this.lenEncoder.toUint8Array());
     // @note The rest encoder is appended! (note the missing var)
-    writeUint8Array(encoder, toUint8Array(this.restEncoder));
-    return toUint8Array(encoder)
+    writeUint8Array$1(encoder, toUint8Array$1(this.restEncoder));
+    return toUint8Array$1(encoder)
   }
 
   /**
@@ -33330,14 +34739,14 @@ class UpdateEncoderV2 extends DSEncoderV2 {
    * @param {any} any
    */
   writeAny (any) {
-    writeAny(this.restEncoder, any);
+    writeAny$1(this.restEncoder, any);
   }
 
   /**
    * @param {Uint8Array} buf
    */
   writeBuf (buf) {
-    writeVarUint8Array(this.restEncoder, buf);
+    writeVarUint8Array$1(this.restEncoder, buf);
   }
 
   /**
@@ -33348,7 +34757,7 @@ class UpdateEncoderV2 extends DSEncoderV2 {
    * @param {any} embed
    */
   writeJSON (embed) {
-    writeAny(this.restEncoder, embed);
+    writeAny$1(this.restEncoder, embed);
   }
 
   /**
@@ -33411,12 +34820,12 @@ class UpdateEncoderV2 extends DSEncoderV2 {
  */
 const writeStructs = (encoder, structs, client, clock) => {
   // write first id
-  clock = max(clock, structs[0].id.clock); // make sure the first id exists
+  clock = max$1(clock, structs[0].id.clock); // make sure the first id exists
   const startNewStructs = findIndexSS(structs, clock);
   // write # encoded structs
-  writeVarUint(encoder.restEncoder, structs.length - startNewStructs);
+  writeVarUint$1(encoder.restEncoder, structs.length - startNewStructs);
   encoder.writeClient(client);
-  writeVarUint(encoder.restEncoder, clock);
+  writeVarUint$1(encoder.restEncoder, clock);
   const firstStruct = structs[startNewStructs];
   // write first struct with an offset
   firstStruct.write(encoder, clock - firstStruct.id.clock);
@@ -33448,7 +34857,7 @@ const writeClientsStructs = (encoder, store, _sm) => {
     }
   });
   // write # states that were updated
-  writeVarUint(encoder.restEncoder, sm.size);
+  writeVarUint$1(encoder.restEncoder, sm.size);
   // Write items with higher client ids first
   // This heavily improves the conflict algorithm.
   from(sm.entries()).sort((a, b) => b[0] - a[0]).forEach(([client, clock]) => {
@@ -33468,7 +34877,7 @@ const readClientsStructRefs = (decoder, doc) => {
   /**
    * @type {Map<number, { i: number, refs: Array<Item | GC> }>}
    */
-  const clientRefs = create$5();
+  const clientRefs = create$8();
   const numOfStateUpdates = readVarUint(decoder.restDecoder);
   for (let i = 0; i < numOfStateUpdates; i++) {
     const numberOfStructs = readVarUint(decoder.restDecoder);
@@ -33502,7 +34911,7 @@ const readClientsStructRefs = (decoder, doc) => {
            * Below a non-optimized version is shown that implements the basic algorithm with
            * a few comments
            */
-          const cantCopyParentInfo = (info & (BIT7 | BIT8)) === 0;
+          const cantCopyParentInfo = (info & (BIT7$1 | BIT8$1)) === 0;
           // If parent = null and neither left nor right are defined, then we know that `parent` is child of `y`
           // and we read the next string as parentYKey.
           // It indicates how we store/retrieve parent from `y.share`
@@ -33510,9 +34919,9 @@ const readClientsStructRefs = (decoder, doc) => {
           const struct = new Item(
             createID(client, clock),
             null, // left
-            (info & BIT8) === BIT8 ? decoder.readLeftID() : null, // origin
+            (info & BIT8$1) === BIT8$1 ? decoder.readLeftID() : null, // origin
             null, // right
-            (info & BIT7) === BIT7 ? decoder.readRightID() : null, // right origin
+            (info & BIT7$1) === BIT7$1 ? decoder.readRightID() : null, // right origin
             cantCopyParentInfo ? (decoder.readParentInfo() ? doc.get(decoder.readString()) : decoder.readLeftID()) : null, // parent
             cantCopyParentInfo && (info & BIT6) === BIT6 ? decoder.readString() : null, // parentSub
             readItemContent(decoder, info) // item content
@@ -33655,7 +35064,7 @@ const integrateStructs = (transaction, store, clientsStructRefs) => {
   // iterate over all struct readers until we are done
   while (true) {
     if (stackHead.constructor !== Skip) {
-      const localClock = setIfUndefined(state, stackHead.id.client, () => getState(store, stackHead.id.client));
+      const localClock = setIfUndefined$1(state, stackHead.id.client, () => getState(store, stackHead.id.client));
       const offset = localClock - stackHead.id.clock;
       if (offset < 0) {
         // update from the same client is missing
@@ -33707,7 +35116,7 @@ const integrateStructs = (transaction, store, clientsStructRefs) => {
     writeClientsStructs(encoder, restStructs, new Map());
     // write empty deleteset
     // writeDeleteSet(encoder, new DeleteSet())
-    writeVarUint(encoder.restEncoder, 0); // => no need for an extra function call, just write 0 deletes
+    writeVarUint$1(encoder.restEncoder, 0); // => no need for an extra function call, just write 0 deletes
     return { missing: missingSV, update: encoder.toUint8Array() }
   }
   return null
@@ -33949,7 +35358,7 @@ const findRootTypeKey = type => {
       return key
     }
   }
-  throw unexpectedCase()
+  throw unexpectedCase$1()
 };
 
 /**
@@ -34187,7 +35596,7 @@ const createAbsolutePositionFromRelativePosition = (rpos, doc, followUndoneDelet
         return null
       }
     } else {
-      throw unexpectedCase()
+      throw unexpectedCase$1()
     }
     if (assoc >= 0) {
       index = type._length;
@@ -34245,7 +35654,7 @@ const isVisible$1 = (item, snapshot) => snapshot === undefined
  * @param {Snapshot} snapshot
  */
 const splitSnapshotAffectedStructs = (transaction, snapshot) => {
-  const meta = setIfUndefined(transaction.meta, splitSnapshotAffectedStructs, create$4);
+  const meta = setIfUndefined$1(transaction.meta, splitSnapshotAffectedStructs, create$7);
   const store = transaction.doc.store;
   // check if we already split for this snapshot
   if (!meta.has(snapshot)) {
@@ -34327,7 +35736,7 @@ const addStruct = (store, struct) => {
   } else {
     const lastStruct = structs[structs.length - 1];
     if (lastStruct.id.clock + lastStruct.length !== struct.id.clock) {
-      throw unexpectedCase()
+      throw unexpectedCase$1()
     }
   }
   structs.push(struct);
@@ -34353,7 +35762,7 @@ const findIndexSS = (structs, clock) => {
   // @todo does it even make sense to pivot the search?
   // If a good split misses, it might actually increase the time to find the correct item.
   // Currently, the only advantage is that search with pivoting might find the item on the first try.
-  let midindex = floor((clock / (midclock + mid.length - 1)) * right); // pivoting the search
+  let midindex = floor$1((clock / (midclock + mid.length - 1)) * right); // pivoting the search
   while (left <= right) {
     mid = structs[midindex];
     midclock = mid.id.clock;
@@ -34365,11 +35774,11 @@ const findIndexSS = (structs, clock) => {
     } else {
       right = midindex - 1;
     }
-    midindex = floor((left + right) / 2);
+    midindex = floor$1((left + right) / 2);
   }
   // Always check state before looking for a struct in StructStore
   // Therefore the case of not finding a struct is unexpected
-  throw unexpectedCase()
+  throw unexpectedCase$1()
 };
 
 /**
@@ -34622,7 +36031,7 @@ const writeUpdateMessageFromTransaction = (encoder, transaction) => {
 const addChangedTypeToTransaction = (transaction, type, parentSub) => {
   const item = type._item;
   if (item === null || (item.id.clock < (transaction.beforeState.get(item.id.client) || 0) && !item.deleted)) {
-    setIfUndefined(transaction.changed, type, create$4).add(parentSub);
+    setIfUndefined$1(transaction.changed, type, create$7).add(parentSub);
   }
 };
 
@@ -34694,7 +36103,7 @@ const tryMergeDeleteSet = (ds, store) => {
     for (let di = deleteItems.length - 1; di >= 0; di--) {
       const deleteItem = deleteItems[di];
       // start with merging the item next to the last deleted item
-      const mostRightIndexToCheck = min(structs.length - 1, 1 + findIndexSS(structs, deleteItem.clock + deleteItem.len - 1));
+      const mostRightIndexToCheck = min$1(structs.length - 1, 1 + findIndexSS(structs, deleteItem.clock + deleteItem.len - 1));
       for (
         let si = mostRightIndexToCheck, struct = structs[si];
         si > 0 && struct.id.clock >= deleteItem.clock;
@@ -34785,7 +36194,7 @@ const cleanupTransactions = (transactionCleanups, i) => {
         if (beforeClock !== clock) {
           const structs = /** @type {Array<GC|Item>} */ (store.clients.get(client));
           // we iterate from right to left so we can safely remove entries
-          const firstChangePos = max(findIndexSS(structs, beforeClock), 1);
+          const firstChangePos = max$1(findIndexSS(structs, beforeClock), 1);
           for (let i = structs.length - 1; i >= firstChangePos;) {
             i -= 1 + tryToMergeWithLefts(structs, i);
           }
@@ -35050,7 +36459,7 @@ class UndoManager extends ObservableV2 {
     deleteFilter = () => true,
     trackedOrigins = new Set([null]),
     ignoreRemoteMapChanges = false,
-    doc = /** @type {Doc} */ (isArray(typeScope) ? typeScope[0].doc : typeScope instanceof Doc ? typeScope : typeScope.doc)
+    doc = /** @type {Doc} */ (isArray$1(typeScope) ? typeScope[0].doc : typeScope instanceof Doc ? typeScope : typeScope.doc)
   } = {}) {
     super();
     /**
@@ -35160,7 +36569,7 @@ class UndoManager extends ObservableV2 {
    */
   addToScope (ytypes) {
     const tmpSet = new Set(this.scope);
-    ytypes = isArray(ytypes) ? ytypes : [ytypes];
+    ytypes = isArray$1(ytypes) ? ytypes : [ytypes];
     ytypes.forEach(ytype => {
       if (!tmpSet.has(ytype)) {
         tmpSet.add(ytype);
@@ -35298,7 +36707,7 @@ function * lazyStructReaderGenerator (decoder) {
         yield new Skip(createID(client, clock), len);
         clock += len;
       } else if ((BITS5 & info) !== 0) {
-        const cantCopyParentInfo = (info & (BIT7 | BIT8)) === 0;
+        const cantCopyParentInfo = (info & (BIT7$1 | BIT8$1)) === 0;
         // If parent = null and neither left nor right are defined, then we know that `parent` is child of `y`
         // and we read the next string as parentYKey.
         // It indicates how we store/retrieve parent from `y.share`
@@ -35306,9 +36715,9 @@ function * lazyStructReaderGenerator (decoder) {
         const struct = new Item(
           createID(client, clock),
           null, // left
-          (info & BIT8) === BIT8 ? decoder.readLeftID() : null, // origin
+          (info & BIT8$1) === BIT8$1 ? decoder.readLeftID() : null, // origin
           null, // right
-          (info & BIT7) === BIT7 ? decoder.readRightID() : null, // right origin
+          (info & BIT7$1) === BIT7$1 ? decoder.readRightID() : null, // right origin
           // @ts-ignore Force writing a string here.
           cantCopyParentInfo ? (decoder.readParentInfo() ? decoder.readString() : decoder.readLeftID()) : null, // parent
           cantCopyParentInfo && (info & BIT6) === BIT6 ? decoder.readString() : null, // parentSub
@@ -35549,8 +36958,8 @@ const mergeUpdatesV2 = (updates, YDecoder = UpdateDecoderV2, YEncoder = UpdateEn
  */
 const flushLazyStructWriter = lazyWriter => {
   if (lazyWriter.written > 0) {
-    lazyWriter.clientStructs.push({ written: lazyWriter.written, restEncoder: toUint8Array(lazyWriter.encoder.restEncoder) });
-    lazyWriter.encoder.restEncoder = createEncoder();
+    lazyWriter.clientStructs.push({ written: lazyWriter.written, restEncoder: toUint8Array$1(lazyWriter.encoder.restEncoder) });
+    lazyWriter.encoder.restEncoder = createEncoder$1();
     lazyWriter.written = 0;
   }
 };
@@ -35570,7 +36979,7 @@ const writeStructToLazyStructWriter = (lazyWriter, struct, offset) => {
     // write next client
     lazyWriter.encoder.writeClient(struct.id.client);
     // write startClock
-    writeVarUint(lazyWriter.encoder.restEncoder, struct.id.clock + offset);
+    writeVarUint$1(lazyWriter.encoder.restEncoder, struct.id.clock + offset);
   }
   struct.write(lazyWriter.encoder, offset);
   lazyWriter.written++;
@@ -35594,7 +37003,7 @@ const finishLazyStructWriting = (lazyWriter) => {
    */
 
   // write # states that were updated - i.e. the clients
-  writeVarUint(restEncoder, lazyWriter.clientStructs.length);
+  writeVarUint$1(restEncoder, lazyWriter.clientStructs.length);
 
   for (let i = 0; i < lazyWriter.clientStructs.length; i++) {
     const partStructs = lazyWriter.clientStructs[i];
@@ -35602,9 +37011,9 @@ const finishLazyStructWriting = (lazyWriter) => {
      * Works similarly to `writeStructs`
      */
     // write # encoded structs
-    writeVarUint(restEncoder, partStructs.written);
+    writeVarUint$1(restEncoder, partStructs.written);
     // write the rest of the fragment
-    writeUint8Array(restEncoder, partStructs.restEncoder);
+    writeUint8Array$1(restEncoder, partStructs.restEncoder);
   }
 };
 
@@ -35688,7 +37097,7 @@ class YEvent {
   get keys () {
     if (this._keys === null) {
       if (this.transaction.doc._transactionCleanups.length === 0) {
-        throw create$3(errorComputeChanges)
+        throw create$6(errorComputeChanges)
       }
       const keys = new Map();
       const target = this.target;
@@ -35774,11 +37183,11 @@ class YEvent {
     let changes = this._changes;
     if (changes === null) {
       if (this.transaction.doc._transactionCleanups.length === 0) {
-        throw create$3(errorComputeChanges)
+        throw create$6(errorComputeChanges)
       }
       const target = this.target;
-      const added = create$4();
-      const deleted = create$4();
+      const added = create$7();
+      const deleted = create$7();
       /**
        * @type {Array<{insert:Array<any>}|{delete:number}|{retain:number}>}
        */
@@ -35961,7 +37370,7 @@ const findMarker = (yarray, index) => {
   if (yarray._start === null || index === 0 || yarray._searchMarker === null) {
     return null
   }
-  const marker = yarray._searchMarker.length === 0 ? null : yarray._searchMarker.reduce((a, b) => abs(index - a.index) < abs(index - b.index) ? a : b);
+  const marker = yarray._searchMarker.length === 0 ? null : yarray._searchMarker.reduce((a, b) => abs$1(index - a.index) < abs$1(index - b.index) ? a : b);
   let p = yarray._start;
   let pindex = 0;
   if (marker !== null) {
@@ -36020,7 +37429,7 @@ const findMarker = (yarray, index) => {
   //   window.lengths.push(marker.index - pindex)
   //   console.log('distance', marker.index - pindex, 'len', p && p.parent.length)
   // }
-  if (marker !== null && abs(marker.index - pindex) < /** @type {YText|YArray<any>} */ (p.parent).length / maxSearchMarker) {
+  if (marker !== null && abs$1(marker.index - pindex) < /** @type {YText|YArray<any>} */ (p.parent).length / maxSearchMarker) {
     // adjust existing marker
     overwriteMarker(marker, p, pindex);
     return marker
@@ -36067,7 +37476,7 @@ const updateMarkerChanges = (searchMarker, index, len) => {
       p.marker = true;
     }
     if (index < m.index || (len > 0 && index === m.index)) { // a simple index <= m.index check would actually suffice
-      m.index = max(index, m.index + len);
+      m.index = max$1(index, m.index + len);
     }
   }
 };
@@ -36086,7 +37495,7 @@ const callTypeObservers = (type, transaction, event) => {
   const changedParentTypes = transaction.changedParentTypes;
   while (true) {
     // @ts-ignore
-    setIfUndefined(changedParentTypes, type, () => []).push(event);
+    setIfUndefined$1(changedParentTypes, type, () => []).push(event);
     if (type._item === null) {
       break
     }
@@ -36160,7 +37569,7 @@ class AbstractType {
    * @return {AbstractType<EventType>}
    */
   _copy () {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -36171,7 +37580,7 @@ class AbstractType {
    * @return {AbstractType<EventType>}
    */
   clone () {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -36513,7 +37922,7 @@ const typeListInsertGenericsAfter = (transaction, parent, referenceItem, content
   packJsonContent();
 };
 
-const lengthExceeded = () => create$3('Length exceeded!');
+const lengthExceeded = () => create$6('Length exceeded!');
 
 /**
  * @param {Transaction} transaction
@@ -37337,7 +38746,7 @@ class ItemTextListPosition {
    */
   forward () {
     if (this.right === null) {
-      unexpectedCase();
+      unexpectedCase$1();
     }
     switch (this.right.content.constructor) {
       case ContentFormat:
@@ -37646,7 +39055,7 @@ const cleanupFormattingGap = (transaction, start, curr, startAttributes, currAtt
   /**
    * @type {Map<string,ContentFormat>}
    */
-  const endFormats = create$5();
+  const endFormats = create$8();
   while (end && (!end.countable || end.deleted)) {
     if (!end.deleted && end.content.constructor === ContentFormat) {
       const cf = /** @type {ContentFormat} */ (end.content);
@@ -37731,7 +39140,7 @@ const cleanupYTextFormatting = type => {
   transact(/** @type {Doc} */ (type.doc), transaction => {
     let start = /** @type {Item} */ (type._start);
     let end = type._start;
-    let startAttributes = create$5();
+    let startAttributes = create$8();
     const currentAttributes = copy(startAttributes);
     while (end) {
       if (end.deleted === false) {
@@ -38898,7 +40307,7 @@ class YXmlFragment extends AbstractType {
       const pc = /** @type {Array<any>} */ (this._prelimContent);
       const index = ref === null ? 0 : pc.findIndex(el => el === ref) + 1;
       if (index === 0 && ref !== null) {
-        throw create$3('Reference item not found')
+        throw create$6('Reference item not found')
       }
       pc.splice(index, 0, ...content);
     }
@@ -39507,7 +40916,7 @@ class AbstractStruct {
    * @type {boolean}
    */
   get deleted () {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -39527,7 +40936,7 @@ class AbstractStruct {
    * @param {number} encodingRef
    */
   write (encoder, offset, encodingRef) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -39535,7 +40944,7 @@ class AbstractStruct {
    * @param {number} offset
    */
   integrate (transaction, offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 }
 
@@ -39635,7 +41044,7 @@ class ContentBinary {
    * @return {ContentBinary}
    */
   splice (offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -39847,7 +41256,7 @@ class ContentDoc {
    * @return {ContentDoc}
    */
   splice (offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -39956,7 +41365,7 @@ class ContentEmbed {
    * @return {ContentEmbed}
    */
   splice (offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -40050,7 +41459,7 @@ class ContentFormat {
    * @return {ContentFormat}
    */
   splice (_offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -40218,7 +41627,7 @@ const readContentJSON = decoder => {
   return new ContentJSON(cs)
 };
 
-const isDevMode = getVariable('node_env') === 'development';
+const isDevMode = getVariable$1('node_env') === 'development';
 
 class ContentAny {
   /**
@@ -40504,7 +41913,7 @@ class ContentType {
    * @return {ContentType}
    */
   splice (offset) {
-    throw methodUnimplemented()
+    throw methodUnimplemented$1()
   }
 
   /**
@@ -40689,7 +42098,7 @@ const splitItem = (transaction, leftItem, diff) => {
  * @param {Array<StackItem>} stack
  * @param {ID} id
  */
-const isDeletedByUndoStack = (stack, id) => some(stack, /** @param {StackItem} s */ s => isDeleted(s.deletions, id));
+const isDeletedByUndoStack = (stack, id) => some$1(stack, /** @param {StackItem} s */ s => isDeleted(s.deletions, id));
 
 /**
  * Redoes the effect of this operation.
@@ -41198,7 +42607,7 @@ class Item extends AbstractStruct {
    */
   gc (store, parentGCd) {
     if (!this.deleted) {
-      throw unexpectedCase()
+      throw unexpectedCase$1()
     }
     this.content.gc(store);
     if (parentGCd) {
@@ -41222,8 +42631,8 @@ class Item extends AbstractStruct {
     const rightOrigin = this.rightOrigin;
     const parentSub = this.parentSub;
     const info = (this.content.getRef() & BITS5) |
-      (origin === null ? 0 : BIT8) | // origin is defined
-      (rightOrigin === null ? 0 : BIT7) | // right origin is defined
+      (origin === null ? 0 : BIT8$1) | // origin is defined
+      (rightOrigin === null ? 0 : BIT7$1) | // right origin is defined
       (parentSub === null ? 0 : BIT6); // parentSub is non-null
     encoder.writeInfo(info);
     if (origin !== null) {
@@ -41253,7 +42662,7 @@ class Item extends AbstractStruct {
         encoder.writeParentInfo(false); // write parent id
         encoder.writeLeftID(parent);
       } else {
-        unexpectedCase();
+        unexpectedCase$1();
       }
       if (parentSub !== null) {
         encoder.writeString(parentSub);
@@ -41275,7 +42684,7 @@ const readItemContent = (decoder, info) => contentRefs[info & BITS5](decoder);
  * @type {Array<function(UpdateDecoderV1 | UpdateDecoderV2):AbstractContent>}
  */
 const contentRefs = [
-  () => { unexpectedCase(); }, // GC is not ItemContent
+  () => { unexpectedCase$1(); }, // GC is not ItemContent
   readContentDeleted, // 1
   readContentJSON, // 2
   readContentBinary, // 3
@@ -41285,7 +42694,7 @@ const contentRefs = [
   readContentType, // 7
   readContentAny, // 8
   readContentDoc, // 9
-  () => { unexpectedCase(); } // 10 - Skip is not ItemContent
+  () => { unexpectedCase$1(); } // 10 - Skip is not ItemContent
 ];
 
 const structSkipRefNumber = 10;
@@ -41318,7 +42727,7 @@ class Skip extends AbstractStruct {
    */
   integrate (transaction, offset) {
     // skip structs cannot be integrated
-    unexpectedCase();
+    unexpectedCase$1();
   }
 
   /**
@@ -41328,7 +42737,7 @@ class Skip extends AbstractStruct {
   write (encoder, offset) {
     encoder.writeInfo(structSkipRefNumber);
     // write as VarUint because Skips can't make use of predictable length-encoding
-    writeVarUint(encoder.restEncoder, this.length - offset);
+    writeVarUint$1(encoder.restEncoder, this.length - offset);
   }
 
   /**
@@ -41417,6 +42826,275 @@ const createMutex = () => {
 };
 
 /**
+ * Common Math expressions.
+ *
+ * @module math
+ */
+
+const floor = Math.floor;
+const abs = Math.abs;
+
+/**
+ * @function
+ * @param {number} a
+ * @param {number} b
+ * @return {number} The smaller element of a and b
+ */
+const min = (a, b) => a < b ? a : b;
+
+/**
+ * @function
+ * @param {number} a
+ * @param {number} b
+ * @return {number} The bigger element of a and b
+ */
+const max = (a, b) => a > b ? a : b;
+
+/**
+ * Check whether n is negative, while considering the -0 edge case. While `-0 < 0` is false, this
+ * function returns true for -0,-1,,.. and returns false for 0,1,2,...
+ * @param {number} n
+ * @return {boolean} Wether n is negative. This function also distinguishes between -0 and +0
+ */
+const isNegativeZero = n => n !== 0 ? n < 0 : 1 / n < 0;
+
+const EqualityTraitSymbol = Symbol('Equality');
+
+/**
+ * @typedef {{ [EqualityTraitSymbol]:(other:EqualityTrait)=>boolean }} EqualityTrait
+ */
+
+/**
+ *
+ * Utility function to compare any two objects.
+ *
+ * Note that it is expected that the first parameter is more specific than the latter one.
+ *
+ * @example js
+ *     class X { [traits.EqualityTraitSymbol] (other) { return other === this }  }
+ *     class X2 { [traits.EqualityTraitSymbol] (other) { return other === this }, x2 () { return 2 }  }
+ *     // this is fine
+ *     traits.equals(new X2(), new X())
+ *     // this is not, because the left type is less specific than the right one
+ *     traits.equals(new X(), new X2())
+ *
+ * @template {EqualityTrait} T
+ * @param {NoInfer<T>} a
+ * @param {T} b
+ * @return {boolean}
+ */
+const equals = (a, b) => a === b || !!a?.[EqualityTraitSymbol]?.(b) || false;
+
+/**
+ * @param {any} o
+ * @return {o is { [k:string]:any }}
+ */
+const isObject$1 = o => typeof o === 'object';
+
+/**
+ * @param {Object<string,any>} obj
+ */
+const keys = Object.keys;
+
+/**
+ * @param {Object<string,any>} obj
+ * @return {number}
+ */
+const size = obj => keys(obj).length;
+
+/**
+ * @template {{ [key:string|number|symbol]: any }} T
+ * @param {T} obj
+ * @param {(v:T[keyof T],k:keyof T)=>boolean} f
+ * @return {boolean}
+ */
+const every$1 = (obj, f) => {
+  for (const key in obj) {
+    if (!f(obj[key], key)) {
+      return false
+    }
+  }
+  return true
+};
+
+/**
+ * Calls `Object.prototype.hasOwnProperty`.
+ *
+ * @param {any} obj
+ * @param {string|number|symbol} key
+ * @return {boolean}
+ */
+const hasProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+
+/**
+ * Utility module to work with sets.
+ *
+ * @module set
+ */
+
+const create$2 = () => new Set();
+
+/**
+ * Utility module to work with Arrays.
+ *
+ * @module array
+ */
+
+
+/**
+ * True iff condition holds on every element in the Array.
+ *
+ * @function
+ * @template {ArrayLike<any>} ARR
+ *
+ * @param {ARR} arr
+ * @param {ARR extends ArrayLike<infer S> ? ((value:S, index:number, arr:ARR) => boolean) : any} f
+ * @return {boolean}
+ */
+const every = (arr, f) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (!f(arr[i], i, arr)) {
+      return false
+    }
+  }
+  return true
+};
+
+/**
+ * True iff condition holds on some element in the Array.
+ *
+ * @function
+ * @template {ArrayLike<any>} ARR
+ *
+ * @param {ARR} arr
+ * @param {ARR extends ArrayLike<infer S> ? ((value:S, index:number, arr:ARR) => boolean) : never} f
+ * @return {boolean}
+ */
+const some = (arr, f) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (f(arr[i], i, arr)) {
+      return true
+    }
+  }
+  return false
+};
+
+/**
+ * @template T
+ * @param {number} len
+ * @param {function(number, Array<T>):T} f
+ * @return {Array<T>}
+ */
+const unfold = (len, f) => {
+  const array = new Array(len);
+  for (let i = 0; i < len; i++) {
+    array[i] = f(i, array);
+  }
+  return array
+};
+
+const isArray = Array.isArray;
+
+/**
+ * Common functions and function call helpers.
+ *
+ * @module function
+ */
+
+
+/* c8 ignore start */
+
+/**
+ * @param {any} a
+ * @param {any} b
+ * @return {boolean}
+ */
+const equalityDeep = (a, b) => {
+  if (a === b) {
+    return true
+  }
+  if (a == null || b == null || (a.constructor !== b.constructor && (a.constructor || Object) !== (b.constructor || Object))) {
+    return false
+  }
+  if (a[EqualityTraitSymbol] != null) {
+    return a[EqualityTraitSymbol](b)
+  }
+  switch (a.constructor) {
+    case ArrayBuffer:
+      a = new Uint8Array(a);
+      b = new Uint8Array(b);
+    // eslint-disable-next-line no-fallthrough
+    case Uint8Array: {
+      if (a.byteLength !== b.byteLength) {
+        return false
+      }
+      for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) {
+          return false
+        }
+      }
+      break
+    }
+    case Set: {
+      if (a.size !== b.size) {
+        return false
+      }
+      for (const value of a) {
+        if (!b.has(value)) {
+          return false
+        }
+      }
+      break
+    }
+    case Map: {
+      if (a.size !== b.size) {
+        return false
+      }
+      for (const key of a.keys()) {
+        if (!b.has(key) || !equalityDeep(a.get(key), b.get(key))) {
+          return false
+        }
+      }
+      break
+    }
+    case undefined:
+    case Object:
+      if (size(a) !== size(b)) {
+        return false
+      }
+      for (const key in a) {
+        if (!hasProperty(a, key) || !equalityDeep(a[key], b[key])) {
+          return false
+        }
+      }
+      break
+    case Array:
+      if (a.length !== b.length) {
+        return false
+      }
+      for (let i = 0; i < a.length; i++) {
+        if (!equalityDeep(a[i], b[i])) {
+          return false
+        }
+      }
+      break
+    default:
+      return false
+  }
+  return true
+};
+
+/**
+ * @template V
+ * @template {V} OPTS
+ *
+ * @param {V} value
+ * @param {Array<OPTS>} options
+ */
+// @ts-ignore
+const isOneOf = (value, options) => options.includes(value);
+
+/**
  * Efficient diffs.
  *
  * @module diff
@@ -41481,6 +43159,2106 @@ const simpleDiffString = (a, b) => {
  * @deprecated
  */
 const simpleDiff = simpleDiffString;
+
+/**
+ * Error helpers.
+ *
+ * @module error
+ */
+
+/**
+ * @param {string} s
+ * @return {Error}
+ */
+/* c8 ignore next */
+const create$1 = s => new Error(s);
+
+/**
+ * @throws {Error}
+ * @return {never}
+ */
+/* c8 ignore next 3 */
+const methodUnimplemented = () => {
+  throw create$1('Method unimplemented')
+};
+
+/**
+ * @throws {Error}
+ * @return {never}
+ */
+/* c8 ignore next 3 */
+const unexpectedCase = () => {
+  throw create$1('Unexpected case')
+};
+
+/* eslint-env browser */
+
+const BIT7 = 64;
+const BIT8 = 128;
+const BIT30 = 1 << 29;
+const BITS6 = 63;
+const BITS7 = 127;
+/**
+ * @type {number}
+ */
+const BITS31 = 0x7FFFFFFF;
+
+/* eslint-env browser */
+
+crypto.getRandomValues.bind(crypto);
+
+/**
+ * Isomorphic module for true random numbers / buffers / uuids.
+ *
+ * Attention: falls back to Math.random if the browser does not support crypto.
+ *
+ * @module random
+ */
+
+
+const rand = Math.random;
+
+/**
+ * @template T
+ * @param {Array<T>} arr
+ * @return {T}
+ */
+const oneOf$1 = arr => arr[floor(rand() * arr.length)];
+
+/**
+ * Utility module to work with key-value stores.
+ *
+ * @module map
+ */
+
+/**
+ * @template K
+ * @template V
+ * @typedef {Map<K,V>} GlobalMap
+ */
+
+/**
+ * Creates a new Map instance.
+ *
+ * @function
+ * @return {Map<any, any>}
+ *
+ * @function
+ */
+const create = () => new Map();
+
+/**
+ * Get map property. Create T if property is undefined and set T on map.
+ *
+ * ```js
+ * const listeners = map.setIfUndefined(events, 'eventName', set.create)
+ * listeners.add(listener)
+ * ```
+ *
+ * @function
+ * @template {Map<any, any>} MAP
+ * @template {MAP extends Map<any,infer V> ? function():V : unknown} CF
+ * @param {MAP} map
+ * @param {MAP extends Map<infer K,any> ? K : unknown} key
+ * @param {CF} createT
+ * @return {ReturnType<CF>}
+ */
+const setIfUndefined = (map, key, createT) => {
+  let set = map.get(key);
+  if (set === undefined) {
+    map.set(key, set = createT());
+  }
+  return set
+};
+
+/**
+ * Utility module to work with strings.
+ *
+ * @module string
+ */
+
+const fromCharCode = String.fromCharCode;
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+const toLowerCase = s => s.toLowerCase();
+
+const trimLeftRegex = /^\s*/g;
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+const trimLeft = s => s.replace(trimLeftRegex, '');
+
+const fromCamelCaseRegex = /([A-Z])/g;
+
+/**
+ * @param {string} s
+ * @param {string} separator
+ * @return {string}
+ */
+const fromCamelCase = (s, separator) => trimLeft(s.replace(fromCamelCaseRegex, match => `${separator}${toLowerCase(match)}`));
+
+/**
+ * @param {string} str
+ * @return {Uint8Array<ArrayBuffer>}
+ */
+const _encodeUtf8Polyfill = str => {
+  const encodedString = unescape(encodeURIComponent(str));
+  const len = encodedString.length;
+  const buf = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    buf[i] = /** @type {number} */ (encodedString.codePointAt(i));
+  }
+  return buf
+};
+
+/* c8 ignore next */
+const utf8TextEncoder = /** @type {TextEncoder} */ (typeof TextEncoder !== 'undefined' ? new TextEncoder() : null);
+
+/**
+ * @param {string} str
+ * @return {Uint8Array<ArrayBuffer>}
+ */
+const _encodeUtf8Native = str => utf8TextEncoder.encode(str);
+
+/**
+ * @param {string} str
+ * @return {Uint8Array}
+ */
+/* c8 ignore next */
+const encodeUtf8 = utf8TextEncoder ? _encodeUtf8Native : _encodeUtf8Polyfill;
+
+/* c8 ignore next */
+let utf8TextDecoder = typeof TextDecoder === 'undefined' ? null : new TextDecoder('utf-8', { fatal: true, ignoreBOM: true });
+
+/* c8 ignore start */
+if (utf8TextDecoder && utf8TextDecoder.decode(new Uint8Array()).length === 1) {
+  // Safari doesn't handle BOM correctly.
+  // This fixes a bug in Safari 13.0.5 where it produces a BOM the first time it is called.
+  // utf8TextDecoder.decode(new Uint8Array()).length === 1 on the first call and
+  // utf8TextDecoder.decode(new Uint8Array()).length === 1 on the second call
+  // Another issue is that from then on no BOM chars are recognized anymore
+  /* c8 ignore next */
+  utf8TextDecoder = null;
+}
+
+/**
+ * @param {string} source
+ * @param {number} n
+ */
+const repeat = (source, n) => unfold(n, () => source).join('');
+
+/**
+ * Often used conditions.
+ *
+ * @module conditions
+ */
+
+/**
+ * @template T
+ * @param {T|null|undefined} v
+ * @return {T|null}
+ */
+/* c8 ignore next */
+const undefinedToNull = v => v === undefined ? null : v;
+
+/* eslint-env browser */
+
+/**
+ * Isomorphic variable storage.
+ *
+ * Uses LocalStorage in the browser and falls back to in-memory storage.
+ *
+ * @module storage
+ */
+
+/* c8 ignore start */
+class VarStoragePolyfill {
+  constructor () {
+    this.map = new Map();
+  }
+
+  /**
+   * @param {string} key
+   * @param {any} newValue
+   */
+  setItem (key, newValue) {
+    this.map.set(key, newValue);
+  }
+
+  /**
+   * @param {string} key
+   */
+  getItem (key) {
+    return this.map.get(key)
+  }
+}
+/* c8 ignore stop */
+
+/**
+ * @type {any}
+ */
+let _localStorage = new VarStoragePolyfill();
+let usePolyfill = true;
+
+/* c8 ignore start */
+try {
+  // if the same-origin rule is violated, accessing localStorage might thrown an error
+  if (typeof localStorage !== 'undefined' && localStorage) {
+    _localStorage = localStorage;
+    usePolyfill = false;
+  }
+} catch (e) { }
+/* c8 ignore stop */
+
+/**
+ * This is basically localStorage in browser, or a polyfill in nodejs
+ */
+/* c8 ignore next */
+const varStorage = _localStorage;
+
+/**
+ * Isomorphic module to work access the environment (query params, env variables).
+ *
+ * @module environment
+ */
+
+
+/* c8 ignore next 2 */
+// @ts-ignore
+const isNode = typeof process !== 'undefined' && process.release && /node|io\.js/.test(process.release.name) && Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]';
+
+/* c8 ignore next */
+const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && !isNode;
+
+/**
+ * @type {Map<string,string>}
+ */
+let params;
+
+/* c8 ignore start */
+const computeParams = () => {
+  if (params === undefined) {
+    if (isNode) {
+      params = create();
+      const pargs = process.argv;
+      let currParamName = null;
+      for (let i = 0; i < pargs.length; i++) {
+        const parg = pargs[i];
+        if (parg[0] === '-') {
+          if (currParamName !== null) {
+            params.set(currParamName, '');
+          }
+          currParamName = parg;
+        } else {
+          if (currParamName !== null) {
+            params.set(currParamName, parg);
+            currParamName = null;
+          }
+        }
+      }
+      if (currParamName !== null) {
+        params.set(currParamName, '');
+      }
+      // in ReactNative for example this would not be true (unless connected to the Remote Debugger)
+    } else if (typeof location === 'object') {
+      params = create(); // eslint-disable-next-line no-undef
+      (location.search || '?').slice(1).split('&').forEach((kv) => {
+        if (kv.length !== 0) {
+          const [key, value] = kv.split('=');
+          params.set(`--${fromCamelCase(key, '-')}`, value);
+          params.set(`-${fromCamelCase(key, '-')}`, value);
+        }
+      });
+    } else {
+      params = create();
+    }
+  }
+  return params
+};
+/* c8 ignore stop */
+
+/**
+ * @param {string} name
+ * @return {boolean}
+ */
+/* c8 ignore next */
+const hasParam = (name) => computeParams().has(name);
+
+/**
+ * @param {string} name
+ * @return {string|null}
+ */
+/* c8 ignore next 4 */
+const getVariable = (name) =>
+  isNode
+    ? undefinedToNull(process.env[name.toUpperCase().replaceAll('-', '_')])
+    : undefinedToNull(varStorage.getItem(name));
+
+/**
+ * @param {string} name
+ * @return {boolean}
+ */
+/* c8 ignore next 2 */
+const hasConf = (name) =>
+  hasParam('--' + name) || getVariable(name) !== null;
+
+/* c8 ignore next */
+const production = hasConf('production');
+
+/* c8 ignore next 2 */
+const forceColor = isNode &&
+  isOneOf(process.env.FORCE_COLOR, ['true', '1', '2']);
+
+/* c8 ignore start */
+/**
+ * Color is enabled by default if the terminal supports it.
+ *
+ * Explicitly enable color using `--color` parameter
+ * Disable color using `--no-color` parameter or using `NO_COLOR=1` environment variable.
+ * `FORCE_COLOR=1` enables color and takes precedence over all.
+ */
+forceColor || (
+  !hasParam('--no-colors') && // @todo deprecate --no-colors
+  !hasConf('no-color') &&
+  (!isNode || process.stdout.isTTY) && (
+    !isNode ||
+    hasParam('--color') ||
+    getVariable('COLORTERM') !== null ||
+    (getVariable('TERM') || '').includes('color')
+  )
+);
+/* c8 ignore stop */
+
+/**
+ * Utility helpers for working with numbers.
+ *
+ * @module number
+ */
+
+
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER;
+const MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER;
+
+/* c8 ignore next */
+const isInteger = Number.isInteger || (num => typeof num === 'number' && isFinite(num) && floor(num) === num);
+
+/**
+ * Efficient schema-less binary encoding with support for variable length encoding.
+ *
+ * Use [lib0/encoding] with [lib0/decoding]. Every encoding function has a corresponding decoding function.
+ *
+ * Encodes numbers in little-endian order (least to most significant byte order)
+ * and is compatible with Golang's binary encoding (https://golang.org/pkg/encoding/binary/)
+ * which is also used in Protocol Buffers.
+ *
+ * ```js
+ * // encoding step
+ * const encoder = encoding.createEncoder()
+ * encoding.writeVarUint(encoder, 256)
+ * encoding.writeVarString(encoder, 'Hello world!')
+ * const buf = encoding.toUint8Array(encoder)
+ * ```
+ *
+ * ```js
+ * // decoding step
+ * const decoder = decoding.createDecoder(buf)
+ * decoding.readVarUint(decoder) // => 256
+ * decoding.readVarString(decoder) // => 'Hello world!'
+ * decoding.hasContent(decoder) // => false - all data is read
+ * ```
+ *
+ * @module encoding
+ */
+
+
+/**
+ * A BinaryEncoder handles the encoding to an Uint8Array.
+ */
+class Encoder {
+  constructor () {
+    this.cpos = 0;
+    this.cbuf = new Uint8Array(100);
+    /**
+     * @type {Array<Uint8Array>}
+     */
+    this.bufs = [];
+  }
+}
+
+/**
+ * @function
+ * @return {Encoder}
+ */
+const createEncoder = () => new Encoder();
+
+/**
+ * @param {function(Encoder):void} f
+ */
+const encode = (f) => {
+  const encoder = createEncoder();
+  f(encoder);
+  return toUint8Array(encoder)
+};
+
+/**
+ * The current length of the encoded data.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @return {number}
+ */
+const length = encoder => {
+  let len = encoder.cpos;
+  for (let i = 0; i < encoder.bufs.length; i++) {
+    len += encoder.bufs[i].length;
+  }
+  return len
+};
+
+/**
+ * Transform to Uint8Array.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @return {Uint8Array<ArrayBuffer>} The created ArrayBuffer.
+ */
+const toUint8Array = encoder => {
+  const uint8arr = new Uint8Array(length(encoder));
+  let curPos = 0;
+  for (let i = 0; i < encoder.bufs.length; i++) {
+    const d = encoder.bufs[i];
+    uint8arr.set(d, curPos);
+    curPos += d.length;
+  }
+  uint8arr.set(new Uint8Array(encoder.cbuf.buffer, 0, encoder.cpos), curPos);
+  return uint8arr
+};
+
+/**
+ * Verify that it is possible to write `len` bytes wtihout checking. If
+ * necessary, a new Buffer with the required length is attached.
+ *
+ * @param {Encoder} encoder
+ * @param {number} len
+ */
+const verifyLen = (encoder, len) => {
+  const bufferLen = encoder.cbuf.length;
+  if (bufferLen - encoder.cpos < len) {
+    encoder.bufs.push(new Uint8Array(encoder.cbuf.buffer, 0, encoder.cpos));
+    encoder.cbuf = new Uint8Array(max(bufferLen, len) * 2);
+    encoder.cpos = 0;
+  }
+};
+
+/**
+ * Write one byte to the encoder.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {number} num The byte that is to be encoded.
+ */
+const write = (encoder, num) => {
+  const bufferLen = encoder.cbuf.length;
+  if (encoder.cpos === bufferLen) {
+    encoder.bufs.push(encoder.cbuf);
+    encoder.cbuf = new Uint8Array(bufferLen * 2);
+    encoder.cpos = 0;
+  }
+  encoder.cbuf[encoder.cpos++] = num;
+};
+
+/**
+ * Write a variable length unsigned integer. Max encodable integer is 2^53.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {number} num The number that is to be encoded.
+ */
+const writeVarUint = (encoder, num) => {
+  while (num > BITS7) {
+    write(encoder, BIT8 | (BITS7 & num));
+    num = floor(num / 128); // shift >>> 7
+  }
+  write(encoder, BITS7 & num);
+};
+
+/**
+ * Write a variable length integer.
+ *
+ * We use the 7th bit instead for signaling that this is a negative number.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {number} num The number that is to be encoded.
+ */
+const writeVarInt = (encoder, num) => {
+  const isNegative = isNegativeZero(num);
+  if (isNegative) {
+    num = -num;
+  }
+  //             |- whether to continue reading         |- whether is negative     |- number
+  write(encoder, (num > BITS6 ? BIT8 : 0) | (isNegative ? BIT7 : 0) | (BITS6 & num));
+  num = floor(num / 64); // shift >>> 6
+  // We don't need to consider the case of num === 0 so we can use a different
+  // pattern here than above.
+  while (num > 0) {
+    write(encoder, (num > BITS7 ? BIT8 : 0) | (BITS7 & num));
+    num = floor(num / 128); // shift >>> 7
+  }
+};
+
+/**
+ * A cache to store strings temporarily
+ */
+const _strBuffer = new Uint8Array(30000);
+const _maxStrBSize = _strBuffer.length / 3;
+
+/**
+ * Write a variable length string.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {String} str The string that is to be encoded.
+ */
+const _writeVarStringNative = (encoder, str) => {
+  if (str.length < _maxStrBSize) {
+    // We can encode the string into the existing buffer
+    /* c8 ignore next */
+    const written = utf8TextEncoder.encodeInto(str, _strBuffer).written || 0;
+    writeVarUint(encoder, written);
+    for (let i = 0; i < written; i++) {
+      write(encoder, _strBuffer[i]);
+    }
+  } else {
+    writeVarUint8Array(encoder, encodeUtf8(str));
+  }
+};
+
+/**
+ * Write a variable length string.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {String} str The string that is to be encoded.
+ */
+const _writeVarStringPolyfill = (encoder, str) => {
+  const encodedString = unescape(encodeURIComponent(str));
+  const len = encodedString.length;
+  writeVarUint(encoder, len);
+  for (let i = 0; i < len; i++) {
+    write(encoder, /** @type {number} */ (encodedString.codePointAt(i)));
+  }
+};
+
+/**
+ * Write a variable length string.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {String} str The string that is to be encoded.
+ */
+/* c8 ignore next */
+const writeVarString = (utf8TextEncoder && /** @type {any} */ (utf8TextEncoder).encodeInto) ? _writeVarStringNative : _writeVarStringPolyfill;
+
+/**
+ * Append fixed-length Uint8Array to the encoder.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {Uint8Array} uint8Array
+ */
+const writeUint8Array = (encoder, uint8Array) => {
+  const bufferLen = encoder.cbuf.length;
+  const cpos = encoder.cpos;
+  const leftCopyLen = min(bufferLen - cpos, uint8Array.length);
+  const rightCopyLen = uint8Array.length - leftCopyLen;
+  encoder.cbuf.set(uint8Array.subarray(0, leftCopyLen), cpos);
+  encoder.cpos += leftCopyLen;
+  if (rightCopyLen > 0) {
+    // Still something to write, write right half..
+    // Append new buffer
+    encoder.bufs.push(encoder.cbuf);
+    // must have at least size of remaining buffer
+    encoder.cbuf = new Uint8Array(max(bufferLen * 2, rightCopyLen));
+    // copy array
+    encoder.cbuf.set(uint8Array.subarray(leftCopyLen));
+    encoder.cpos = rightCopyLen;
+  }
+};
+
+/**
+ * Append an Uint8Array to Encoder.
+ *
+ * @function
+ * @param {Encoder} encoder
+ * @param {Uint8Array} uint8Array
+ */
+const writeVarUint8Array = (encoder, uint8Array) => {
+  writeVarUint(encoder, uint8Array.byteLength);
+  writeUint8Array(encoder, uint8Array);
+};
+
+/**
+ * Create an DataView of the next `len` bytes. Use it to write data after
+ * calling this function.
+ *
+ * ```js
+ * // write float32 using DataView
+ * const dv = writeOnDataView(encoder, 4)
+ * dv.setFloat32(0, 1.1)
+ * // read float32 using DataView
+ * const dv = readFromDataView(encoder, 4)
+ * dv.getFloat32(0) // => 1.100000023841858 (leaving it to the reader to find out why this is the correct result)
+ * ```
+ *
+ * @param {Encoder} encoder
+ * @param {number} len
+ * @return {DataView}
+ */
+const writeOnDataView = (encoder, len) => {
+  verifyLen(encoder, len);
+  const dview = new DataView(encoder.cbuf.buffer, encoder.cpos, len);
+  encoder.cpos += len;
+  return dview
+};
+
+/**
+ * @param {Encoder} encoder
+ * @param {number} num
+ */
+const writeFloat32 = (encoder, num) => writeOnDataView(encoder, 4).setFloat32(0, num, false);
+
+/**
+ * @param {Encoder} encoder
+ * @param {number} num
+ */
+const writeFloat64 = (encoder, num) => writeOnDataView(encoder, 8).setFloat64(0, num, false);
+
+/**
+ * @param {Encoder} encoder
+ * @param {bigint} num
+ */
+const writeBigInt64 = (encoder, num) => /** @type {any} */ (writeOnDataView(encoder, 8)).setBigInt64(0, num, false);
+
+const floatTestBed = new DataView(new ArrayBuffer(4));
+/**
+ * Check if a number can be encoded as a 32 bit float.
+ *
+ * @param {number} num
+ * @return {boolean}
+ */
+const isFloat32 = num => {
+  floatTestBed.setFloat32(0, num);
+  return floatTestBed.getFloat32(0) === num
+};
+
+/**
+ * @typedef {Array<AnyEncodable>} AnyEncodableArray
+ */
+
+/**
+ * @typedef {undefined|null|number|bigint|boolean|string|{[k:string]:AnyEncodable}|AnyEncodableArray|Uint8Array} AnyEncodable
+ */
+
+/**
+ * Encode data with efficient binary format.
+ *
+ * Differences to JSON:
+ * • Transforms data to a binary format (not to a string)
+ * • Encodes undefined, NaN, and ArrayBuffer (these can't be represented in JSON)
+ * • Numbers are efficiently encoded either as a variable length integer, as a
+ *   32 bit float, as a 64 bit float, or as a 64 bit bigint.
+ *
+ * Encoding table:
+ *
+ * | Data Type           | Prefix   | Encoding Method    | Comment |
+ * | ------------------- | -------- | ------------------ | ------- |
+ * | undefined           | 127      |                    | Functions, symbol, and everything that cannot be identified is encoded as undefined |
+ * | null                | 126      |                    | |
+ * | integer             | 125      | writeVarInt        | Only encodes 32 bit signed integers |
+ * | float32             | 124      | writeFloat32       | |
+ * | float64             | 123      | writeFloat64       | |
+ * | bigint              | 122      | writeBigInt64      | |
+ * | boolean (false)     | 121      |                    | True and false are different data types so we save the following byte |
+ * | boolean (true)      | 120      |                    | - 0b01111000 so the last bit determines whether true or false |
+ * | string              | 119      | writeVarString     | |
+ * | object<string,any>  | 118      | custom             | Writes {length} then {length} key-value pairs |
+ * | array<any>          | 117      | custom             | Writes {length} then {length} json values |
+ * | Uint8Array          | 116      | writeVarUint8Array | We use Uint8Array for any kind of binary data |
+ *
+ * Reasons for the decreasing prefix:
+ * We need the first bit for extendability (later we may want to encode the
+ * prefix with writeVarUint). The remaining 7 bits are divided as follows:
+ * [0-30]   the beginning of the data range is used for custom purposes
+ *          (defined by the function that uses this library)
+ * [31-127] the end of the data range is used for data encoding by
+ *          lib0/encoding.js
+ *
+ * @param {Encoder} encoder
+ * @param {AnyEncodable} data
+ */
+const writeAny = (encoder, data) => {
+  switch (typeof data) {
+    case 'string':
+      // TYPE 119: STRING
+      write(encoder, 119);
+      writeVarString(encoder, data);
+      break
+    case 'number':
+      if (isInteger(data) && abs(data) <= BITS31) {
+        // TYPE 125: INTEGER
+        write(encoder, 125);
+        writeVarInt(encoder, data);
+      } else if (isFloat32(data)) {
+        // TYPE 124: FLOAT32
+        write(encoder, 124);
+        writeFloat32(encoder, data);
+      } else {
+        // TYPE 123: FLOAT64
+        write(encoder, 123);
+        writeFloat64(encoder, data);
+      }
+      break
+    case 'bigint':
+      // TYPE 122: BigInt
+      write(encoder, 122);
+      writeBigInt64(encoder, data);
+      break
+    case 'object':
+      if (data === null) {
+        // TYPE 126: null
+        write(encoder, 126);
+      } else if (isArray(data)) {
+        // TYPE 117: Array
+        write(encoder, 117);
+        writeVarUint(encoder, data.length);
+        for (let i = 0; i < data.length; i++) {
+          writeAny(encoder, data[i]);
+        }
+      } else if (data instanceof Uint8Array) {
+        // TYPE 116: ArrayBuffer
+        write(encoder, 116);
+        writeVarUint8Array(encoder, data);
+      } else {
+        // TYPE 118: Object
+        write(encoder, 118);
+        const keys = Object.keys(data);
+        writeVarUint(encoder, keys.length);
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          writeVarString(encoder, key);
+          writeAny(encoder, data[key]);
+        }
+      }
+      break
+    case 'boolean':
+      // TYPE 120/121: boolean (true/false)
+      write(encoder, data ? 120 : 121);
+      break
+    default:
+      // TYPE 127: undefined
+      write(encoder, 127);
+  }
+};
+
+/**
+ * Utility functions to work with buffers (Uint8Array).
+ *
+ * @module buffer
+ */
+
+
+/* c8 ignore start */
+/**
+ * @param {Uint8Array} bytes
+ * @return {string}
+ */
+const toBase64Browser = bytes => {
+  let s = '';
+  for (let i = 0; i < bytes.byteLength; i++) {
+    s += fromCharCode(bytes[i]);
+  }
+  // eslint-disable-next-line no-undef
+  return btoa(s)
+};
+/* c8 ignore stop */
+
+/**
+ * @param {Uint8Array} bytes
+ * @return {string}
+ */
+const toBase64Node = bytes => Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString('base64');
+
+/* c8 ignore next */
+const toBase64 = isBrowser ? toBase64Browser : toBase64Node;
+
+/**
+ * Encode anything as a UInt8Array. It's a pun on typescripts's `any` type.
+ * See encoding.writeAny for more information.
+ *
+ * @param {any} data
+ * @return {Uint8Array}
+ */
+const encodeAny = data =>
+  encode(encoder => writeAny(encoder, data));
+
+/**
+ * Fast Pseudo Random Number Generators.
+ *
+ * Given a seed a PRNG generates a sequence of numbers that cannot be reasonably predicted.
+ * Two PRNGs must generate the same random sequence of numbers if  given the same seed.
+ *
+ * @module prng
+ */
+
+
+/**
+ * Generates a single random bool.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @return {Boolean} A random boolean
+ */
+const bool = gen => (gen.next() >= 0.5);
+
+/**
+ * Generates a random integer with 53 bit resolution.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @param {Number} min The lower bound of the allowed return values (inclusive).
+ * @param {Number} max The upper bound of the allowed return values (inclusive).
+ * @return {Number} A random integer on [min, max]
+ */
+const int53 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
+
+/**
+ * Generates a random integer with 32 bit resolution.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @param {Number} min The lower bound of the allowed return values (inclusive).
+ * @param {Number} max The upper bound of the allowed return values (inclusive).
+ * @return {Number} A random integer on [min, max]
+ */
+const int32 = (gen, min, max) => floor(gen.next() * (max + 1 - min) + min);
+
+/**
+ * @deprecated
+ * Optimized version of prng.int32. It has the same precision as prng.int32, but should be preferred when
+ * openaring on smaller ranges.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @param {Number} min The lower bound of the allowed return values (inclusive).
+ * @param {Number} max The upper bound of the allowed return values (inclusive). The max inclusive number is `binary.BITS31-1`
+ * @return {Number} A random integer on [min, max]
+ */
+const int31 = (gen, min, max) => int32(gen, min, max);
+
+/**
+ * @param {PRNG} gen
+ * @return {string} A single letter (a-z)
+ */
+const letter = gen => fromCharCode(int31(gen, 97, 122));
+
+/**
+ * @param {PRNG} gen
+ * @param {number} [minLen=0]
+ * @param {number} [maxLen=20]
+ * @return {string} A random word (0-20 characters) without spaces consisting of letters (a-z)
+ */
+const word = (gen, minLen = 0, maxLen = 20) => {
+  const len = int31(gen, minLen, maxLen);
+  let str = '';
+  for (let i = 0; i < len; i++) {
+    str += letter(gen);
+  }
+  return str
+};
+
+/**
+ * Returns one element of a given array.
+ *
+ * @param {PRNG} gen A random number generator.
+ * @param {Array<T>} array Non empty Array of possible values.
+ * @return {T} One of the values of the supplied Array.
+ * @template T
+ */
+const oneOf = (gen, array) => array[int31(gen, 0, array.length - 1)];
+/* c8 ignore stop */
+
+/**
+ * @experimental WIP
+ *
+ * Simple & efficient schemas for your data.
+ */
+
+
+/**
+ * @typedef {string|number|bigint|boolean|null|undefined|symbol} Primitive
+ */
+
+/**
+ * @typedef {{ [k:string|number|symbol]: any }} AnyObject
+ */
+
+/**
+ * @template T
+ * @typedef {T extends Schema<infer X> ? X : T} Unwrap
+ */
+
+/**
+ * @template T
+ * @typedef {T extends Schema<infer X> ? X : T} TypeOf
+ */
+
+/**
+ * @template {readonly unknown[]} T
+ * @typedef {T extends readonly [Schema<infer First>, ...infer Rest] ? [First, ...UnwrapArray<Rest>] : [] } UnwrapArray
+ */
+
+/**
+ * @template T
+ * @typedef {T extends Schema<infer S> ? Schema<S> : never} CastToSchema
+ */
+
+/**
+ * @template {unknown[]} Arr
+ * @typedef {Arr extends [...unknown[], infer L] ? L : never} TupleLast
+ */
+
+/**
+ * @template {unknown[]} Arr
+ * @typedef {Arr extends [...infer Fs, unknown] ? Fs : never} TuplePop
+ */
+
+/**
+ * @template {readonly unknown[]} T
+ * @typedef {T extends []
+ *   ? {}
+ *   : T extends [infer First]
+ *   ? First
+ *   : T extends [infer First, ...infer Rest]
+ *   ? First & Intersect<Rest>
+ *   : never
+ * } Intersect
+ */
+
+const schemaSymbol = Symbol('0schema');
+
+class ValidationError {
+  constructor () {
+    /**
+     * Reverse errors
+     * @type {Array<{ path: string?, expected: string, has: string, message: string? }>}
+     */
+    this._rerrs = [];
+  }
+
+  /**
+   * @param {string?} path
+   * @param {string} expected
+   * @param {string} has
+   * @param {string?} message
+   */
+  extend (path, expected, has, message = null) {
+    this._rerrs.push({ path, expected, has, message });
+  }
+
+  toString () {
+    const s = [];
+    for (let i = this._rerrs.length - 1; i > 0; i--) {
+      const r = this._rerrs[i];
+      /* c8 ignore next */
+      s.push(repeat(' ', (this._rerrs.length - i) * 2) + `${r.path != null ? `[${r.path}] ` : ''}${r.has} doesn't match ${r.expected}. ${r.message}`);
+    }
+    return s.join('\n')
+  }
+}
+
+/**
+ * @param {any} a
+ * @param {any} b
+ * @return {boolean}
+ */
+const shapeExtends = (a, b) => {
+  if (a === b) return true
+  if (a == null || b == null || a.constructor !== b.constructor) return false
+  if (a[EqualityTraitSymbol]) return equals(a, b) // last resort: check equality (do this before array and obj check which don't implement the equality trait)
+  if (isArray(a)) {
+    return every(a, aitem =>
+      some(b, bitem => shapeExtends(aitem, bitem))
+    )
+  } else if (isObject$1(a)) {
+    return every$1(a, (aitem, akey) =>
+      shapeExtends(aitem, b[akey])
+    )
+  }
+  /* c8 ignore next */
+  return false
+};
+
+/**
+ * @template T
+ * @implements {equalityTraits.EqualityTrait}
+ */
+class Schema {
+  // this.shape must not be defined on Schema. Otherwise typecheck on metatypes (e.g. $$object) won't work as expected anymore
+  /**
+   * If true, the more things are added to the shape the more objects this schema will accept (e.g.
+   * union). By default, the more objects are added, the the fewer objects this schema will accept.
+   * @protected
+   */
+  static _dilutes = false
+
+  /**
+   * @param {Schema<any>} other
+   */
+  extends (other) {
+    let [a, b] = [/** @type {any} */(this).shape, /** @type {any} */ (other).shape];
+    if (/** @type {typeof Schema<any>} */ (this.constructor)._dilutes) [b, a] = [a, b];
+    return shapeExtends(a, b)
+  }
+
+  /**
+   * Overwrite this when necessary. By default, we only check the `shape` property which every shape
+   * should have.
+   * @param {Schema<any>} other
+   */
+  equals (other) {
+    // @ts-ignore
+    return this.constructor === other.constructor && equalityDeep(this.shape, other.shape)
+  }
+
+  [schemaSymbol] () { return true }
+
+  /**
+   * @param {object} other
+   */
+  [EqualityTraitSymbol] (other) {
+    return this.equals(/** @type {any} */ (other))
+  }
+
+  /**
+   * Use `schema.validate(obj)` with a typed parameter that is already of typed to be an instance of
+   * Schema. Validate will check the structure of the parameter and return true iff the instance
+   * really is an instance of Schema.
+   *
+   * @param {T} o
+   * @return {boolean}
+   */
+  validate (o) {
+    return this.check(o)
+  }
+
+  /* c8 ignore start */
+  /**
+   * Similar to validate, but this method accepts untyped parameters.
+   *
+   * @param {any} _o
+   * @param {ValidationError} [_err]
+   * @return {_o is T}
+   */
+  check (_o, _err) {
+    methodUnimplemented();
+  }
+  /* c8 ignore stop */
+
+  /**
+   * @type {Schema<T?>}
+   */
+  get nullable () {
+    // @ts-ignore
+    return $union(this, $null)
+  }
+
+  /**
+   * @type {$Optional<Schema<T>>}
+   */
+  get optional () {
+    return new $Optional(/** @type {Schema<T>} */ (this))
+  }
+
+  /**
+   * Cast a variable to a specific type. Returns the casted value, or throws an exception otherwise.
+   * Use this if you know that the type is of a specific type and you just want to convince the type
+   * system.
+   *
+   * **Do not rely on these error messages!**
+   * Performs an assertion check only if not in a production environment.
+   *
+   * @template OO
+   * @param {OO} o
+   * @return {Extract<OO, T> extends never ? T : (OO extends Array<never> ? T : Extract<OO,T>)}
+   */
+  cast (o) {
+    assert(o, this);
+    return /** @type {any} */ (o)
+  }
+
+  /**
+   * EXPECTO PATRONUM!! 🪄
+   * This function protects against type errors. Though it may not work in the real world.
+   *
+   * "After all this time?"
+   * "Always." - Snape, talking about type safety
+   *
+   * Ensures that a variable is a a specific type. Returns the value, or throws an exception if the assertion check failed.
+   * Use this if you know that the type is of a specific type and you just want to convince the type
+   * system.
+   *
+   * Can be useful when defining lambdas: `s.lambda(s.$number, s.$void).expect((n) => n + 1)`
+   *
+   * **Do not rely on these error messages!**
+   * Performs an assertion check if not in a production environment.
+   *
+   * @param {T} o
+   * @return {o extends T ? T : never}
+   */
+  expect (o) {
+    assert(o, this);
+    return o
+  }
+}
+
+/**
+ * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} Constr
+ * @typedef {Constr extends ((...args:any[]) => infer T) ? T : (Constr extends (new (...args:any[]) => any) ? InstanceType<Constr> : never)} Instance
+ */
+
+/**
+ * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} C
+ * @extends {Schema<Instance<C>>}
+ */
+class $ConstructedBy extends Schema {
+  /**
+   * @param {C} c
+   * @param {((o:Instance<C>)=>boolean)|null} check
+   */
+  constructor (c, check) {
+    super();
+    this.shape = c;
+    this._c = check;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is C extends ((...args:any[]) => infer T) ? T : (C extends (new (...args:any[]) => any) ? InstanceType<C> : never)} o
+   */
+  check (o, err = undefined) {
+    const c = o?.constructor === this.shape && (this._c == null || this._c(o));
+    /* c8 ignore next */
+    !c && err?.extend(null, this.shape.name, o?.constructor.name, o?.constructor !== this.shape ? 'Constructor match failed' : 'Check failed');
+    return c
+  }
+}
+
+/**
+ * @template {(new (...args:any[]) => any) | ((...args:any[]) => any)} C
+ * @param {C} c
+ * @param {((o:Instance<C>) => boolean)|null} check
+ * @return {CastToSchema<$ConstructedBy<C>>}
+ */
+const $constructedBy = (c, check = null) => new $ConstructedBy(c, check);
+$constructedBy($ConstructedBy);
+
+/**
+ * Check custom properties on any object. You may want to overwrite the generated Schema<any>.
+ *
+ * @extends {Schema<any>}
+ */
+class $Custom extends Schema {
+  /**
+   * @param {(o:any) => boolean} check
+   */
+  constructor (check) {
+    super();
+    /**
+     * @type {(o:any) => boolean}
+     */
+    this.shape = check;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is any}
+   */
+  check (o, err) {
+    const c = this.shape(o);
+    /* c8 ignore next */
+    !c && err?.extend(null, 'custom prop', o?.constructor.name, 'failed to check custom prop');
+    return c
+  }
+}
+
+/**
+ * @param {(o:any) => boolean} check
+ * @return {Schema<any>}
+ */
+const $custom = (check) => new $Custom(check);
+$constructedBy($Custom);
+
+/**
+ * @template {Primitive} T
+ * @extends {Schema<T>}
+ */
+class $Literal extends Schema {
+  /**
+   * @param {Array<T>} literals
+   */
+  constructor (literals) {
+    super();
+    this.shape = literals;
+  }
+
+  /**
+   *
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is T}
+   */
+  check (o, err) {
+    const c = this.shape.some(a => a === o);
+    /* c8 ignore next */
+    !c && err?.extend(null, this.shape.join(' | '), o.toString());
+    return c
+  }
+}
+
+/**
+ * @template {Primitive[]} T
+ * @param {T} literals
+ * @return {CastToSchema<$Literal<T[number]>>}
+ */
+const $literal = (...literals) => new $Literal(literals);
+const $$literal = $constructedBy($Literal);
+
+/**
+ * @template {Array<string|Schema<string|number>>} Ts
+ * @typedef {Ts extends [] ? `` : (Ts extends [infer T] ? (Unwrap<T> extends (string|number) ? Unwrap<T> : never) : (Ts extends [infer T1, ...infer Rest] ? `${Unwrap<T1> extends (string|number) ? Unwrap<T1> : never}${Rest extends Array<string|Schema<string|number>> ? CastStringTemplateArgsToTemplate<Rest> : never}` : never))} CastStringTemplateArgsToTemplate
+ */
+
+/**
+ * @param {string} str
+ * @return {string}
+ */
+const _regexEscape = /** @type {any} */ (RegExp).escape || /** @type {(str:string) => string} */ (str =>
+  str.replace(/[().|&,$^[\]]/g, s => '\\' + s)
+);
+
+/**
+ * @param {string|Schema<any>} s
+ * @return {string[]}
+ */
+const _schemaStringTemplateToRegex = s => {
+  if ($string.check(s)) {
+    return [_regexEscape(s)]
+  }
+  if ($$literal.check(s)) {
+    return /** @type {Array<string|number>} */ (s.shape).map(v => v + '')
+  }
+  if ($$number.check(s)) {
+    return ['[+-]?\\d+.?\\d*']
+  }
+  if ($$string.check(s)) {
+    return ['.*']
+  }
+  if ($$union.check(s)) {
+    return s.shape.map(_schemaStringTemplateToRegex).flat(1)
+  }
+  /* c8 ignore next 2 */
+  // unexpected schema structure (only supports unions and string in literal types)
+  unexpectedCase();
+};
+
+/**
+ * @template {Array<string|Schema<string|number>>} T
+ * @extends {Schema<CastStringTemplateArgsToTemplate<T>>}
+ */
+class $StringTemplate extends Schema {
+  /**
+   * @param {T} shape
+   */
+  constructor (shape) {
+    super();
+    this.shape = shape;
+    this._r = new RegExp('^' + shape.map(_schemaStringTemplateToRegex).map(opts => `(${opts.join('|')})`).join('') + '$');
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is CastStringTemplateArgsToTemplate<T>}
+   */
+  check (o, err) {
+    const c = this._r.exec(o) != null;
+    /* c8 ignore next */
+    !c && err?.extend(null, this._r.toString(), o.toString(), 'String doesn\'t match string template.');
+    return c
+  }
+}
+$constructedBy($StringTemplate);
+
+const isOptionalSymbol = Symbol('optional');
+/**
+ * @template {Schema<any>} S
+ * @extends Schema<Unwrap<S>|undefined>
+ */
+class $Optional extends Schema {
+  /**
+   * @param {S} shape
+   */
+  constructor (shape) {
+    super();
+    this.shape = shape;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is (Unwrap<S>|undefined)}
+   */
+  check (o, err) {
+    const c = o === undefined || this.shape.check(o);
+    /* c8 ignore next */
+    !c && err?.extend(null, 'undefined (optional)', '()');
+    return c
+  }
+
+  get [isOptionalSymbol] () { return true }
+}
+const $$optional = $constructedBy($Optional);
+
+/**
+ * @extends Schema<never>
+ */
+class $Never extends Schema {
+  /**
+   * @param {any} _o
+   * @param {ValidationError} [err]
+   * @return {_o is never}
+   */
+  check (_o, err) {
+    /* c8 ignore next */
+    err?.extend(null, 'never', typeof _o);
+    return false
+  }
+}
+$constructedBy($Never);
+
+/**
+ * @template {{ [key: string|symbol|number]: Schema<any> }} S
+ * @typedef {{ [Key in keyof S as S[Key] extends $Optional<Schema<any>> ? Key : never]?: S[Key] extends $Optional<Schema<infer Type>> ? Type : never } & { [Key in keyof S as S[Key] extends $Optional<Schema<any>> ? never : Key]: S[Key] extends Schema<infer Type> ? Type : never }} $ObjectToType
+ */
+
+/**
+ * @template {{[key:string|symbol|number]: Schema<any>}} S
+ * @extends {Schema<$ObjectToType<S>>}
+ */
+class $Object extends Schema {
+  /**
+   * @param {S} shape
+   * @param {boolean} partial
+   */
+  constructor (shape, partial = false) {
+    super();
+    /**
+     * @type {S}
+     */
+    this.shape = shape;
+    this._isPartial = partial;
+  }
+
+  static _dilutes = true
+
+  /**
+   * @type {Schema<Partial<$ObjectToType<S>>>}
+   */
+  get partial () {
+    return new $Object(this.shape, true)
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is $ObjectToType<S>}
+   */
+  check (o, err) {
+    if (o == null) {
+      /* c8 ignore next */
+      err?.extend(null, 'object', 'null');
+      return false
+    }
+    return every$1(this.shape, (vv, vk) => {
+      const c = (this._isPartial && !hasProperty(o, vk)) || vv.check(o[vk], err);
+      !c && err?.extend(vk.toString(), vv.toString(), typeof o[vk], 'Object property does not match');
+      return c
+    })
+  }
+}
+
+/**
+ * @template S
+ * @typedef {Schema<{ [Key in keyof S as S[Key] extends $Optional<Schema<any>> ? Key : never]?: S[Key] extends $Optional<Schema<infer Type>> ? Type : never } & { [Key in keyof S as S[Key] extends $Optional<Schema<any>> ? never : Key]: S[Key] extends Schema<infer Type> ? Type : never }>} _ObjectDefToSchema
+ */
+
+// I used an explicit type annotation instead of $ObjectToType, so that the user doesn't see the
+// weird type definitions when inspecting type definions.
+/**
+ * @template {{ [key:string|symbol|number]: Schema<any> }} S
+ * @param {S} def
+ * @return {_ObjectDefToSchema<S> extends Schema<infer S> ? Schema<{ [K in keyof S]: S[K] }> : never}
+ */
+const $object = def => /** @type {any} */ (new $Object(def));
+const $$object = $constructedBy($Object);
+/**
+ * @type {Schema<{[key:string]: any}>}
+ */
+const $objectAny = $custom(o => o != null && (o.constructor === Object || o.constructor == null));
+
+/**
+ * @template {Schema<string|number|symbol>} Keys
+ * @template {Schema<any>} Values
+ * @extends {Schema<{ [key in Unwrap<Keys>]: Unwrap<Values> }>}
+ */
+class $Record extends Schema {
+  /**
+   * @param {Keys} keys
+   * @param {Values} values
+   */
+  constructor (keys, values) {
+    super();
+    this.shape = {
+      keys, values
+    };
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is { [key in Unwrap<Keys>]: Unwrap<Values> }}
+   */
+  check (o, err) {
+    return o != null && every$1(o, (vv, vk) => {
+      const ck = this.shape.keys.check(vk, err);
+      /* c8 ignore next */
+      !ck && err?.extend(vk + '', 'Record', typeof o, ck ? 'Key doesn\'t match schema' : 'Value doesn\'t match value');
+      return ck && this.shape.values.check(vv, err)
+    })
+  }
+}
+
+/**
+ * @template {Schema<string|number|symbol>} Keys
+ * @template {Schema<any>} Values
+ * @param {Keys} keys
+ * @param {Values} values
+ * @return {CastToSchema<$Record<Keys,Values>>}
+ */
+const $record = (keys, values) => new $Record(keys, values);
+const $$record = $constructedBy($Record);
+
+/**
+ * @template {Schema<any>[]} S
+ * @extends {Schema<{ [Key in keyof S]: S[Key] extends Schema<infer Type> ? Type : never }>}
+ */
+class $Tuple extends Schema {
+  /**
+   * @param {S} shape
+   */
+  constructor (shape) {
+    super();
+    this.shape = shape;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is { [K in keyof S]: S[K] extends Schema<infer Type> ? Type : never }}
+   */
+  check (o, err) {
+    return o != null && every$1(this.shape, (vv, vk) => {
+      const c = /** @type {Schema<any>} */ (vv).check(o[vk], err);
+      /* c8 ignore next */
+      !c && err?.extend(vk.toString(), 'Tuple', typeof vv);
+      return c
+    })
+  }
+}
+
+/**
+ * @template {Array<Schema<any>>} T
+ * @param {T} def
+ * @return {CastToSchema<$Tuple<T>>}
+ */
+const $tuple = (...def) => new $Tuple(def);
+$constructedBy($Tuple);
+
+/**
+ * @template {Schema<any>} S
+ * @extends {Schema<Array<S extends Schema<infer T> ? T : never>>}
+ */
+class $Array extends Schema {
+  /**
+   * @param {Array<S>} v
+   */
+  constructor (v) {
+    super();
+    /**
+     * @type {Schema<S extends Schema<infer T> ? T : never>}
+     */
+    this.shape = v.length === 1 ? v[0] : new $Union(v);
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is Array<S extends Schema<infer T> ? T : never>} o
+   */
+  check (o, err) {
+    const c = isArray(o) && every(o, oi => this.shape.check(oi));
+    /* c8 ignore next */
+    !c && err?.extend(null, 'Array', '');
+    return c
+  }
+}
+
+/**
+ * @template {Array<Schema<any>>} T
+ * @param {T} def
+ * @return {Schema<Array<T extends Array<Schema<infer S>> ? S : never>>}
+ */
+const $array = (...def) => new $Array(def);
+const $$array = $constructedBy($Array);
+/**
+ * @type {Schema<Array<any>>}
+ */
+const $arrayAny = $custom(o => isArray(o));
+
+/**
+ * @template T
+ * @extends {Schema<T>}
+ */
+class $InstanceOf extends Schema {
+  /**
+   * @param {new (...args:any) => T} constructor
+   * @param {((o:T) => boolean)|null} check
+   */
+  constructor (constructor, check) {
+    super();
+    this.shape = constructor;
+    this._c = check;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} err
+   * @return {o is T}
+   */
+  check (o, err) {
+    const c = o instanceof this.shape && (this._c == null || this._c(o));
+    /* c8 ignore next */
+    !c && err?.extend(null, this.shape.name, o?.constructor.name);
+    return c
+  }
+}
+
+/**
+ * @template T
+ * @param {new (...args:any) => T} c
+ * @param {((o:T) => boolean)|null} check
+ * @return {Schema<T>}
+ */
+const $instanceOf = (c, check = null) => new $InstanceOf(c, check);
+$constructedBy($InstanceOf);
+
+const $$schema = $instanceOf(Schema);
+
+/**
+ * @template {Schema<any>[]} Args
+ * @typedef {(...args:UnwrapArray<TuplePop<Args>>)=>Unwrap<TupleLast<Args>>} _LArgsToLambdaDef
+ */
+
+/**
+ * @template {Array<Schema<any>>} Args
+ * @extends {Schema<_LArgsToLambdaDef<Args>>}
+ */
+class $Lambda extends Schema {
+  /**
+   * @param {Args} args
+   */
+  constructor (args) {
+    super();
+    this.len = args.length - 1;
+    this.args = $tuple(...args.slice(-1));
+    this.res = args[this.len];
+  }
+
+  /**
+   * @param {any} f
+   * @param {ValidationError} err
+   * @return {f is _LArgsToLambdaDef<Args>}
+   */
+  check (f, err) {
+    const c = f.constructor === Function && f.length <= this.len;
+    /* c8 ignore next */
+    !c && err?.extend(null, 'function', typeof f);
+    return c
+  }
+}
+const $$lambda = $constructedBy($Lambda);
+
+/**
+ * @type {Schema<Function>}
+ */
+const $function = $custom(o => typeof o === 'function');
+
+/**
+ * @template {Array<Schema<any>>} T
+ * @extends {Schema<Intersect<UnwrapArray<T>>>}
+ */
+class $Intersection extends Schema {
+  /**
+   * @param {T} v
+   */
+  constructor (v) {
+    super();
+    /**
+     * @type {T}
+     */
+    this.shape = v;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is Intersect<UnwrapArray<T>>}
+   */
+  check (o, err) {
+    // @ts-ignore
+    const c = every(this.shape, check => check.check(o, err));
+    /* c8 ignore next */
+    !c && err?.extend(null, 'Intersectinon', typeof o);
+    return c
+  }
+}
+$constructedBy($Intersection, o => o.shape.length > 0); // Intersection with length=0 is considered "any"
+
+/**
+ * @template S
+ * @extends {Schema<S>}
+ */
+class $Union extends Schema {
+  static _dilutes = true
+
+  /**
+   * @param {Array<Schema<S>>} v
+   */
+  constructor (v) {
+    super();
+    this.shape = v;
+  }
+
+  /**
+   * @param {any} o
+   * @param {ValidationError} [err]
+   * @return {o is S}
+   */
+  check (o, err) {
+    const c = some(this.shape, (vv) => vv.check(o, err));
+    err?.extend(null, 'Union', typeof o);
+    return c
+  }
+}
+
+/**
+ * @template {Array<any>} T
+ * @param {T} schemas
+ * @return {CastToSchema<$Union<Unwrap<ReadSchema<T>>>>}
+ */
+const $union = (...schemas) => schemas.findIndex($s => $$union.check($s)) >= 0
+  ? $union(...schemas.map($s => $$1($s)).map($s => $$union.check($s) ? $s.shape : [$s]).flat(1))
+  : (schemas.length === 1
+      ? schemas[0]
+      : new $Union(schemas));
+const $$union = /** @type {Schema<$Union<any>>} */ ($constructedBy($Union));
+
+const _t = () => true;
+/**
+ * @type {Schema<any>}
+ */
+const $any = $custom(_t);
+const $$any = /** @type {Schema<Schema<any>>} */ ($constructedBy($Custom, o => o.shape === _t));
+
+/**
+ * @type {Schema<bigint>}
+ */
+const $bigint = $custom(o => typeof o === 'bigint');
+const $$bigint = /** @type {Schema<Schema<BigInt>>} */ ($custom(o => o === $bigint));
+
+/**
+ * @type {Schema<symbol>}
+ */
+const $symbol = $custom(o => typeof o === 'symbol');
+/** @type {Schema<Schema<Symbol>>} */ ($custom(o => o === $symbol));
+
+/**
+ * @type {Schema<number>}
+ */
+const $number = $custom(o => typeof o === 'number');
+const $$number = /** @type {Schema<Schema<number>>} */ ($custom(o => o === $number));
+
+/**
+ * @type {Schema<string>}
+ */
+const $string = $custom(o => typeof o === 'string');
+const $$string = /** @type {Schema<Schema<string>>} */ ($custom(o => o === $string));
+
+/**
+ * @type {Schema<boolean>}
+ */
+const $boolean = $custom(o => typeof o === 'boolean');
+const $$boolean = /** @type {Schema<Schema<Boolean>>} */ ($custom(o => o === $boolean));
+
+/**
+ * @type {Schema<undefined>}
+ */
+const $undefined = $literal(undefined);
+/** @type {Schema<Schema<undefined>>} */ ($constructedBy($Literal, o => o.shape.length === 1 && o.shape[0] === undefined));
+
+/**
+ * @type {Schema<void>}
+ */
+$literal(undefined);
+
+const $null = $literal(null);
+const $$null = /** @type {Schema<Schema<null>>} */ ($constructedBy($Literal, o => o.shape.length === 1 && o.shape[0] === null));
+
+$constructedBy(Uint8Array);
+/** @type {Schema<Schema<Uint8Array>>} */ ($constructedBy($ConstructedBy, o => o.shape === Uint8Array));
+
+/**
+ * @type {Schema<Primitive>}
+ */
+const $primitive = $union($number, $string, $null, $undefined, $bigint, $boolean, $symbol);
+
+/**
+ * @typedef {JSON[]} JSONArray
+ */
+/**
+ * @typedef {Primitive|JSONArray|{ [key:string]:JSON }} JSON
+ */
+/**
+ * @type {Schema<null|number|string|boolean|JSON[]|{[key:string]:JSON}>}
+ */
+(() => {
+  const $jsonArr = /** @type {$Array<$any>} */ ($array($any));
+  const $jsonRecord = /** @type {$Record<$string,$any>} */ ($record($string, $any));
+  const $json = $union($number, $string, $null, $boolean, $jsonArr, $jsonRecord);
+  $jsonArr.shape = $json;
+  $jsonRecord.shape.values = $json;
+  return $json
+})();
+
+/**
+ * @template {any} IN
+ * @typedef {IN extends Schema<any> ? IN
+ *   : (IN extends string|number|boolean|null ? Schema<IN>
+ *     : (IN extends new (...args:any[])=>any ? Schema<InstanceType<IN>>
+ *       : (IN extends any[] ? Schema<{ [K in keyof IN]: Unwrap<ReadSchema<IN[K]>> }[number]>
+   *       : (IN extends object ? (_ObjectDefToSchema<{[K in keyof IN]:ReadSchema<IN[K]>}> extends Schema<infer S> ? Schema<{ [K in keyof S]: S[K] }> : never)
+   *         : never)
+ *         )
+ *       )
+ *     )
+ * } ReadSchemaOld
+ */
+
+/**
+ * @template {any} IN
+ * @typedef {[Extract<IN,Schema<any>>,Extract<IN,string|number|boolean|null>,Extract<IN,new (...args:any[])=>any>,Extract<IN,any[]>,Extract<Exclude<IN,Schema<any>|string|number|boolean|null|(new (...args:any[])=>any)|any[]>,object>] extends [infer Schemas, infer Primitives, infer Constructors, infer Arrs, infer Obj]
+ *   ? Schema<
+ *       (Schemas extends Schema<infer S> ? S : never)
+ *     | Primitives
+ *     | (Constructors extends new (...args:any[])=>any ? InstanceType<Constructors> : never)
+ *     | (Arrs extends any[] ? { [K in keyof Arrs]: Unwrap<ReadSchema<Arrs[K]>> }[number] : never)
+ *     | (Obj extends object ? Unwrap<(_ObjectDefToSchema<{[K in keyof Obj]:ReadSchema<Obj[K]>}> extends Schema<infer S> ? Schema<{ [K in keyof S]: S[K] }> : never)> : never)>
+ *   : never
+ * } ReadSchema
+ */
+
+/**
+ * @typedef {ReadSchema<{x:42}|{y:99}|Schema<string>|[1,2,{}]>} Q
+ */
+
+/**
+ * @template IN
+ * @param {IN} o
+ * @return {ReadSchema<IN>}
+ */
+const $$1 = o => {
+  if ($$schema.check(o)) {
+    return /** @type {any} */ (o)
+  } else if ($objectAny.check(o)) {
+    /**
+     * @type {any}
+     */
+    const o2 = {};
+    for (const k in o) {
+      o2[k] = $$1(o[k]);
+    }
+    return /** @type {any} */ ($object(o2))
+  } else if ($arrayAny.check(o)) {
+    return /** @type {any} */ ($union(...o.map($$1)))
+  } else if ($primitive.check(o)) {
+    return /** @type {any} */ ($literal(o))
+  } else if ($function.check(o)) {
+    return /** @type {any} */ ($constructedBy(/** @type {any} */ (o)))
+  }
+  /* c8 ignore next */
+  unexpectedCase();
+};
+
+/* c8 ignore start */
+/**
+ * Assert that a variable is of this specific type.
+ * The assertion check is only performed in non-production environments.
+ *
+ * @type {<T>(o:any,schema:Schema<T>) => asserts o is T}
+ */
+const assert = production
+  ? () => {}
+  : (o, schema) => {
+      const err = new ValidationError();
+      if (!schema.check(o, err)) {
+        throw create$1(`Expected value to be of type ${schema.constructor.name}.\n${err.toString()}`)
+      }
+    };
+/* c8 ignore end */
+
+/**
+ * @template In
+ * @template Out
+ * @typedef {{ if: Schema<In>, h: (o:In,state?:any)=>Out }} Pattern
+ */
+
+/**
+ * @template {Pattern<any,any>} P
+ * @template In
+ * @typedef {ReturnType<Extract<P,Pattern<In extends number ? number : (In extends string ? string : In),any>>['h']>} PatternMatchResult
+ */
+
+/**
+ * @todo move this to separate library
+ * @template {any} [State=undefined]
+ * @template {Pattern<any,any>} [Patterns=never]
+ */
+class PatternMatcher {
+  /**
+   * @param {Schema<State>} [$state]
+   */
+  constructor ($state) {
+    /**
+     * @type {Array<Patterns>}
+     */
+    this.patterns = [];
+    this.$state = $state;
+  }
+
+  /**
+   * @template P
+   * @template R
+   * @param {P} pattern
+   * @param {(o:NoInfer<Unwrap<ReadSchema<P>>>,s:State)=>R} handler
+   * @return {PatternMatcher<State,Patterns|Pattern<Unwrap<ReadSchema<P>>,R>>}
+   */
+  if (pattern, handler) {
+    // @ts-ignore
+    this.patterns.push({ if: $$1(pattern), h: handler });
+    // @ts-ignore
+    return this
+  }
+
+  /**
+   * @template R
+   * @param {(o:any,s:State)=>R} h
+   */
+  else (h) {
+    return this.if($any, h)
+  }
+
+  /**
+   * @return {State extends undefined
+   *   ? <In extends Unwrap<Patterns['if']>>(o:In,state?:undefined)=>PatternMatchResult<Patterns,In>
+   *   : <In extends Unwrap<Patterns['if']>>(o:In,state:State)=>PatternMatchResult<Patterns,In>}
+   */
+  done () {
+    // @ts-ignore
+    return /** @type {any} */ (o, s) => {
+      for (let i = 0; i < this.patterns.length; i++) {
+        const p = this.patterns[i];
+        if (p.if.check(o)) {
+          // @ts-ignore
+          return p.h(o, s)
+        }
+      }
+      throw create$1('Unhandled pattern')
+    }
+  }
+}
+
+/**
+ * @template [State=undefined]
+ * @param {State} [state]
+ * @return {PatternMatcher<State extends undefined ? undefined : Unwrap<ReadSchema<State>>>}
+ */
+const match = state => new PatternMatcher(/** @type {any} */ (state));
+
+/**
+ * Helper function to generate a (non-exhaustive) sample set from a gives schema.
+ *
+ * @type {<T>(o:T,gen:prng.PRNG)=>T}
+ */
+const _random = /** @type {any} */ (match(/** @type {Schema<prng.PRNG>} */ ($any))
+  .if($$number, (_o, gen) => int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER))
+  .if($$string, (_o, gen) => word(gen))
+  .if($$boolean, (_o, gen) => bool(gen))
+  .if($$bigint, (_o, gen) => BigInt(int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER)))
+  .if($$union, (o, gen) => random(gen, oneOf(gen, o.shape)))
+  .if($$object, (o, gen) => {
+    /**
+     * @type {any}
+     */
+    const res = {};
+    for (const k in o.shape) {
+      let prop = o.shape[k];
+      if ($$optional.check(prop)) {
+        if (bool(gen)) { continue }
+        prop = prop.shape;
+      }
+      res[k] = _random(prop, gen);
+    }
+    return res
+  })
+  .if($$array, (o, gen) => {
+    const arr = [];
+    const n = int32(gen, 0, 42);
+    for (let i = 0; i < n; i++) {
+      arr.push(random(gen, o.shape));
+    }
+    return arr
+  })
+  .if($$literal, (o, gen) => {
+    return oneOf(gen, o.shape)
+  })
+  .if($$null, (o, gen) => {
+    return null
+  })
+  .if($$lambda, (o, gen) => {
+    const res = random(gen, o.res);
+    return () => res
+  })
+  .if($$any, (o, gen) => random(gen, oneOf(gen, [
+    $number, $string, $null, $undefined, $bigint, $boolean,
+    $array($number),
+    $record($union('a', 'b', 'c'), $number)
+  ])))
+  .if($$record, (o, gen) => {
+    /**
+     * @type {any}
+     */
+    const res = {};
+    const keysN = int53(gen, 0, 3);
+    for (let i = 0; i < keysN; i++) {
+      const key = random(gen, o.shape.keys);
+      const val = random(gen, o.shape.values);
+      res[key] = val;
+    }
+    return res
+  })
+  .done());
+
+/**
+ * @template S
+ * @param {prng.PRNG} gen
+ * @param {S} schema
+ * @return {Unwrap<ReadSchema<S>>}
+ */
+const random = (gen, schema) => /** @type {any} */ (_random($$1(schema), gen));
+
+/* eslint-env browser */
+
+
+/* c8 ignore start */
+/**
+ * @type {Document}
+ */
+const doc = /** @type {Document} */ (typeof document !== 'undefined' ? document : {});
+
+/**
+ * @type {$.Schema<DocumentFragment>}
+ */
+$custom(el => el.nodeType === DOCUMENT_FRAGMENT_NODE);
+
+/** @type {DOMParser} */ (typeof DOMParser !== 'undefined' ? new DOMParser() : null);
+
+/**
+ * @type {$.Schema<Element>}
+ */
+$custom(el => el.nodeType === ELEMENT_NODE);
+
+/**
+ * @type {$.Schema<Text>}
+ */
+$custom(el => el.nodeType === TEXT_NODE);
+
+const ELEMENT_NODE = doc.ELEMENT_NODE;
+const TEXT_NODE = doc.TEXT_NODE;
+const DOCUMENT_NODE = doc.DOCUMENT_NODE;
+const DOCUMENT_FRAGMENT_NODE = doc.DOCUMENT_FRAGMENT_NODE;
+
+/**
+ * @type {$.Schema<Node>}
+ */
+$custom(el => el.nodeType === DOCUMENT_NODE);
+/* c8 ignore stop */
+
+/* global requestIdleCallback, requestAnimationFrame, cancelIdleCallback, cancelAnimationFrame */
+
+
+/**
+ * @typedef {Object} TimeoutObject
+ * @property {function} TimeoutObject.destroy
+ */
+
+/**
+ * @param {function(number):void} clearFunction
+ */
+const createTimeoutClass = clearFunction => class TT {
+  /**
+   * @param {number} timeoutId
+   */
+  constructor (timeoutId) {
+    this._ = timeoutId;
+  }
+
+  destroy () {
+    clearFunction(this._);
+  }
+};
+
+const Timeout = createTimeoutClass(clearTimeout);
+
+/**
+ * @param {number} timeout
+ * @param {function} callback
+ * @return {TimeoutObject}
+ */
+const timeout = (timeout, callback) => new Timeout(setTimeout(callback, timeout));
 
 /**
  * @module sha256
@@ -41743,7 +45521,7 @@ const getUserColor = (colorMapping, colors, user) => {
   // @todo do not hit the same color twice if possible
   if (!colorMapping.has(user)) {
     if (colorMapping.size < colors.length) {
-      const usedColors = create$4();
+      const usedColors = create$2();
       colorMapping.forEach((color) => usedColors.add(color));
       colors = colors.filter((color) => !usedColors.has(color));
     }
@@ -41902,40 +45680,14 @@ const ySyncPlugin = (yXmlFragment, {
 };
 
 /**
- * Resolves one text-selection endpoint after a remote update. Falls back to
- * content-based matching when the Yjs resolution is missing or lands in the
- * wrong block, and keeps the Yjs resolution when the fallback finds nothing.
- *
- * @param {import('prosemirror-model').Node} newDoc
- * @param {import('prosemirror-model').Node} oldDoc
- * @param {number|null|undefined} oldAbs
- * @param {number|null} resolved
- * @return {number|null}
- */
-const recoverSelectionEndpoint = (newDoc, oldDoc, oldAbs, resolved) => {
-  if (oldAbs == null) {
-    return resolved
-  }
-  const misresolved = resolved === null ||
-    (oldAbs > 1 && resolved <= 1) ||
-    isMisresolvedAfterStructuralChange(oldDoc, newDoc, oldAbs, resolved);
-  if (!misresolved) {
-    return resolved
-  }
-  const recovered = findAbsolutePositionAfterStructuralChange(oldDoc, newDoc, oldAbs);
-  return recovered !== null ? recovered : resolved
-};
-
-/**
  * @param {import('prosemirror-state').Transaction} tr
  * @param {ReturnType<typeof getRelativeSelection>} relSel
  * @param {ProsemirrorBinding} binding
- * @param {import('prosemirror-model').Node} [oldDoc]
  */
-const restoreRelativeSelection = (tr, relSel, binding, oldDoc) => {
+const restoreRelativeSelection = (tr, relSel, binding) => {
   if (relSel !== null && relSel.anchor !== null && relSel.head !== null) {
     if (relSel.type === 'all') {
-      tr.setSelection(new AllSelection(tr.doc));
+      tr.setSelection(new AllSelection$1(tr.doc));
     } else if (relSel.type === 'node') {
       const anchor = relativePositionToAbsolutePosition(
         binding.doc,
@@ -41966,32 +45718,20 @@ const restoreRelativeSelection = (tr, relSel, binding, oldDoc) => {
         tr.setSelection(selection);
       }
     } else {
-      let anchor = relativePositionToAbsolutePosition(
+      const anchor = relativePositionToAbsolutePosition(
         binding.doc,
         binding.type,
         relSel.anchor,
         binding.mapping
       );
-      let head = relativePositionToAbsolutePosition(
+      const head = relativePositionToAbsolutePosition(
         binding.doc,
         binding.type,
         relSel.head,
         binding.mapping
       );
-      if (oldDoc != null) {
-        anchor = recoverSelectionEndpoint(tr.doc, oldDoc, relSel.absAnchor, anchor);
-        head = recoverSelectionEndpoint(tr.doc, oldDoc, relSel.absHead, head);
-      }
-      // Collapse to the surviving endpoint instead of dropping the selection;
-      // an unset selection maps through the full-doc replace to the doc start.
-      if (anchor === null) {
-        anchor = head;
-      }
-      if (head === null) {
-        head = anchor;
-      }
       if (anchor !== null && head !== null) {
-        tr.setSelection(TextSelection.between(tr.doc.resolve(anchor), tr.doc.resolve(head)));
+        tr.setSelection(TextSelection$1.between(tr.doc.resolve(anchor), tr.doc.resolve(head)));
       }
     }
   }
@@ -42008,9 +45748,9 @@ const restoreRelativeSelection = (tr, relSel, binding, oldDoc) => {
 const createSafeNodeSelection = (tr, pos) => {
   const $pos = tr.doc.resolve(pos);
   if ($pos.nodeAfter) {
-    return NodeSelection.create(tr.doc, pos)
+    return NodeSelection$1.create(tr.doc, pos)
   } else {
-    return TextSelection.near($pos)
+    return TextSelection$1.near($pos)
   }
 };
 
@@ -42036,18 +45776,18 @@ const createSafeNodeRangeSelection = (tr, anchor, head, depth) => {
   const clampedAnchor = Math.min(Math.max(anchor, 0), tr.doc.content.size);
   const clampedHead = Math.min(Math.max(head, 0), tr.doc.content.size);
   try {
-    const selection = Selection.fromJSON(tr.doc, {
+    const selection = Selection$1.fromJSON(tr.doc, {
       type: 'nodeRange',
       anchor: clampedAnchor,
       head: clampedHead,
       depth
     });
     if (!selection.ranges.length) {
-      return TextSelection.near(tr.doc.resolve(clampedAnchor))
+      return TextSelection$1.near(tr.doc.resolve(clampedAnchor))
     }
     return selection
   } catch (e) {
-    return TextSelection.near(tr.doc.resolve(clampedAnchor))
+    return TextSelection$1.near(tr.doc.resolve(clampedAnchor))
   }
 };
 
@@ -42070,9 +45810,7 @@ const getRelativeSelection = (pmbinding, state) => {
       state.selection.head,
       pmbinding.type,
       pmbinding.mapping
-    ),
-    absAnchor: state.selection.anchor,
-    absHead: state.selection.head
+    )
   }
 };
 
@@ -42202,7 +45940,7 @@ class ProsemirrorBinding {
       const tr = this._tr.replace(
         0,
         this.prosemirrorView.state.doc.content.size,
-        new Slice(Fragment.from(fragmentContent), 0, 0)
+        new Slice$1(Fragment$1.from(fragmentContent), 0, 0)
       );
       tr.setMeta(ySyncPluginKey, { snapshot: null, prevSnapshot: null });
       this.prosemirrorView.dispatch(tr);
@@ -42227,7 +45965,7 @@ class ProsemirrorBinding {
       const tr = this._tr.replace(
         0,
         this.prosemirrorView.state.doc.content.size,
-        new Slice(Fragment.from(fragmentContent), 0, 0)
+        new Slice$1(Fragment$1.from(fragmentContent), 0, 0)
       );
       if (sel) {
         /**
@@ -42238,7 +45976,7 @@ class ProsemirrorBinding {
         const clampedAnchor = min(max(sel.anchor, 0), tr.doc.content.size);
         const clampedHead = min(max(sel.head, 0), tr.doc.content.size);
 
-        tr.setSelection(TextSelection.create(tr.doc, clampedAnchor, clampedHead));
+        tr.setSelection(TextSelection$1.create(tr.doc, clampedAnchor, clampedHead));
       }
       this.prosemirrorView.dispatch(
         tr.setMeta(ySyncPluginKey, { isChangeOrigin: true, binding: this })
@@ -42355,7 +46093,7 @@ class ProsemirrorBinding {
         const tr = this._tr.replace(
           0,
           this.prosemirrorView.state.doc.content.size,
-          new Slice(Fragment.from(fragmentContent), 0, 0)
+          new Slice$1(Fragment$1.from(fragmentContent), 0, 0)
         );
         this.prosemirrorView.dispatch(
           tr.setMeta(ySyncPluginKey, { isChangeOrigin: true })
@@ -42397,9 +46135,6 @@ class ProsemirrorBinding {
       );
       transaction.changed.forEach(delType);
       transaction.changedParentTypes.forEach(delType);
-      // Rebuild the full Y↔PM mapping so relative cursor positions resolve against
-      // current node sizes after structural changes (e.g. drag-and-drop block moves).
-      this.mapping.clear();
       const fragmentContent = this.type.toArray().map((t) =>
         createNodeIfNotExists(
           /** @type {Y.XmlElement | Y.XmlHook} */ (t),
@@ -42407,14 +46142,13 @@ class ProsemirrorBinding {
           this
         )
       ).filter((n) => n !== null);
-      const oldDoc = this.prosemirrorView.state.doc;
       // @ts-ignore
       let tr = this._tr.replace(
         0,
         this.prosemirrorView.state.doc.content.size,
-        new Slice(Fragment.from(fragmentContent), 0, 0)
+        new Slice$1(Fragment$1.from(fragmentContent), 0, 0)
       );
-      restoreRelativeSelection(tr, this.beforeTransactionSelection, this, oldDoc);
+      restoreRelativeSelection(tr, this.beforeTransactionSelection, this);
       tr = tr.setMeta(ySyncPluginKey, { isChangeOrigin: true, isUndoRedoOperation: transaction.origin instanceof UndoManager });
       if (
         this.beforeTransactionSelection !== null && this._isLocalCursorInView()
@@ -42744,7 +46478,7 @@ const equalYTextPText = (ytext, ptexts) => {
     delta.every(/** @type {(d:any,i:number) => boolean} */ (d, i) =>
       d.insert === /** @type {any} */ (ptexts[i]).text &&
       keys(d.attributes || {}).length === ptexts[i].marks.length &&
-      every(d.attributes, (attr, /** @type {string} */ yattrname) => {
+      every$1(d.attributes, (attr, /** @type {string} */ yattrname) => {
         const markname = yattr2markname(yattrname);
         const pmarks = ptexts[i].marks;
 
@@ -43173,26 +46907,6 @@ const absolutePositionToRelativePosition = (pos, type, mapping) => {
   return createRelativePositionFromTypeIndex(type, type._length, -1)
 };
 
-/**
- * Item-id based relative positions can misresolve to the document start after
- * block reorder during collaborative drag-and-drop.
- *
- * @param {Y.Doc} y
- * @param {Y.RelativePosition} relPos
- * @param {number|null} absPos
- * @return {boolean}
- */
-const isMisresolvedTextPosition = (y, relPos, absPos) => {
-  if (absPos === null) {
-    return false
-  }
-  const decoded = createAbsolutePositionFromRelativePosition(relPos, y);
-  return decoded !== null &&
-    decoded.type instanceof YXmlText &&
-    relPos.item !== null &&
-    absPos <= 1
-};
-
 const createRelativePosition = (type, item) => {
   let typeid = null;
   let tname = null;
@@ -43270,237 +46984,7 @@ const relativePositionToAbsolutePosition = (y, documentType, relPos, mapping) =>
     }
     type = /** @type {Y.AbstractType} */ (parent);
   }
-  const absPos = pos - 1; // we don't count the most outer tag, because it is a fragment
-  if (isMisresolvedTextPosition(y, relPos, absPos)) {
-    return null
-  }
-  return absPos
-};
-
-/**
- * Shallow attrs comparison. Attr values are primitives in most schemas;
- * non-primitive values fail the check and callers fall back to text matching.
- *
- * @param {Object<string, any>} a
- * @param {Object<string, any>} b
- * @return {boolean}
- */
-const attrsEqual = (a, b) => {
-  if (a === b) {
-    return true
-  }
-  const aKeys = Object.keys(a);
-  return aKeys.length === Object.keys(b).length && aKeys.every((k) => a[k] === b[k])
-};
-
-/**
- * Returns true when any attr deviates from its spec default or has none.
- * Default-only attrs cannot tell same-type siblings apart.
- *
- * @param {import('prosemirror-model').Node} node
- * @return {boolean}
- */
-const hasDistinctiveAttrs = (node) => {
-  const specAttrs = node.type.spec.attrs || {};
-  return Object.keys(node.attrs).some((key) => {
-    const spec = specAttrs[key];
-    return spec == null ||
-      !Object.prototype.hasOwnProperty.call(spec, 'default') ||
-      spec.default !== node.attrs[key]
-  })
-};
-
-/**
- * Remaps a position into a matched block by walking the same child-index path
- * it had in the old block. A raw byte offset would overshoot into a sibling
- * inner textblock when the old block contains local keystrokes that are not
- * yet part of the rebuilt document.
- *
- * @param {import('prosemirror-model').ResolvedPos} $oldPos
- * @param {number} newBlockStart
- * @param {import('prosemirror-model').Node} newBlock
- * @return {number|null}
- */
-const remapIntoBlock = ($oldPos, newBlockStart, newBlock) => {
-  let pos = newBlockStart + 1;
-  let node = newBlock;
-  for (let depth = 1; depth < $oldPos.depth; depth++) {
-    const idx = $oldPos.index(depth);
-    if (idx >= node.childCount) {
-      return null
-    }
-    for (let i = 0; i < idx; i++) {
-      pos += node.child(i).nodeSize;
-    }
-    pos += 1;
-    node = node.child(idx);
-    if (node.type !== $oldPos.node(depth + 1).type) {
-      return null
-    }
-  }
-  if (!node.isTextblock) {
-    return null
-  }
-  return pos + Math.min($oldPos.parentOffset, node.content.size)
-};
-
-/**
- * @param {import('prosemirror-model').Node} oldDoc
- * @param {import('prosemirror-model').Node} newDoc
- * @param {number} absPos
- * @return {number|null}
- */
-const findAbsolutePositionAfterStructuralChange = (oldDoc, newDoc, absPos) => {
-  let pos = 0;
-  let targetIdx = 0;
-  for (; targetIdx < oldDoc.childCount; targetIdx++) {
-    const child = oldDoc.child(targetIdx);
-    if (pos + child.nodeSize > absPos) {
-      break
-    }
-    pos += child.nodeSize;
-  }
-  if (targetIdx >= oldDoc.childCount) {
-    return null
-  }
-  const targetChild = oldDoc.child(targetIdx);
-  const $oldPos = oldDoc.resolve(absPos);
-
-  /**
-   * @param {number} newBlockStart
-   * @param {import('prosemirror-model').Node} newBlock
-   * @return {number|null}
-   */
-  const place = (newBlockStart, newBlock) => {
-    // Positions between top-level blocks carry no inner path; clamp them just
-    // inside the matched block like the previous raw-offset remap did.
-    if ($oldPos.depth === 0) {
-      const remapped = newBlockStart + (absPos - pos);
-      const contentStart = newBlockStart + 1;
-      const contentEnd = newBlockStart + newBlock.nodeSize - 1;
-      return Math.max(contentStart, Math.min(remapped, contentEnd))
-    }
-    return remapIntoBlock($oldPos, newBlockStart, newBlock)
-  };
-
-  /**
-   * Finds the Nth block in newDoc matching `pred`, where N is the number of
-   * matching blocks in oldDoc up to and including the target block.
-   *
-   * @param {function(import('prosemirror-model').Node): boolean} pred
-   * @param {boolean} requireUnique
-   * @return {number|null}
-   */
-  const findByPredicate = (pred, requireUnique = false) => {
-    let occurrence = 0;
-    for (let i = 0; i <= targetIdx; i++) {
-      if (pred(oldDoc.child(i))) {
-        occurrence++;
-      }
-    }
-    let matchCount = 0;
-    let matchStart = -1;
-    let matchBlock = null;
-    let newPos = 0;
-    for (let i = 0; i < newDoc.childCount; i++) {
-      const child = newDoc.child(i);
-      if (pred(child)) {
-        matchCount++;
-        if (matchCount === occurrence) {
-          matchStart = newPos;
-          matchBlock = child;
-        }
-      }
-      newPos += child.nodeSize;
-    }
-    if (matchBlock === null || (requireUnique && (occurrence !== 1 || matchCount !== 1))) {
-      return null
-    }
-    return place(matchStart, matchBlock)
-  };
-
-  /**
-   * @param {import('prosemirror-model').Node} child
-   * @return {boolean}
-   */
-  const sameTypeAndAttrs = (child) =>
-    child.type === targetChild.type && attrsEqual(child.attrs, targetChild.attrs);
-  const oldText = targetChild.textContent;
-
-  const byAll = findByPredicate((child) => sameTypeAndAttrs(child) && child.textContent === oldText);
-  if (byAll !== null) {
-    return byAll
-  }
-
-  // Text must be matched before attrs: after a remote attr-only edit, the
-  // attrs pass would steer the cursor into a sibling that kept the old attrs.
-  const byText = findByPredicate(
-    (child) => child.type === targetChild.type && child.textContent === oldText
-  );
-  if (byText !== null) {
-    return byText
-  }
-
-  // In-flight local typing diverges the text between both docs. Distinctive
-  // attrs still identify the block; default-only attrs match every sibling.
-  if (hasDistinctiveAttrs(targetChild)) {
-    const byAttrs = findByPredicate(sameTypeAndAttrs, true);
-    if (byAttrs !== null) {
-      return byAttrs
-    }
-  }
-
-  // Trailing in-flight keystrokes leave a prefix relation between old and new
-  // text. Empty text is a prefix of everything and must never match.
-  return findByPredicate(
-    (child) => sameTypeAndAttrs(child) &&
-      oldText !== '' && child.textContent !== '' &&
-      (oldText.startsWith(child.textContent) || child.textContent.startsWith(oldText)),
-    true
-  )
-};
-
-/**
- * Detect stale relative positions after structural changes that resolve to the
- * wrong text block or to the start of the correct block.
- *
- * @param {import('prosemirror-model').Node} oldDoc
- * @param {import('prosemirror-model').Node} newDoc
- * @param {number} oldAbs
- * @param {number|null} resolvedAbs
- * @return {boolean}
- */
-const isMisresolvedAfterStructuralChange = (oldDoc, newDoc, oldAbs, resolvedAbs) => {
-  if (resolvedAbs === null) {
-    return false
-  }
-  const $old = oldDoc.resolve(oldAbs);
-  const $new = newDoc.resolve(resolvedAbs);
-  if (!$old.parent.isTextblock) {
-    return false
-  }
-  // A textblock cursor cannot legitimately resolve into a non-textblock;
-  // a structural reorder replaced the block via delete + insert.
-  if (!$new.parent.isTextblock) {
-    return true
-  }
-  if ($old.parent.textContent !== $new.parent.textContent) {
-    return true
-  }
-  if ($old.parentOffset !== 0 && $new.parentOffset === 0) {
-    return true
-  }
-  const bothAtStart = $old.parentOffset === 0 && $new.parentOffset === 0;
-  // A changed offset, type or attrs hints at a same-text sibling. When all
-  // of them agree there is no signal left and the Yjs resolution must win.
-  const suspicious = $old.parentOffset !== $new.parentOffset ||
-    $old.parent.type !== $new.parent.type ||
-    !attrsEqual($old.parent.attrs, $new.parent.attrs);
-  if (bothAtStart || suspicious) {
-    const expected = findAbsolutePositionAfterStructuralChange(oldDoc, newDoc, oldAbs);
-    return expected !== null && expected !== resolvedAbs
-  }
-  return false
+  return pos - 1 // we don't count the most outer tag, because it is a fragment
 };
 
 const undo = state => {
@@ -43863,7 +47347,7 @@ function getSelectionRanges($from, $to, depth, options = {}) {
     if (!overlapsNodeContent) {
       return;
     }
-    const selectionRange = new SelectionRange(doc.resolve(from), doc.resolve(to));
+    const selectionRange = new SelectionRange$1(doc.resolve(from), doc.resolve(to));
     ranges.push(selectionRange);
   });
   return ranges;
@@ -43887,7 +47371,7 @@ var NodeRangeBookmark = class _NodeRangeBookmark {
 };
 
 // src/helpers/NodeRangeSelection.ts
-var NodeRangeSelection = class _NodeRangeSelection extends Selection {
+var NodeRangeSelection = class _NodeRangeSelection extends Selection$1 {
   constructor($anchor, $head, depth, bias = 1) {
     const { doc } = $anchor;
     const isCursor = $anchor === $head;
@@ -43967,7 +47451,7 @@ var NodeRangeSelection = class _NodeRangeSelection extends Selection {
 };
 NodeRangeSelection.prototype.visible = false;
 try {
-  Selection.jsonID("nodeRange", NodeRangeSelection);
+  Selection$1.jsonID("nodeRange", NodeRangeSelection);
 } catch {
 }
 
@@ -44387,41 +47871,28 @@ function findBestDragTarget(view, coords, options) {
 
 // src/helpers/findNextElementFromCursor.ts
 function findClosestTopLevelBlock(element, view) {
-  var _a;
   let current = element;
   while ((current == null ? void 0 : current.parentElement) && current.parentElement !== view.dom) {
     current = current.parentElement;
   }
-  if ((current == null ? void 0 : current.parentElement) !== view.dom) {
-    return void 0;
-  }
-  if (!((_a = current.pmViewDesc) == null ? void 0 : _a.node)) {
-    return void 0;
-  }
-  return current;
+  return (current == null ? void 0 : current.parentElement) === view.dom ? current : void 0;
 }
 function isValidRect(rect) {
   return Number.isFinite(rect.top) && Number.isFinite(rect.bottom) && Number.isFinite(rect.left) && Number.isFinite(rect.right) && rect.width > 0 && rect.height > 0;
-}
-function edgeBlockRect(container, edge) {
-  let current = edge === "first" ? container.firstElementChild : container.lastElementChild;
-  while (current) {
-    const rect = current.getBoundingClientRect();
-    if (isValidRect(rect)) {
-      return rect;
-    }
-    current = edge === "first" ? current.nextElementSibling : current.previousElementSibling;
-  }
-  return null;
 }
 function clampToContent(view, x, y, inset = 5) {
   if (!Number.isFinite(x) || !Number.isFinite(y)) {
     return null;
   }
   const container = view.dom;
-  const topRect = edgeBlockRect(container, "first");
-  const botRect = edgeBlockRect(container, "last");
-  if (!topRect || !botRect) {
+  const firstBlock = container.firstElementChild;
+  const lastBlock = container.lastElementChild;
+  if (!firstBlock || !lastBlock) {
+    return null;
+  }
+  const topRect = firstBlock.getBoundingClientRect();
+  const botRect = lastBlock.getBoundingClientRect();
+  if (!isValidRect(topRect) || !isValidRect(botRect)) {
     return null;
   }
   const clampedY = Math.min(Math.max(topRect.top + inset, y), botRect.bottom - inset);
@@ -44610,7 +48081,7 @@ function dragHandler(event, editor, nestedOptions, dragContext, dragImagePropert
   let selection;
   if (isNestedDrag && isSingleBlock) {
     slice = view.state.doc.slice(from, to);
-    selection = NodeSelection.create(view.state.doc, from);
+    selection = NodeSelection$1.create(view.state.doc, from);
   } else {
     selection = NodeRangeSelection.create(view.state.doc, from, to);
     slice = selection.content();
@@ -44644,60 +48115,12 @@ function dragHandler(event, editor, nestedOptions, dragContext, dragImagePropert
     document.removeEventListener("drop", cleanupDragPreview);
     document.removeEventListener("dragend", cleanupDragPreview);
   };
-  const nodeSelection = selection instanceof NodeSelection ? selection : void 0;
+  const nodeSelection = selection instanceof NodeSelection$1 ? selection : void 0;
   view.dragging = { slice, move: true, node: nodeSelection };
   tr.setSelection(selection);
   view.dispatch(tr);
   document.addEventListener("drop", cleanupDragPreview);
   document.addEventListener("dragend", cleanupDragPreview);
-}
-
-// src/helpers/getOuterNode.ts
-var getOuterNodePos = (doc, pos) => {
-  const resolvedPos = doc.resolve(pos);
-  const { depth } = resolvedPos;
-  if (depth === 0) {
-    return pos;
-  }
-  const a = resolvedPos.pos - resolvedPos.parentOffset;
-  return a - 1;
-};
-var getOuterNode = (doc, pos) => {
-  const node = doc.nodeAt(pos);
-  const resolvedPos = doc.resolve(pos);
-  let { depth } = resolvedPos;
-  let parent = node;
-  while (depth > 0) {
-    const currentNode = resolvedPos.node(depth);
-    depth -= 1;
-    if (depth === 0) {
-      parent = currentNode;
-    }
-  }
-  return parent;
-};
-function mapPendingRestoreAnchor(pendingRestore, tr, options) {
-  if (!tr.docChanged) {
-    return pendingRestore;
-  }
-  if (options.isChangeOrigin && pendingRestore.relativeAnchorPos != null) {
-    const newPos = options.getAbsolutePos(pendingRestore.relativeAnchorPos);
-    if (!Number.isFinite(newPos) || newPos <= 0) {
-      return null;
-    }
-    return {
-      ...pendingRestore,
-      anchorPos: newPos
-    };
-  }
-  const mappedResult = tr.mapping.mapResult(pendingRestore.anchorPos, 1);
-  if (mappedResult.deleted) {
-    return null;
-  }
-  return {
-    ...pendingRestore,
-    anchorPos: mappedResult.pos
-  };
 }
 function sumNodeSizes(parent, from, to) {
   let size = 0;
@@ -44744,6 +48167,31 @@ function createDroppedNodeRangeSelection(doc, anchorPos, nodeCount, depth) {
     return null;
   }
 }
+
+// src/helpers/getOuterNode.ts
+var getOuterNodePos = (doc, pos) => {
+  const resolvedPos = doc.resolve(pos);
+  const { depth } = resolvedPos;
+  if (depth === 0) {
+    return pos;
+  }
+  const a = resolvedPos.pos - resolvedPos.parentOffset;
+  return a - 1;
+};
+var getOuterNode = (doc, pos) => {
+  const node = doc.nodeAt(pos);
+  const resolvedPos = doc.resolve(pos);
+  let { depth } = resolvedPos;
+  let parent = node;
+  while (depth > 0) {
+    const currentNode = resolvedPos.node(depth);
+    depth -= 1;
+    if (depth === 0) {
+      parent = currentNode;
+    }
+  }
+  return parent;
+};
 
 // src/drag-handle-plugin.ts
 var getRelativePos = (state, absolutePos) => {
@@ -44794,40 +48242,10 @@ var DragHandlePlugin = ({
   let currentNodePos = -1;
   let currentNodeRelPos;
   let rafId = null;
+  let restoreRafId = null;
   let pendingMouseCoords = null;
   let activeDragRange = null;
   let pendingRestore = null;
-  function clearDragRangeState() {
-    activeDragRange = null;
-    pendingRestore = null;
-  }
-  function remapPendingRestore(tr, state) {
-    if (!pendingRestore) {
-      return;
-    }
-    pendingRestore = mapPendingRestoreAnchor(pendingRestore, tr, {
-      isChangeOrigin: isChangeOrigin(tr),
-      getAbsolutePos: (relativePos) => getAbsolutePos(state, relativePos)
-    });
-  }
-  function buildRestoreTransaction(state) {
-    if (!pendingRestore) {
-      return null;
-    }
-    const nodeRangeSelection = createDroppedNodeRangeSelection(
-      state.doc,
-      pendingRestore.anchorPos,
-      pendingRestore.nodeCount,
-      pendingRestore.depth
-    );
-    if (!nodeRangeSelection) {
-      pendingRestore = null;
-      activeDragRange = null;
-      return null;
-    }
-    clearDragRangeState();
-    return state.tr.setSelection(nodeRangeSelection);
-  }
   function hideHandle() {
     if (!element) {
       return;
@@ -44886,6 +48304,17 @@ var DragHandlePlugin = ({
       element.dataset.dragging = "false";
     }
   }
+  function restoreNodeRangeSelection({ nodeCount, depth, anchorPos }) {
+    const nodeRangeSelection = createDroppedNodeRangeSelection(
+      editor.state.doc,
+      anchorPos,
+      nodeCount,
+      depth
+    );
+    if (nodeRangeSelection) {
+      editor.view.dispatch(editor.state.tr.setSelection(nodeRangeSelection));
+    }
+  }
   function onDrop(e) {
     if (!e.target || !editor.view.dom.contains(e.target)) {
       return;
@@ -44902,14 +48331,17 @@ var DragHandlePlugin = ({
     if (!activeDragRange || editor.view.state.selection.empty) {
       return;
     }
-    const anchorPos = editor.state.selection.from;
-    const relativeAnchorPos = getRelativePos(editor.state, anchorPos);
     pendingRestore = {
       ...activeDragRange,
-      anchorPos,
-      relativeAnchorPos: relativeAnchorPos != null ? relativeAnchorPos : void 0
+      anchorPos: editor.state.selection.from
     };
-    editor.view.dispatch(editor.state.tr.setMeta("addToHistory", false));
+    restoreRafId = requestAnimationFrame(() => {
+      restoreRafId = null;
+      if (pendingRestore) {
+        restoreNodeRangeSelection(pendingRestore);
+        pendingRestore = null;
+      }
+    });
   }
   function cleanup() {
     element.removeEventListener("dragstart", onDragStart);
@@ -44920,7 +48352,10 @@ var DragHandlePlugin = ({
       rafId = null;
       pendingMouseCoords = null;
     }
-    clearDragRangeState();
+    if (restoreRafId) {
+      cancelAnimationFrame(restoreRafId);
+      restoreRafId = null;
+    }
   }
   wrapper.appendChild(element);
   return {
@@ -44934,7 +48369,14 @@ var DragHandlePlugin = ({
           return { locked: false };
         },
         apply(tr, value, _oldState, state) {
-          remapPendingRestore(tr, state);
+          if (pendingRestore && tr.docChanged) {
+            const mappedResult = tr.mapping.mapResult(pendingRestore.anchorPos, 1);
+            if (mappedResult.deleted) {
+              pendingRestore = null;
+            } else {
+              pendingRestore.anchorPos = mappedResult.pos;
+            }
+          }
           const isLocked = tr.getMeta("lockDragHandle");
           const hideDragHandle = tr.getMeta("hideDragHandle");
           if (isLocked !== void 0) {
@@ -44965,9 +48407,6 @@ var DragHandlePlugin = ({
           return value;
         }
       },
-      appendTransaction(_transactions, _oldState, newState) {
-        return buildRestoreTransaction(newState);
-      },
       view: (view) => {
         var _a;
         element.draggable = true;
@@ -44978,7 +48417,6 @@ var DragHandlePlugin = ({
         wrapper.style.position = "absolute";
         wrapper.style.top = "0";
         wrapper.style.left = "0";
-        wrapper.style.zIndex = "10";
         element.addEventListener("dragstart", onDragStart);
         element.addEventListener("dragend", onDragEnd);
         document.addEventListener("drop", onDrop);
@@ -46214,7 +49652,7 @@ class TipTapEditorController {
         const buttonsContainer = document.createElement("div");
         buttonsContainer.setAttribute("class", "dcf-tiptap-buttons");
         this.editorElement.appendChild(buttonsContainer);
-        for (let i in this.actions) {
+        for (let i = 0; i < this.actions.length; i++) {
             let a = this.actions[i];
             a.button = document.createElement("button");
             a.button.setAttribute("title", a.title || a.name);

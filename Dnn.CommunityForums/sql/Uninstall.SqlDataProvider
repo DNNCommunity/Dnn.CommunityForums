@@ -127,6 +127,9 @@ GO
 DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Topics]
 GO
 
+DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Templates]
+GO
+
 DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_TopicIdByURL]
 GO
 
@@ -313,8 +316,8 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_GetTags]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION {databaseOwner}[{objectQualifier}communityforums_Topics_GetTags]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}fn_communityforums_GetURL]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}fn_communityforums_GetURL]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_GetURL]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}communityforums_GetURL]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}communityforums_Forums_Maintenance') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}communityforums_Forums_Maintenance

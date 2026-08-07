@@ -15,30 +15,30 @@
     <hr />
 
     <div class="dnnClear">
-        <h2 class="muy-importante">Important Upgrade Note</h2>
+        <h2 class="muy-importante">Important Upgrade Notes</h2>
         <p>
             <strong>VERY IMPORTANT:</strong> The MINIMUM DNN Platform version for this release is now <strong>DNN 9.13</strong>.
-<!--
+
             <br />
             The release notes will follow, below this <b>important</b> note.
--->
+
         </p>
-<!--
+
         <blockquote class="dcf-oldnews">
 
             <h2 class="muy-importante">
-                Upgrading to 9.0.x if you have customized templates (must read)
+                Upgrading to 10.0.x if you access database tables using SQL
             </h2>
             <p>
-                First, if you're upgrading to version 9.0 AND you have customized templates, you NEED to view the important release note FYI wiki article below. 
+                First, if you're upgrading to version 10.0 AND you access database tables using SQL, you NEED to view the important release note FYI wiki article below. 
             </p>
 
             <ul>
-                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-9.0" target="_blank">What to Know When Upgrading to Commmunity Forums 9.0</a></li>
+                <li><a href="https://github.com/DNNCommunity/Dnn.CommunityForums/wiki/Upgrading-to-Version-10.0" target="_blank">What to Know When Upgrading to Commmunity Forums 10.0</a></li>
             </ul>
 
         </blockquote>
--->
+
     </div>
     <hr />
     <div class="dnnClear">

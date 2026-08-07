@@ -55,14 +55,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.RankInfo GetById(int moduleId, int rankId)
         {
             var cachekey = string.Format(CacheKeys.RankInfo, moduleId, rankId);
-            var RankInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.RankInfo;
-            if (RankInfo == null)
+            var rankInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.RankInfo;
+            if (rankInfo == null)
             {
-                RankInfo = this._repositoryControllerBase.GetById(rankId, moduleId);
-                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, RankInfo);
+                rankInfo = this._repositoryControllerBase.GetById(id: rankId, scopeValue: moduleId);
+                if (rankInfo == null)
+                {
+                    rankInfo = this._repositoryControllerBase.GetById(id: rankId);
+                }
+
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, rankInfo);
             }
 
-            return RankInfo;
+            return rankInfo;
         }
 
         public new void DeleteById<TProperty>(int moduleId, TProperty rankId)

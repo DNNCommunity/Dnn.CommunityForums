@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         TEntity IRepository<TEntity>.GetById<TProperty>(TProperty id) => this._repositoryControllerBase.GetById(id);
 
-        TEntity IRepository<TEntity>.GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue) => this._repositoryControllerBase.GetById(id, scopeValue);
+        TEntity IRepository<TEntity>.GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue) => this._repositoryControllerBase.GetById(id: id, scopeValue: scopeValue);
 
         IPagedList<TEntity> IRepository<TEntity>.GetPage(int pageIndex, int pageSize) => this._repositoryControllerBase.GetPage(pageIndex, pageSize);
 

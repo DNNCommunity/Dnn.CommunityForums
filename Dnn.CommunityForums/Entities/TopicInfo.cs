@@ -786,7 +786,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "previoustopiclink":
                         if (this.PrevTopic != 0)
                         {
-                            var prevTopic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ModuleId, this.PrevTopic);
+                            var prevTopic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ModuleId, this.PrevTopic, this.Forum);
                             return PropertyAccess.FormatString(prevTopic.GetLink(), format);
                         }
 
@@ -796,7 +796,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "nexttopiclink":
                         if (this.NextTopic != 0)
                         {
-                            var nextTopic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ModuleId, this.NextTopic);
+                            var nextTopic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ModuleId, this.NextTopic, this.Forum);
                             return PropertyAccess.FormatString(nextTopic.GetLink(), format);
                         }
 
