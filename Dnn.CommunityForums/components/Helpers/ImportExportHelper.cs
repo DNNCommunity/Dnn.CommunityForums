@@ -50,6 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             "ranks",
             "filters",
             "forums",
+            "properties",
             "categories",
             "contents",
             "topics",
@@ -136,6 +137,15 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     .ToList();
 
                 var forumIds = forums.Select(f => f.ForumID).ToHashSet();
+
+                var properties = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get()
+                    .Where(p => p.PortalId == moduleInfo.PortalID
+                        && p.ObjectType == 1
+                        && forumIds.Contains(p.ObjectOwnerId))
+                    .OrderBy(p => p.ObjectOwnerId)
+                    .ThenBy(p => p.SortOrder)
+                    .ThenBy(p => p.PropertyId)
+                    .ToList();
 
                 var forumTopics = DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController.Instance.Get()
                     .Where(ft => forumIds.Contains(ft.ForumId))
@@ -340,6 +350,24 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 new XAttribute("prefixUrl", f.PrefixURL ?? string.Empty),
                                 new XAttribute("socialGroupId", f.SocialGroupId),
                                 new XAttribute("hasProperties", f.HasProperties))),
+                        SerializeEntities("properties", properties, p =>
+                            new XElement(
+                                "property",
+                                new XAttribute("propertyId", p.PropertyId),
+                                new XAttribute("portalId", p.PortalId),
+                                new XAttribute("objectType", p.ObjectType),
+                                new XAttribute("objectOwnerId", p.ObjectOwnerId),
+                                new XAttribute("name", p.Name.EncodeInvalidXmlChars() ?? string.Empty),
+                                new XAttribute("dataType", p.DataType ?? string.Empty),
+                                new XAttribute("defaultAccessControl", p.DefaultAccessControl),
+                                new XAttribute("isHidden", p.IsHidden),
+                                new XAttribute("isRequired", p.IsRequired),
+                                new XAttribute("isReadOnly", p.IsReadOnly),
+                                new XAttribute("validationExpression", p.ValidationExpression.EncodeInvalidXmlChars() ?? string.Empty),
+                                new XAttribute("editTemplate", p.EditTemplate.EncodeInvalidXmlChars() ?? string.Empty),
+                                new XAttribute("viewTemplate", p.ViewTemplate.EncodeInvalidXmlChars() ?? string.Empty),
+                                new XAttribute("sortOrder", p.SortOrder),
+                                new XAttribute("defaultValue", p.DefaultValue.EncodeInvalidXmlChars() ?? string.Empty))),
                         SerializeEntities("categories", categories, c =>
                             new XElement(
                                 "category",
@@ -841,6 +869,43 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     forumMap[oldForumId] = forum.ForumID;
                     importedForums[oldForumId] = forum;
                     pendingForumParents[oldForumId] = oldParentForumId;
+                }
+
+                var propertyController = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController();
+
+                foreach (var sourceProperty in GetElements(root, "properties", "property"))
+                {
+                    var sourceObjectOwnerId = GetInt(sourceProperty, "objectOwnerId");
+                    if (!forumMap.TryGetValue(sourceObjectOwnerId, out var newForumId))
+                    {
+                        continue;
+                    }
+
+                    var objectType = GetInt(sourceProperty, "objectType");
+                    if (objectType <= 0)
+                    {
+                        objectType = 1;
+                    }
+
+                    var property = new PropertyInfo
+                    {
+                        PortalId = portalId,
+                        ObjectType = objectType,
+                        ObjectOwnerId = newForumId,
+                        Name = GetString(sourceProperty, "name"),
+                        DataType = GetString(sourceProperty, "dataType"),
+                        DefaultAccessControl = GetInt(sourceProperty, "defaultAccessControl"),
+                        IsHidden = GetBool(sourceProperty, "isHidden"),
+                        IsRequired = GetBool(sourceProperty, "isRequired"),
+                        IsReadOnly = GetBool(sourceProperty, "isReadOnly"),
+                        ValidationExpression = GetString(sourceProperty, "validationExpression"),
+                        EditTemplate = GetString(sourceProperty, "editTemplate"),
+                        ViewTemplate = GetString(sourceProperty, "viewTemplate"),
+                        SortOrder = GetInt(sourceProperty, "sortOrder"),
+                        DefaultValue = GetString(sourceProperty, "defaultValue"),
+                    };
+
+                    propertyController.Insert(property);
                 }
 
                 foreach (var sourceCategory in GetElements(root, "categories", "category"))

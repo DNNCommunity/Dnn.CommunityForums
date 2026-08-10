@@ -42,6 +42,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Helpers
                 "ranks",
                 "filters",
                 "forums",
+                "properties",
                 "categories",
                 "contents",
                 "topics",
