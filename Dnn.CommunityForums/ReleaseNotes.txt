@@ -83,6 +83,7 @@
             <li>ENHANCED: Remove deprecated URLBASE friendly URL module setting (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1918">PR 1918</a>)</li>
             <li>ENHANCED: Reposition "Mark All Read" button in "Not Read" filtered topics view (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1907">PR 1907</a>)</li>
             <li>ENHANCED: Button styling for TipTap content editor (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1962">PR 1962</a>)</li>
+            <li>ENHANCED: Don't log admin alerts on bad (bots) request; quietly redirect to main forums page (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/1523">Issue 1523</a>)</li>
 
 
 <!--
