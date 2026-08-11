@@ -114,6 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
                         this.Context.ApplicationInstance.CompleteRequest();
+                        return;
                     }
                 }
 
@@ -158,10 +159,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 this.LoadData(this.PageId);
+                if (this.dtTopic?.Rows?.Count == 0)
+                {
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
+                    this.Context.ApplicationInstance.CompleteRequest();
+                    return;
+                }
 
                 this.BindTopic();
-                var tempVar = this.BasePage;
-                DotNetNuke.Modules.ActiveForums.Environment.UpdateMeta(ref tempVar, this.MetaTitle, this.MetaDescription, this.MetaKeywords);
             }
             catch (Exception ex)
             {
@@ -219,6 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
                 this.Context.ApplicationInstance.CompleteRequest();
+                return;
             }
 
             // Load our values
@@ -235,11 +241,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.TopicId + "=" + this.TopicId }), false);
                         this.Context.ApplicationInstance.CompleteRequest();
+                        return;
                     }
                     else
                     {
                         this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }), false);
                         this.Context.ApplicationInstance.CompleteRequest();
+                        return;
                     }
                 }
                 else
@@ -248,11 +256,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ForumId + "=" + this.ForumId }), false);
                         this.Context.ApplicationInstance.CompleteRequest();
+                        return;
                     }
                     else
                     {
                         this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topics }), false);
                         this.Context.ApplicationInstance.CompleteRequest();
+                        return;
                     }
                 }
             }
@@ -266,11 +276,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     this.Response.Redirect(Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, "returnUrl=" + this.Request.RawUrl), false);
                     this.Context.ApplicationInstance.CompleteRequest();
+                    return;
                 }
                 else
                 {
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, "ctl=login&returnUrl=" + this.Request.RawUrl), false);
                     this.Context.ApplicationInstance.CompleteRequest();
+                    return;
                 }
             }
 
@@ -421,6 +433,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 this.Response.Redirect(sURL, false);
                 this.Context.ApplicationInstance.CompleteRequest();
+                return;
             }
 
             // Not sure why we're doing this.  I assume it may have something to do with search engines - JB
@@ -521,6 +534,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.MetaDescription = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[DESCRIPTION]", "[/DESCRIPTION]").Replace("[DESCRIPTION]", string.Empty).Replace("[/DESCRIPTION]", string.Empty);
                 this.MetaDescription = this.MetaDescription.TruncateAtWord(SEOConstants.MaxMetaDescriptionLength);
                 this.MetaKeywords = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[KEYWORDS]", "[/KEYWORDS]").Replace("[KEYWORDS]", string.Empty).Replace("[/KEYWORDS]", string.Empty);
+
+                var tempVar = this.BasePage;
+                DotNetNuke.Modules.ActiveForums.Environment.UpdateMeta(ref tempVar, this.MetaTitle, this.MetaDescription, this.MetaKeywords);
             }
 
             #endregion "Populate Metadata"
