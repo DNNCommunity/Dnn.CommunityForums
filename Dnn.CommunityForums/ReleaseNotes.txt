@@ -119,7 +119,8 @@
             <li>FIX: Update embedded image URLs to accommodate child portals (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1941">Issue 1941</a>)</li>
             <li>FIX: Last reply name tokens showing original topic author's name rather than last replier (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1905">Issue 1905</a>)</li>
             <li>FIX: "Ranks" page not loading in control panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1942">Issue 1942</a>)</li>
-            <li>FIX: Update block highlighting in TipTap content editor (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1957">PR 1957</a>)</li>
+            <li>FIX: Update block highlighting in TipTap content editor (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1957">PR 1957</a>)</li>            
+            <li>FIX: URL rewriter needs to ignore deleted instances of the forums module (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1981">Issue 1981</a>)</li>
             
 
         </ul>
