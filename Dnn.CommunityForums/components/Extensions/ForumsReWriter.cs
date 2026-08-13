@@ -243,16 +243,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 var forumModuleInstances = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(this.PortalId)
                 .Cast<DotNetNuke.Entities.Modules.ModuleInfo>()
                 .Where(
-                    module =>
+                    module => !module.IsDeleted && (
                     module.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName, StringComparison.OrdinalIgnoreCase) ||
                     module.ModuleDefinition.DefinitionName.Equals($"{Globals.ModuleFriendlyName} Viewer", StringComparison.OrdinalIgnoreCase) ||
                     module.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName, StringComparison.OrdinalIgnoreCase) ||
-                    module.ModuleDefinition.DefinitionName.Equals($"{Globals.ModuleName} Viewer", StringComparison.OrdinalIgnoreCase));
+                    module.ModuleDefinition.DefinitionName.Equals($"{Globals.ModuleName} Viewer", StringComparison.OrdinalIgnoreCase)));
 
                 var tabs = new List<ModuleInfo>();
                 foreach (var module in forumModuleInstances)
                 {
-                    tabs.AddRange(DotNetNuke.Entities.Modules.ModuleController.Instance.GetAllTabsModulesByModuleID(module.ModuleID).Cast<DotNetNuke.Entities.Modules.ModuleInfo>());
+                    tabs.AddRange(DotNetNuke.Entities.Modules.ModuleController.Instance.GetAllTabsModulesByModuleID(module.ModuleID).Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(module => !module.IsDeleted));
                 }
 
                 // base path for each tab
