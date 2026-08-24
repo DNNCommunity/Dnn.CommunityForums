@@ -3,7 +3,8 @@
     <PropertyGroup>
         <AssemblyName>DotNetNuke.Modules.ActiveForumsTests</AssemblyName>
         <RootNamespace>DotNetNuke.Modules.ActiveForumsTests</RootNamespace>
-        <TargetFramework>net472</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>latest</LangVersion>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
@@ -21,8 +22,8 @@
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0" />
-        <PackageReference Include="DotNetNuke.Abstractions" Version="9.11.0" />
-        <PackageReference Include="DotNetNuke.Web" Version="9.11.0" />
+        <PackageReference Include="DotNetNuke.Abstractions" Version="9.13.0" />
+        <PackageReference Include="DotNetNuke.Web" Version="9.13.0" />
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -54,5 +55,8 @@
         <HintPath>ReferencedAssemblies\DotNetNuke.Tests.Utilities.dll</HintPath>
       </Reference>
       <Reference Include="System.Web" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />  <!--[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] /* for Moq */ -->
     </ItemGroup>
 </Project>

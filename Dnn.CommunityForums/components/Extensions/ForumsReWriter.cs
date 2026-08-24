@@ -30,6 +30,9 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public class ForumsReWriter : IHttpModule
     {
@@ -51,10 +54,10 @@ namespace DotNetNuke.Modules.ActiveForums
             };
 
         private readonly IPortalAliasService portalAliasService;
-        private readonly DotNetNuke.Modules.ActiveForums.Controllers.TagController tagController;
-        private readonly DotNetNuke.Modules.ActiveForums.Controllers.CategoryController categoryController;
-        private readonly DotNetNuke.Modules.ActiveForums.Controllers.ForumController forumController;
-        private readonly DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController forumGroupController;
+        private readonly DotNetNuke.Modules.ActiveForums.Controllers.ITagController tagController;
+        private readonly DotNetNuke.Modules.ActiveForums.Controllers.ICategoryController categoryController;
+        private readonly DotNetNuke.Modules.ActiveForums.Controllers.IForumController forumController;
+        private readonly DotNetNuke.Modules.ActiveForums.Controllers.IForumGroupController forumGroupController;
 
         internal enum ViewUrlType
         {
@@ -68,6 +71,8 @@ namespace DotNetNuke.Modules.ActiveForums
         internal ModuleSettings MainSettings { get; private set; } = null;
 
         internal int ModuleId { get; private set; } = DotNetNuke.Common.Utilities.Null.NullInteger;
+
+        internal int ForumModuleId { get; private set; } = DotNetNuke.Common.Utilities.Null.NullInteger;
 
         internal int PortalId { get; private set; } = DotNetNuke.Common.Utilities.Null.NullInteger;
 
@@ -106,19 +111,19 @@ namespace DotNetNuke.Modules.ActiveForums
         internal ForumsReWriter()
             : this(
                   new DotNetNuke.Entities.Portals.PortalAliasController(),
-                  new DotNetNuke.Modules.ActiveForums.Controllers.TagController(),
-                  new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController(),
-                  new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController(),
-                  new DotNetNuke.Modules.ActiveForums.Controllers.ForumController())
+                  DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance,
+                  DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance,
+                  DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance,
+                  DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance)
         {
         }
 
         internal ForumsReWriter(
             IPortalAliasService portalAliasService,
-            DotNetNuke.Modules.ActiveForums.Controllers.TagController tagController,
-            DotNetNuke.Modules.ActiveForums.Controllers.CategoryController categoryController,
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController forumGroupController,
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController forumController)
+            DotNetNuke.Modules.ActiveForums.Controllers.ITagController tagController,
+            DotNetNuke.Modules.ActiveForums.Controllers.ICategoryController categoryController,
+            DotNetNuke.Modules.ActiveForums.Controllers.IForumGroupController forumGroupController,
+            DotNetNuke.Modules.ActiveForums.Controllers.IForumController forumController)
         {
             this.portalAliasService = portalAliasService;
             this.tagController = tagController;
@@ -147,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var st = new System.Diagnostics.Stopwatch();
             st.Start();
 #endif
-            this.ModuleId = DotNetNuke.Common.Utilities.Null.NullInteger;
+            this.ForumModuleId = DotNetNuke.Common.Utilities.Null.NullInteger;
             this.PortalId = DotNetNuke.Common.Utilities.Null.NullInteger;
             this.ForumId = DotNetNuke.Common.Utilities.Null.NullInteger;
             this.ForumGroupId = DotNetNuke.Common.Utilities.Null.NullInteger;
@@ -180,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             var urlRewriteCacheKey = string.Format(CacheKeys.UrlRewrites, app.Request.Url.ToString().ToLowerInvariant());
-            var sendTo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(DotNetNuke.Common.Utilities.Null.NullInteger, urlRewriteCacheKey) as string;
+            var sendTo = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(DotNetNuke.Common.Utilities.Null.NullInteger, urlRewriteCacheKey) as string;
             if (!string.IsNullOrEmpty(sendTo))
             {
 #if DEBUG
@@ -202,11 +207,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             var portalAliasesCacheKey = CacheKeys.PortalAliases;
-            var portalAliases = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(DotNetNuke.Common.Utilities.Null.NullInteger, portalAliasesCacheKey) as IDictionary<string, IPortalAliasInfo>;
+            var portalAliases = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(DotNetNuke.Common.Utilities.Null.NullInteger, portalAliasesCacheKey) as IDictionary<string, IPortalAliasInfo>;
             if (portalAliases == null)
             {
                 portalAliases = this.portalAliasService.GetPortalAliases();
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(DotNetNuke.Common.Utilities.Null.NullInteger, portalAliasesCacheKey, portalAliases);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(DotNetNuke.Common.Utilities.Null.NullInteger, portalAliasesCacheKey, portalAliases);
             }
 
             var portalAliasInfo = portalAliases.Values
@@ -232,28 +237,61 @@ namespace DotNetNuke.Modules.ActiveForums
             this.PortalId = portalAliasInfo.PortalId;
 
             var tabPathsCacheKey = string.Format(CacheKeys.TabPaths, this.PortalId);
-            var tabpaths = DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheRetrieve(DotNetNuke.Common.Utilities.Null.NullInteger, tabPathsCacheKey) as List<(int ModuleId, int TabId, string Path)>;
+            var tabpaths = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(DotNetNuke.Common.Utilities.Null.NullInteger, tabPathsCacheKey) as List<(int ModuleId, int ForumModuleId, int TabId, string Path, bool RunningInViewer)>;
             if (tabpaths == null)
             {
                 var forumModuleInstances = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(this.PortalId)
                 .Cast<DotNetNuke.Entities.Modules.ModuleInfo>()
-                .Where(module => module.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName, StringComparison.OrdinalIgnoreCase) ||
-                module.ModuleDefinition.DefinitionName.Equals($"{Globals.ModuleFriendlyName} Viewer", StringComparison.OrdinalIgnoreCase));
+                .Where(
+                    module => !module.IsDeleted && (
+                    module.ModuleDefinition.DefinitionName.Equals(Globals.ModuleFriendlyName, StringComparison.OrdinalIgnoreCase) ||
+                    module.ModuleDefinition.DefinitionName.Equals($"{Globals.ModuleFriendlyName} Viewer", StringComparison.OrdinalIgnoreCase) ||
+                    module.ModuleDefinition.DefinitionName.Equals(Globals.ModuleName, StringComparison.OrdinalIgnoreCase) ||
+                    module.ModuleDefinition.DefinitionName.Equals($"{Globals.ModuleName} Viewer", StringComparison.OrdinalIgnoreCase)));
 
                 var tabs = new List<ModuleInfo>();
                 foreach (var module in forumModuleInstances)
                 {
-                    tabs.AddRange(DotNetNuke.Entities.Modules.ModuleController.Instance.GetAllTabsModulesByModuleID(module.ModuleID).Cast<DotNetNuke.Entities.Modules.ModuleInfo>());
+                    tabs.AddRange(DotNetNuke.Entities.Modules.ModuleController.Instance.GetAllTabsModulesByModuleID(module.ModuleID).Cast<DotNetNuke.Entities.Modules.ModuleInfo>().Where(module => !module.IsDeleted));
                 }
 
                 // base path for each tab
-                tabpaths = new List<(int ModuleId, int TabId, string Path)>();
-                tabpaths.AddRange(tabs.Select(module => (module.ModuleID, module.TabID, module.ParentTab.TabPath.Replace("//", "/"))));
+                tabpaths = new List<(int ModuleId, int ForumModuleId, int TabId, string Path, bool RunningInViewer)>();
+                tabpaths.AddRange(tabs.Select(module => (
+                module.ModuleID,
+                module.ModuleID,
+                module.TabID,
+                module.ParentTab.TabPath.Replace("//", "/"),
+                module.ModuleDefinition.DefinitionName.Equals($"{Globals.ModuleFriendlyName} Viewer", StringComparison.OrdinalIgnoreCase) ||
+                module.ModuleDefinition.DefinitionName.Equals($"{Globals.ModuleName} Viewer", StringComparison.OrdinalIgnoreCase))));
 
                 // add any alternate urls for each tab
                 foreach (var tabpath in tabpaths.ToList())
                 {
-                    tabpaths.AddRange(DotNetNuke.Entities.Tabs.TabController.Instance.GetTabUrls(tabpath.TabId, this.PortalId).Select(url => (tabpath.ModuleId, tabpath.TabId, url.Url)));
+                    tabpaths.AddRange(DotNetNuke.Entities.Tabs.TabController.Instance.GetTabUrls(tabpath.TabId, this.PortalId).Select(url => (tabpath.ModuleId, tabpath.ModuleId, tabpath.TabId, url.Url, tabpath.RunningInViewer)));
+                }
+
+                for (var i = 0; i < tabpaths.Count; i++)
+                {
+                    var tp = tabpaths[i];
+                    if (!tp.RunningInViewer)
+                    {
+                        continue;
+                    }
+
+                    var moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(tp.ModuleId, tp.TabId, false);
+                    var viewerSettings = moduleInfo?.ModuleSettings;
+
+                    if (viewerSettings != null &&
+                        viewerSettings.ContainsKey(ForumViewerSettingsKeys.AFForumModuleId) &&
+                        !string.IsNullOrEmpty(viewerSettings[ForumViewerSettingsKeys.AFForumModuleId]?.ToString()))
+                    {
+                        var forumModuleId = Utilities.SafeConvertInt(
+                            viewerSettings[ForumViewerSettingsKeys.AFForumModuleId],
+                            DotNetNuke.Common.Utilities.Null.NullInteger);
+
+                        tabpaths[i] = (tp.ModuleId, forumModuleId, tp.TabId, tp.Path, tp.RunningInViewer);
+                    }
                 }
 
                 tabpaths = tabpaths
@@ -261,7 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 .OrderByDescending(tp => tp.Path.Length)
                 .ToList();
 
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(DotNetNuke.Common.Utilities.Null.NullInteger, tabPathsCacheKey, tabpaths);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(DotNetNuke.Common.Utilities.Null.NullInteger, tabPathsCacheKey, tabpaths);
             }
 
             if (tabpaths.Count < 1)
@@ -284,15 +322,18 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             this.TabId = theTabPath.TabId;
-            this.ModuleId = theTabPath.ModuleId;
-            if (this.ModuleId > 0)
-            {
-                this.MainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
-            }
-
-            if (this.MainSettings == null || !this.MainSettings.URLRewriteEnabled)
+            this.ForumModuleId = theTabPath.ForumModuleId;
+            if (this.ForumModuleId <= 0)
             {
                 return;
+            }
+            else
+            {
+                this.MainSettings = SettingsBase.GetModuleSettings(this.ForumModuleId);
+                if (this.MainSettings == null || !this.MainSettings.URLRewriteEnabled)
+                {
+                    return;
+                }
             }
 
             var searchUrl = pathRemaining.StartsWith(theTabPath.Path, StringComparison.OrdinalIgnoreCase)
@@ -360,10 +401,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         this.HandleNonLikesPages(searchUrl);
 
-                        var archivedURL = new DotNetNuke.Modules.ActiveForums.Controllers.ArchivedUrlController().FindByURL(this.PortalId, searchUrl);
+                        var archivedURL = DotNetNuke.Modules.ActiveForums.Controllers.ArchivedURLController.Instance.FindByURL(this.PortalId, searchUrl);
                         if (archivedURL != null)
                         {
-                            var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(archivedURL.TopicId);
+                            var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, archivedURL.TopicId);
                             if (topic != null)
                             {
                                 Redirect(app, topic.GetLink());
@@ -374,15 +415,15 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             if (!string.IsNullOrEmpty(this.GroupSegment) && !string.IsNullOrEmpty(this.ForumSegment) && !string.IsNullOrEmpty(this.TopicSegment))
                             {
-                                var forumGroup = this.forumGroupController.GetByUrlPrefix(this.ModuleId, this.GroupSegment);
+                                var forumGroup = this.forumGroupController.GetByUrlPrefix(this.ForumModuleId, this.GroupSegment);
                                 if (forumGroup != null)
                                 {
                                     this.ForumGroupId = forumGroup.ForumGroupId;
-                                    var forum = this.forumController.GetByUrlPrefix(this.ModuleId, this.ForumSegment);
+                                    var forum = this.forumController.GetByUrlPrefix(this.ForumModuleId, this.ForumSegment);
                                     if (forum != null && forum.GroupPrefixURL.Equals(this.GroupSegment) && forum.PrefixURL.Equals(this.ForumSegment))
                                     {
                                         this.ForumId = forum.ForumID;
-                                        var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).FindByURL(this.ForumId, this.TopicSegment);
+                                        var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.FindByURL(this.ForumModuleId, this.ForumId, this.TopicSegment);
                                         if (topic != null)
                                         {
                                             this.TopicId = topic.TopicId;
@@ -394,11 +435,11 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                             else if (!string.IsNullOrEmpty(this.GroupSegment) && !string.IsNullOrEmpty(this.ForumSegment))
                             {
-                                var forumGroup = this.forumGroupController.GetByUrlPrefix(this.ModuleId, this.GroupSegment);
+                                var forumGroup = this.forumGroupController.GetByUrlPrefix(this.ForumModuleId, this.GroupSegment);
                                 if (forumGroup != null)
                                 {
                                     this.ForumGroupId = forumGroup.ForumGroupId;
-                                    var forum = this.forumController.GetByUrlPrefix(this.ModuleId, this.ForumSegment);
+                                    var forum = this.forumController.GetByUrlPrefix(this.ForumModuleId, this.ForumSegment);
                                     if (forum != null && forum.PrefixURL.Equals(this.ForumSegment))
                                     {
                                         this.ForumId = forum.ForumID;
@@ -409,7 +450,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                             else if (!string.IsNullOrEmpty(this.GroupSegment))
                             {
-                                var forumGroup = this.forumGroupController.GetByUrlPrefix(this.ModuleId, this.GroupSegment);
+                                var forumGroup = this.forumGroupController.GetByUrlPrefix(this.ForumModuleId, this.GroupSegment);
                                 if (forumGroup != null && forumGroup.PrefixURL.Equals(this.GroupSegment))
                                 {
                                     this.ForumGroupId = forumGroup.ForumGroupId;
@@ -429,7 +470,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.HandleOldUrls(rawUrlLower);
                     if (this.TopicId > 0)
                     {
-                        var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetById(this.TopicId);
+                        var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, this.TopicId);
                         if (topic != null)
                         {
                             Redirect(app, topic.GetLink());
@@ -437,7 +478,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                    Redirect(app, new ControlUtils().BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: this.ForumGroupId, forumID: this.ForumId, topicId: this.TopicId, topicURL: string.Empty, tagId: this.TagId.Value, categoryId: this.CategoryId.Value, otherPrefix: this.OtherPrefix, pageId: 1, contentId: this.ContentId, socialGroupId: -1));
+                    Redirect(app, new ControlUtils().BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, groupPrefix: string.Empty, forumPrefix: string.Empty, forumGroupId: this.ForumGroupId, forumID: this.ForumId, topicId: this.TopicId, topicURL: string.Empty, tagId: this.TagId.Value, categoryId: this.CategoryId.Value, otherPrefix: this.OtherPrefix, pageId: 1, contentId: this.ContentId, socialGroupId: -1));
                     return;
                 }
 
@@ -455,7 +496,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 topicUrl = topicUrl.Replace("/", string.Empty);
                 if (!string.IsNullOrEmpty(topicUrl))
                 {
-                    var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).FindByURL(this.ForumId, topicUrl);
+                    var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.FindByURL(this.ForumModuleId, this.ForumId, topicUrl);
                     if (topic != null)
                     {
                         var link = topic.GetLink();
@@ -492,7 +533,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if (this.ViewUrlTypeValue.Equals(ViewUrlType.Likes) && this.ContentId > 0)
                 {
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.TabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.Likes}&{ParamKeys.ContentId}=" + this.ContentId + sPage + qs);
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this.TabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.likes}&{ParamKeys.ContentId}=" + this.ContentId + sPage + qs);
                 }
                 else if ((this.TopicId > 0) || (this.ForumId > 0) || (this.ForumGroupId > 0))
                 {
@@ -513,7 +554,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 st.Stop();
                 System.Diagnostics.Debug.WriteLine($"url rewriter processing time: {st.ElapsedMilliseconds} ms; from: {rawUrlLower} to: {sendTo}");
 #endif
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(DotNetNuke.Common.Utilities.Null.NullInteger, urlRewriteCacheKey, sendTo);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(DotNetNuke.Common.Utilities.Null.NullInteger, urlRewriteCacheKey, sendTo);
                 RewriteUrl(app.Context, sendTo);
             }
         }
@@ -539,12 +580,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.ExtractPrefixedSegment(ref parsedUrl, categoryPrefix, out segmentName))
             {
-                var category = this.categoryController.GetByName(this.ModuleId, segmentName);
+                var category = this.categoryController.GetByName(this.ForumModuleId, segmentName);
                 this.CategoryId = category?.CategoryId ?? DotNetNuke.Common.Utilities.Null.NullInteger;
             }
             else if (this.ExtractPrefixedSegment(ref parsedUrl, tagPrefix, out segmentName))
             {
-                var tag = this.tagController.GetByName(this.ModuleId, segmentName);
+                var tag = this.tagController.GetByName(this.ForumModuleId, segmentName);
                 this.TagId = tag?.TagId ?? DotNetNuke.Common.Utilities.Null.NullInteger;
             }
 

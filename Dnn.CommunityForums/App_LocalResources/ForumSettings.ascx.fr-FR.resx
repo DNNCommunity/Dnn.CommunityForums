@@ -156,26 +156,11 @@
   <data name="MarkAnswerPointValue.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Marquer la réponse</value>
   </data>
-  <data name="MessagingCore.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Messagerie par défaut</value>
-  </data>
   <data name="MessagingDisabled.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
     <value>Désactivé</value>
   </data>
-  <data name="MessagingTab.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Sélectionnez l’onglet contenant le module de message privé</value>
-  </data>
-  <data name="MessagingTab.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Onglet Messagerie</value>
-  </data>
-  <data name="MessagingType.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Sélectionnez un système de messagerie privée.</value>
-  </data>
   <data name="MessagingType.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Type de messagerie</value>
-  </data>
-  <data name="MessagingVentrian.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Ventrian Messages</value>
   </data>
   <data name="Mode.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Utilisez toujours le mode Standard, sauf si vous utilisez le module sur une page pour les groupes sociaux.  Le mode Groupe social ne doit être utilisé que lorsque vous savez qu’un GroupId sera toujours présent dans l’URL.</value>
@@ -245,12 +230,6 @@
   </data>
   <data name="TopicPointValue.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Nouveau sujet</value>
-  </data>
-  <data name="URLPrefixBase.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>C’est le texte qui sera utilisé comme partie initiale de toutes les URL du forum.  Dans la plupart des cas, vous voudrez simplement entrer dans « forum »</value>
-  </data>
-  <data name="URLPrefixBase.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Chemin de base</value>
   </data>
   <data name="URLPrefixCategory.Help" xml:space="preserve" lastModified="2024-06-09 22:26:03">
     <value>C’est le texte qui sera utilisé dans la partie de l’URL pour identifier les catégories de forum.</value>

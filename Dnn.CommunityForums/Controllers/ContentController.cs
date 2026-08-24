@@ -24,36 +24,50 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
-    internal class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo>
+    internal class ContentController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo, IContentController, ContentController>, IContentController
     {
-        internal override string cacheKeyTemplate => CacheKeys.ContentInfo;
-
-        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int contentId, int moduleId)
+        protected override Func<IContentController> GetFactory()
         {
-            var cachekey = this.GetCacheKey(moduleId: moduleId, id: contentId);
-            DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ContentInfo;
+            return () => new ContentController();
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int moduleId, int contentId)
+        {
+            var cachekey = string.Format(CacheKeys.ContentInfo, moduleId, contentId);
+            DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ContentInfo;
             if (content == null)
             {
-                content = base.GetById(contentId);
+                content = this._repositoryControllerBase.GetById(contentId);
                 if (moduleId.Equals(-1) && !content.Equals(null))
                 {
                     content.UpdateCache();
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, content);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, content);
                 }
             }
 
             return content;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use GetById(int contentId, int moduleId).")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetById(int contentId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Save<TProperty>(DotNetNuke.Modules.ActiveForums.Entities.ContentInfo item, TProperty id)
         {
-            return this.GetById(contentId, -1);
+            if (id == null || id.Equals(0) || id.Equals(-1) || this._repositoryControllerBase.GetById(id) == null)
+            {
+                this._repositoryControllerBase.Insert(item);
+            }
+            else
+            {
+                this._repositoryControllerBase.Update(item);
+            }
+
+            return item;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
@@ -65,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             string cachekey = string.Format(CacheKeys.MostLikesCount, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), timeFrameMinutes);
-            var postCount = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as int?;
+            var postCount = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as int?;
             if (postCount == null || !postCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
@@ -79,28 +93,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     $@"SELECT COUNT(DISTINCT ContentId)
                         FROM (
                             SELECT DISTINCT t.TopicId, 0 AS ReplyId, c.ContentId, ISNULL(l.LikeCount, 0) AS LikeCount, t.LastReplyDate
-                            FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Content] c
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t1
+                            FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t1
                                 ON t1.ContentId = c.ContentId
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                                 ON t.TopicId = t1.TopicId
-                            INNER JOIN (SELECT PostId AS ContentId, COUNT(Id) AS LikeCount FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Likes] WHERE Checked = 1 GROUP BY PostId) l ON l.ContentId = c.ContentId
+                            INNER JOIN (SELECT PostId AS ContentId, COUNT(Id) AS LikeCount FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Likes] WHERE Checked = 1 GROUP BY PostId) l ON l.ContentId = c.ContentId
                             WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                                 AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)
                             UNION
                             SELECT DISTINCT r.TopicId, r.ReplyId, r.ContentId, ISNULL(l.LikeCount, 0) AS LikeCount, t.LastReplyDate
-                            FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Content] c
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Replies] r
+                            FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Replies] r
                                 ON r.ContentId = c.ContentId
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                                 ON t.TopicId = r.TopicId
-                            INNER JOIN (SELECT PostId AS ContentId, COUNT(Id) AS LikeCount FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Likes] WHERE Checked = 1 GROUP BY PostId) l ON l.ContentId = c.ContentId
+                            INNER JOIN (SELECT PostId AS ContentId, COUNT(Id) AS LikeCount FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Likes] WHERE Checked = 1 GROUP BY PostId) l ON l.ContentId = c.ContentId
                             WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                                 AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)
                         ) AS ContentIds",
                     forumsIdsList,
                     timeFrameMinutes).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, postCount);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, postCount);
             }
 
             return postCount.Value;
@@ -114,11 +128,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return Enumerable.Empty<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>();
             }
 
-            var replyController = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId);
-            var topicController = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId);
-
             string cachekey = string.Format(CacheKeys.MostLikes, moduleId, forumIds.FromHashSetToDelimitedString<int>(";"), pageId, pageSize, timeFrameMinutes);
-            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo> posts = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>;
+            IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo> posts = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>;
             if (posts == null)
             {
                 var skip = (pageId - 1) * pageSize;
@@ -135,26 +146,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             SELECT DISTINCT ContentIds.ContentId, ContentIds.TopicId, ContentIds.ReplyId, ContentIds.LikeCount
                             FROM (
                                 SELECT DISTINCT t.TopicId, NULL AS ReplyId, c.ContentId, ISNULL(l.LikeCount, 0) AS LikeCount, t.LastReplyDate
-                                FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Content] c
-                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Topics] t1
+                                FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t1
                                     ON t1.ContentId = c.ContentId
-                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                                     ON t.TopicId = t1.TopicId
-                                INNER JOIN (SELECT PostId AS ContentId, COUNT(Id) AS LikeCount FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Likes] WHERE Checked = 1 GROUP BY PostId) l ON l.ContentId = c.ContentId
+                                INNER JOIN (SELECT PostId AS ContentId, COUNT(Id) AS LikeCount FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Likes] WHERE Checked = 1 GROUP BY PostId) l ON l.ContentId = c.ContentId
                                 WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                                     AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)
                                 UNION
                                 SELECT DISTINCT r.TopicId, r.ReplyId, r.ContentId, ISNULL(l.LikeCount, 0) AS LikeCount, t.LastReplyDate
-                                FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Content] c
-                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}activeforums_Replies] r
+                                FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Replies] r
                                     ON r.ContentId = c.ContentId
-                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                                     ON t.TopicId = r.TopicId
-                                INNER JOIN (SELECT PostId AS ContentId, COUNT(Id) AS LikeCount FROM {{databaseOwner}}[{{objectQualifier}}activeforums_Likes] WHERE Checked = 1 GROUP BY PostId) l ON l.ContentId = c.ContentId
+                                INNER JOIN (SELECT PostId AS ContentId, COUNT(Id) AS LikeCount FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Likes] WHERE Checked = 1 GROUP BY PostId) l ON l.ContentId = c.ContentId
                                 WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                                     AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)
                             ) AS ContentIds
-                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_activeforums_TopicsView] t
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                                 ON t.TopicId = ContentIds.TopicId
                                 ORDER BY ContentIds.LikeCount DESC
                                 OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY
@@ -164,16 +175,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 posts = postInfo.Where(postinfo => postinfo.ContentId.HasValue).Select(post =>
                 {
-                    var topic = topicController.GetById(post.TopicId.Value);
+                    var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, post.TopicId.Value);
                     if (!post.ReplyId.HasValue)
                     {
                         return (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)topic;
                     }
 
-                    return (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)replyController.GetById(replyId: post.ReplyId.Value, topic: topic);
+                    return (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(moduleId: moduleId, replyId: post.ReplyId.Value, topic: topic);
                 });
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, posts);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, posts);
             }
 
             return posts;

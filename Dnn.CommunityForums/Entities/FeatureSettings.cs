@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     using Newtonsoft.Json;
 
@@ -35,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public FeatureSettings(int moduleId, string settingsKey)
         {
-            this.featureSettings = DataCache.GetSettings(moduleId, settingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, settingsKey), true);
+            this.featureSettings = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.GetSettings(moduleId, settingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, settingsKey), true);
         }
 
         public FeatureSettings(Hashtable featureSettings)
@@ -45,16 +46,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal static void Save(int moduleId, string settingsKey, FeatureSettings settings)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(moduleId, settingsKey);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.DeleteForModuleIdSettingsKey(moduleId, settingsKey);
             foreach (DictionaryEntry setting in settings.featureSettings)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.SaveSetting(moduleId, settingsKey, setting.Key.ToString(), setting.Value.ToString());
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.SaveSetting(moduleId, settingsKey, setting.Key.ToString(), setting.Value.ToString());
             }
         }
 
         internal static void Delete(int moduleId, string settingsKey, string settingName)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKeySettingName(moduleId, settingsKey, settingName);
+            DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.DeleteForModuleIdSettingsKeySettingName(moduleId, settingsKey, settingName);
         }
 
         [IgnoreColumn]
@@ -100,32 +101,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int MaxImageHeight => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.MaxImageHeight], 800);
 
         [IgnoreColumn]
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use MaxImageWidth.")]
-        public int MaxAttachWidth => this.MaxImageWidth;
-
-        [IgnoreColumn]
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use MaxImageHeight.")]
-        public int MaxAttachHeight => this.MaxImageHeight;
-
-        [IgnoreColumn]
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        public bool AttachInsertAllowed => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.AttachInsertAllowed]);
-
-        [IgnoreColumn]
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        public bool ConvertingToJpegAllowed => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ConvertingToJpegAllowed]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        public string EditorHeight => throw new NotImplementedException();
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public EditorType EditorMobile => throw new NotImplementedException();
-
-        [IgnoreColumn]
         public EditorType EditorType
         {
             get
@@ -150,11 +125,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        public string EditorWidth => throw new NotImplementedException();
-
-        [IgnoreColumn]
         public string EmailAddress => Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.EmailAddress], string.Empty);
 
         [IgnoreColumn]
@@ -173,36 +143,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string TemplateFileNameSuffix => Utilities.SafeConvertString(this.featureSettings[ForumSettingKeys.TemplateFileNameSuffix], string.Empty);
 
         [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int TopicsTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.TopicsTemplateId]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int TopicTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.TopicTemplateId]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int TopicFormId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.TopicFormId]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int ReplyFormId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ReplyFormId]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int QuickReplyFormId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.QuickReplyFormId]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int ProfileTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ProfileTemplateId]);
-
-        [IgnoreColumn]
         public bool UseFilter => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.UseFilter]);
 
         [IgnoreColumn]
@@ -219,31 +159,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     : TrustTypes.NotTrusted;
             }
         }
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int ModApproveTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModApproveTemplateId]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int ModRejectTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModRejectTemplateId]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int ModMoveTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModMoveTemplateId]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int ModDeleteTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModDeleteTemplateId]);
-
-        [IgnoreColumn]
-        [JsonIgnore]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used")]
-        public int ModNotifyTemplateId => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ModNotifyTemplateId]);
 
         [IgnoreColumn]
         public bool ModApproveNotify => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.ModApproveNotify]);
@@ -284,24 +199,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public int ReplyPostCount => Utilities.SafeConvertInt(this.featureSettings[ForumSettingKeys.ReplyPostCount]);
 
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use MaxImageHeight.")]
-        [IgnoreColumn]
-        public int AttachMaxHeight => this.MaxImageHeight;
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use MaxImageWidth.")]
-        [IgnoreColumn]
-        public int AttachMaxWidth => this.MaxImageWidth;
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        [JsonIgnore]
-        public int EditorStyle => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        [JsonIgnore]
-        public string EditorToolBar => throw new NotImplementedException();
-
         [IgnoreColumn]
         public bool UserMentions => Utilities.SafeConvertBool(this.featureSettings[ForumSettingKeys.UserMentions], true);
 
@@ -319,7 +216,41 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public bool EqualSettings(FeatureSettings other)
         {
-            return !(other is null) && this.AllowAttach == other.AllowAttach && this.AllowEmoticons == other.AllowEmoticons && this.AllowHTML == other.AllowHTML && this.AllowLikes == other.AllowLikes && this.AllowPostIcon == other.AllowPostIcon && this.AllowRSS == other.AllowRSS && this.AllowScript == other.AllowScript && this.AllowSubscribe == other.AllowSubscribe && this.AttachCount == other.AttachCount && this.AttachMaxSize == other.AttachMaxSize && this.AttachTypeAllowed == other.AttachTypeAllowed && this.AttachAllowBrowseSite == other.AttachAllowBrowseSite && this.MaxImageWidth == other.MaxImageWidth && this.MaxImageHeight == other.MaxImageHeight && this.EditorType == other.EditorType && this.EditorPermittedUsers == other.EditorPermittedUsers && this.EmailAddress == other.EmailAddress && this.IndexContent == other.IndexContent && this.IsModerated == other.IsModerated && this.UseFilter == other.UseFilter && this.AutoTrustLevel == other.AutoTrustLevel && this.DefaultTrustValue == other.DefaultTrustValue && this.ModApproveNotify == other.ModApproveNotify && this.ModRejectNotify == other.ModRejectNotify && this.ModMoveNotify == other.ModMoveNotify && this.ModDeleteNotify == other.ModDeleteNotify && this.ModAlertNotify == other.ModAlertNotify && this.AllowTags == other.AllowTags && this.AutoSubscribeEnabled == other.AutoSubscribeEnabled && this.AutoSubscribeRoles == other.AutoSubscribeRoles && this.AutoSubscribeNewTopicsOnly == other.AutoSubscribeNewTopicsOnly && this.CreatePostCount == other.CreatePostCount && this.ReplyPostCount == other.ReplyPostCount && this.UserMentionVisibility == other.UserMentionVisibility;
+            return !(other is null)
+                   && this.AllowAttach == other.AllowAttach
+                   && this.AllowEmoticons == other.AllowEmoticons
+                   && this.AllowHTML == other.AllowHTML
+                   && this.AllowLikes == other.AllowLikes
+                   && this.AllowPostIcon == other.AllowPostIcon
+                   && this.AllowRSS == other.AllowRSS
+                   && this.AllowScript == other.AllowScript
+                   && this.AllowSubscribe == other.AllowSubscribe
+                   && this.AttachCount == other.AttachCount
+                   && this.AttachMaxSize == other.AttachMaxSize
+                   && this.AttachTypeAllowed == other.AttachTypeAllowed
+                   && this.AttachAllowBrowseSite == other.AttachAllowBrowseSite
+                   && this.MaxImageWidth == other.MaxImageWidth
+                   && this.MaxImageHeight == other.MaxImageHeight
+                   && this.EditorType == other.EditorType
+                   && this.EditorPermittedUsers == other.EditorPermittedUsers
+                   && this.EmailAddress == other.EmailAddress
+                   && this.IndexContent == other.IndexContent
+                   && this.IsModerated == other.IsModerated
+                   && this.UseFilter == other.UseFilter
+                   && this.AutoTrustLevel == other.AutoTrustLevel
+                   && this.DefaultTrustValue == other.DefaultTrustValue
+                   && this.ModApproveNotify == other.ModApproveNotify
+                   && this.ModRejectNotify == other.ModRejectNotify
+                   && this.ModMoveNotify == other.ModMoveNotify
+                   && this.ModDeleteNotify == other.ModDeleteNotify
+                   && this.ModAlertNotify == other.ModAlertNotify
+                   && this.AllowTags == other.AllowTags
+                   && this.AutoSubscribeEnabled == other.AutoSubscribeEnabled
+                   && this.AutoSubscribeRoles == other.AutoSubscribeRoles
+                   && this.AutoSubscribeNewTopicsOnly == other.AutoSubscribeNewTopicsOnly
+                   && this.CreatePostCount == other.CreatePostCount
+                   && this.ReplyPostCount == other.ReplyPostCount
+                   && this.UserMentionVisibility == other.UserMentionVisibility;
         }
     }
 }

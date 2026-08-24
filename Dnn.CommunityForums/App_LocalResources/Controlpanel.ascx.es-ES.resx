@@ -75,9 +75,6 @@
   <data name="[RESX:AddRole].Text" xml:space="preserve" lastModified="2024-05-27 10:27:27">
     <value>Añadir rol</value>
   </data>
-  <data name="[RESX:AddTemplate].Text" xml:space="preserve" lastModified="2024-05-27 10:27:27">
-    <value>Añadir plantilla</value>
-  </data>
   <data name="[RESX:AddUserName].Text" xml:space="preserve" lastModified="2024-05-27 10:27:27">
     <value>Añadir nombre de usuario</value>
   </data>
@@ -264,12 +261,6 @@
   <data name="[RESX:Deleted].Text" xml:space="preserve" lastModified="2024-05-27 10:33:52">
     <value>Eliminar</value>
   </data>
-  <data name="[RESX:DesignAndTemplates:Intro].Text" xml:space="preserve" lastModified="2024-05-27 10:38:47">
-    <value>Las siguientes opciones de configuración le permitiran ajustar la apariencia del foro.</value>
-  </data>
-  <data name="[RESX:DesignAndTemplates].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Diseño y Maquetación</value>
-  </data>
   <data name="[RESX:Details].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Detalles</value>
   </data>
@@ -422,9 +413,6 @@
   </data>
   <data name="[RESX:ForumStatSettings].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Configuración de estadísticas</value>
-  </data>
-  <data name="[RESX:ForumTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Plantilla</value>
   </data>
   <data name="[RESX:ForumTheme].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Tema</value>
@@ -685,9 +673,6 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:PleaseWait].Text" xml:space="preserve" lastModified="2024-05-27 10:48:07">
     <value>Cargando...</value>
   </data>
-  <data name="[RESX:PMPage].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Página de mensajería privada</value>
-  </data>
   <data name="[RESX:PointsOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Opciones para el sistema de puntos</value>
   </data>
@@ -723,9 +708,6 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   </data>
   <data name="[RESX:ProfileDisabled].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Deshabilitado</value>
-  </data>
-  <data name="[RESX:ProfileTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Plantilla de perfil</value>
   </data>
   <data name="[RESX:ProfileType].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Tipo de perfil</value>
@@ -859,9 +841,6 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:StatsInterval].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Intervalo de actualización</value>
   </data>
-  <data name="[RESX:StatsTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Plantilla</value>
-  </data>
   <data name="[RESX:Status].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Activar y/o desactivar funciones</value>
   </data>
@@ -886,14 +865,8 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Tags].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Etiquetas</value>
   </data>
-  <data name="[RESX:Template].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Plantilla</value>
-  </data>
   <data name="[RESX:Templates].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Plantillas</value>
-  </data>
-  <data name="[RESX:TemplateType].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Tipo</value>
   </data>
   <data name="[RESX:Text].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Mensaje de texto</value>
@@ -982,9 +955,6 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Tips:ForumName].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Introduzca el nombre de este foro.</value>
   </data>
-  <data name="[RESX:Tips:ForumTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Seleccione la plantilla para la página que mostrará todos sus foros.</value>
-  </data>
   <data name="[RESX:Tips:ForumTheme].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Seleccione el tema gráfico para su foro.</value>
   </data>
@@ -1035,9 +1005,6 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   </data>
   <data name="[RESX:Tips:PageSize].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Introduzca el número predeterminado de elementos que desea que aparezcan en la página de temas y respuestas.</value>
-  </data>
-  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve" lastModified="2024-05-27 11:06:19">
-    <value>Seleccione la página donde está instalado el módulo de mensajería privada.</value>
   </data>
   <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve" lastModified="2024-05-27 11:08:03">
     <value>Dirección de correo electrónico específica para este foro.  Esta opción reemplaza la dirección de correo del sitio y la dirección de correo que se haya introducido en la configuración del foro.</value>
@@ -1111,17 +1078,8 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Tips:TopicPriority].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>La prioridad de los temas permite que los temas aparezcan más arriba en la lista en lugar de ordenarse por fecha.  La prioridad predeterminada para todos los temas es 0.  Cuanto mayor sea la prioridad, más alto aparecerá un tema en la lista.</value>
   </data>
-  <data name="[RESX:Tips:TopicsTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Seleccione la plantilla para mostrar la lista de temas</value>
-  </data>
-  <data name="[RESX:Tips:TopicTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Seleccione la plantilla para mostrar el tema y las respuestas</value>
-  </data>
   <data name="[RESX:Tips:UserDisplayMode].Text" xml:space="preserve" lastModified="2024-05-27 11:12:49">
     <value>Seleccion cómo se mostrarán los nombres de los miembros.</value>
-  </data>
-  <data name="[RESX:Tips:UserProfileTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Seleccione la plantilla para mostrar la información del autor de un tema o respuesta.</value>
   </data>
   <data name="[RESX:Tips:UsersOnlineEnabled].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Habilite esta función para indicar cuándo el usuario está en línea y visitando los foros.</value>
@@ -1159,14 +1117,8 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   <data name="[RESX:Topics].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Temas</value>
   </data>
-  <data name="[RESX:TopicsTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Visualización de temas</value>
-  </data>
   <data name="[RESX:TopicsView].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Vista de temas</value>
-  </data>
-  <data name="[RESX:TopicTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Visualización de temas</value>
   </data>
   <data name="[RESX:TopicView].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Vista de tema</value>
@@ -1221,9 +1173,6 @@ El método de eliminación está configurado actualmente en {0}.  Los temas se {
   </data>
   <data name="[RESX:UserProfiles].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Configuración del perfil de usuario</value>
-  </data>
-  <data name="[RESX:UserProfileTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Visualización de perfil</value>
   </data>
   <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Mostrar usuarios en línea</value>

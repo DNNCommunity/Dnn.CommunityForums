@@ -101,13 +101,8 @@
 			<asp:DropDownList ID="drpMessagingType" runat="server">
 			    <asp:ListItem Value="0" resourcekey="MessagingDisabled" />
 				<asp:ListItem Value="1" resourcekey="MessagingCore" />
-                <asp:ListItem Value="2" resourcekey="MessagingVentrian" />
 			</asp:DropDownList>
 		</div>
-        <div class="dnnFormItem" id="divMessagingTab">
-			<dnn:label ID="lblMessagingTab" runat="server" resourcekey="MessagingTab" Suffix=":" />
-            <asp:DropDownList ID="drpMessagingTab" runat="server" />			
-		</div> 
 		<div class="dnnFormItem">
 			<dnn:label ID="lblAvatarSize" runat="server" resourcekey="AvatarSize" Suffix=":" />
 			<ul class="afavatarform"><li><%=LocalizeString("Height")%>: <asp:TextBox ID="txtAvatarHeight" runat="server" Width="75" MaxLength="3" /></li><li><%=LocalizeString("Width")%>: <asp:TextBox ID="txtAvatarWidth" runat="server" Width="75" MaxLength="3" /></li></ul>
@@ -187,10 +182,6 @@
 			</asp:RadioButtonList>
 			  <span class="urlToggle"><asp:Literal ID="litToggleConfig" runat="server" /></span>
 			  <div class="urlOptions">
-					<div class="dnnFormItem">
-						 <dnn:label ID="lblUrlPrefix" runat="server" resourcekey="URLPrefixBase" Suffix=":" />
-						 <asp:TextBox ID="txtURLPrefixBase" runat="server" MaxLength="50" />
-					</div>
 					 <div class="dnnFormItem">
 						 <dnn:label runat="server" resourcekey="URLPrefixCategory" Suffix=":" />
 						 <asp:TextBox ID="txtURLPrefixCategory" runat="server" MaxLength="50" />
@@ -279,23 +270,6 @@
 		$('.pointOptions input').keypress(function(event) {
 			return onlyNumbers(event);
 		});
-	    
-		$('#<%=drpMessagingType.ClientID%>').change(function() {
-		    toggleMessagingTab();
-		});
-		function toggleMessagingTab() {
-		    var val = $('#<%=drpMessagingType.ClientID%>').val();
-
-            if(val == '2') {
-                $('#divMessagingTab').show();
-            }else{
-                $('#divMessagingTab').hide();
-            };
-
-        };
-	    toggleMessagingTab();
-
-
 
 		$('#<%=drpMode.ClientID%>').change(function() {
 			toggleGroup();

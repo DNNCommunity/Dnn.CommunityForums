@@ -24,47 +24,62 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Linq;
 
     using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
-    internal class TopicTrackingController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo>
+    internal class TopicTrackingController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo, ITopicTrackingController, TopicTrackingController>, ITopicTrackingController
     {
-        internal DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo GetByUserIdTopicId(int moduleId, int userId, int topicId)
+        protected override Func<ITopicTrackingController> GetFactory()
+        {
+            return () => new TopicTrackingController();
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo GetByUserIdTopicId(int moduleId, int userId, int topicId)
         {
             string cachekey = string.Format(CacheKeys.TopicTrackingInfo, moduleId, topicId, userId);
-            DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo topicTrackingInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo topicTrackingInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicTrackingInfo;
             if (topicTrackingInfo == null)
             {
                 // this accommodates duplicates which may exist since currently no uniqueness applied in database
-                topicTrackingInfo = this.Find("WHERE UserId = @0 AND TopicId = @1", userId, topicId).OrderBy(t => t.DateAdded).FirstOrDefault();
-                DataCache.ContentCacheStore(moduleId, cachekey, topicTrackingInfo);
+                topicTrackingInfo = this._repositoryControllerBase.Find("WHERE UserId = @0 AND TopicId = @1", userId, topicId).OrderBy(t => t.DateAdded).FirstOrDefault();
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicTrackingInfo);
             }
 
             return topicTrackingInfo;
         }
 
-        internal int GetTopicsReadCountForUserForum(int moduleId, int userId, int forumId)
+        public int GetTopicsReadCountForUserForum(int moduleId, int userId, int forumId)
         {
             string cachekey = string.Format(CacheKeys.TopicReadCount, moduleId, forumId, userId);
-            var topicReadCount = DataCache.ContentCacheRetrieve(moduleId, cachekey);
+            var topicReadCount = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey);
             if (topicReadCount == null)
             {
-                // this accommodates duplicates which may exist since currently no uniqueness applied in database
-                topicReadCount = DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics t ON t.TopicId = tt.TopicId WHERE tt.UserId = @0 AND tt.ForumId = @1 AND t.IsDeleted = 0", userId, forumId).FirstOrDefault();
-                DataCache.ContentCacheStore(moduleId, cachekey, topicReadCount);
+                topicReadCount = DataContext.Instance().ExecuteQuery<int>(
+                    System.Data.CommandType.Text,
+                    "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Topics_Tracking tt LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_Topics t ON t.TopicId = tt.TopicId WHERE tt.UserId = @0 AND tt.ForumId = @1 AND t.IsDeleted = 0",
+                    userId,
+                    forumId).FirstOrDefault();
+
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicReadCount);
             }
 
             return (int)topicReadCount;
         }
 
-        internal int GetTopicsReadCountByUser(int moduleId, int userId)
+        public int GetTopicsReadCountByUser(int moduleId, int userId)
         {
-            // this accommodates duplicates which may exist since currently no uniqueness applied in database
-            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt WHERE tt.UserId = @0", userId).FirstOrDefault();
+            return DataContext.Instance().ExecuteQuery<int>(
+                System.Data.CommandType.Text,
+                "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Topics_Tracking tt WHERE tt.UserId = @0",
+                userId).FirstOrDefault();
         }
 
-        internal int GetTopicsReadCountByUser(int moduleId, int userId, DateTime minDateTime)
+        public int GetTopicsReadCountByUser(int moduleId, int userId, DateTime minDateTime)
         {
-            // this accommodates duplicates which may exist since currently no uniqueness applied in database
-            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking tt WHERE tt.UserId = @0 AND DateAdded IS NOT NULL AND DateAdded >= @1", userId, minDateTime).FirstOrDefault();
+            return DataContext.Instance().ExecuteQuery<int>(
+                System.Data.CommandType.Text,
+                "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Topics_Tracking tt WHERE tt.UserId = @0 AND DateAdded IS NOT NULL AND DateAdded >= @1",
+                userId,
+                minDateTime).FirstOrDefault();
         }
     }
 }

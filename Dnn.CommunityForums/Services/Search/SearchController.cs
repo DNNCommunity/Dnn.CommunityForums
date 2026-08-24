@@ -162,20 +162,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                         Utilities.SafeConvertInt(result.NumericKeys.TryGetValue("TopicId", out topicId));
                         if (resultType.Equals(SearchResultType.SearchByTopics))
                         {
-                            post = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+                            post = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
                         }
                         else
                         {
                             var contentId = DotNetNuke.Common.Utilities.Null.NullInteger;
                             Utilities.SafeConvertInt(result.NumericKeys.TryGetValue("ContentId", out contentId));
-                            var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(moduleId).GetByContentId(contentId);
+                            var reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetByContentId(moduleId, contentId);
                             if (reply != null)
                             {
                                 post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)reply;
                             }
                             else
                             {
-                                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+                                var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(moduleId, topicId);
                                 if (topic != null)
                                 {
                                     post = topic;

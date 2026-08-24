@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (ForumGroupId > 0)
                 {
-                    var forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, this.ForumModuleId);
+                    var forumGroup = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.GetById(ForumGroupId, this.ForumModuleId);
                     if (forumGroup != null)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.ViewModels.ForumGroup(forumGroup));
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumGroup != null)
                 {
-                    var fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+                    var fgc = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance;
                     forumGroup.ForumGroupId = DotNetNuke.Common.Utilities.Null.NullInteger;
                     forumGroup.ModuleId = this.ForumModuleId;
                     var forumGroupId = fgc.Groups_Save(portalId: this.ActiveModule.PortalID, forumGroupInfo: forumGroup, isNew: true, useDefaultFeatures: true, useDefaultSecurity: true);
@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumGroup != null)
                 {
-                    var fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+                    var fgc = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance;
                     forumGroup.ForumGroupId = DotNetNuke.Common.Utilities.Null.NullInteger;
                     forumGroup.ModuleId = this.ForumModuleId;
                     var forumGroupId = fgc.Groups_Save(portalId: this.ActiveModule.PortalID, forumGroupInfo: forumGroup, isNew: true, useDefaultFeatures: useDefaultFeatures, useDefaultSecurity: useDefaultSecurity);
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumGroup != null && forumGroup.ForumGroupId > 0)
                 {
-                    var fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+                    var fgc = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance;
                     var forumGroupId = fgc.Groups_Save(portalId: this.ActiveModule.PortalID, forumGroupInfo: forumGroup, isNew: false, useDefaultFeatures: forumGroup.InheritSettings, useDefaultSecurity: forumGroup.InheritSecurity);
                     var forumGroupUpdated = fgc.GetById(forumGroup.ForumGroupId, this.ForumModuleId);
                     return this.Request.CreateResponse(HttpStatusCode.Created, forumGroupUpdated);
@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumGroup != null && forumGroup.ForumGroupId > 0)
                 {
-                    var fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+                    var fgc = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance;
                     var forumGroupId = fgc.Groups_Save(portalId: this.ActiveModule.PortalID, forumGroupInfo: forumGroup, isNew: false, useDefaultFeatures: useDefaultFeatures, useDefaultSecurity: useDefaultSecurity);
                     var forumGroupUpdated = fgc.GetById(forumGroupId: forumGroup.ForumGroupId, moduleId: this.ForumModuleId);
                     return this.Request.CreateResponse(HttpStatusCode.Created, forumGroupUpdated);
@@ -203,11 +203,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumGroupId > 0)
                 {
-                    var fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
-                    var forumGroup = fgc.GetById(forumGroupId: forumGroupId, moduleId: this.ForumModuleId);
+                    var forumGroup = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.GetById(forumGroupId: forumGroupId, moduleId: this.ForumModuleId);
                     if (forumGroup != null)
                     {
-                        fgc.Groups_Delete(moduleId: this.ForumModuleId, forumGroupId: forumGroupId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.Groups_Delete(moduleId: this.ForumModuleId, forumGroupId: forumGroupId);
                         return this.Request.CreateResponse(HttpStatusCode.OK, true);
                     }
 
@@ -231,7 +230,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             try
             {
-                var forumGroups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(scopeValue: this.ForumModuleId);
+                var forumGroups = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.Get(scopeValue: this.ForumModuleId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, forumGroups);
             }
             catch (Exception ex)
@@ -252,7 +251,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (ForumGroupId > 0)
                 {
-                    var forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(forumGroupId: ForumGroupId, moduleId: this.ForumModuleId);
+                    var forumGroup = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.GetById(forumGroupId: ForumGroupId, moduleId: this.ForumModuleId);
                     if (forumGroup != null)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, forumGroup.FeatureSettings);
@@ -281,7 +280,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (ForumGroupId > 0)
                 {
-                    var forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(forumGroupId: ForumGroupId, moduleId: this.ForumModuleId);
+                    var forumGroup = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.GetById(forumGroupId: ForumGroupId, moduleId: this.ForumModuleId);
                     if (forumGroup != null)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, forumGroup.Security);

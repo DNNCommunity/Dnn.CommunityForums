@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
             var badgeCount = 0;
             try
             {
-                var badges = new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Get(moduleId).Where(b => b.BadgeMetric != BadgeMetric.BadgeMetricManual);
+                var badges = DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.Get<int>(moduleId).Where(b => b.BadgeMetric != BadgeMetric.BadgeMetricManual);
                 GetBatch(portalId, moduleId).ForEach(forumUser =>
                 {
                     foreach (var badge in badges)
@@ -81,9 +81,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
                         }
                     }
                 });
-                badges.Where(b => !b.InitialBackfillCompletedDate.HasValue).ForEach(b => {
+                badges.Where(b => !b.InitialBackfillCompletedDate.HasValue).ForEach(b =>
+                {
                     b.InitialBackfillCompletedDate = DateTime.UtcNow;
-                    new DotNetNuke.Modules.ActiveForums.Controllers.BadgeController().Update(b);
+                    DotNetNuke.Modules.ActiveForums.Controllers.BadgeController.Instance.Update(b);
                 });
 
                 return badgeCount;
@@ -99,7 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
         {
             try
             {
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId: moduleId).GetActiveUsers(portalId);
+                return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetActiveUsers(portalId, moduleId);
             }
             catch (Exception ex)
             {
@@ -176,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Badges
 
                 if (awardBadge)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.AssignUserBadge(portalId, moduleId, forumUser.UserId, badge.BadgeId, string.Empty);
+                    DotNetNuke.Modules.ActiveForums.Controllers.UserBadgeController.Instance.AssignUserBadge(portalId, moduleId, forumUser.UserId, badge.BadgeId, string.Empty);
                     return true;
                 }
 

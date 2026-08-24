@@ -18,41 +18,22 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-namespace DotNetNuke.Modules.ActiveForums
-{
-    using System;
-	using System.Runtime.CompilerServices;
-	using System.Web.UI;
-
-    [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
-
-#pragma warning disable SA1402 // File may only contain a single type
-#pragma warning disable SA1649 // File name should match first type name
-    public class TokensController { private TokensController() => throw new NotImplementedException(); }
-#pragma warning restore SA1649 // File name should match first type name
-#pragma warning restore SA1402 // File may only contain a single type
-}
-
-#pragma warning disable SA1403 // File may only contain a single namespace
 namespace DotNetNuke.Modules.ActiveForums.Controllers
-#pragma warning restore SA1403 // File may only contain a single namespace
 {
     using System;
     using System.Collections.Generic;
 
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
-#pragma warning disable SA1402 // File may only contain a single type
     internal class TokenController
-#pragma warning restore SA1402 // File may only contain a single type
     {
-
         internal static List<Token> TokensList(int moduleId, string group)
         {
             try
             {
                 List<Token> li =
-                    (List<Token>)DataCache.SettingsCacheRetrieve(moduleId,
+                    (List<Token>)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId,
                         string.Format(CacheKeys.Tokens, moduleId, group));
                 if (li == null)
                 {
@@ -96,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         }
                     }
 
-                    DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.Tokens, moduleId, group), li);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, string.Format(CacheKeys.Tokens, moduleId, group), li);
                 }
 
                 return li;

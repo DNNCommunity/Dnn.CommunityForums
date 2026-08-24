@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private string BuildRSS(int portalId, int tabId, int moduleId, int intPosts, int forumID, bool ingnoreSecurity, bool includeBody)
         {
             PortalSettings ps = new DotNetNuke.Modules.ActiveForums.Helpers.PortalSettingsHelper().GetPortalSettings();
-            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetUserFromHttpContext(portalId, moduleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetUserFromHttpContext(portalId, moduleId);
 
             DataSet ds = DataProvider.Instance().UI_TopicsView(portalId, moduleId, forumID, u.UserId, 0, 20, u.IsSuperUser, SortColumns.ReplyCreated);
             if (ds.Tables.Count > 0)
@@ -195,11 +195,6 @@ namespace DotNetNuke.Modules.ActiveForums
             if (mainSettings.URLRewriteEnabled && !string.IsNullOrEmpty(dr["FullUrl"].ToString()))
             {
                 string sTopicURL = string.Empty;
-                if (!string.IsNullOrEmpty(mainSettings.PrefixURLBase))
-                {
-                    sTopicURL = "/" + mainSettings.PrefixURLBase;
-                }
-
                 sTopicURL += dr["FullUrl"].ToString();
 
                 uRL = sTopicURL;

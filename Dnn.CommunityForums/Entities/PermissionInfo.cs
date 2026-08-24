@@ -27,10 +27,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
-    [TableName("activeforums_Permissions")]
+    [TableName("communityforums_Permissions")]
     [PrimaryKey("PermissionsId", AutoIncrement = true)]
-    [Cacheable("activeforums_Permissions", CacheItemPriority.Low)]
+    [Cacheable("communityforums_Permissions", CacheItemPriority.Low)]
     [Scope("ModuleId")]
     public class PermissionInfo
     {
@@ -167,19 +168,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public HashSet<int> MentionRoleIds => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.Mention);
 
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        public ObjectType Type { get; set; }
-
         [IgnoreColumn]
         public string ObjectId { get; set; }
 
         [IgnoreColumn]
         public string ObjectName { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
-        [IgnoreColumn]
-        public int UserTrustLevel { get; set; }
 
         public bool EqualPermissions(PermissionInfo other)
         {

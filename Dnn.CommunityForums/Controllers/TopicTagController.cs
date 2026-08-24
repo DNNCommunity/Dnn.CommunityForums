@@ -20,49 +20,54 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using DotNetNuke.Collections;
     using DotNetNuke.Modules.ActiveForums.Entities;
 
-
-    internal partial class TopicTagController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo>
+    internal partial class TopicTagController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo, ITopicTagController, TopicTagController>, ITopicTagController
     {
-        internal void AddTagToTopic(int tagId, int topicId)
+        protected override Func<ITopicTagController> GetFactory()
         {
-            this.Insert(new TopicTagInfo() { TagId = tagId, TopicId = topicId });
-            new DotNetNuke.Modules.ActiveForums.Controllers.TagController().RecountItems(tagId);
+            return () => new TopicTagController();
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTopic(int topicId)
+        public void AddTagToTopic(int tagId, int topicId)
         {
-            return this.Find("WHERE TopicId = @0", topicId);
+            this._repositoryControllerBase.Insert(new TopicTagInfo { TagId = tagId, TopicId = topicId });
+            TagController.Instance.RecountItems(tagId);
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTag(int tagId)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTopic(int topicId)
         {
-            return this.Find("WHERE TagId = @0", tagId);
+            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId);
         }
 
-        internal void DeleteForTag(int tagId)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTag(int tagId)
         {
-            this.Delete("WHERE TagId = @0", tagId);
+            return this._repositoryControllerBase.Find("WHERE TagId = @0", tagId);
         }
 
-        internal void DeleteForTopicTag(int topicId, int tagId)
+        public void DeleteForTag(int tagId)
         {
-            this.Delete("WHERE TagId = @0 AND TopicId = @1", tagId, topicId);
-            new DotNetNuke.Modules.ActiveForums.Controllers.TagController().RecountItems(tagId);
+            this._repositoryControllerBase.Delete("WHERE TagId = @0", tagId);
         }
 
-        internal void DeleteForTopic(int topicId)
+        public void DeleteForTopicTag(int topicId, int tagId)
+        {
+            this._repositoryControllerBase.Delete("WHERE TagId = @0 AND TopicId = @1", tagId, topicId);
+            TagController.Instance.RecountItems(tagId);
+        }
+
+        public void DeleteForTopic(int topicId)
         {
             var tagsToRecount = this.GetForTopic(topicId).Select(x => x.TagId).Distinct();
-            this.Delete("WHERE TopicId = @0", topicId);
+            this._repositoryControllerBase.Delete("WHERE TopicId = @0", topicId);
             tagsToRecount.ForEach(tagId =>
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.TagController().RecountItems(tagId);
+                TagController.Instance.RecountItems(tagId);
             });
         }
     }

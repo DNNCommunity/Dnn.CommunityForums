@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.FileSystem;
 
     public partial class af_modtopics_new : ForumBase
@@ -79,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (this.ForumId < 1)
                 {
                     this.SetPermissions(Convert.ToInt32(e.Parameters[1]));
-                    fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: Convert.ToInt32(e.Parameters[1]), moduleId: this.ForumModuleId);
+                    fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: this.ForumModuleId, forumId: Convert.ToInt32(e.Parameters[1]));
                 }
                 else
                 {
@@ -98,10 +99,10 @@ namespace DotNetNuke.Modules.ActiveForums
                                 int tmpReplyId = Convert.ToInt32(e.Parameters[3]);
                                 if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
                                 {
-                                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(tmpTopicId);
+                                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, tmpTopicId);
                                     if (ti != null)
                                     {
-                                        new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).DeleteById(tmpTopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.DeleteById(this.ForumModuleId, tmpTopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior);
                                         if (fi.FeatureSettings.ModDeleteNotify && ti?.Author?.AuthorId > 0)
                                         {
                                             try
@@ -123,10 +124,10 @@ namespace DotNetNuke.Modules.ActiveForums
                                 }
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                                 {
-                                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(this.ForumModuleId, tmpReplyId);
                                     if (ri != null)
                                     {
-                                        new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).Reply_Delete(this.PortalId, tmpForumId, tmpTopicId, tmpReplyId, (DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior)delAction);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Reply_Delete(portalId: this.PortalId, moduleId: this.ForumModuleId, forumId: tmpForumId, topicId: tmpTopicId, replyId: tmpReplyId, delBehavior: (DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior)delAction);
                                         if (fi.FeatureSettings.ModDeleteNotify && ri?.Author?.AuthorId > 0)
                                         {
                                             try
@@ -188,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             int tmpReplyId = Convert.ToInt32(e.Parameters[3]);
                             if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
                             {
-                                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(tmpTopicId);
+                                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, tmpTopicId);
                                 if (ti != null)
                                 {
                                     ti.IsApproved = true;
@@ -207,11 +208,11 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                             else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                             {
-                                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(tmpReplyId);
+                                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(this.ForumModuleId, tmpReplyId);
                                 if (ri != null)
                                 {
                                     ri.IsApproved = true;
-                                    new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).Reply_Save(this.PortalId, this.ForumModuleId, ri);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Reply_Save(this.PortalId, this.ForumModuleId, ri);
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId);
 
                                     // TODO: Add Audit log for who approved topic
@@ -229,7 +230,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                 }
 
-                DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.ForumViewPrefix, this.ModuleId));
+                DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.ForumViewPrefix, this.ModuleId));
             }
 
             this.BuildModList();
@@ -326,7 +327,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sb.Append("<div class=\"afrowbod\"><a href=\"" + viewLink + "\" class=\"dcf-link-text\" rel=\"nofollow\" target=\"_blank\">" + "[RESX:TopicReview]" + "</a></div>");
                         }
 
-                        sb.Append(this.GetAttachments(Convert.ToInt32(dr["ContentId"]), this.PortalId, this.ModuleId) + "</td></tr>");
+                        sb.Append(this.GetAttachments(Convert.ToInt32(dr["ContentId"]), this.PortalId, this.ForumModuleId) + "</td></tr>");
                         sb.Append("</table></div>");
                     }
                 }
@@ -350,12 +351,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void SetPermissions(int fId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(fId, this.ForumModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, fId);
 
-            bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.ModerateRoleIds, ForumUser?.UserRoleIds);
-            bModDelete = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.DeleteRoleIds, ForumUser?.UserRoleIds));
-            bModEdit = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.EditRoleIds, ForumUser?.UserRoleIds));
-            bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.ManageUsersRoleIds, ForumUser?.UserRoleIds));
+            this.bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.ModerateRoleIds, this.ForumUser?.UserRoleIds);
+            this.bModDelete = (this.bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.DeleteRoleIds, this.ForumUser?.UserRoleIds));
+            this.bModEdit = (this.bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.EditRoleIds, this.ForumUser?.UserRoleIds));
+            this.bModBan = (this.bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f?.Security?.ManageUsersRoleIds, this.ForumUser?.UserRoleIds));
         }
 
         private string GetAttachments(int contentId, int portalID, int moduleID)
@@ -364,7 +365,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var strHost = Utilities.ResolveUrl($"https://{portalSettings.DefaultPortalAlias}/", portalSettings: portalSettings);
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            foreach (var attachment in new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().GetByContentId(contentId))
+            foreach (var attachment in DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(moduleID, contentId))
             {
                 if (attachment.FileId.HasValue && attachment.FileId.Value > 0)
                 {

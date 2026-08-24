@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public AuthorInfo(int portalId, int moduleId, int userId)
         {
-            this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(moduleId).GetByUserId(portalId, userId);
+            this.forumUserInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(portalId, moduleId, userId);
             if (this.forumUserInfo == null || this.forumUserInfo.UserInfo == null)
             {
                 this.forumUserInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(moduleId);

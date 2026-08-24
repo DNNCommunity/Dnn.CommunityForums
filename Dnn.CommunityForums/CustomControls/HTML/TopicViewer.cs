@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public User ForumUser { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser { get; set; }
 
         private int pageIndex = 1;
 
@@ -207,20 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private int pageSize = 20;
-
-        public int PageSize
-        {
-            get
-            {
-                return this.pageSize;
-            }
-
-            set
-            {
-                this.pageSize = value;
-            }
-        }
+        public int PageSize { get; set; } = 20;
 
         private string itemCss = "aftb-topic";
 
@@ -257,9 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string Render()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            Data.Topics db = new Data.Topics();
-
-            using (IDataReader dr = db.TopicWithReplies(this.PortalId, this.TopicId, this.PageIndex, this.PageSize))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("communityforums_TopicWithReplies", this.PortalId, this.TopicId, this.PageIndex, this.PageSize))
             {
                 while (dr.Read())
                 {

@@ -21,6 +21,7 @@
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
+    using System.Data;
 
     using DotNetNuke.Abstractions;
 
@@ -49,10 +50,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             var urlToCheck = urlPrefix + cleanSubject;
 
-            var topicsDb = new Data.Topics();
             for (var u = 0; u <= 200; u++)
             {
-                var tid = topicsDb.TopicIdByUrl(portalId, moduleId, urlToCheck);
+                var tid = TopicIdByUrl(portalId, moduleId, urlToCheck);
                 if (tid > 0 && tid == topicId)
                 {
                     break;
@@ -74,6 +74,83 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             return topicUrl;
+        }
+
+        internal static void ArchiveURL(int portalId, int forumGroupId, int forumId, int topicId, string uRL)
+        {
+            DotNetNuke.Data.DataContext.Instance().Execute(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_Archive", portalId, forumGroupId, forumId, topicId, uRL);
+        }
+
+        internal static string GetUrl(int moduleId, int forumGroupId, int forumId, int topicId, int userId, int contentId)
+        {
+            try
+            {
+                return DotNetNuke.Data.DataContext.Instance().ExecuteScalar<string>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Util_GetUrl", moduleId, forumGroupId, forumId, topicId, userId, contentId);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public static bool CheckForumURL(int portalId, int moduleId, string vanityName, int forumId, int forumGroupId)
+        {
+            try
+            {
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.GetById(forumGroupId, moduleId);
+                if (!string.IsNullOrEmpty(fg.PrefixURL))
+                {
+                    vanityName = fg.PrefixURL + "/" + vanityName;
+                }
+
+                int tmpForumId = -1;
+                tmpForumId = DotNetNuke.Data.DataContext.Instance().ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckForumVanity", portalId, vanityName);
+                if (tmpForumId > 0 && forumId == -1)
+                {
+                    return false;
+                }
+                else if (tmpForumId == forumId && forumId > 0)
+                {
+                    return true;
+                }
+                else if (tmpForumId <= 0)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
+        }
+
+        public static bool CheckGroupURL(int portalId, int moduleId, string vanityName, int forumGroupId)
+        {
+            try
+            {
+                int tmpForumGroupId = -1;
+                tmpForumGroupId = DotNetNuke.Data.DataContext.Instance().ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckGroupVanity", portalId, vanityName);
+                if (tmpForumGroupId > 0 && forumGroupId == -1)
+                {
+                    return false;
+                }
+                else if (tmpForumGroupId == forumGroupId && forumGroupId > 0)
+                {
+                    return true;
+                }
+                else if (tmpForumGroupId <= 0)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return false;
         }
 
         internal static string BuildForumUrlSegment(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
@@ -103,6 +180,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static string BuildModeratorUrl(INavigationManager navigationManager, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, ModuleSettings mainSettings, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             return navigationManager.NavigateURL(forumInfo.GetTabId(), portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forumInfo.ForumID}" });
+        }
+
+        private static int TopicIdByUrl(int portalId, int moduleId, string uRL)
+        {
+            if (uRL.EndsWith("/"))
+            {
+                uRL = uRL.Substring(0, uRL.Length - 1);
+            }
+
+            return DotNetNuke.Data.DataContext.Instance().ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_TopicIdByURL", portalId, moduleId, uRL);
         }
     }
 }

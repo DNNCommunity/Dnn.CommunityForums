@@ -27,18 +27,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 
-    internal class ProcessQueueController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo>
+    internal class ProcessQueueController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo, IProcessQueueController, ProcessQueueController>, IProcessQueueController
     {
-        public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, int badgeId, string requestUrl)
+        protected override Func<IProcessQueueController> GetFactory()
         {
-            return this.Add(processType: processType, portalId: portalId, tabId: tabId, moduleId: moduleId, forumGroupId: forumGroupId, forumId: forumId, topicId: topicId, replyId: replyId, contentId: contentId, authorId: authorId, userId: userId, badgeId: badgeId, dateCreated: DateTime.UtcNow, requestUrl: requestUrl);
+            return () => new ProcessQueueController();
         }
-
+        
         public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, int badgeId, DateTime dateCreated, string requestUrl)
         {
             try
             {
-                this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo
+                this._repositoryControllerBase.Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo
                 {
                     PortalId = portalId,
                     ModuleId = moduleId,
@@ -64,11 +64,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
+        public void DeleteById<TProperty>(TProperty id)
+        {
+            try
+            {
+                this._repositoryControllerBase.DeleteById(id);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
         public List<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo> GetBatch()
         {
             try
             {
-                return this.Get().OrderBy(m => m.DateCreated).Take(200).ToList();
+                return this._repositoryControllerBase.Get().OrderBy(m => m.DateCreated).Take(200).ToList();
             }
             catch (Exception ex)
             {

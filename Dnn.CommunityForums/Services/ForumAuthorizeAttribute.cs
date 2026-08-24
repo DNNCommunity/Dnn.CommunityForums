@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     var moduleInfo = context.ActionContext.Request.FindModuleInfo();
                     var portalSettings = this.portalController.GetCurrentSettings();
                     var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-                    int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
+                    int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo);
                     if (this.PermissionNeeded is SecureActions.ManageUsers)
                     {
                         return ServicesHelper.IsAuthorized(portalSettings, moduleId, DotNetNuke.Common.Utilities.Null.NullInteger, this.PermissionNeeded, userInfo);

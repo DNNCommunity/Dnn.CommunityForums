@@ -180,9 +180,6 @@
   <data name="[RESX:AddRole].Text" xml:space="preserve">
     <value>Rolle hinzufügen</value>
   </data>
-  <data name="[RESX:AddTemplate].Text" xml:space="preserve">
-    <value>Vorlage hinzufügen</value>
-  </data>
   <data name="[RESX:AddUserName].Text" xml:space="preserve">
     <value>Benutzername hinzufügen</value>
   </data>
@@ -369,12 +366,6 @@
   <data name="[RESX:Deleted].Text" xml:space="preserve">
     <value>Gelöscht</value>
   </data>
-  <data name="[RESX:DesignAndTemplates:Intro].Text" xml:space="preserve">
-    <value>Die folgenden Einstellungen helfen Ihnen, das Erscheinungsbild des Forums anzupassen.</value>
-  </data>
-  <data name="[RESX:DesignAndTemplates].Text" xml:space="preserve">
-    <value>Design und Layout</value>
-  </data>
   <data name="[RESX:Details].Text" xml:space="preserve">
     <value>Details</value>
   </data>
@@ -527,9 +518,6 @@
   </data>
   <data name="[RESX:ForumStatSettings].Text" xml:space="preserve">
     <value>Statistik-Einstellungen</value>
-  </data>
-  <data name="[RESX:ForumTemplate].Text" xml:space="preserve">
-    <value>Vorlage</value>
   </data>
   <data name="[RESX:ForumTheme].Text" xml:space="preserve">
     <value>Design</value>
@@ -790,9 +778,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:PleaseWait].Text" xml:space="preserve">
     <value>Laden...  Bitte warten.</value>
   </data>
-  <data name="[RESX:PMPage].Text" xml:space="preserve">
-    <value>Seite "Private Nachrichten"</value>
-  </data>
   <data name="[RESX:PointsOptions].Text" xml:space="preserve">
     <value>Optionen für das Punktesystem</value>
   </data>
@@ -828,9 +813,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:ProfileDisabled].Text" xml:space="preserve">
     <value>Deaktiviert</value>
-  </data>
-  <data name="[RESX:ProfileTemplate].Text" xml:space="preserve">
-    <value>Profil-Vorlage</value>
   </data>
   <data name="[RESX:ProfileType].Text" xml:space="preserve">
     <value>Profiltyp</value>
@@ -964,9 +946,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:StatsInterval].Text" xml:space="preserve">
     <value>Aktualisierungsintervall</value>
   </data>
-  <data name="[RESX:StatsTemplate].Text" xml:space="preserve">
-    <value>Vorlage</value>
-  </data>
   <data name="[RESX:Status].Text" xml:space="preserve">
     <value>Aktivieren und/oder Deaktivieren von Funktionen</value>
   </data>
@@ -991,14 +970,8 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Tags</value>
   </data>
-  <data name="[RESX:Template].Text" xml:space="preserve">
-    <value>Vorlage</value>
-  </data>
   <data name="[RESX:Templates].Text" xml:space="preserve">
     <value>Vorlagen</value>
-  </data>
-  <data name="[RESX:TemplateType].Text" xml:space="preserve">
-    <value>Typ</value>
   </data>
   <data name="[RESX:Text].Text" xml:space="preserve">
     <value>Text</value>
@@ -1087,9 +1060,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Tips:ForumName].Text" xml:space="preserve">
     <value>Geben Sie den Namen für dieses Forum ein.</value>
   </data>
-  <data name="[RESX:Tips:ForumTemplate].Text" xml:space="preserve">
-    <value>Wählen Sie die Vorlage für die Seite aus, auf der alle Ihre Foren angezeigt werden.</value>
-  </data>
   <data name="[RESX:Tips:ForumTheme].Text" xml:space="preserve">
     <value>Wählen Sie das Layout für Ihr Forum aus.</value>
   </data>
@@ -1140,9 +1110,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:Tips:PageSize].Text" xml:space="preserve">
     <value>Geben Sie die Standardanzahl der Elemente ein, die auf der Seite "Themen und Antworten" angezeigt werden sollen.</value>
-  </data>
-  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve">
-    <value>Wählen Sie die Seite aus, auf der Sie das Modul für private Nachrichten installiert haben.</value>
   </data>
   <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve">
     <value>Spezifische E-Mail-Adresse für dieses Forum.  Dadurch werden die E-Mail-Adresse der Website und die E-Mail-Adresse, die möglicherweise in den Foreneinstellungen eingegeben wurde, überschrieben.</value>
@@ -1216,17 +1183,8 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Tips:TopicPriority].Text" xml:space="preserve">
     <value>Mit der Themenpriorität können Themen in der Liste weiter oben angezeigt werden, anstatt nach Datum sortiert zu werden.  Die Standardpriorität für alle Themen ist 0.  Je höher die Priorität, desto weiter vorne erscheint ein Thema in der Liste.</value>
   </data>
-  <data name="[RESX:Tips:TopicsTemplate].Text" xml:space="preserve">
-    <value>Wählen Sie die Vorlage für die Anzeige der Themenliste aus.</value>
-  </data>
-  <data name="[RESX:Tips:TopicTemplate].Text" xml:space="preserve">
-    <value>Wählen Sie die Vorlage für die Anzeige des Themas und der Antworten aus.</value>
-  </data>
   <data name="[RESX:Tips:UserDisplayMode].Text" xml:space="preserve">
     <value>Wählen Sie aus, wie der Name des Mitglieds angezeigt werden soll.</value>
-  </data>
-  <data name="[RESX:Tips:UserProfileTemplate].Text" xml:space="preserve">
-    <value>Wählen Sie die Vorlage für die Anzeige der Autoreninformationen für ein Thema oder eine Antwort aus.</value>
   </data>
   <data name="[RESX:Tips:UsersOnlineEnabled].Text" xml:space="preserve">
     <value>Aktivieren Sie diese Funktion, um anzuzeigen, wann der Benutzer online ist und die Foren besucht.</value>
@@ -1264,14 +1222,8 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   <data name="[RESX:Topics].Text" xml:space="preserve">
     <value>Themen</value>
   </data>
-  <data name="[RESX:TopicsTemplate].Text" xml:space="preserve">
-    <value>Themenanzeige</value>
-  </data>
   <data name="[RESX:TopicsView].Text" xml:space="preserve">
     <value>Themenansicht</value>
-  </data>
-  <data name="[RESX:TopicTemplate].Text" xml:space="preserve">
-    <value>Themenvorlage</value>
   </data>
   <data name="[RESX:TopicView].Text" xml:space="preserve">
     <value>Themenansicht</value>
@@ -1326,9 +1278,6 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
   </data>
   <data name="[RESX:UserProfiles].Text" xml:space="preserve">
     <value>Benutzerprofil-Einstellungen</value>
-  </data>
-  <data name="[RESX:UserProfileTemplate].Text" xml:space="preserve">
-    <value>Profil-Anzeige</value>
   </data>
   <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve">
     <value>Benutzer online anzeigen</value>

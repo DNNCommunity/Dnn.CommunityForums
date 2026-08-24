@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.UI.UserControls;
     using DotNetNuke.Web.Api;
 
@@ -92,9 +93,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ActiveModule.ModuleID, this.ActiveModule.TabID, false).ModuleSettings["AFForumModuleID"]);
                 }
 
-                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
-                string sOnlineList = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetUsersOnline(this.PortalSettings, SettingsBase.GetModuleSettings(this.ForumModuleId), this.ForumModuleId, user);
-                IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalSettings.PortalId, this.ForumModuleId, 2);
+                var user = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID);
+                string sOnlineList = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetUsersOnline(this.PortalSettings, SettingsBase.GetModuleSettings(this.ForumModuleId), this.ForumModuleId, user);
+                IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalSettings.PortalId, 2);
                 int anonCount = 0;
                 int memCount = 0;
                 int memTotal = 0;
@@ -126,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="forumId" type="int"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/User/GetUsersForEditorMentions?ForumId=xxx&query={encodedQuery}</remarks>
+        /// <remarks>https://dnndev.me/API/ActiveForums/User/GetUsersForEditorMentions?ForumId=xxx&query=\{encodedQuery\}.</remarks>
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Mention)]
@@ -139,14 +140,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
-                var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: this.ForumModuleId);
+                var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: this.ForumModuleId, forumId: forumId);
                 if (forum == null || !forum.FeatureSettings.UserMentions)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
                 var cachekey = string.Format(CacheKeys.UserMentionQuery, forumId, query, forum.FeatureSettings.UserMentionVisibility.Equals(DotNetNuke.Modules.ActiveForums.Enums.UserMentionVisibility.FriendsOnly) ? this.UserInfo.UserID : DotNetNuke.Common.Utilities.Null.NullInteger);
-                var userList = DataCache.UserCacheRetrieve(cachekey) as List<UserIdDisplayNamePair>;
+                var userList = DotNetNuke.Modules.ActiveForums.Services.Cache.UserCache.Retrieve(cachekey) as List<UserIdDisplayNamePair>;
                 if (userList == null)
                 {
                     List<UserInfo> users = null;
@@ -216,7 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         }
                     }
 
-                    DataCache.UserCacheStore(cachekey, userList);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.UserCache.Store(cachekey, userList);
                 }
 
                 if (userList != null && userList.Count > 0)

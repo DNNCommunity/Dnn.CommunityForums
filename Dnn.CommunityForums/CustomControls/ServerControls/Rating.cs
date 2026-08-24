@@ -176,13 +176,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void cb_Callback(object sender, CallBackEventArgs e)
         {
-            Data.Topics db = new Data.Topics();
             if (e.Parameters.Length > 0)
             {
                 int rate = Convert.ToInt32(e.Parameter);
                 if (rate >= 1 && rate <= 5)
                 {
-                    this.RatingValue = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: rate, ipAddress: HttpContext.Current.Request.UserHostAddress.ToString());
+                    this.RatingValue = DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController.Instance.Rate(userId: this.UserId, topicId: this.TopicId, rating: rate, ipAddress: HttpContext.Current.Request.UserHostAddress.ToString());
                 }
             }
 

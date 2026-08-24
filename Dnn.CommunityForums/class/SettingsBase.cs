@@ -21,19 +21,21 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
 
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
-    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public class SettingsBase : PortalModuleBase
     {
         private int forumModuleId = -1;
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser => new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UserId);
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser => DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ModuleId, this.UserId);
 
-        internal HashSet<int> UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumModuleId, this.ForumUser);
+        internal HashSet<int> UserForumsList => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ForumModuleId, this.ForumUser);
 
         public int ForumModuleId
         {
@@ -41,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return this.forumModuleId > 0
                     ? this.forumModuleId
-                    : DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ModuleId, this.TabId);
+                    : DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ModuleContext.Configuration);
             }
 
             set
@@ -88,67 +90,40 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool ShowToolbar { get; set; } = true;
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public UserController UserController => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public ForumsDB ForumsDB => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public CurrentUserTypes CurrentUserType => this.ForumUser.CurrentUserType;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserIsMod => this.ForumUser.GetIsMod(this.ForumModuleId);
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public string UserDefaultSort => this.UserId != -1 ? this.ForumUser.PrefDefaultSort : "ASC";
-
         public int UserDefaultPageSize => this.UserId != -1 ? this.ForumUser.PrefPageSize : this.ModuleSettings.PageSize;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefHideSigs
-        {
-            get
-            {
-                if (this.UserId != -1)
-                {
-                    try
-                    {
-                        return this.ForumUser.PrefBlockSignatures;
-                    }
-                    catch (Exception ex)
-                    {
-                        return false;
-                    }
-                }
-
-                return false;
-            }
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefHideAvatars => this.UserId != -1 ? this.ForumUser.PrefBlockAvatars : false;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefJumpLastPost => this.UserId != -1 ? this.ForumUser.PrefJumpLastPost : false;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public bool UserPrefShowReplies => this.UserId != -1 ? this.ForumUser.PrefDefaultShowReplies : false;
 
         public bool UserPrefTopicSubscribe => this.UserId != -1 ? this.ForumUser.PrefTopicSubscribe : false;
 
         public Framework.CDefault BasePage => (Framework.CDefault)this.Page;
 
-        public static DotNetNuke.Modules.ActiveForums.ModuleSettings GetModuleSettings(int moduleId)
+        public static DotNetNuke.Modules.ActiveForums.ModuleSettings GetTabModuleSettings(int moduleId, int tabModuleId)
         {
-            DotNetNuke.Modules.ActiveForums.ModuleSettings objSettings = (ModuleSettings)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.MainSettings, moduleId));
-            if (objSettings == null && moduleId > 0)
+            var cacheKey = string.Format(CacheKeys.TabModuleSettings, tabModuleId);
+            var tabModuleSettings = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(tabModuleId, cacheKey) as DotNetNuke.Modules.ActiveForums.ModuleSettings;
+            if (tabModuleSettings == null)
             {
-                objSettings = new DotNetNuke.Modules.ActiveForums.ModuleSettings { ModuleId = moduleId, MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
-                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.MainSettings, moduleId), objSettings);
+                var moduleSettings = GetModuleSettings(moduleId);
+
+                // Overlay TabModuleSettings on top (tab/instance-specific settings take precedence)
+                var tabModuleSettingsToOverlay = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModule(tabModuleId).TabModuleSettings;
+                tabModuleSettings = moduleSettings.CreateMergedTabModuleSettings(tabModuleSettingsToOverlay);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(tabModuleId, cacheKey, tabModuleSettings);
             }
 
-            return objSettings;
+            return tabModuleSettings;
+        }
+
+        public static DotNetNuke.Modules.ActiveForums.ModuleSettings GetModuleSettings(int moduleId)
+        {
+            var cacheKey = string.Format(CacheKeys.MainSettings, moduleId);
+            var settings = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey) as ModuleSettings;
+            if (settings == null && moduleId > 0)
+            {
+                settings = new DotNetNuke.Modules.ActiveForums.ModuleSettings { ModuleId = moduleId, MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cacheKey, settings);
+            }
+
+            return settings;
         }
 
         public DotNetNuke.Modules.ActiveForums.ModuleSettings ModuleSettings
@@ -156,7 +131,18 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 this.ForumModuleId = this.forumModuleId <= 0 ? this.ForumModuleId : this.forumModuleId;
-                return GetModuleSettings(this.ForumModuleId);
+                if (this.TabModuleId <= 0)
+                {
+                    var moduleInfo = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false);
+                    if (moduleInfo != null && moduleInfo.TabModuleID > 0)
+                    {
+                        return GetTabModuleSettings(this.ForumModuleId, moduleInfo.TabModuleID);
+                    }
+
+                    return GetModuleSettings(this.ForumModuleId);
+                }
+
+                return GetTabModuleSettings(this.ForumModuleId, this.TabModuleId);
             }
         }
 
@@ -177,9 +163,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         // Forums stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback
         public TimeSpan TimeZoneOffset => Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        protected DateTime GetUserDate(DateTime displayDate) => displayDate.AddMinutes(this.TimeZoneOffset.TotalMinutes);
 
         public string NavigateUrl(int tabId) => Utilities.NavigateURL(tabId);
 

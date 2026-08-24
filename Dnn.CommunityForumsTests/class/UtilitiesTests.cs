@@ -465,38 +465,51 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
-        public void EncodeCodeBlocks_WithCodeTags_EncodesBlock()
+        public void EncodeCodeBlocks_WithCodeTags_EncodesBlock1()
         {
-            var input = "Some text [code]int x = 1;[/code] more text";
-            var expectedEncoded = System.Net.WebUtility.HtmlEncode("[code]int x = 1;[/code]");
+            var codeBlock = "int x = 1;";
+            var input = $"Some text [code]{codeBlock}[/code] more text";
+            var expectedEncoded = $"<code>{System.Net.WebUtility.HtmlEncode(codeBlock)}</code>";
             var result = Utilities.EncodeCodeBlocks(input);
-            Assert.That(result.Contains(expectedEncoded), Is.True);
+            Assert.That(result, Does.Contain(expectedEncoded));
         }
 
         [Test]
-        public void EncodeCodeBlocks_WithAngleCodeTags_EncodesBlock()
+        public void EncodeCodeBlocks_WithCodeTags_EncodesBlock2()
         {
-            var input = "Some text <code>int y = 2;</code> more text";
-            var expectedEncoded = System.Net.WebUtility.HtmlEncode("<code>int y = 2;</code>");
+            var codeBlock = "<div>this is <strong>strong</strong> text</div>";
+            var input = $"Some text [code]{codeBlock}[/code] more text";
+            var expectedEncoded = $"Some text <code>{System.Net.WebUtility.HtmlEncode(codeBlock)}</code> more text";
+            var result = Utilities.EncodeCodeBlocks(input);
+            Assert.That(result, Does.Contain(expectedEncoded));
+        }
+
+        [Test]
+        public void EncodeCodeBlocks_WithAngleCodeTags_EncodesBlock1()
+        {
+            var codeBlock = "int x = 1;";
+            var input = $"Some text <code>{codeBlock}</code> more text";
+            var expectedEncoded = $"<code>{System.Net.WebUtility.HtmlEncode(codeBlock)}</code>";
             var result = Utilities.EncodeCodeBlocks(input);
             Assert.Multiple(() =>
             {
-                Assert.That(result.Contains(expectedEncoded), Is.True);
-                Assert.That(result.Contains("<code>int y = 2;</code>"), Is.False);
+                Assert.That(result, Does.Contain(expectedEncoded));
             });
         }
 
         [Test]
         public void EncodeCodeBlocks_MultipleCodeBlocks_EncodesAll()
         {
-            var input = "[code]a[/code] and <code>b</code>";
-            var expected1 = System.Net.WebUtility.HtmlEncode("[code]a[/code]");
-            var expected2 = System.Net.WebUtility.HtmlEncode("<code>b</code>");
+            var codeBlock1 = "<div>this is <em>strong</em> text</div>";
+            var codeBlock2 = "<div>this is <strong>strong</strong> text</div>";
+            var input = $"[code]{codeBlock1}[/code] and <code>{codeBlock2}</code>";
+            var expected1 = $"<code>{System.Net.WebUtility.HtmlEncode(codeBlock1)}</code>";
+            var expected2 = $"<code>{System.Net.WebUtility.HtmlEncode(codeBlock2)}</code>";
             var result = Utilities.EncodeCodeBlocks(input);
             Assert.Multiple(() =>
             {
-                Assert.That(result.Contains(expected1), Is.True);
-                Assert.That(result.Contains(expected2), Is.True);
+                Assert.That(result, Does.Contain(expected1));
+                Assert.That(result, Does.Contain(expected2));
             });
         }
 
@@ -645,7 +658,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             // Arrange
 
             // Act
-            return Utilities.RemoveCultureFromUrl(url, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+            return Utilities.RemoveCultureFromUrl(url: url, portalSettings: this.mockPortalSettings.Object);
 
             // Assert
         }
@@ -942,6 +955,17 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
+        [TestCase("Visit https://.../en-us/internal and https://external.com", ExpectedResult = "Visit https://.../en-us/internal and <a href=\"https://external.com/\" target=\"_blank\" rel=\"nofollow\">https://external.com</a>")]
+        public string AutoLinks_WithInvalidUrl_ShouldSkipInvalidUrl(string text)
+        {
+            // Arrange & Act
+            var result = Utilities.AutoLinks(text, this.DefaultSite);
+
+            // Assert
+            return result;
+        }
+
+        [Test]
         [TestCase("&lt;a href=\"https://example.com\"&gt;Link&lt;/a&gt;", ExpectedResult = true)]
         public bool AutoLinks_WithEncodedHref_ShouldDecodeAndProcess(string text)
         {
@@ -1165,6 +1189,57 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             // Assert
             return result == expected;
+        }
+
+        [Test]
+        public void ReplaceLink_WithInvalidUrl_ShouldSkipInvalidUrl()
+        {
+            // Arrange
+            string url = "https://.../en-us/internal";
+            string expected = url;
+
+            // Act
+            var match = System.Text.RegularExpressions.Regex.Match(url, UrlPattern, RegexOptions.IgnoreCase);
+            if (!match.Success)
+            {
+                Assert.Fail();
+            }
+
+            string result = Utilities.ReplaceLink(match, this.DefaultSite, url);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        [TestCase("example.com/child1", "example.com", TestName = "GetHostNameFromPortalAlias_ChildPortal_ReturnsHost")]
+        [TestCase("example.com/child1/en-us", "example.com", TestName = "GetHostNameFromPortalAlias_ChildPortalWithCulture_ReturnsHost")]
+        [TestCase("example.com", "example.com", TestName = "GetHostNameFromPortalAlias_DomainOnly_ReturnsHost")]
+        [TestCase("sub.example.com:8080/en-us", "sub.example.com:8080", TestName = "GetHostNameFromPortalAlias_WithSubpathAndPort_ReturnsHostWithoutSubpathButWithPort")]
+        [TestCase("example.com/en-us/", "example.com", TestName = "GetHostNameFromPortalAlias_WithTrailingSlashAndSubpath_ReturnsHost")]
+        public void GetHostNameFromPortalAlias_VariousInputs_ReturnsExpected(string defaultPortalAlias, string expected)
+        {
+            // Arrange & Act
+            var result = Utilities.GetHostNameAndPortFromPortalAlias(defaultPortalAlias);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        [TestCase("Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com", "en-US", true, "https://example.com/Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_Portal0")]
+        [TestCase("Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com/en-US", "en-US", true, "https://example.com/Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_PortalWithCulture")]
+        [TestCase("child1/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com/child1", "", true, "https://example.com/child1/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_ChildPortalWithoutCulture")]
+        [TestCase("child2/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com/child2/en-us", "en-US", true, "https://example.com/child2/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_ChildPortalWithCulture")]
+        [TestCase("Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "sub.example.com:8080/en-us", "en-US", true, "https://sub.example.com:8080/Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_WithSubpathAndPort")]
+        [TestCase("Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", "example.com/en-us/", "en-US", true, "https://example.com/Portals/0/DNNCommunityForums/content/640/14/images/embedded_14-20260626210515100511.png", TestName = "GetImageUrl_WithTrailingSlashAndSubpath")]
+        public void GetImageUrl_VariousInputs_ReturnsExpected(string imageUrl, string defaultPortalAlias, string cultureCode, bool sslEnabled, string expected)
+        {
+            // Arrange & Act
+            var result = Utilities.GetImageUrl(imageUrl: imageUrl, defaultPortalAlias: defaultPortalAlias, cultureCode: cultureCode, sslEnabled: sslEnabled);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expected));
         }
     }
 }

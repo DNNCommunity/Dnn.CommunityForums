@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_EmailNotificationQueue")]
+    [TableName("communityforums_EmailNotificationQueue")]
     [PrimaryKey("Id", AutoIncrement = true)]
     public class EmailNotificationQueueInfo
     {

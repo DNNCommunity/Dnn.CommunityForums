@@ -1942,4 +1942,21 @@ From,
   <data name="[RESX:ShowBoxesDesc].Text" xml:space="preserve">
     <value>Show Blocks</value>
   </data>
+  <data name="[RESX:Continue].Text" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="[RESX:ClickContinueToStart].Text" xml:space="preserve">
+    <value>Click the continue button to get started.</value>
+  </data>
+  <data name="[RESX:InitConfigScreen].Text" xml:space="preserve">
+    <value> &lt;h2 class="dcf-init-title-main"&gt;
+  Thank you for choosing DNN Community Forums.&lt;br&gt;
+  Your method of easily building a complete online community.
+ &lt;/h2&gt;
+&lt;p&gt;DNN Community Forums allows you to quickly setup a feature-rich discussion forum for your website.&lt;/p&gt;
+&lt;p&gt;
+    Whether you are a hobbyist who just needs a single forum or you are building an on-line community for your enterprise, DNN 
+    Community Forums is the leading solution. As you will soon see, no other forum package for DNN has as many features or the flexibility of DNN Community Forums.
+&lt;/p&gt;</value>
+  </data>
 </root>

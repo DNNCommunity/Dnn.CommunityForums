@@ -26,26 +26,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Data;
     using System.Globalization;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.UI.UserControls;
-
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
-    public class SubscriptionInfo : DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
-    {
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
-        public int UserId { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
-        public string Email { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
-        public TimeSpan TimeZoneOffSet { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
-        public CultureInfo UserCulture { get; set; }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
-        public bool TopicSubscriber { get; set; }
-    }
 
     public class SubscriptionController
     {
@@ -63,13 +45,13 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (topicId != -1)
                 {
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriber, moduleId, forumId, topicId, forumUser.UserId));
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.TopicSubscriberCount, moduleId, forumId, topicId));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.TopicSubscriber, moduleId, forumId, topicId, forumUser.UserId));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.TopicSubscriberCount, moduleId, forumId, topicId));
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriber, moduleId, forumId, forumUser.UserId));
-                    DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(moduleId, string.Format(CacheKeys.ForumSubscriberCount, moduleId, forumId));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.ForumSubscriber, moduleId, forumId, forumUser.UserId));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.ForumSubscriberCount, moduleId, forumId));
                 }
 
                 return Convert.ToInt32(DataProvider.Instance().Subscription_Update(portalId, moduleId, forumId, topicId, mode, forumUser.UserId));
@@ -77,12 +59,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return -1;
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser).")]
-        public int Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string userPermSet = "") => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Subscription_GetSubscribers(int portalId, int moduleId, int forumId, int topicId, SubscriptionTypes mode, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author, string canSubscribe).")]
-        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int portalId, int forumId, int topicId, SubscriptionTypes mode, int authorId, string canSubscribe) => throw new NotImplementedException();
 
         // TODO: move to new DAL2 subscription controller
         public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, int topicId, SubscriptionTypes mode, DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo author)
@@ -105,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!sl.Contains(si))
                     {
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.SubscribeRoleIds, new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(forum.ModuleId).GetByUserId(forum.PortalId, si.UserId).UserRoleIds))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(forum.PortalId, forum.ModuleId, si.UserId).UserRoleIds))
                         {
                             sl.Add(si);
                         }
@@ -120,22 +96,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public abstract class Subscriptions
     {
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId).")]
-        public static bool IsSubscribed(int portalId, int moduleId, int forumId, int topicId, SubscriptionTypes subscriptionType, int userId)
-        {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId, moduleId, userId, forumId, topicId);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId).")]
-        public static bool IsSubscribed(int portalId, int moduleId, int forumId, SubscriptionTypes subscriptionType, int userId)
-        {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId, moduleId, userId, forumId);
-        }
-
         // TODO: move to new DAL2 subscription controller
         public static void SendSubscriptions(int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, int authorId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId: moduleId, forumId: forumId);
             SendSubscriptions(portalId, moduleId, tabId, fi, topicId, replyId, authorId);
         }
 

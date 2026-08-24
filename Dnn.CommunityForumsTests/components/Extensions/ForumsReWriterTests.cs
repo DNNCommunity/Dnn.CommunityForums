@@ -41,11 +41,11 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
         {
             base.SetUp();
             this.rewriter = new ForumsReWriter(
-                this.portalAliasService.Object,
-                this.MockTagController.Object,
-                this.MockCategoryController.Object,
-                this.MockForumGroupController.Object,
-                this.MockForumController.Object);
+                this.mockPortalAliasService.Object,
+                this.mockTagController.Object,
+                this.mockCategoryController.Object,
+                this.mockForumGroupController.Object,
+                this.mockForumController.Object);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
                 Assert.That(this.rewriter.ForumId, Is.EqualTo(Null.NullInteger));
                 Assert.That(this.rewriter.PortalId, Is.EqualTo(Null.NullInteger));
                 Assert.That(this.rewriter.TabId, Is.EqualTo(Null.NullInteger));
-                Assert.That(this.rewriter.ModuleId, Is.EqualTo(Null.NullInteger));
+                Assert.That(this.rewriter.ForumModuleId, Is.EqualTo(Null.NullInteger));
                 Assert.That(this.rewriter.TopicId, Is.EqualTo(Null.NullInteger));
                 Assert.That(this.rewriter.Page, Is.EqualTo(0));
                 Assert.That(this.rewriter.Timespan, Is.EqualTo(0));
@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
             this.rewriter.ProcessBeginRequest(mockApp.Object);
 
             // Assert - ModuleId remains uninitialized after exclusion check
-            Assert.That(this.rewriter.ModuleId, Is.EqualTo(Null.NullInteger));
+            Assert.That(this.rewriter.ForumModuleId, Is.EqualTo(Null.NullInteger));
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
             this.rewriter.ProcessBeginRequest(mockApp.Object);
 
             // Assert
-            Assert.That(this.rewriter.ModuleId, Is.EqualTo(Null.NullInteger));
+            Assert.That(this.rewriter.ForumModuleId, Is.EqualTo(Null.NullInteger));
         }
 
         [Test]
@@ -561,10 +561,10 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
         public void ProcessBeginRequest_WhenPortalAliasNotFound_ReturnsEarlyWithNullPortalId()
         {
             // Arrange — portalAliasService returns null for all lookups
-            this.portalAliasService
+            this.mockPortalAliasService
                 .Setup(s => s.GetPortalAliases())
                 .Returns(new System.Collections.Generic.Dictionary<string, IPortalAliasInfo>());
-            this.portalAliasService
+            this.mockPortalAliasService
                 .Setup(s => s.GetPortalAlias(It.IsAny<string>()))
                 .Returns((IPortalAliasInfo)null);
 

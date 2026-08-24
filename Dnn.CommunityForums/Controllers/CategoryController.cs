@@ -20,59 +20,90 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
     using System.Linq;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
-    internal partial class CategoryController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo>
+    internal partial class CategoryController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo, ICategoryController, CategoryController>, ICategoryController
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo GetForCategoryName(string categoryName)
+        private readonly TopicCategoryController topicCategoryController;
+
+        protected override Func<ICategoryController> GetFactory()
         {
-            return this.Find("WHERE UPPER(RTRIM(LTRIM(categoryName))) = UPPER(RTRIM(LTRIM(@0)))", categoryName).FirstOrDefault();
+            return () => new CategoryController();
         }
 
-        internal void RecountItems(int categoryId)
+        public CategoryController()
+            : this(new TopicCategoryController())
         {
-            var categoryController = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController();
-            var category = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().GetById(categoryId);
+        }
+
+        internal CategoryController(TopicCategoryController topicCategoryController)
+        {
+            this.topicCategoryController = topicCategoryController ?? throw new ArgumentNullException(nameof(topicCategoryController));
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo GetForCategoryName(string categoryName)
+        {
+            return this._repositoryControllerBase.Find("WHERE UPPER(RTRIM(LTRIM(categoryName))) = UPPER(RTRIM(LTRIM(@0)))", categoryName).FirstOrDefault();
+        }
+
+        public void RecountItems(int categoryId)
+        {
+            var category = this._repositoryControllerBase.GetById(categoryId);
+            if (category == null)
+            {
+                return;
+            }
+
             category.Items = 0;
-            var topicCategories = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForCategory(categoryId);
+            var topicCategories = this.topicCategoryController.GetForCategory(categoryId);
             if (topicCategories != null)
             {
                 category.Items = topicCategories.Count();
             }
 
-            categoryController.Update(category);
+            this._repositoryControllerBase.Update(category);
         }
 
-        internal void Delete(string sqlCondition, params object[] args)
+        public new void Delete(string sqlCondition, params object[] args)
         {
-            this.Find(sqlCondition, args).ForEach(item =>
+            this._repositoryControllerBase.Find(sqlCondition, args).ForEach(c =>
             {
-                this.Delete(item);
+                this.topicCategoryController.DeleteForCategory(c.CategoryId);
+                this.DeleteById(c.CategoryId);
             });
         }
 
-        internal void DeleteById(int id)
+        public new void DeleteById(int id)
         {
-            this.Delete(this.GetById(id));
+            this.topicCategoryController.DeleteForCategory(id);
+            this.Delete(this._repositoryControllerBase.GetById(id));
         }
 
-        internal void Delete(DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo item)
+        public new void Delete(DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo item)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().DeleteForCategory(item.CategoryId);
-            base.Delete(item);
+            if (item == null)
+            {
+                return;
+            }
+
+            this.topicCategoryController.DeleteForCategory(item.CategoryId);
+            this._repositoryControllerBase.Delete(item);
         }
 
-        internal virtual DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo GetByName(int moduleId, string categoryName)
+        public virtual DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo GetByName(int moduleId, string categoryName)
         {
             string cachekey = string.Format(CacheKeys.CategoryByName, moduleId, categoryName);
-            DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo categoryInfo = DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo categoryInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo;
             if (categoryInfo == null)
             {
                 // this accommodates duplicates which may exist since currently no uniqueness applied in database
-                categoryInfo = this.Find("WHERE ModuleId = @0 AND CategoryName = @1", moduleId, categoryName.Trim()).OrderBy(t => t.CategoryId).FirstOrDefault();
-                DataCache.ContentCacheStore(moduleId, cachekey, categoryInfo);
+                categoryInfo = this._repositoryControllerBase.Find("WHERE ModuleId = @0 AND CategoryName = @1", moduleId, categoryName.Trim()).OrderBy(t => t.CategoryId).FirstOrDefault();
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, categoryInfo);
             }
 
             return categoryInfo;

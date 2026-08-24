@@ -201,32 +201,14 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int UPID => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public bool IsAuthenticated
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string Username
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
         {
             get
             {
-                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ModuleId).GetUserFromHttpContext(this.PortalId, this.ModuleId);
+                return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetUserFromHttpContext(this.PortalId, this.ModuleId);
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public virtual bool IsReusable
         {
             get
@@ -263,9 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
                 if (this.AdminRequired && context.Request.IsAuthenticated)
                 {
-                    DotNetNuke.Entities.Modules.ModuleController objMC =
-                        new DotNetNuke.Entities.Modules.ModuleController();
-                    DotNetNuke.Entities.Modules.ModuleInfo objM = objMC.GetModule(this.ModuleId, this.TabId);
+                    DotNetNuke.Entities.Modules.ModuleInfo objM = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ModuleId, this.TabId, ignoreCache: false);
                     string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPortalRoleIds(this.PortalId, objM.ModulePermissions.ToString("EDIT").Split(';'));
                     this._isValid = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromRoleString(roleIds), this.ForumUser.UserRoleIds);
                 }

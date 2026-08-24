@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
             var expected = this.CategoriesGraph.Find(c => c.CategoryId == ForumsObjectGraph.Category3Id);
 
             // Act
-            var actual = this.MockCategoryController.Object.GetById(ForumsObjectGraph.Category3Id);
+            var actual = this.mockCategoryController.Object.GetById(ForumsObjectGraph.Category3Id);
 
             // Assert
             Assert.That(actual, Is.Not.Null);
@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
             var expected = this.CategoriesGraph.Find(c => c.CategoryId == ForumsObjectGraph.Category2Id);
 
             // Act
-            var actual = this.MockCategoryController.Object.GetByName(ForumsObjectGraph.ModuleId, expected.CategoryName);
+            var actual = this.mockCategoryController.Object.GetByName(ForumsObjectGraph.ModuleId, expected.CategoryName);
 
             // Assert
             Assert.That(actual, Is.Not.Null);

@@ -64,7 +64,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string Render()
         {
             StringBuilder sb = new StringBuilder();
-            Data.CommonDB db = new Data.CommonDB();
             string sHost = Utilities.GetHost();
             if (sHost.EndsWith("/"))
             {
@@ -81,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.ParentForumId = this.ForumId;
             }
 
-            using (IDataReader dr = db.ForumContent_List(this.PortalId, this.ModuleId, this.ForumGroupId, this.ForumId, this.ParentForumId))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("communityforums_ForumContent_List", this.PortalId, this.ModuleId, this.ForumGroupId, this.ForumId, this.ParentForumId))
             {
                 // ParentForum Section
                 while (dr.Read())

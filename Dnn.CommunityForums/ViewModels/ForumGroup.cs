@@ -39,6 +39,8 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
         public string Name { get => this.forumGroup.GroupName; set => this.forumGroup.GroupName = value; }
 
+        public int SortOrder { get => this.forumGroup.SortOrder; set => this.forumGroup.SortOrder = value; }
+
         public int PortalId { get => this.forumGroup.PortalSettings.PortalId; set => this.forumGroup.PortalSettings.PortalId = value; }
 
         public int ModuleId { get => this.forumGroup.ModuleId; set => this.forumGroup.ModuleId = value; }
@@ -54,7 +56,6 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
         public string PrefixURL => this.forumGroup.PrefixURL;
 
         public DotNetNuke.Modules.ActiveForums.ViewModels.Permissions Security => new DotNetNuke.Modules.ActiveForums.ViewModels.Permissions(this.forumGroup.Security);
-
 
         /// <summary>
         /// Maps the current ForumGroup view model to a ForumGroupInfo entity.

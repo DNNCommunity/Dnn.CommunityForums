@@ -392,27 +392,30 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
         internal static StringBuilder ReplaceForumTokens(StringBuilder template, ForumInfo forum, PortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.ModuleSettings moduleSettings, INavigationManager navigationManager, ForumUserInfo forumUser, int tabId, CurrentUserTypes currentUserType, Uri requestUri, string rawUrl)
         {
             /* if no last post or subject missing, remove associated last topic tokens */
-            if (forum.LastPostID == 0 || string.IsNullOrEmpty(System.Net.WebUtility.HtmlDecode(forum.LastPostSubject)))
+            if (forum != null)
             {
-                template = RemovePrefixedToken(template, "[FORUM:LASTPOSTSUBJECT");
-                template = RemovePrefixedToken(template, "[FORUM:LASTPOSTDISPLAYNAME");
-                template = RemovePrefixedToken(template, "[FORUM:LASTPOSTAUTHORDISPLAYNAME");
-                template = RemovePrefixedToken(template, "[FORUM:LASTPOSTAUTHORDISPLAYNAMELINK");
-                template = RemovePrefixedToken(template, "[FORUM:LASTPOSTDATE");
-                template.Replace("[AF:CONTROL:ADDFAVORITE]", string.Empty);
-                template.Replace("[RESX:BY]", string.Empty);
-            }
+                if (forum.LastPostID == 0 || string.IsNullOrEmpty(System.Net.WebUtility.HtmlDecode(forum.LastPostSubject)))
+                {
+                    template = RemovePrefixedToken(template, "[FORUM:LASTPOSTSUBJECT");
+                    template = RemovePrefixedToken(template, "[FORUM:LASTPOSTDISPLAYNAME");
+                    template = RemovePrefixedToken(template, "[FORUM:LASTPOSTAUTHORDISPLAYNAME");
+                    template = RemovePrefixedToken(template, "[FORUM:LASTPOSTAUTHORDISPLAYNAMELINK");
+                    template = RemovePrefixedToken(template, "[FORUM:LASTPOSTDATE");
+                    template.Replace("[AF:CONTROL:ADDFAVORITE]", string.Empty);
+                    template.Replace("[RESX:BY]", string.Empty);
+                }
 
-            if (template.ToString().Contains("[AF:CONTROL:ADDFAVORITE]"))
-            {
-                var forumUrl = new ControlUtils().BuildUrl(portalId: forum.PortalId, tabId: tabId, moduleId: forum.ModuleId, groupPrefix: forum.ForumGroup.PrefixURL, forumPrefix: forum.PrefixURL, forumGroupId: forum.ForumGroupId, forumID: forum.ForumID, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: forum.SocialGroupId);
-                template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + forum.ForumName + "','" + forumUrl + "');\"><img src=\"" + moduleSettings.ThemeLocation + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>");
-            }
+                if (template.ToString().Contains("[AF:CONTROL:ADDFAVORITE]"))
+                {
+                    var forumUrl = new ControlUtils().BuildUrl(portalId: forum.PortalId, tabId: tabId, moduleId: forum.ModuleId, groupPrefix: forum.ForumGroup.PrefixURL, forumPrefix: forum.PrefixURL, forumGroupId: forum.ForumGroupId, forumID: forum.ForumID, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: forum.SocialGroupId);
+                    template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + forum.ForumName + "','" + forumUrl + "');\"><img src=\"" + moduleSettings.ThemeLocation + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>");
+                }
 
-            template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
-            var tokenReplacer = new TokenReplacer(portalSettings, forumUser, forum, requestUri, rawUrl) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
-            template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
-            template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
+                template = ResourceStringTokenReplacer.ReplaceResourceTokens(template);
+                var tokenReplacer = new TokenReplacer(portalSettings, forumUser, forum, requestUri, rawUrl) { CurrentAccessLevel = Scope.DefaultSettings, AccessingUser = forumUser.UserInfo, };
+                template = new StringBuilder(tokenReplacer.ReplaceEmbeddedTokens(template.ToString()));
+                template = new StringBuilder(tokenReplacer.ReplaceTokens(template.ToString()));
+            }
             return template;
         }
 
@@ -470,11 +473,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
                 body = body.Replace("[", "&#91;").Replace("]", "&#93;");
                 if (body.ToUpper().Contains("&#91;CODE&#93;"))
                 {
-                    body = RegexUtils.GetCachedRegex("(&#91;CODE&#93;)", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(body, "[CODE]");
-                    body = RegexUtils.GetCachedRegex("(&#91;\\/CODE&#93;)", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(body, "[CODE]");
+                    body = RegexUtils.GetCachedRegex("(&#91;CODE&#93;)", RegexOptions.Compiled | RegexOptions.IgnoreCase, 2).Replace(body, "[CODE]");
+                    body = RegexUtils.GetCachedRegex("(&#91;\\/CODE&#93;)", RegexOptions.Compiled | RegexOptions.IgnoreCase, 2).Replace(body, "[CODE]");
                 }
 
-                if (RegexUtils.GetCachedRegex("\\[CODE([^>]*)\\]", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).IsMatch(body))
+                if (RegexUtils.GetCachedRegex("\\[CODE([^>]*)\\]", RegexOptions.Compiled | RegexOptions.IgnoreCase, 2).IsMatch(body))
                 {
                     body = CodeParser.ParseCode(body);
                 }
@@ -492,7 +495,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Tokens
 
                 if (body.ToLowerInvariant().Contains("runat"))
                 {
-                    body = RegexUtils.GetCachedRegex("runat", RegexOptions.Compiled & RegexOptions.IgnoreCase, 2).Replace(body, "&#114;&#117;nat");
+                    body = RegexUtils.GetCachedRegex("runat", RegexOptions.Compiled | RegexOptions.IgnoreCase, 2).Replace(body, "&#114;&#117;nat");
                 }
             }
 

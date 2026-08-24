@@ -156,26 +156,11 @@
   <data name="MarkAnswerPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Markeer antwoord</value>
   </data>
-  <data name="MessagingCore.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Standaard berichten</value>
-  </data>
   <data name="MessagingDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Uitgeschakeld</value>
   </data>
-  <data name="MessagingTab.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Selecteer het tabblad met de module voor privéberichten</value>
-  </data>
-  <data name="MessagingTab.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Tabblad Berichten</value>
-  </data>
-  <data name="MessagingType.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Selecteer een systeem voor privéberichten.</value>
-  </data>
   <data name="MessagingType.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Type bericht</value>
-  </data>
-  <data name="MessagingVentrian.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Ventrian Berichten</value>
   </data>
   <data name="Mode.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Gebruik altijd de standaardmodus, tenzij u de module gebruikt op een pagina voor sociale groepen.  De modus Sociale groep mag alleen worden gebruikt als u weet dat er altijd een GroupId in de URL aanwezig zal zijn.</value>
@@ -245,12 +230,6 @@
   </data>
   <data name="TopicPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Nieuw onderwerp</value>
-  </data>
-  <data name="URLPrefixBase.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Dit is de tekst die zal worden gebruikt als het eerste deel van alle forum-URL's.  In de meeste gevallen wilt u gewoon "forum" invoeren</value>
-  </data>
-  <data name="URLPrefixBase.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Basis Pad</value>
   </data>
   <data name="URLPrefixCategory.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Dit is de tekst die zal worden gebruikt als onderdeel van de URL om forumcategorieën te identificeren.</value>

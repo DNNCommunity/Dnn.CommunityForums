@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Services.Log.EventLog;
 
-    [TableName("activeforums_Forums_Tracking")]
+    [TableName("communityforums_Forums_Tracking")]
     [PrimaryKey("TrackingId", AutoIncrement = true)]
 
     internal class ForumTrackingInfo
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumInfo LoadForum()
         {
-            this.forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId);
+            this.forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ModuleId, this.ForumId);
             if (this.forum == null)
             {
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetForumUser()
         {
-            this.forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.Forum.ModuleId).GetByUserId(this.Forum.PortalId, this.UserId);
+            this.forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.Forum.PortalId, this.ModuleId, this.UserId);
             if (this.forumUser == null)
             {
                 this.forumUser = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo(this.ModuleId)

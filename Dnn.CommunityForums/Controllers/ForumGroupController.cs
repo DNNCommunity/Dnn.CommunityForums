@@ -20,29 +20,38 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
     using System.Linq;
 
-    using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
-    internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
+    internal class ForumGroupController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo, IForumGroupController, ForumGroupController>, IForumGroupController
     {
-        internal override string cacheKeyTemplate => CacheKeys.ForumGroupInfo;
+        protected override Func<IForumGroupController> GetFactory()
+        {
+            return () => new ForumGroupController();
+        }
 
         public virtual DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetById(int forumGroupId, int moduleId)
         {
-            var cachekey = this.GetCacheKey(moduleId, forumGroupId);
-            var forumGroup = LoadFromSettingsCache(moduleId, cachekey);
+            var cachekey = string.Format(CacheKeys.ForumGroupInfo, moduleId, forumGroupId);
+            var forumGroup = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
             if (forumGroup == null)
             {
-                forumGroup = base.GetById(forumGroupId, moduleId);
+                forumGroup = this._repositoryControllerBase.GetById(id: forumGroupId, scopeValue: moduleId);
+                if (forumGroup == null)
+                {
+                    forumGroup = this._repositoryControllerBase.GetById(id: forumGroupId);
+                }
+
                 if (forumGroup != null)
                 {
                     forumGroup.LoadSecurity();
                     forumGroup.LoadFeatureSettings();
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, forumGroup);
             }
 
             return forumGroup;
@@ -51,17 +60,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal virtual DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetByUrlPrefix(int moduleId, string groupPrefix)
         {
             string cachekey = string.Format(CacheKeys.ForumGroupByUrlPrefix, moduleId, groupPrefix);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
+            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
             if (forumGroupInfo == null)
             {
                 // this accommodates duplicates which may exist since currently no uniqueness applied in database
-                var forumGroupId = this.Find("WHERE ModuleId = @0 AND PrefixURL = @1", moduleId, groupPrefix.Trim()).OrderBy(t => t.ForumGroupId).FirstOrDefault()?.ForumGroupId;
+                var forumGroupId = this._repositoryControllerBase.Find("WHERE ModuleId = @0 AND PrefixURL = @1", moduleId, groupPrefix.Trim()).OrderBy(t => t.ForumGroupId).FirstOrDefault()?.ForumGroupId;
                 if (forumGroupId.HasValue)
                 {
                     forumGroupInfo = this.GetById(forumGroupId.Value, moduleId);
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(moduleId, cachekey, forumGroupInfo);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cachekey, forumGroupInfo);
             }
 
             return forumGroupInfo;
@@ -71,7 +80,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var oldPermissionsId = -1;
             var copyDownDefaultSettings = false;
-            var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
             if (useDefaultSecurity)
             {
                 if (isNew)
@@ -84,10 +92,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     {
                         oldPermissionsId = forumGroupInfo.PermissionsId;
                         forumGroupInfo.PermissionsId = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId;
-                        foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.PermissionsId == oldPermissionsId))
+                        foreach (var forum in DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.PermissionsId == oldPermissionsId))
                         {
                             forum.PermissionsId = forumGroupInfo.PermissionsId;
-                            fc.Update(forum);
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Update(forum);
                         }
                     }
                 }
@@ -97,15 +105,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (isNew || forumGroupInfo.InheritSecurity) /* new forum group or switching from module security to group security */
                 {
                     // set forum group permissions to use module default permissions as starting point
-                    forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Insert(new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId: SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId, moduleId: forumGroupInfo.ModuleId)).PermissionsId;
+                    forumGroupInfo.PermissionsId = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.Insert(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.GetById(moduleId: forumGroupInfo.ModuleId, permissionsId: SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId)).PermissionsId;
 
                     if (!isNew)
                     {
                         // reset any forum permissions previously mapped to the module default to map to new permissions id
-                        foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.PermissionsId == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId))
+                        foreach (var forum in DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.PermissionsId == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultPermissionId))
                         {
                             forum.PermissionsId = forumGroupInfo.PermissionsId;
-                            fc.Update(forum);
+                            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Update(forum);
                         }
                     }
                 }
@@ -127,10 +135,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     var oldSettingsKey = forumGroupInfo.GroupSettingsKey;
                     forumGroupInfo.GroupSettingsKey = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey;
-                    foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == oldSettingsKey))
+                    foreach (var forum in DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == oldSettingsKey))
                     {
                         forum.ForumSettingsKey = forumGroupInfo.GroupSettingsKey;
-                        fc.Update(forum);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Update(forum);
                     }
                 }
             }
@@ -140,10 +148,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     // reset any forum settings keys previously mapped to the module default to map to new settings key
                     forumGroupInfo.GroupSettingsKey = $"G{forumGroupInfo.ForumGroupId}";
-                    foreach (var forum in fc.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey))
+                    foreach (var forum in DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(moduleId: forumGroupInfo.ModuleId).Where(f => f.ForumGroupId == forumGroupInfo.ForumGroupId && f.ForumSettingsKey == SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultSettingsKey))
                     {
                         forum.ForumSettingsKey = forumGroupInfo.GroupSettingsKey;
-                        fc.Update(forum);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Update(forum);
                     }
                 }
             }
@@ -155,7 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (string.IsNullOrEmpty(forumGroupInfo.GroupSettingsKey))
             {
                 forumGroupInfo.GroupSettingsKey = $"G{forumGroupInfo.ForumGroupId}";
-                this.Update(forumGroupInfo);
+                this._repositoryControllerBase.Update(forumGroupInfo);
             }
 
             // if new group and not using default features, copy default features to group features as starting point
@@ -163,34 +171,38 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 forumGroupInfo.FeatureSettings = SettingsBase.GetModuleSettings(forumGroupInfo.ModuleId).DefaultFeatureSettings;
                 FeatureSettings.Save(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, forumGroupInfo.FeatureSettings);
-                this.Update(forumGroupInfo);
+                this._repositoryControllerBase.Update(forumGroupInfo);
             }
 
             if (oldPermissionsId != -1)
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveIfUnused(permissionId: oldPermissionsId, moduleId: forumGroupInfo.ModuleId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.Instance.RemoveIfUnused(permissionsId: oldPermissionsId, moduleId: forumGroupInfo.ModuleId);
             }
 
             /* if now using default module settings, remove group settings */
             if (useDefaultFeatures)
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController().DeleteForModuleIdSettingsKey(forumGroupInfo.ModuleId, $"G{forumGroupInfo.ForumGroupId}");
+                DotNetNuke.Modules.ActiveForums.Controllers.SettingsController.Instance.DeleteForModuleIdSettingsKey(forumGroupInfo.ModuleId, $"G{forumGroupInfo.ForumGroupId}");
             }
 
-            ClearSettingsCache(forumGroupInfo.ModuleId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.ClearAll(forumGroupInfo.ModuleId);
             return forumGroupInfo.ForumGroupId;
         }
 
         public void Groups_Delete(int moduleId, int forumGroupId)
         {
-            var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-            foreach (var forum in fc.GetForums(moduleId: moduleId).Where(f => f.ForumGroupId == forumGroupId))
+            foreach (var forum in DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(moduleId: moduleId).Where(f => f.ForumGroupId == forumGroupId))
             {
-                fc.Forums_Delete(forum.ForumID, moduleId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Forums_Delete(forum.ForumID, moduleId);
             }
 
-            this.DeleteById(forumGroupId);
-            ClearSettingsCache(moduleId);
+            this._repositoryControllerBase.DeleteById(forumGroupId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.ClearAll(moduleId);
+        }
+
+        ForumGroupInfo IForumGroupController.GetByUrlPrefix(int moduleId, string groupPrefix)
+        {
+            return this.GetByUrlPrefix(moduleId, groupPrefix);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     /// <summary>
     /// Represents an archived forum URL entry.
     /// </summary>
-    [TableName("activeforums_ArchivedURLs")]
+    [TableName("communityforums_ArchivedURLs")]
     [PrimaryKey("Id", AutoIncrement = true)]
     public class ArchivedURLInfo
     {

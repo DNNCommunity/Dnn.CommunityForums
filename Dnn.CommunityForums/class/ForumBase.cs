@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? replyId;
         private int? quoteId;
         private int? authorid;
+        private string _theme;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo foruminfo;
 
         private bool? canCreate;
@@ -49,16 +50,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Public Properties
 
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public XmlDocument ForumData
-        {
-            get => throw new NotImplementedException();// this.forumData ?? (this.forumData = this.ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.ControlConfig.PortalId, this.ControlConfig.ForumModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.PortalId, this.ForumModuleId));
-            set => throw new NotImplementedException(); // this.forumData = value;
-        }
-
         public ControlsConfig ControlConfig { get; set; }
 
-        public string ThemePath => this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
+        public string ThemePath => string.Concat(Globals.ThemesPath, "/", this.Theme, "/");
+
+        new public string ImagePath => string.Concat(this.ThemePath, "images/");
 
         internal HashSet<int> ForumIds
         {
@@ -78,29 +74,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int DefaultForumViewTemplateId { get; set; } = -1;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int DefaultTopicsViewTemplateId { get; set; } = -1;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public int DefaultTopicViewTemplateId { get; set; } = -1;
+        public string Theme
+        {
+            get => this._theme ?? (this._theme = this.ModuleSettings.Theme);
+            set => this._theme = value;
+        }
 
         public string DefaultView { get; set; } = Views.ForumView;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public bool JumpToLastPost
-        {
-            get => throw new NotImplementedException();
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public DateTime UserLastAccess
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
 
         public int PostId
         {
@@ -499,7 +479,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return this.ForumUser == null
                 ? false
-                : DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess( this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
+                : DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess(this.ForumModuleId, this.ForumInfo.PermissionsId, secType), this.ForumUser.UserRoleIds);
         }
 
         protected string GetSharedResource(string key)

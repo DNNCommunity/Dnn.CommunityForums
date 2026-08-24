@@ -22,11 +22,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Extensions
 {
     using System;
 
-    using DotNetNuke.Modules.ActiveForums.Data;
-    using DotNetNuke.Modules.ActiveForums.Extensions;
-
     using Moq;
-
     using NUnit.Framework;
 
     [TestFixture]

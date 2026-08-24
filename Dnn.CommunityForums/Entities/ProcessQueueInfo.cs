@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 
-    [TableName("activeforums_ProcessQueue")]
+    [TableName("communityforums_ProcessQueue")]
     [PrimaryKey("Id", AutoIncrement = true)]
     public class ProcessQueueInfo
     {

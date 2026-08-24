@@ -24,109 +24,52 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+
     #region RewardInfo
+    [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Entities.RankInfo()")]
     public class RewardInfo
     {
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Entities.RankInfo()")]
         public int RankId { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Entities.RankInfo()")]
         public int PortalId { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Entities.RankInfo()")]
         public int ModuleId { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Entities.RankInfo()")]
         public string RankName { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Entities.RankInfo()")]
         public int MinPosts { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Entities.RankInfo()")]
         public int MaxPosts { get; set; }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Entities.RankInfo()")]
         public string Display { get; set; }
     }
     #endregion
 
     #region RewardController
+    [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController()")]
     public class RewardController
     {
-        public RewardInfo Reward_Save(RewardInfo reward)
-        {
-            int rankId = DataProvider.Instance().Ranks_Save(reward.PortalId, reward.ModuleId, reward.RankId, reward.RankName, reward.MinPosts, reward.MaxPosts, reward.Display);
-            return this.Reward_Get(reward.PortalId, reward.ModuleId, rankId);
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController()")]
+        public RewardInfo Reward_Save(RewardInfo reward) => throw new NotImplementedException();
 
-        public void Reward_Delete(int portalId, int moduleId, int rankId)
-        {
-            DataProvider.Instance().Ranks_Delete(portalId, moduleId, rankId);
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController()")]
+        public void Reward_Delete(int portalId, int moduleId, int rankId) => throw new NotImplementedException();
 
-        public RewardInfo Reward_Get(int portalId, int moduleID, int rankId)
-        {
-            var ri = new RewardInfo();
-            IDataReader dr = DataProvider.Instance().Ranks_Get(portalId, moduleID, rankId);
+        public RewardInfo Reward_Get(int portalId, int moduleID, int rankId) => throw new NotImplementedException();
 
-            while (dr.Read())
-            {
-                ri.Display = dr["Display"].ToString();
-                ri.MaxPosts = Convert.ToInt32(dr["MaxPosts"]);
-                ri.MinPosts = Convert.ToInt32(dr["MinPosts"]);
-                ri.ModuleId = moduleID;
-                ri.PortalId = portalId;
-                ri.RankId = Convert.ToInt32(dr["RankId"]);
-                ri.RankName = Convert.ToString(dr["RankName"]);
-            }
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController()")]
+        public List<RewardInfo> Reward_List(int portalId, int moduleId, bool useCache) => throw new NotImplementedException();
 
-            dr.Close();
-
-            return ri;
-        }
-
-        public List<RewardInfo> Reward_List(int portalId, int moduleId, bool useCache)
-        {
-            string cacheKey = string.Format(CacheKeys.Rewards, moduleId.ToString());
-            List<RewardInfo> rl;
-
-            if (useCache)
-            {
-                rl = (List<RewardInfo>)DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
-                if (rl == null)
-                {
-                    rl = this.Reward_List(portalId, moduleId);
-                    DataCache.SettingsCacheStore(moduleId, cacheKey, rl);
-                }
-            }
-            else
-            {
-                rl = this.Reward_List(portalId, moduleId);
-            }
-
-            return rl;
-        }
-
-        public List<RewardInfo> Reward_List(int portalId, int moduleId)
-        {
-            var rl = new List<RewardInfo>();
-            IDataReader dr = DataProvider.Instance().Ranks_List(portalId, moduleId);
-
-            dr.Read();
-            dr.NextResult();
-
-            while (dr.Read())
-            {
-                var ri = new RewardInfo
-                {
-                    Display = Convert.ToString(dr["Display"]),
-                    MaxPosts = Convert.ToInt32(dr["MaxPosts"]),
-                    MinPosts = Convert.ToInt32(dr["MinPosts"]),
-                    ModuleId = moduleId,
-                    PortalId = portalId,
-                    RankId = Convert.ToInt32(dr["RankId"]),
-                    RankName = Convert.ToString(dr["RankName"]),
-                };
-                rl.Add(ri);
-            }
-
-            dr.Close();
-
-            return rl;
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 11.00.00. Moved to Controllers.RankController()")]
+        public List<RewardInfo> Reward_List(int portalId, int moduleId) => throw new NotImplementedException();
     }
     #endregion
 }

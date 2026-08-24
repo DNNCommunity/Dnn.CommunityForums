@@ -25,10 +25,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_Topics_Ratings")]
+    [TableName("communityforums_Topics_Ratings")]
     [PrimaryKey("RatingId", AutoIncrement = true)]
     [Scope("TopicId")]
-    [Cacheable("activeforums_Topics_Ratings", CacheItemPriority.Normal)]
+    [Cacheable("communityforums_Topics_Ratings", CacheItemPriority.Normal)]
     public class TopicRatingInfo
     {
         public int RatingId { get; set; }

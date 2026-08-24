@@ -45,11 +45,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsSitemapProvider));
 
-        private readonly ForumController forumController;
+        private readonly IForumController forumController;
 
         public ForumsSitemapProvider()
         {
-            this.forumController = new ForumController();
+            this.forumController = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance;
         }
 
         public override List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version)
@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
 
                 try
                 {
-                    this.AppendModuleUrls(module, portalAlias, sitemapUrlsByUrl);
+                    this.AppendModuleUrls(module, ps, sitemapUrlsByUrl);
                 }
                 catch (Exception ex)
                 {
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
             return sitemapUrlsByUrl.Values.ToList();
         }
 
-        private void AppendModuleUrls(ModuleInfo module, string portalAlias, IDictionary<string, SitemapUrl> sitemapUrlsByUrl)
+        private void AppendModuleUrls(ModuleInfo module, PortalSettings ps, IDictionary<string, SitemapUrl> sitemapUrlsByUrl)
         {
             var tab = TabController.Instance.GetTab(module.TabID, module.PortalID);
             bool isSecureTab = tab != null && tab.IsSecure;
@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
 
             var results = DataContext.Instance().ExecuteQuery<SearchSitemapResult>(
                 CommandType.StoredProcedure,
-                "{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate",
+                "{databaseOwner}{objectQualifier}communityforums_Search_GetSearchItemsFromBegDate",
                 module.ModuleID,
                 SqlDateTime.MinValue.Value);
 
@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     continue;
                 }
 
-                var forum = this.forumController.GetById(result.ForumId, module.ModuleID);
+                var forum = this.forumController.GetById(module.ModuleID, result.ForumId);
                 if (forum == null || forum.Security == null || !forum.IsPublicForum)
                 {
                     continue;
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                     continue;
                 }
 
-                link = Utilities.ResolveUrl(link, portalAlias, isSecureTab);
+                link = Utilities.ResolveUrl(link, ps);
                 if (string.IsNullOrWhiteSpace(link))
                 {
                     continue;

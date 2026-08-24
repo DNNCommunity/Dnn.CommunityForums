@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected override void OnLoad(EventArgs e)
         {
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
                 base.OnLoad(e);
 

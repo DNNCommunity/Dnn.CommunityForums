@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_Topics_Categories")]
+    [TableName("communityforums_Topics_Categories")]
     [PrimaryKey("TopicCategoryId", AutoIncrement = true)]
     public class TopicCategoryInfo
     {
@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (this.categoryInfo == null)
                 {
-                    this.categoryInfo = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().GetById(this.CategoryId);
+                    this.categoryInfo = DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance.GetById(this.CategoryId);
                     if (this.categoryInfo == null)
                     {
                         this.categoryInfo = new DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo();

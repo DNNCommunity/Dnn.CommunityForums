@@ -60,6 +60,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.LoadForumGroups(Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]));
                     }
 
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTheme]) == null))
+                    {
+                        this.BindThemes();
+                        Utilities.SelectListItemByValue(this.drpThemes, this.Settings[ForumViewerSettingsKeys.AFTheme]);
+                    }
+
                     if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup]) == null))
                     {
                         this.drpForum.SelectedIndex = this.drpForum.Items.IndexOf(this.drpForum.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup])));
@@ -82,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Update ModuleSettings
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumModuleId, this.drpForumInstance.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroup, this.drpForum.SelectedItem.Value);
+                objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFTheme, this.drpThemes.SelectedItem.Value);
 
                 // objModules.UpdateModuleSetting(ModuleId, "AFEnableToolbar", CType(chkEnableToolbar.Checked, String))
                 string forumGroup;
@@ -114,8 +121,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public void LoadForums()
         {
             int i = 0;
-            var mc = new DotNetNuke.Entities.Modules.ModuleController();
-            var tc = new DotNetNuke.Entities.Tabs.TabController();
+            var mc = DotNetNuke.Entities.Modules.ModuleController.Instance;
+            var tc = DotNetNuke.Entities.Tabs.TabController.Instance;
             DotNetNuke.Entities.Tabs.TabInfo ti;
             foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(this.PortalId))
             {
@@ -139,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public void LoadForumGroups(int forumModuleID)
         {
             this.drpForum.Items.Insert(0, new ListItem("-- Select a Group or Forum --", "-1"));
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(forumModuleID).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+            var forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(forumModuleID).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
 
             int i = 1;
             string groupName = string.Empty;
@@ -165,6 +172,13 @@ namespace DotNetNuke.Modules.ActiveForums
         private void drpForumInstance_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.LoadForumGroups(Convert.ToInt32(this.drpForumInstance.SelectedItem.Value));
+        }
+
+        private void BindThemes()
+        {
+            var di = new System.IO.DirectoryInfo(this.Server.MapPath(Globals.ModulePath + "themes"));
+            this.drpThemes.DataSource = di.GetDirectories();
+            this.drpThemes.DataBind();
         }
     }
 }

@@ -42,11 +42,12 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void GetNamesForRolesTest()
         {
             // Arrange
-            var roles = $"{Common.Globals.glbRoleAllUsers};{Common.Globals.glbRoleUnauthUser}";
-            var expectedResult = $"{Common.Globals.glbRoleAllUsersName};{Common.Globals.glbRoleUnauthUserName};";
+            var delimiter = ";";
+            var roles = $"{Common.Globals.glbRoleAllUsers}{delimiter}{Common.Globals.glbRoleUnauthUser}";
+            var expectedResult = $"{Common.Globals.glbRoleAllUsersName}{delimiter}{Common.Globals.glbRoleUnauthUserName}{delimiter}";
 
             // Act
-            var actualResult = PermissionController.GetNamesForRoles(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), roles);
+            var actualResult = PermissionController.GetNamesForRoles(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), roles, delimiter);
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -209,36 +210,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         }
 
         [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public void GetRoleIdsFromRoleIdArrayTest()
-        {
-            // Arrange
-            var roles = new string[] { "1", "2", "3" };
-            var expectedResult = new HashSet<int> { 1, 2, 3 };
-
-            // Act
-            var actualResult = PermissionController.GetRoleIdsFromRoleIdArray(roles);
-
-            // Assert
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
-        }
-
-        [Test]
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public void GetRoleIdsFromRoleNameArrayTest()
-        {
-            // Arrange
-            var rolesNames = new string[] { DotNetNuke.Common.Globals.glbRoleAllUsersName, DotNetNuke.Common.Globals.glbRoleUnauthUserName };
-            var expectedResult = new HashSet<int> { Convert.ToInt32(DotNetNuke.Common.Globals.glbRoleAllUsers),  Convert.ToInt32( DotNetNuke.Common.Globals.glbRoleUnauthUser) };
-
-            // Act
-            var actualResult = PermissionController.GetRoleIdsFromRoleNameArray(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, rolesNames);
-
-            // Assert
-            Assert.That(actualResult.SetEquals(expectedResult));
-        }
-
-        [Test]
         public void GetRolesNVCTest()
         {
             // Arrange
@@ -282,19 +253,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             return PermissionController.HasAccess(authRoles, userRoles);
-        }
-
-        // Permission set manipulation tests
-        [Test]
-        [TestCase(arg1: "0;1;-3;-1;38", arg2: "-3;-1;0;1;38;", ExpectedResult = true)]
-        [TestCase(arg1: "0;1;-1;-3;38;", arg2: "-3;-1;0;1;38;", ExpectedResult = true)]
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public bool SortPermissionSetMembersTest(string permSet, string expectedResults)
-        {
-            // Arrange
-            // Act
-            // Assert
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SortPermissionSetMembers(permSet).Equals(expectedResults);
         }
 
         [Test]
@@ -418,17 +376,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        [Test]
-        public void SavePermSetTest()
-        {
-            // Arrange
-            // Act
-            // Assert
-            /* not testable without DI for permissions Controller */
-            Assert.Throws<ArgumentException>(() => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(this.MockModule.Object.ModuleID, -1, string.Empty, string.Empty));
         }
 
         [Test]
@@ -720,15 +667,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         }
 
         [Test]
-        public void WhichRolesCanViewForumTest()
-        {
-            // Arrange
-            // Act
-            // Assert
-            /* not yet testable */
-            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(this.MockModule.Object.ModuleID, -1, string.Empty));        }
-
-        [Test]
         public void CheckForumIdsForViewForRSSTest()
         {
             // Arrange
@@ -736,7 +674,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Assert
             /* not yet testable */
             Assert.That(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, string.Empty, new HashSet<int>()), Is.EqualTo(string.Empty));
-            Assert.Throws<NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, "1",  new HashSet<int>() { 1, 2, 3 }));
+            Assert.Throws<System.NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, "1",  new HashSet<int>() { 1, 2, 3 }));
         }
 
         [Test]

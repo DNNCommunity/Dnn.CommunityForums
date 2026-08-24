@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public class WhatsNewModuleSettings
     {
@@ -100,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 moduleController.UpdateModuleSetting(moduleId, RSSCacheTimeoutSettingsKey, this.RSSCacheTimeout.ToString());
 
                 // Clear the cache
-                DataCache.SettingsCacheClear(moduleId, string.Format(CacheKeys.WhatsNew, moduleId));
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Clear(moduleId, string.Format(CacheKeys.WhatsNew, moduleId));
 
                 return true;
             }

@@ -29,28 +29,21 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Net;
     using System.Reflection;
     using System.Security.Cryptography;
-    using System.Security.Policy;
-    using System.Security.Principal;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Providers;
-    using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Web.UI.WebControls;
 
     public abstract partial class Utilities
     {
@@ -124,14 +117,14 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string BuildToolbar(int portalId, int forumModuleId, int forumTabId, int moduleId, int tabId, ForumUserInfo forumUser, Uri requestUri, string rawUrl, string locale)
         {
             string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, forumUser.CurrentUserType, locale);
-            string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey)) : string.Empty;
+            string sToolbar = SettingsBase.GetModuleSettings(moduleId).CacheTemplates ? Convert.ToString(DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId, cacheKey)) : string.Empty;
             if (string.IsNullOrEmpty(sToolbar))
             {
                 sToolbar = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(forumModuleId, Enums.TemplateType.ToolBar, SettingsBase.GetModuleSettings(moduleId).DefaultFeatureSettings.TemplateFileNameSuffix, forumUser);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, portalId: portalId, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, forumUser: forumUser, requestUri: requestUri, rawUrl: rawUrl);
                 if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
                 {
-                    DataCache.SettingsCacheStore(moduleId: moduleId, cacheKey: cacheKey, sToolbar);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId: moduleId, cacheKey: cacheKey, sToolbar);
                 }
             }
 
@@ -147,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (forumId > 0)
             {
-                var forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, forumModuleId);
+                var forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(forumModuleId, forumId);
                 templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, forumInfo, new PortalSettingsHelper().GetPortalSettings(portalId), SettingsBase.GetModuleSettings(forumModuleId), new Services.URLNavigator().NavigationManager(), forumUser, tabId, forumUser.CurrentUserType, requestUri, rawUrl);
                 templateStringBuilder = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemovePrefixedToken(templateStringBuilder, "DCF:TOOLBAR-SEARCHTEXT");
             }
@@ -164,8 +157,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             text = text.Trim();
             text = text.Replace(":", string.Empty);
-            text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w]", RegexOptions.Compiled & RegexOptions.IgnoreCase).Replace(text, "-");
-            text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"([-]+)", RegexOptions.Compiled & RegexOptions.IgnoreCase).Replace(text, "-");
+            text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"[^\w]", RegexOptions.Compiled | RegexOptions.IgnoreCase).Replace(text, "-");
+            text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(@"([-]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase).Replace(text, "-");
             if (text.EndsWith("-"))
             {
                 text = text.Substring(0, text.Length - 1);
@@ -289,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
             }
 
-            var ti = new TabController().GetTab(tabId, portalId, false);
+            var ti = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, portalId, false);
             var sURL = additionalParameters.ToList().Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + "&" + p);
 
             pageName = CleanStringForUrl(pageName);
@@ -383,7 +376,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 urlText = string.Concat(url.Substring(0, maxLengthAutoLinkLabel - 22), "...", url.Substring(url.Length - 20));
             }
 
-            return url.ToLowerInvariant().Contains(currentSite.ToLowerInvariant()) ? string.Format(inSite, new Uri(url).AbsoluteUri, urlText) : string.Format(outSite, new Uri(url).AbsoluteUri, urlText);
+            var validUri = Uri.IsWellFormedUriString(url, UriKind.Absolute);
+            if (validUri)
+            {
+                return url.ToLowerInvariant().Contains(currentSite.ToLowerInvariant()) ? string.Format(inSite, new Uri(url).AbsoluteUri, urlText) : string.Format(outSite, new Uri(url).AbsoluteUri, urlText);
+            }
+
+            return match.Value;
         }
 
         public static string AutoLinks(string text, string currentSite)
@@ -480,14 +479,14 @@ namespace DotNetNuke.Modules.ActiveForums
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
             string strMessage = text;
-            if (!String.IsNullOrEmpty(strMessage))
+            if (!string.IsNullOrEmpty(strMessage))
             {
                 if (strMessage.ToUpper().Contains("[CODE]") | strMessage.ToUpper().Contains("<CODE"))
                 {
                     var codes = new List<string>();
                     var i = 0;
                     var pattern = @"(\[CODE\](.*?)\[\/CODE\])";
-                    foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern, RegexOptions.Singleline & RegexOptions.IgnoreCase).Matches(strMessage))
+                    foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern, RegexOptions.Singleline | RegexOptions.IgnoreCase).Matches(strMessage))
                     {
                         strMessage = strMessage.Replace(m.Value, string.Concat("[CODEHOLDER", i, "]"));
                         codes.Add(m.Value);
@@ -500,7 +499,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
                     }
 
-                    //strMessage = System.Net.WebUtility.HtmlEncode(strMessage);
                     strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
 
                     i = 0;
@@ -522,8 +520,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     strMessage = ReplaceNewLineWithHtmlBreakTag(strMessage);
                 }
-
-                //strMessage = EncodeBrackets(strMessage);
             }
 
             return strMessage;
@@ -532,12 +528,12 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string EncodeCodeBlocks(string text)
         {
             string strMessage = text;
-            if (!String.IsNullOrEmpty(strMessage) && (strMessage.ToUpperInvariant().Contains("[CODE]") || strMessage.ToUpperInvariant().Contains("<CODE")))
+            if (!string.IsNullOrEmpty(strMessage) && (strMessage.ToUpperInvariant().Contains("[CODE]") || strMessage.ToUpperInvariant().Contains("<CODE")))
             {
                 var pattern = @"[\[<]code[\]>](?<codeblock>(?s:.)*?)[\[<]\/code[\]>]";
-                foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(strMessage))
+                foreach (Match m in DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture).Matches(strMessage))
                 {
-                    strMessage = strMessage.Replace(m.Value, System.Web.HttpUtility.HtmlEncode(m.Value));
+                    strMessage = strMessage.Replace(m.Value, $"<code>{System.Web.HttpUtility.HtmlEncode(m.Groups["codeblock"])}</code>");
                 }
             }
 
@@ -605,27 +601,6 @@ namespace DotNetNuke.Modules.ActiveForums
             text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("<form>", RegexOptions.IgnoreCase).Replace(text, "&lt;form&gt;");
             text = DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex("</form>", RegexOptions.IgnoreCase).Replace(text, "&lt;/form&gt;");
             return text;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public static string GetCaseInsensitiveSearch(string strSearch)
-        {
-            var strReturn = string.Empty;
-            foreach (var chrCurrent in strSearch)
-            {
-                var chrLower = char.ToLower(chrCurrent);
-                var chrUpper = char.ToUpper(chrCurrent);
-                if (chrUpper == chrLower)
-                {
-                    strReturn = strReturn + chrCurrent;
-                }
-                else
-                {
-                    strReturn = string.Concat(strReturn, "[", chrLower, chrUpper, "]");
-                }
-            }
-
-            return strReturn;
         }
 
         public static bool InputIsValid(string body)
@@ -1041,19 +1016,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return string.Empty;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        internal static string GetUserFormattedDateTime(DateTime? dateTime, int portalId, int userId)
-        {
-            if (dateTime != null)
-            {
-                CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
-                TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-                return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset((DateTime)dateTime));
-            }
-
-            return string.Empty;
-        }
-
         internal static string GetUserFormattedDateTime(DateTime? dateTime, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
         {
             if (dateTime != null)
@@ -1093,38 +1055,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return string.Empty;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
-        {
-            CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
-            TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset(dateTime), format);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId)
-        {
-            return GetUserFormattedDateTime((DateTime?)dateTime, portalId, userId);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
-        {
-            return GetUserFormattedDateTime((DateTime?)date, userCultureInfo, timeZoneOffset, "d");
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
-        {
-            return GetUserFormattedDateTime((DateTime?)date, userCultureInfo, timeZoneOffset, format);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
-        {
-            return GetUserFormattedDateTime((DateTime?)dateTime, userCultureInfo, timeZoneOffset, format);
-        }
-
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
         {
             return GetCultureInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
@@ -1136,7 +1066,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 string cacheKey = string.Format(CacheKeys.CultureInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
-                object obj = DataCache.SettingsCacheRetrieve(moduleId: -1, cacheKey);
+                object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId: -1, cacheKey);
                 if (obj == null)
                 {
                     if (userInfo?.Profile?.PreferredLocale != null)
@@ -1159,7 +1089,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         cultureInfo = CultureInfo.CurrentCulture;
                     }
 
-                    DataCache.SettingsCacheStore(moduleId: -1, cacheKey, cacheObj: cultureInfo);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId: -1, cacheKey, cacheObj: cultureInfo);
                 }
                 else
                 {
@@ -1187,7 +1117,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 string cacheKey = string.Format(CacheKeys.TimeZoneInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
-                object obj = DataCache.SettingsCacheRetrieve(moduleId: -1, cacheKey);
+                object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleId: -1, cacheKey);
                 if (obj == null)
                 {
                     if (userInfo?.Profile?.PreferredTimeZone != null)
@@ -1210,7 +1140,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         timeZoneInfo = TimeZoneInfo.Utc;
                     }
 
-                    DataCache.SettingsCacheStore(moduleId: -1, cacheKey, cacheObj: timeZoneInfo);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId: -1, cacheKey, cacheObj: timeZoneInfo);
                 }
                 else
                 {
@@ -1232,13 +1162,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static TimeSpan GetTimeZoneOffsetForUser(int portalId, int userId)
         {
-            return GetTimeZoneOffsetForUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
-        {
-            return displayDate.AddMinutes(offset.TotalMinutes);
+            return GetTimeZoneOffsetForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
         }
 
         public static string GetLastPostSubject(int lastPostID, int parentPostID, int forumID, int tabID, string subject, int length, int pageSize, int replyCount, bool canRead)
@@ -1295,23 +1219,6 @@ namespace DotNetNuke.Modules.ActiveForums
             const string expression = @"\[SPACER\:(\d+)\:(\d+)\]";
 
             return DotNetNuke.Common.Utilities.RegexUtils.GetCachedRegex(expression, RegexOptions.IgnoreCase).Replace(template, spacerTemplate);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        internal static string GetSqlString(string sqlFile)
-        {
-            var resourceLocation = sqlFile;
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceLocation);
-
-            if (stream == null)
-            {
-                return null;
-            }
-
-            var sr = new StreamReader(stream);
-            var contents = sr.ReadToEnd();
-            sr.Close();
-            return contents;
         }
 
         public static string LocalizeControl(string controlText)
@@ -1493,39 +1400,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return string.IsNullOrEmpty(sValue) ? key : sValue;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used")]
-        public static string FormatFileSize(int fileSize)
-        {
-            try
-            {
-                if (fileSize >= 1073741824)
-                {
-                    return (fileSize / 1024.0 / 1024.0 / 1024.0).ToString("#0.00") + " GB";
-                }
-
-                if (fileSize >= 1048576)
-                {
-                    return (fileSize / 1024.0 / 1024.0).ToString("#0.00") + " MB";
-                }
-
-                if (fileSize >= 1024)
-                {
-                    return (fileSize / 1024.0).ToString("#0.00") + " KB";
-                }
-
-                if (fileSize < 1024)
-                {
-                    return string.Concat(fileSize, " Bytes");
-                }
-            }
-            catch (Exception ex)
-            {
-                return "0 Bytes";
-            }
-
-            return "0 Bytes";
-        }
-
         public static object ConvertFromHashTableToObject(Hashtable ht, object infoObject)
         {
             var myType = infoObject.GetType();
@@ -1614,12 +1488,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return contents;
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int moduleId, int forumId).")]
-        public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleId, forumId);
         }
 
         public static bool SafeConvertBool(object value, bool defaultValue = false)
@@ -1823,31 +1691,45 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static int GetForumModuleId(int ModuleId, int tabId)
+        internal static int GetForumModuleId(DotNetNuke.Entities.Modules.ModuleInfo moduleInfo)
         {
-            int moduleId = ModuleId;
-            if (ModuleId > 0)
+            if (moduleInfo == null)
             {
-                if (tabId > 0)
+                return DotNetNuke.Common.Utilities.Null.NullInteger;
+            }
+
+            var cacheKey = string.Format(CacheKeys.ForumModuleId, moduleInfo.ModuleID, moduleInfo.TabID);
+            var forumModuleId = (int?)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleInfo.ModuleID, cacheKey);
+            if (forumModuleId == null || !forumModuleId.HasValue)
+            {
+                forumModuleId = moduleInfo.ModuleID;
+                if (moduleInfo.ModuleID > 0 && moduleInfo.TabID > 0)
                 {
-                    if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: tabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
+                    if (moduleInfo.DesktopModule?.ModuleName == $"{Globals.ModuleName} Viewer")
                     {
-                        moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, tabId, false).ModuleSettings[ForumViewerSettingsKeys.AFForumModuleId]);
+                        forumModuleId = Utilities.SafeConvertInt(moduleInfo.ModuleSettings[ForumViewerSettingsKeys.AFForumModuleId]);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleInfo.ModuleID, cacheKey, forumModuleId);
                     }
                 }
             }
 
-            return moduleId;
+            return (int)forumModuleId;
         }
 
-        internal static bool RunningInViewer(int moduleId, int tabId)
+        internal static bool RunningInViewer(DotNetNuke.Entities.Modules.ModuleInfo moduleInfo)
         {
-            if (moduleId > 0 && tabId > 0)
+            var cacheKey = string.Format(CacheKeys.RunningInViewer, moduleInfo.ModuleID, moduleInfo.TabID);
+            var runningInViewer = (bool?)DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(moduleInfo.ModuleID, cacheKey);
+            if (runningInViewer == null || !runningInViewer.HasValue)
             {
-                return DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: moduleId, tabId: tabId, ignoreCache: false).DesktopModule?.ModuleName == string.Concat(Globals.ModuleName, " Viewer");
+            if (moduleInfo.ModuleID > 0 && moduleInfo.TabID > 0)
+                {
+                    runningInViewer = moduleInfo.DesktopModule?.ModuleName == $"{Globals.ModuleName} Viewer";
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleInfo.ModuleID, cacheKey, runningInViewer);
+                }
             }
 
-            return false;
+            return (bool)runningInViewer;
         }
 
         internal static void CopyFolder(DirectoryInfo source, DirectoryInfo target)
@@ -1933,7 +1815,50 @@ namespace DotNetNuke.Modules.ActiveForums
             return tag;
         }
 
-        internal static string ResolveUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        /// <summary>Gets the URL suitable for an image, which must NOT contain culture/language and needs to properly handle child portals.</summary>
+        /// <param name="imageUrl">The "FileUrl" for an image.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <returns>A Url to the image.</returns>
+        internal static string GetImageUrl(string imageUrl, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return GetImageUrl(imageUrl: imageUrl, defaultPortalAlias: portalSettings?.DefaultPortalAlias, cultureCode: portalSettings?.CultureCode, portalSettings.SSLEnabled);
+        }
+
+        /// <summary>Gets the URL suitable for an image, which must NOT contain culture/language and needs to properly handle child portals.</summary>
+        /// <param name="imageUrl">The "FileUrl" for an image.</param>
+        /// <param name="defaultPortalAlias">The default portal alias.</param>
+        /// <param name="cultureCode">Portal culture code, e.g. en-US.</param>
+        /// <param name="sslEnabled">Boolean if SSL enabled.</param>
+        /// <returns>A Url to the image.</returns>
+        internal static string GetImageUrl(string imageUrl, string defaultPortalAlias, string cultureCode, bool sslEnabled = true)
+        {
+            if (imageUrl.StartsWith("/", StringComparison.InvariantCultureIgnoreCase))
+            {
+                imageUrl = imageUrl.Substring(1);
+            }
+
+            var http_https = sslEnabled ? "https://" : "http://";
+            return RemoveCultureFromUrl($"{http_https}{GetHostNameAndPortFromPortalAlias(defaultPortalAlias)}/{imageUrl}", cultureCode);
+        }
+
+        /// <summary>Gets the hostname portion of the default portal alias.</summary>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <returns>Resolves the host name portion of the default portal alias for the specified portal.</returns>
+        internal static string GetHostNameFromPortalAlias(DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return GetHostNameAndPortFromPortalAlias(portalSettings.DefaultPortalAlias);
+        }
+
+        /// <summary>Gets the hostname portion of the default portal alias.</summary>
+        /// <param name="defaultPortalAlias">Default Portal Alias.</param>
+        /// <returns>Resolves the host name portion of the default portal alias for the specified portal.</returns>
+        internal static string GetHostNameAndPortFromPortalAlias(string defaultPortalAlias)
+        {
+            var uri = new UriBuilder($"https://{defaultPortalAlias}").Uri;
+            return uri.IsDefaultPort ? uri.Host : $"{uri.Host}:{uri.Port}";
+        }
+
+        internal static string ResolveUrl(string url,  DotNetNuke.Entities.Portals.PortalSettings portalSettings)
         {
             return ResolveUrl(url: url, defaultPortalAlias: portalSettings?.DefaultPortalAlias, sslEnabled: portalSettings?.SSLEnabled ?? true);
         }
@@ -1952,17 +1877,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 link = pathAndQuery;
             }
 
-            var defaultAlias = defaultPortalAlias;
-            var domain = DotNetNuke.Common.Globals.AddHTTP(defaultAlias);
-            if (defaultAlias.Contains("/"))
+            if (defaultPortalAlias.Contains("/"))
             {
-                var subDomain = defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                var subDomain = defaultPortalAlias.Substring(defaultPortalAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
                 if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
                 {
                     link = link.Substring(subDomain.Length);
                 }
             }
 
+            var domain = DotNetNuke.Common.Globals.AddHTTP(defaultPortalAlias);
             url = url.Replace(url, $"{domain}{link}");
 
             if (sslEnabled && url.StartsWith("http://"))
@@ -1975,6 +1899,21 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return url;
+        }
+
+        internal static string RemoveCultureFromUrl(string url, string cultureCode)
+        {
+            if (!string.IsNullOrEmpty(cultureCode) && url.ToLowerInvariant().Contains($"/{cultureCode?.ToLowerInvariant()}/"))
+            {
+                url = url.ToLowerInvariant().Replace($"/{cultureCode.ToLowerInvariant()}/", "/");
+            }
+
+            return url;
+        }
+
+        internal static string RemoveCultureFromUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
+        {
+            return RemoveCultureFromUrl(url: url, cultureCode: portalSettings?.CultureCode);
         }
 
         internal static string GetSha256Hash(string input)
@@ -2062,16 +2001,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return false;
-        }
-
-        internal static string RemoveCultureFromUrl(string url, DotNetNuke.Entities.Portals.PortalSettings portalSettings)
-        {
-            if (!string.IsNullOrEmpty(portalSettings.PortalAlias?.CultureCode) && url.ToLowerInvariant().Contains($"/{portalSettings.PortalAlias?.CultureCode?.ToLowerInvariant()}/"))
-            {
-                url = url.ToLowerInvariant().Replace($"/{portalSettings.PortalAlias.CultureCode.ToLowerInvariant()}/", "/");
-            }
-
-            return url;
         }
     }
 }

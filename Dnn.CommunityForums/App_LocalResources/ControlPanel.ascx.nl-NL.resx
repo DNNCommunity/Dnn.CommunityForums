@@ -180,9 +180,6 @@
   <data name="[RESX:AddRole].Text" xml:space="preserve">
     <value>Rol Toevoegen</value>
   </data>
-  <data name="[RESX:AddTemplate].Text" xml:space="preserve">
-    <value>Toevoegen Sjabloon</value>
-  </data>
   <data name="[RESX:AddUserName].Text" xml:space="preserve">
     <value>Gebruiker Toevoegen</value>
   </data>
@@ -369,12 +366,6 @@
   <data name="[RESX:Deleted].Text" xml:space="preserve">
     <value>Verwijderd</value>
   </data>
-  <data name="[RESX:DesignAndTemplates:Intro].Text" xml:space="preserve">
-    <value>De hieronder staande instellingen helpen u om het voorkomen van de forums te beïnvloeden.</value>
-  </data>
-  <data name="[RESX:DesignAndTemplates].Text" xml:space="preserve">
-    <value>Ontwerp en Layout</value>
-  </data>
   <data name="[RESX:Details].Text" xml:space="preserve">
     <value>Details</value>
   </data>
@@ -527,9 +518,6 @@
   </data>
   <data name="[RESX:ForumStatSettings].Text" xml:space="preserve">
     <value>Instellingen Statistieken</value>
-  </data>
-  <data name="[RESX:ForumTemplate].Text" xml:space="preserve">
-    <value>Sjabloon</value>
   </data>
   <data name="[RESX:ForumTheme].Text" xml:space="preserve">
     <value>Thema</value>
@@ -835,9 +823,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:PleaseWait].Text" xml:space="preserve">
     <value>Laden...  Ogenblik s.v.p.</value>
   </data>
-  <data name="[RESX:PMPage].Text" xml:space="preserve">
-    <value>Pagina Privé Berichtgeving</value>
-  </data>
   <data name="[RESX:PointsOptions].Text" xml:space="preserve">
     <value>Opties voor Punten systeem</value>
   </data>
@@ -873,9 +858,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:ProfileDisabled].Text" xml:space="preserve">
     <value>Uitgeschakeld</value>
-  </data>
-  <data name="[RESX:ProfileTemplate].Text" xml:space="preserve">
-    <value>Profiel Sjabloon</value>
   </data>
   <data name="[RESX:ProfileType].Text" xml:space="preserve">
     <value>Type Profiel</value>
@@ -1009,9 +991,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:StatsInterval].Text" xml:space="preserve">
     <value>Bijwerk Interval</value>
   </data>
-  <data name="[RESX:StatsTemplate].Text" xml:space="preserve">
-    <value>Sjabloon</value>
-  </data>
   <data name="[RESX:Status].Text" xml:space="preserve">
     <value>Eigenschappen In- en/of Uitschakelen</value>
   </data>
@@ -1036,14 +1015,8 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Labels</value>
   </data>
-  <data name="[RESX:Template].Text" xml:space="preserve">
-    <value>Sjabloon</value>
-  </data>
   <data name="[RESX:Templates].Text" xml:space="preserve">
     <value>Sjablonen</value>
-  </data>
-  <data name="[RESX:TemplateType].Text" xml:space="preserve">
-    <value>Type</value>
   </data>
   <data name="[RESX:Text].Text" xml:space="preserve">
     <value>Tekst</value>
@@ -1132,9 +1105,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Tips:ForumName].Text" xml:space="preserve">
     <value>Geef de naam op voor dit forum.</value>
   </data>
-  <data name="[RESX:Tips:ForumTemplate].Text" xml:space="preserve">
-    <value>Selecteer het sjabloon voor de pagina die al uw forums zal weergeven.</value>
-  </data>
   <data name="[RESX:Tips:ForumTheme].Text" xml:space="preserve">
     <value>Selecteer het grafische thema voor uw forum.</value>
   </data>
@@ -1185,9 +1155,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:Tips:PageSize].Text" xml:space="preserve">
     <value>Geef het standaard aantal items op welke u wilt tonen op de onderwerp en antwoord pagina.</value>
-  </data>
-  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve">
-    <value>Selecteer de pagina waar de privé berichtgeving module staat geïnstalleerd.</value>
   </data>
   <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve">
     <value>Specificeer het e-mailadres voor het forum. Dit overstemt het website e-mailadres en het e-mailadres wat is ingegeven on de forum instellingen.</value>
@@ -1261,17 +1228,8 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Tips:TopicPriority].Text" xml:space="preserve">
     <value>Onderwerp prioriteit maakt het mogelijk om onderwerpen hoger in de lijst te laten verschijnen i.p.v. sortering op datum. De standaard waarde voor onderwerp prioriteit is 0. Hoe hoger de prioriteit hoe hoger het onderwerp in de lijst zal verschijnen.</value>
   </data>
-  <data name="[RESX:Tips:TopicsTemplate].Text" xml:space="preserve">
-    <value>Selecteer het sjabloon om de lijst met onderwerpen weer te geven</value>
-  </data>
-  <data name="[RESX:Tips:TopicTemplate].Text" xml:space="preserve">
-    <value>Selecteer het sjabloon om onderwerpen en antwoorden in weer te geven</value>
-  </data>
   <data name="[RESX:Tips:UserDisplayMode].Text" xml:space="preserve">
     <value>Bepaal hoe u de naam van leden wilt weergeven.</value>
-  </data>
-  <data name="[RESX:Tips:UserProfileTemplate].Text" xml:space="preserve">
-    <value>Selecteer het sjabloon om de informatie van een auteur te tonen bij een onderwerp of antwoord.</value>
   </data>
   <data name="[RESX:Tips:UsersOnlineEnabled].Text" xml:space="preserve">
     <value>Schakel deze optie aan om aan te geven of de gebruiker online is en de forums bezoekt.</value>
@@ -1309,14 +1267,8 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   <data name="[RESX:Topics].Text" xml:space="preserve">
     <value>Onderwerpen</value>
   </data>
-  <data name="[RESX:TopicsTemplate].Text" xml:space="preserve">
-    <value>Topics Display</value>
-  </data>
   <data name="[RESX:TopicsView].Text" xml:space="preserve">
     <value>Onderwerpen weergave</value>
-  </data>
-  <data name="[RESX:TopicTemplate].Text" xml:space="preserve">
-    <value>Topic Display</value>
   </data>
   <data name="[RESX:TopicView].Text" xml:space="preserve">
     <value>Onderwerp weergave</value>
@@ -1371,9 +1323,6 @@ De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1}
   </data>
   <data name="[RESX:UserProfiles].Text" xml:space="preserve">
     <value>Gebruiker Instellingen Profiel</value>
-  </data>
-  <data name="[RESX:UserProfileTemplate].Text" xml:space="preserve">
-    <value>Profiel weergave</value>
   </data>
   <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve">
     <value>Gebruikers Online</value>

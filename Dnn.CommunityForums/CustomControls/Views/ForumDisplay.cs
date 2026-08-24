@@ -25,6 +25,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Text;
     using System.Web.UI;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+
     [ToolboxData("<{0}:forumdisplay runat=server></{0}:forumdisplay>")]
     public class ForumDisplay : ControlsBase
     {
@@ -44,11 +46,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sTemp;
 
             // pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
-            object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId));
+            object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId));
             if (obj == null)
             {
                 sTemp = this.ParseTemplate();
-                DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId), sTemp);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId), sTemp);
             }
             else
             {
@@ -111,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 groupTemplate = TemplateUtils.GetTemplateSection(this.DisplayTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
             }
 
-            var forumGroups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ControlConfig.ForumModuleId);
+            var forumGroups = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.Get(this.ControlConfig.ForumModuleId);
             foreach (var forumGroup in forumGroups)
             {
                 if (forumGroup.Active && (this.ForumGroupId == -1 || forumGroup.ForumGroupId == this.ForumGroupId))
@@ -125,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     var forums = new StringBuilder();
                     int i = 0;
-                    var forumsForGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(this.ControlConfig.ForumModuleId).Where(f => f.ForumGroupId == forumGroup.ForumGroupId).ToList();
+                    var forumsForGroup = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Get(this.ControlConfig.ForumModuleId).Where(f => f.ForumGroupId == forumGroup.ForumGroupId).ToList();
                     foreach (var forum in forumsForGroup)
                     {
                         i += 1;

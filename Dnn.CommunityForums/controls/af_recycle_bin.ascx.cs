@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -77,18 +78,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected void btnEmptyRecycleBin_Click(object sender, System.EventArgs e)
         {
-            var topicController = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId);
-            var replyController = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
 
             // process replies first, then topics
             var recycleData = this.GetData();
             recycleData.Where(content => content.IsReply).ForEach(content =>
             {
-                replyController.Reply_Delete(this.PortalId, content.ForumId, content.TopicId, content.ReplyId, DeleteBehavior.Remove);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Reply_Delete(this.PortalId, this.ForumModuleId, content.ForumId, content.TopicId, content.ReplyId, DeleteBehavior.Remove);
             });
             recycleData.Where(content => content.IsTopic).ForEach(content =>
             {
-                topicController.DeleteById(content.TopicId, DeleteBehavior.Remove);
+                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.DeleteById(this.ForumModuleId, content.TopicId, DeleteBehavior.Remove);
             });
 
             this.Response.Redirect(this.Request.RawUrl, true);
@@ -96,18 +95,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected void btnRestoreAll_Click(object sender, System.EventArgs e)
         {
-            var topicController = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId);
-            var replyController = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
-
             // process topics first, then replies
             var recycleData = this.GetData();
             recycleData.Where(content => content.IsTopic).ForEach(content =>
             {
-                topicController.Restore(content.PortalId, content.ForumId, content.TopicId);
+                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.Restore(content.PortalId, this.ForumModuleId, content.ForumId, content.TopicId);
             });
             recycleData.Where(content => content.IsReply).ForEach(content =>
             {
-                replyController.Restore(this.PortalId, content.ForumId, content.TopicId, content.ReplyId);
+                 DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Restore(this.PortalId, this.ForumModuleId, content.ForumId, content.TopicId, content.ReplyId);
             });
             this.BindRecycleData();
         }
@@ -148,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private IEnumerable<RecycleBinData> GetData()
         {
-            var restoreData = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Find("WHERE IsDeleted = 1 AND ModuleId = @0", this.ForumModuleId);
+            var restoreData = DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.Find("WHERE IsDeleted = 1 AND ModuleId = @0", this.ForumModuleId);
             return restoreData.OrderByDescending(content => content.DateUpdated).Select(content =>
             {
                 return new RecycleBinData

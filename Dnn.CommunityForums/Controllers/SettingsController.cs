@@ -23,36 +23,38 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Reflection;
-    using System.Text.RegularExpressions;
 
     using DotNetNuke.Collections;
 
-    internal class SettingsController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.SettingsInfo>
+
+    internal class SettingsController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.SettingsInfo, ISettingsController, SettingsController>, ISettingsController
     {
-        public static void SaveSetting(int moduleId, string settingsKey, string settingName, string settingValue)
+        protected override Func<ISettingsController> GetFactory()
+        {
+            return () => new SettingsController();
+        }
+
+        public void SaveSetting(int moduleId, string settingsKey, string settingName, string settingValue)
         {
             try
             {
-                var sc = new DotNetNuke.Modules.ActiveForums.Controllers.SettingsController();
-                var setting = sc.GetSettingForModuleIdSettingsKeySettingName(moduleId, settingsKey, settingName);
+                var setting = this.GetSettingForModuleIdSettingsKeySettingName(moduleId, settingsKey, settingName);
                 if (setting == null)
                 {
                     setting = new DotNetNuke.Modules.ActiveForums.Entities.SettingsInfo
-                                  {
-                                      ModuleId = moduleId,
-                                      SettingsKey = settingsKey,
-                                      SettingName = settingName,
-                                      SettingValue = settingValue,
-                                  };
-                    sc.Insert(setting);
+                    {
+                        ModuleId = moduleId,
+                        SettingsKey = settingsKey,
+                        SettingName = settingName,
+                        SettingValue = settingValue,
+                    };
+                    this._repositoryControllerBase.Insert(setting);
                 }
                 else
                 {
                     setting.SettingValue = settingValue;
-                    sc.Update(setting);
+                    this._repositoryControllerBase.Update(setting);
                 }
             }
             catch (Exception ex)
@@ -63,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.SettingsInfo> GetSettingsForModuleIdSettingsKey(int moduleID, string settingsKey)
         {
-            return this.Find("WHERE ModuleId = @0 AND SettingsKey = @1", moduleID, settingsKey);
+            return this._repositoryControllerBase.Find("WHERE ModuleId = @0 AND SettingsKey = @1", moduleID, settingsKey);
         }
 
         public Hashtable GetSettingsHashTableForModuleIdSettingsKey(int moduleId, string settingsKey)
@@ -75,17 +77,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public DotNetNuke.Modules.ActiveForums.Entities.SettingsInfo GetSettingForModuleIdSettingsKeySettingName(int moduleID, string settingsKey, string settingName)
         {
-            return this.Find("WHERE ModuleId = @0 AND SettingsKey = @1 AND SettingName = @2", moduleID, settingsKey, settingName).FirstOrDefault();
+            return this._repositoryControllerBase.Find("WHERE ModuleId = @0 AND SettingsKey = @1 AND SettingName = @2", moduleID, settingsKey, settingName).FirstOrDefault();
         }
 
         public void DeleteForModuleIdSettingsKey(int moduleId, string settingsKey)
         {
-            this.Delete("WHERE ModuleId = @0 AND SettingsKey = @1", moduleId, settingsKey);
+            this._repositoryControllerBase.Delete("WHERE ModuleId = @0 AND SettingsKey = @1", moduleId, settingsKey);
         }
 
         public void DeleteForModuleIdSettingsKeySettingName(int moduleId, string settingsKey, string settingName)
         {
-            this.Delete("WHERE ModuleId = @0 AND SettingsKey = @1 AND SettingName = @2", moduleId, settingsKey, settingName);
+            this._repositoryControllerBase.Delete("WHERE ModuleId = @0 AND SettingsKey = @1 AND SettingName = @2", moduleId, settingsKey, settingName);
         }
     }
 }

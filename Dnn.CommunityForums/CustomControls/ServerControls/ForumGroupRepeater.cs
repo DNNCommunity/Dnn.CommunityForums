@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             writer.Write(this.HeaderTemplate);
             int i = 0;
-            var forumGroups = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Get(this.ControlConfig.ForumModuleId).ToList();
+            var forumGroups = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.Get(this.ControlConfig.ForumModuleId).ToList();
             if (forumGroups.Count > 0)
             {
                 string tmp = this.DisplayTemplate;

@@ -243,7 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // Add the "All Forums" item
             this.lbForums.Items.Add(new ListItem("[RESX:SearchRangeAll] [RESX:FORUMS]", "0") { Selected = forumsToSearch.Count == 0 && this.ForumId <= 0 });
 
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId);
+            var forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(this.ForumModuleId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(
                 forums: forums,
                 forumUserInfo: this.ForumUser,

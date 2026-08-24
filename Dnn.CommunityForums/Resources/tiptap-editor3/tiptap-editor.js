@@ -35,7 +35,7 @@ export default class TipTapEditorController {
         this.editorElement = document.querySelector('#' + editorID)
         this.actions = [
             { name: "bold", title: amaf.resx.BoldDesc, fontTag: "fa-bold", command: 'toggleBold', disable: true },
-            { name: "italic", title: amaf.resx.ItalicDesc, fontTag: "fa-italic", command: 'toggleItalic', disable: true },
+            { name: "italic", title: amaf.resx.ItalicsDesc, fontTag: "fa-italic", command: 'toggleItalic', disable: true },
             { name: "underline", title: amaf.resx.UnderlineDesc, fontTag: "fa-underline", command: 'toggleUnderline', disable: true },
             { name: "strike", title: amaf.resx.StrikeDesc, fontTag: "fa-strikethrough", command: 'toggleStrike', disable: true },
             { name: "undo", title: amaf.resx.UndoDesc, fontTag: "fa-undo", command: 'undo', disable: true },
@@ -55,16 +55,22 @@ export default class TipTapEditorController {
                 },
             },
         ];
-        for (let i in this.actions) {
+
+        // Create a div container for the buttons
+        const buttonsContainer = document.createElement("div");
+        buttonsContainer.setAttribute("class", "dcf-tiptap-buttons");
+        this.editorElement.appendChild(buttonsContainer);
+        for (let i = 0; i < this.actions.length; i++) {
             let a = this.actions[i];
             a.button = document.createElement("button");
             a.button.setAttribute("title", a.title || a.name);
+            a.button.setAttribute("class", "dcf-tiptap-button dcf-tiptap-button-" + a.name);
             a.button.innerHTML = "<i class=\"fa " + a.fontTag + "\"></i>"
             a.button.addEventListener("click", (event) => {
                 event.preventDefault();
                 this.executeAction(a);
             });
-            this.editorElement.appendChild(a.button);
+            buttonsContainer.appendChild(a.button);
         };
 
         // Extend the Mention node so it explicitly declares the attributes we will store.

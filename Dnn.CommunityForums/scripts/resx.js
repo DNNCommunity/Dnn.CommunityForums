@@ -23,7 +23,7 @@ amaf.resx = {
     Subscribe: '[RESX:Subscribe]',
     Unsubscribe: '[RESX:Unsubscribe]',
     BoldDesc: '[RESX:BoldDesc]',
-    ItalicDesc: '[RESX:ItalicDesc]',
+    ItalicsDesc: '[RESX:ItalicsDesc]',
     UnderlineDesc: '[RESX:UnderlineDesc]',
     StrikeDesc: '[RESX:StrikeDesc]',
     UndoDesc: '[RESX:UndoDesc]',

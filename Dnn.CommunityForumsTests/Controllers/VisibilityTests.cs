@@ -32,8 +32,13 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void IsPropertyVisible_Admin_ReturnsTrue()
         {
             // Arrange
-            var user = new UserInfo { UserID = 1 };
-            var accessingUser = new UserInfo { IsSuperUser = true };
+            var user = new UserInfo
+            {
+                UserID = 1,
+            };
+            var accessingUser = new UserInfo{
+                IsSuperUser = true,
+            };
 
             // Act
             var result = ForumUserController.IsPropertyVisible(user, "FirstName", accessingUser);
@@ -46,8 +51,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         public void IsPropertyVisible_Owner_ReturnsTrue()
         {
             // Arrange
-            var user = new UserInfo { UserID = 1 };
-            var accessingUser = new UserInfo { UserID = 1 };
+            var user = new UserInfo
+            {
+                UserID = 1,
+            };
+            var accessingUser = new UserInfo {
+                UserID = 1,
+                IsSuperUser = false,
+            };
 
             // Act
             var result = ForumUserController.IsPropertyVisible(user, "FirstName", accessingUser);

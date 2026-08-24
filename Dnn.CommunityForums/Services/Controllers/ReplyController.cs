@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Web.Api;
 
     /// <summary>
@@ -61,14 +62,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 int replyId = dto.ReplyId;
                 if (forumId > 0 && topicId > 0 && replyId > 0)
                 {
-                    var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId).GetById(replyId);
+                    var r = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(this.ForumModuleId, replyId);
                     if (r != null)
                     {
-                        var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                        var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID);
                         if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(r.Topic.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds))
                         {
                             DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1, r.Forum.GetIsMod(forumUser));
-                            DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, this.ForumModuleId));
+                            DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(string.Format(CacheKeys.TopicViewPrefix, this.ForumModuleId));
                             return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                         }
 
@@ -103,19 +104,18 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (forumId > 0 && replyId > 0)
                 {
-                    var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
-                    var r = rc.GetById(replyId);
+                    var r = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(this.ForumModuleId, replyId);
                     if (r != null)
                     {
-                        var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.ActiveModule.PortalID, this.UserInfo.UserID);
+                        var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID);
                         if (this.UserInfo.IsAdmin ||
                             this.UserInfo.IsSuperUser ||
                             Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(r.Forum.Security.ModerateRoleIds, forumUser.UserRoleIds) ||
                             (Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(r.Forum.Security.DeleteRoleIds, forumUser.UserRoleIds) && this.UserInfo.UserID == r.Author.AuthorId && !r.Topic.IsLocked)
                             )
                         {
-                            rc.Reply_Delete(this.ActiveModule.PortalID,
-                                forumId,
+                            DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Reply_Delete(this.ActiveModule.PortalID,
+                                this.ForumModuleId, forumId,
                                 r.TopicId,
                                 replyId,
                                 SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior);
@@ -153,8 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (dto.ForumId > 0 && dto.ReplyId > 0)
                 {
-                    var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
-                    var r = rc.GetById(dto.ReplyId);
+                    var r = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(this.ForumModuleId, dto.ReplyId);
                     if (r != null)
                     {
                         if (r.IsDeleted == false)
@@ -162,8 +161,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                         }
 
-                        rc.Restore(this.ActiveModule.PortalID,
-                            dto.ForumId,
+                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Restore(this.ActiveModule.PortalID,
+                            this.ForumModuleId, dto.ForumId,
                             r.TopicId,
                             dto.ReplyId);
                         return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);

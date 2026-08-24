@@ -231,8 +231,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 },
             };
 
-            var navigationManager = new Modules.ActiveForums.Services.Tests.NavigationManager(null); // new Services.URLNavigator().NavigationManager();
-
             var templateStringBuilder = new StringBuilder("blah blah [SPLITBUTTONS1] blah [SPLITBUTTONS2]  [FORUMTOPIC:SUBJECT] blah");
             var expectedResult = "blah blah [SPLITBUTTONS1] blah [SPLITBUTTONS2]  Test Topic blah";
 
@@ -240,7 +238,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
             var rawUrl = "/forums";
 
             // Act
-            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.MainSettings.Object, navigationManager, mockUser.Object, requestUri, rawUrl).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceTopicTokens(templateStringBuilder, mockTopic.Object, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.MainSettings.Object, this.MockNavigationManager.Object, mockUser.Object, requestUri, rawUrl).ToString();
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -407,8 +405,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
                 },
             };
 
-            var navigationManager = new DotNetNuke.Modules.ActiveForums.Services.Tests.NavigationManager(null); // new Services.URLNavigator().NavigationManager();
-
             var templateStringBuilder = new StringBuilder("blah blah [FORUMGROUP:GROUPNAME] blah blah");
             var expectedResult = "blah blah Test Forum Group blah blah";
 
@@ -418,7 +414,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Services.Tokens
             // Act
 
 
-            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.MainSettings.Object, navigationManager, mockUser.Object, 0, CurrentUserTypes.Auth, requestUri, rawUrl).ToString();
+            var actualResult = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(templateStringBuilder, mockForum.Object, DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings(), this.MainSettings.Object, this.MockNavigationManager.Object, mockUser.Object, 0, CurrentUserTypes.Auth, requestUri, rawUrl).ToString();
 
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));

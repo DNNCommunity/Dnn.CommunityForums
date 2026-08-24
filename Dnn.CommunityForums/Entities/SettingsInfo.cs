@@ -24,10 +24,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("activeforums_Settings")]
+    [TableName("communityforums_Settings")]
     [PrimaryKey("SettingsId", AutoIncrement = true)]
     [Scope("ModuleId")]
-    [Cacheable("activeforums_Settings", CacheItemPriority.High)]
+    [Cacheable("communityforums_Settings", CacheItemPriority.High)]
     public partial class SettingsInfo
     {
         public int ModuleId { get; set; }

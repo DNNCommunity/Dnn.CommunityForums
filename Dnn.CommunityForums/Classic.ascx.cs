@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -31,8 +32,10 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.UI.UserControls;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
@@ -55,26 +58,15 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
 
 #if DEBUG
-            //ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
-            //new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().RemoveUnused(this.ForumModuleId);
-            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
-            //ForumsConfig.Install_LikeNotificationType_080200();
-            //ForumsConfig.Install_PinNotificationType_080200();
-            //ForumsConfig.Sort_PermissionSets_080200();
-            //ForumsConfig.Upgrade_PermissionSets_090000();
-            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
-            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
-            //new ForumsConfig().Install_DefaultBadges_090100();
-            //DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
-
-
             //new ForumsConfig().RemoveLegacyAvatarsFolder_090700();
             //new ForumsConfig().RelocateAttachments_090700();
+
+            //DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_100000();
 #endif
 
             try
             {
-                if (this.ModuleSettings != null && this.ModuleSettings.InstallDate > Utilities.NullDate())
+                if (this.ModuleSettings != null && this.ModuleSettings.IsInstalled)
                 {
                     if (this.ForumModuleId < 1)
                     {
@@ -85,11 +77,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                     {
                         this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
-                        this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
+                        this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
                         if (this.ForumIds.Any())
                         {
                             this.ForumIds = new System.Collections.Generic.HashSet<int> { this.ForumIds.First() };
-                            this.ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumIds.First(), this.ForumModuleId);
+                            this.ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, this.ForumIds.First());
                             this.ForumId = this.ForumInfo.ForumID;
                         }
                     }
@@ -109,9 +101,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctl = Views.RecycleBin;
                     }
-                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.Likes)
+                    else if (this.Request.Params[ParamKeys.ViewType] != null && this.Request.Params[ParamKeys.ViewType] == Views.Grid && this.Request.Params[ParamKeys.GridType] != null && this.Request.Params[ParamKeys.GridType] == Views.likes)
                     {
-                        ctl = Views.Likes;
+                        ctl = Views.likes;
                         if (this.Request.QueryString[ParamKeys.ContentId] != null)
                         {
                             opts = $"{ParamKeys.ContentId}={this.Request.QueryString[ParamKeys.ContentId]}";
@@ -167,7 +159,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
-                else
+                else if (this.UserInfo.IsAdmin)
                 {
                     this.ShowToolbar = false;
                     string ctlPath = Globals.ModulePath + "controls/_default.ascx";
@@ -177,6 +169,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.plhLoader.Controls.Clear();
                     this.plhLoader.Controls.Add(ctlDefault);
                 }
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -269,8 +265,24 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.ID = view;
                 ctl.ForumId = this.ForumId;
                 ctl.ForumModuleId = this.ForumModuleId;
-                int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(this.ForumModuleId).FirstOrDefault().TabID;
-                this.ForumTabId = tmpForumTabId;
+
+                // this lookup involves a call to the database, so we will cache the result for future use.
+                //int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(this.ForumModuleId).FirstOrDefault().TabID;
+                int? tmpForumTabId = null;
+                var cachekey = string.Format(CacheKeys.FirstTabIdForModule, this.ForumModuleId);
+                var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.ForumModuleId, cachekey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<int?>;
+
+                if (cached == null)
+                {
+                    tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(this.ForumModuleId).FirstOrDefault().TabID;
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ForumModuleId, cachekey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<int?>(tmpForumTabId, tmpForumTabId != null));
+                }
+                else
+                {
+                    tmpForumTabId = cached.HasValue ? cached.Value : DotNetNuke.Common.Utilities.Null.NullInteger;
+                }
+
+                this.ForumTabId = (int)tmpForumTabId;
                 if (this.ForumTabId <= 0)
                 {
                     this.ForumTabId = this.TabId;
@@ -282,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.SocialGroupId = this.SocialGroupId;
                 if (this.SocialGroupId > 0)
                 {
-                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
 
                     if (!this.ForumIds.Any())
                     {
@@ -301,13 +313,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(this.PortalId, this.ModuleId, this.SocialGroupId, Convert.ToInt32(htSettings[SettingKeys.SocialGroupModeForumGroupTemplate].ToString()), role.RoleName + " Discussions", role.Description, !role.IsPublic, htSettings[SettingKeys.SocialGroupModeForumConfig].ToString());
-                            this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
+                            this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumIdsBySocialGroup(this.ForumModuleId, this.SocialGroupId);
                         }
                     }
                 }
                 else if (this.ForumGroupId > 0)
                 {
-                    this.ForumIds = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId).Where(f => f.Active && !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden).Select(forum => forum.ForumID).ToHashSet();
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(this.ForumModuleId).Where(f => f.Active && !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden).Select(forum => forum.ForumID).ToHashSet();
                 }
                 else if (!this.ForumIds.Any())
                 {
@@ -324,7 +336,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = this.Page.ResolveUrl(Globals.ModulePath);
-                cc.ThemePath = this.Page.ResolveUrl(this.ModuleSettings.ThemeLocation);
+                cc.ThemePath = this.Page.ResolveUrl(this.ThemePath);
                 cc.TemplatePath = this.Page.ResolveUrl(this.ModuleSettings.TemplatePath + "/");
                 cc.PortalId = this.PortalId;
                 cc.PageId = this.TabId;
@@ -352,6 +364,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 Literal lit = new Literal();
                 lit.Text = sOut;
                 this.plhLoader.Controls.Add(lit);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
@@ -396,27 +412,27 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(this.ThemePath + "theme.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "theme.min.css", priority: 12);
+                ClientResourceManager.RegisterStyleSheet(this.Page, this.ThemePath + "theme.min.css", priority: 12);
             }
             else
             {
-                if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(this.ThemePath + "theme.css")))
                 {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "theme.css", priority: 12);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ThemePath + "theme.css", priority: 12);
                 }
             }
 
-            if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "custom/theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(this.ThemePath + "custom/theme.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "custom/theme.min.css", priority: 13);
+                ClientResourceManager.RegisterStyleSheet(this.Page, this.ThemePath + "custom/theme.min.css", priority: 13);
             }
             else
             {
-                if (System.IO.File.Exists(Utilities.MapPath(this.ModuleSettings.ThemeLocation + "custom/theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(this.ThemePath + "custom/theme.css")))
                 {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ModuleSettings.ThemeLocation + "custom/theme.css", priority: 13);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, this.ThemePath + "custom/theme.css", priority: 13);
                 }
             }
 
@@ -471,6 +487,11 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
+            if ((this.ModuleSettings == null || !this.ModuleSettings.IsInstalled) && !this.UserInfo.IsAdmin)
+            {
+                return;
+            }
+
             System.IO.StringWriter stringWriter = new System.IO.StringWriter();
             HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
@@ -483,6 +504,11 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
+
+            if ((this.ModuleSettings == null || !this.ModuleSettings.IsInstalled) && !this.UserInfo.IsAdmin)
+            {
+                return;
+            }
 
             if (this.SocialGroupId > 0)
             {

@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 text = System.Net.WebUtility.HtmlEncode(text);
                 string pattern = "<script.*/*>|</script>|<[a-zA-Z][^>]*=['\"]+javascript:\\w+.*['\"]+>|<\\w+[^>]*\\son\\w+=.*[ /]*>";
-                text = RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Replace(text, string.Empty);
+                text = RegexUtils.GetCachedRegex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase).Replace(text, string.Empty);
                 string strip = "/*,*/,alert,document.,window.,eval(,eval[,@import,vbscript,javascript,jscript,msgbox";
                 foreach (string s in strip.Split(','))
                 {

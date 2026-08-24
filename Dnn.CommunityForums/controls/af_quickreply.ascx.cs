@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Modules.ActiveForums.Controls;
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using log4net.Plugin;
@@ -59,24 +60,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool RequireCaptcha { get; set; } = true;
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
-        public bool UseFilter => throw new NotImplementedException();
-
         public string Subject { get; set; } = string.Empty;
 
         public bool ModApprove { get; set; } = false;
 
         public bool CanTrust { get; set; } = false;
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
-        public bool TrustDefault => throw new NotImplementedException();
-
         public bool AllowHTML => Utilities.CanUserPostHTML(this.ForumInfo, this.ForumUser);
 
         public bool AllowScripts => this.ForumInfo.FeatureSettings.AllowScript;
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v10.0.0.0. Not Used")]
-        public bool AllowSubscribe => throw new NotImplementedException();
 
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
@@ -484,14 +476,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId, ri.TopicId);
             }
 
-            var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ForumModuleId);
-            int replyId = rc.Reply_Save(this.PortalId, this.ModuleId, ri);
-            ri = rc.GetById(replyId);
-            DataCache.ContentCacheClearForForum(this.ModuleId, this.ForumId);
-            DataCache.ContentCacheClearForReply(this.ModuleId, replyId);
-            DataCache.ContentCacheClearForTopic(this.ModuleId, ri.TopicId);
+            int replyId = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Reply_Save(this.PortalId, this.ModuleId, ri);
+            ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(this.ForumModuleId, replyId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForForum(this.ModuleId, this.ForumId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForReply(this.ModuleId, replyId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.ClearForTopic(this.ModuleId, ri.TopicId);
 
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ForumModuleId).GetById(this.TopicId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, this.TopicId, this.ForumInfo);
             string fullURL = new ControlUtils().BuildUrl(this.PortalId, this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, replyId, this.SocialGroupId);
 
             if (fullURL.Contains("~/"))

@@ -27,6 +27,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Enums;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+    using DotNetNuke.Modules.ActiveForums.ViewModels;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:QuickReply runat=server></{0}:QuickReply>")]
     public class QuickReply : ControlsBase
@@ -75,11 +77,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sTemp = string.Empty;
             if (this.ControlConfig != null)
             {
-                object obj = DataCache.SettingsCacheRetrieve(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId));
+                object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId));
                 if (obj == null)
                 {
                     sTemp = this.ParseTemplate();
-                    DataCache.SettingsCacheStore(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId), sTemp);
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId), sTemp);
                 }
                 else
                 {
@@ -196,9 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
-            Data.Topics db = new Data.Topics();
 
-            // im rc As New ReplyController
             int replyId = -1;
             string sUsername = string.Empty;
             if (HttpContext.Current.Request.IsAuthenticated)
@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ri.IsApproved = isApproved;
             ri.IsDeleted = false;
             ri.Content.IPAddress = HttpContext.Current.Request.UserHostAddress;
-            replyId = db.Reply_Save(ri);
+            replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(this.PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
 
             if (isApproved)
             {

@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Framework;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
 
     public partial class ForumSettings : ForumSettingsBase
@@ -114,7 +115,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.txtMarkAnswerPointValue.Text = this.MarkAsAnswerPointValue.ToString();
                 this.txtModPointValue.Text = this.ModPointValue.ToString();
 
-                this.txtURLPrefixBase.Text = this.PrefixURLBase;
                 this.txtURLPrefixCategory.Text = this.PrefixURLCategory;
                 this.txtURLPrefixOther.Text = this.PrefixURLOther;
                 this.txtURLPrefixLikes.Text = this.PrefixURLLikes;
@@ -188,12 +188,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.EnableUsersOnline = Utilities.SafeConvertBool(this.rdUsersOnline.SelectedValue);
                 this.UseSkinBreadCrumb = Utilities.SafeConvertBool(this.rdUseSkinBreadCrumb.SelectedValue);
 
-                if (this.drpMessagingTab.SelectedItem != null)
-                {
-                    this.MessagingTabId = Utilities.SafeConvertInt(this.drpMessagingTab.SelectedValue);
-                }
-
-                this.PrefixURLBase = this.txtURLPrefixBase.Text;
                 this.PrefixURLCategory = this.txtURLPrefixCategory.Text;
                 this.PrefixURLOther = this.txtURLPrefixOther.Text;
                 this.PrefixURLLikes = this.txtURLPrefixLikes.Text;
@@ -228,17 +222,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 else
                 {
                     DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumConfig);
-                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumGroupTemplate);
-                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-                    fc.Get(this.ModuleId).Where(f => f.SocialGroupId != 0).ForEach(forum =>
+                    DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(this.ModuleId, SettingKeys.SocialGroupModeForumGroupTemplate); 
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Get(this.ModuleId).Where(f => f.SocialGroupId != 0).ForEach(forum =>
                     {
                         forum.SocialGroupId = 0;
-                        fc.Update(forum);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Update(forum);
                     });
                 }
 
                 // Clear out the cache
-                DataCache.ClearSettingsCache(this.ModuleId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.ClearAll(this.ModuleId);
 
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.APPLICATION_SHUTTING_DOWN.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("ModuleId", this.ModuleId.ToString()));
@@ -270,48 +263,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 selectedMessagingType.Selected = true;
             }
-
-            this.BindPrivateMessagingTab();
-        }
-
-        private void BindPrivateMessagingTab()
-        {
-            this.drpMessagingTab.Items.Clear();
-            this.drpMessagingTab.ClearSelection();
-
-            var mc = new DotNetNuke.Entities.Modules.ModuleController();
-            var tc = new TabController();
-
-            foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(this.PortalId))
-            {
-                if (!mi.DesktopModule.ModuleName.Contains("DnnForge - PrivateMessages") || mi.IsDeleted)
-                {
-                    continue;
-                }
-
-                var ti = tc.GetTab(mi.TabID, this.PortalId, false);
-                if (ti != null && !ti.IsDeleted)
-                {
-                    this.drpMessagingTab.Items.Add(new ListItem
-                    {
-                        Text = ti.TabName + " - Ventrian Messages",
-                        Value = ti.TabID.ToString(),
-                        Selected = ti.TabID == this.MessagingTabId,
-                    });
-                }
-            }
-
-            if (this.drpMessagingTab.Items.Count == 0)
-            {
-                this.drpMessagingTab.Items.Add(new ListItem("No Messaging Tabs Found", "-1"));
-                this.drpMessagingTab.Enabled = false;
-            }
         }
 
         private void BindForumGroups()
         {
             int tmpGroupId = -1;
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
+            var forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(this.ModuleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList();
             foreach (var forum in forums)
             {
                 if (tmpGroupId != forum.ForumGroupId)
@@ -340,10 +297,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     this.ForumConfig.Contains("modpin") ||
                     this.ForumConfig.Contains("modlock"))
                 {
-                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080100();
-                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
-                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090201();
-                    DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
+                    DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_080100();
+                    DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_080200();
+                    DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_090201();
+                    DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_090300();
                 }
 
                 xDoc.LoadXml(this.ForumConfig);

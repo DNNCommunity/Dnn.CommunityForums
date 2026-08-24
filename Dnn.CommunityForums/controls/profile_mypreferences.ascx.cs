@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.UID > 0 && !this.Page.IsPostBack)
             {
-                var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
+                var ui = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ForumModuleId, this.UID);
                 this.drpPrefDefaultSort.SelectedIndex = this.drpPrefDefaultSort.Items.IndexOf(this.drpPrefDefaultSort.Items.FindByValue(ui.PrefDefaultSort.Trim()));
                 this.drpPrefPageSize.SelectedIndex = this.drpPrefPageSize.Items.IndexOf(this.drpPrefPageSize.Items.FindByValue(ui.PrefPageSize.ToString()));
 
@@ -75,14 +75,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetString(string key) => Utilities.GetSharedResource(key);
-
         private void btnSave_Click(object sender, System.EventArgs e)
         {
             if (this.UserId == this.UID || this.ForumUser.CurrentUserType == CurrentUserTypes.Admin || this.ForumUser.CurrentUserType == CurrentUserTypes.SuperUser)
             {
-                var upi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController(this.ForumModuleId).GetByUserId(this.PortalId, this.UID);
+                var upi = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.PortalId, this.ForumModuleId, this.UID);
                 if (upi != null)
                 {
                     upi.PrefDefaultSort = Utilities.XSSFilter(this.drpPrefDefaultSort.SelectedItem.Value, true);
@@ -109,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }
 
-                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(upi);
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.Save(upi);
 
                     this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                     this.Context.ApplicationInstance.CompleteRequest();

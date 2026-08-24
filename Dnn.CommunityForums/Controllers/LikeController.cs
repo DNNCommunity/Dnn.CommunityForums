@@ -26,104 +26,106 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Text;
 
     using DotNetNuke.Collections;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
 
-    internal partial class LikeController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>
+    internal class LikeController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo, ILikeController, LikeController>, ILikeController
     {
-        private readonly int moduleId = -1;
-        private readonly int portalId = -1;
-
-        internal override string cacheKeyTemplate => CacheKeys.LikeInfo;
-
-        internal LikeController()
+        protected override Func<ILikeController> GetFactory()
         {
+            return () => new LikeController();
         }
 
-        internal LikeController(int portalId, int moduleId)
+        public DotNetNuke.Modules.ActiveForums.Entities.LikeInfo GetById(int portalId, int moduleId, int id)
         {
-            this.portalId = portalId;
-            this.moduleId = moduleId;
-        }
-
-        public DotNetNuke.Modules.ActiveForums.Entities.LikeInfo GetById(int id)
-        {
-            var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: id);
-            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.LikeInfo;
+            var cachekey = string.Format(CacheKeys.LikeInfo, moduleId, id);
+            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.LikeInfo;
             if (like == null)
             {
-                like = this.GetById(id, this.moduleId);
+                like = this._repositoryControllerBase.GetById(id: id, scopeValue: moduleId);
+                if (like == null)
+                {
+                    like = this._repositoryControllerBase.GetById(id: id);
+                }
+
                 if (like != null)
                 {
-                    like.ModuleId = this.moduleId;
-                    like.PortalId = this.portalId;
+                    like.ModuleId = moduleId;
+                    like.PortalId = portalId;
                     like.GetContent();
                     like.Content?.GetPost();
                 }
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, like);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, like);
             }
 
             return like;
         }
 
-        public DotNetNuke.Modules.ActiveForums.Entities.LikeInfo GetForUser(int userId, int postId)
+        public DotNetNuke.Modules.ActiveForums.Entities.LikeInfo GetForUser(int portalId, int moduleId, int userId, int postId)
         {
-            var cachekey = string.Format(CacheKeys.LikedByUser, this.moduleId, postId, userId);
-            var like = (DotNetNuke.Modules.ActiveForums.Entities.LikeInfo)DataCache.ContentCacheRetrieve(this.moduleId, cachekey);
+            var cacheKey = string.Format(CacheKeys.LikedByUser, moduleId, postId, userId);
+            var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cacheKey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<LikeInfo>;
 
-            if (like == null)
+            if (cached == null)
             {
-                like = this.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, like);
+                var like = this._repositoryControllerBase.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).FirstOrDefault();
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cacheKey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<LikeInfo>(like, like != null));
+
+                return like;
             }
 
-            return like;
+            return cached.HasValue ? cached.Value : null;
         }
 
-        public bool GetLikedByUser(int userId, int postId)
+        public bool GetLikedByUser(int portalId, int moduleId, int userId, int postId)
         {
-            var like = this.GetForUser(userId: userId, postId: postId);
+            var like = this.GetForUser(portalId: portalId, moduleId: moduleId, userId: userId, postId: postId);
             if (like == null)
             {
                 return false;
             }
-            else { return like.Checked; }
-        }
-
-        public (int count, bool liked) Get(int userId, int postId)
-        {
-            return (this.Count(postId), this.GetLikedByUser(userId, postId));
-        }
-
-        public List<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> GetForPost(int postId)
-        {
-            return this.Find("WHERE PostId = @0 AND Checked = 1", postId).ForEach(l =>
+            else
             {
-                l.PortalId = this.portalId;
-                l.ModuleId = this.moduleId;
+                return like.Checked;
+            }
+        }
+
+        public (int Count, bool Liked) Get(int portalId, int moduleId, int userId, int postId)
+        {
+            return (this.Count(moduleId, postId), this.GetLikedByUser(portalId, moduleId, userId, postId));
+        }
+
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> GetForPost(int portalId, int moduleId, int postId)
+        {
+            return this._repositoryControllerBase.Find("WHERE PostId = @0 AND Checked = 1", postId).ForEach(l =>
+            {
+                l.PortalId = portalId;
+                l.ModuleId = moduleId;
                 l.GetContent();
                 l.Content?.GetPost();
             }).ToList();
         }
 
-        public int Count(int postId)
+        public int Count(int moduleId, int postId)
         {
-            var cachekey = string.Format(CacheKeys.LikeCount, this.moduleId, postId);
-            var count = (int?)DataCache.ContentCacheRetrieve(this.moduleId, cachekey);
+            var cachekey = string.Format(CacheKeys.LikeCount, moduleId, postId);
+            var count = (int?)DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey);
             if (count == null)
             {
-                count = this.Count("WHERE PostId = @0 AND Checked = 1", postId);
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, count);
+                count = this._repositoryControllerBase.Count("WHERE PostId = @0 AND Checked = 1", postId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, count);
             }
 
             return (int)count;
         }
 
-        public int Like(int contentId, int userId, int authorId, int tabId, int forumGroupId, int forumId, int replyId, int topicId, string requestUrl)
+        public int Like(int portalId, int moduleId, int contentId, int userId, int authorId, int tabId, int forumGroupId, int forumId, int replyId, int topicId, string requestUrl)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = this.Find("WHERE PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
+            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = this._repositoryControllerBase.Find("WHERE PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
             if (like != null)
             {
                 if (like.Checked)
@@ -135,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     like.Checked = true;
                 }
 
-                this.Update(like);
+                this._repositoryControllerBase.Update(like);
             }
             else
             {
@@ -146,34 +148,35 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     Checked = true,
                     DateCreated = DateTime.UtcNow,
                 };
-                this.Insert(like);
-                new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.PostLiked,
-                                                                                             portalId: this.portalId,
-                                                                                             tabId: tabId,
-                                                                                             moduleId: this.moduleId,
-                                                                                             forumGroupId: forumGroupId,
-                                                                                             forumId: forumId,
-                                                                                             topicId: topicId,
-                                                                                             replyId: replyId,
-                                                                                             contentId: contentId,
-                                                                                             authorId: authorId,
-                                                                                             userId: userId,
-                                                                                             badgeId: DotNetNuke.Common.Utilities.Null.NullInteger,
-                                                                                             requestUrl: requestUrl,
-                                                                                             dateCreated: like.DateCreated);
+                this._repositoryControllerBase.Insert(like);
+                DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Instance.Add(
+                    ProcessType.PostLiked,
+                    portalId: portalId,
+                    tabId: tabId,
+                    moduleId: moduleId,
+                    forumGroupId: forumGroupId,
+                    forumId: forumId,
+                    topicId: topicId,
+                    replyId: replyId,
+                    contentId: contentId,
+                    authorId: authorId,
+                    userId: userId,
+                    badgeId: DotNetNuke.Common.Utilities.Null.NullInteger,
+                    requestUrl: requestUrl,
+                    dateCreated: like.DateCreated);
             }
 
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikeInfo, this.moduleId, like.Id));
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikeCount, this.moduleId, contentId));
-            DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheClear(this.moduleId, string.Format(CacheKeys.LikedByUser, this.moduleId, contentId, userId));
-            return this.Count(contentId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.LikeInfo, moduleId, like.Id));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.LikeCount, moduleId, contentId));
+            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Clear(moduleId, string.Format(CacheKeys.LikedByUser, moduleId, contentId, userId));
+            return this.Count(moduleId, contentId);
         }
 
         internal static bool ProcessPostLiked(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int contentId, int authorId, int userId, string requestUrl)
         {
             try
             {
-                var like = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController(portalId, moduleId).GetForUser(userId: userId, postId: contentId);
+                var like = LikeController.Instance.GetForUser(portalId: portalId, moduleId: moduleId, userId: userId, postId: contentId);
                 if (like == null)
                 {
                     var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };

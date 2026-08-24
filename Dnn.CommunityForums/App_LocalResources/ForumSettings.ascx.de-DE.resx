@@ -261,26 +261,11 @@
   <data name="MarkAnswerPointValue.Text" xml:space="preserve">
     <value>Antwort markieren</value>
   </data>
-  <data name="MessagingCore.Text" xml:space="preserve">
-    <value>Standard-Messaging</value>
-  </data>
   <data name="MessagingDisabled.Text" xml:space="preserve">
     <value>Deaktiviert</value>
   </data>
-  <data name="MessagingTab.Help" xml:space="preserve">
-    <value>Wählen Sie die Registerkarte aus, die das Modul für private Nachrichten enthält</value>
-  </data>
-  <data name="MessagingTab.Text" xml:space="preserve">
-    <value>Registerkarte "Messaging"</value>
-  </data>
-  <data name="MessagingType.Help" xml:space="preserve">
-    <value>Wählen Sie ein privates Nachrichtensystem aus.</value>
-  </data>
   <data name="MessagingType.Text" xml:space="preserve">
     <value>Messaging-Typ</value>
-  </data>
-  <data name="MessagingVentrian.Text" xml:space="preserve">
-    <value>Ventrian Messages</value>
   </data>
   <data name="Mode.Help" xml:space="preserve">
     <value>Verwenden Sie immer den Standardmodus, es sei denn, Sie verwenden das Modul auf einer Seite für soziale Gruppen.  Der Modus "Soziale Gruppe" sollte nur verwendet werden, wenn Sie wissen, dass eine GroupId immer in der URL vorhanden ist.</value>
@@ -350,12 +335,6 @@
   </data>
   <data name="TopicPointValue.Text" xml:space="preserve">
     <value>Neues Thema</value>
-  </data>
-  <data name="URLPrefixBase.Help" xml:space="preserve">
-    <value>Dies ist der Text, der als erster Teil aller Foren-URLs verwendet wird.  In den meisten Fällen werden Sie nur "Forum" eingeben wollen.</value>
-  </data>
-  <data name="URLPrefixBase.Text" xml:space="preserve">
-    <value>Basispfad</value>
   </data>
   <data name="URLPrefixCategory.Help" xml:space="preserve">
     <value>Dies ist der Text, der als Teil der URL verwendet wird, um Forenkategorien zu identifizieren.</value>

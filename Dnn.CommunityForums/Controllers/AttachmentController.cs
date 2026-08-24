@@ -34,63 +34,81 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+    using DotNetNuke.UI.UserControls;
 
     /// <summary>
     /// Controller for managing Attachments in the DNN Community Forums module.
     /// </summary>
-    internal class AttachmentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo>
+    internal class AttachmentController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo, IAttachmentController, AttachmentController>, IAttachmentController
     {
         private readonly DotNetNuke.Services.FileSystem.IFolderManager folderManager;
         private readonly DotNetNuke.Services.FileSystem.IFileManager fileManager;
-        private readonly DotNetNuke.Modules.ActiveForums.Controllers.ContentController contentController;
+        private readonly DotNetNuke.Modules.ActiveForums.Controllers.IContentController contentController;
+
+        protected override Func<IAttachmentController> GetFactory()
+        {
+            return () => new AttachmentController();
+        }
 
         public AttachmentController()
             : this(
                   DotNetNuke.Services.FileSystem.FolderManager.Instance,
                   DotNetNuke.Services.FileSystem.FileManager.Instance,
-                  new DotNetNuke.Modules.ActiveForums.Controllers.ContentController())
+                  DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance)
         {
         }
 
         public AttachmentController(
             DotNetNuke.Services.FileSystem.IFolderManager folderManager,
             DotNetNuke.Services.FileSystem.IFileManager fileManager,
-            DotNetNuke.Modules.ActiveForums.Controllers.ContentController contentController)
+            DotNetNuke.Modules.ActiveForums.Controllers.IContentController contentController)
         {
             this.folderManager = folderManager;
             this.fileManager = fileManager;
             this.contentController = contentController;
         }
 
-        internal IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo> GetByContentId(int contentId)
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo> GetByContentId(int moduleId, int contentId)
         {
-            return this.Find("WHERE ContentId = @0", contentId);
+            var cacheKey = string.Format(CacheKeys.AttachmentInfoByContentId, moduleId, contentId);
+            var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cacheKey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo>>;
+
+            if (cached == null)
+            {
+                var attachments = this._repositoryControllerBase.Find("WHERE ContentId = @0", contentId);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cacheKey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo>>(attachments, attachments != null));
+                return attachments;
+            }
+
+            return cached.HasValue ? cached.Value : null;
         }
 
         internal new void Delete(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachmentInfo)
         {
-            base.Delete(attachmentInfo);
+            this._repositoryControllerBase.Delete(attachmentInfo);
         }
 
-        internal new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachmentInfo)
+        public new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachmentInfo)
         {
-            base.Insert(attachmentInfo);
-            return this.GetById(attachmentInfo.AttachmentId);
+            this._repositoryControllerBase.Insert(attachmentInfo);
+            return this._repositoryControllerBase.GetById(attachmentInfo.AttachmentId);
         }
 
-        internal new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo Update(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachmentInfo)
+        public new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo Update(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachmentInfo)
         {
-            base.Update(attachmentInfo);
-            return this.GetById(attachmentInfo.AttachmentId);
+            this._repositoryControllerBase.Update(attachmentInfo);
+            return this._repositoryControllerBase.GetById(attachmentInfo.AttachmentId);
         }
 
-        internal new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo Save(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachmentInfo)
+        public new DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo Save(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachmentInfo)
         {
-            this.Save(attachmentInfo, attachmentInfo.AttachmentId);
-            return this.GetById(attachmentInfo.AttachmentId);
+            this._repositoryControllerBase.Save(attachmentInfo, attachmentInfo.AttachmentId);
+            return this._repositoryControllerBase.GetById(attachmentInfo.AttachmentId);
         }
 
-        internal void RelocateAttachment(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachment)
+        public void RelocateAttachment(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachment)
         {
             if (attachment == null)
             {
@@ -99,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             DotNetNuke.Services.FileSystem.IFileInfo file = null;
 
-            var content = this.contentController.GetById(attachment.ContentId, DotNetNuke.Common.Utilities.Null.NullInteger);
+            var content = this.contentController.GetById(DotNetNuke.Common.Utilities.Null.NullInteger, attachment.ContentId);
             if (content != null)
             {
                 if (attachment.DisplayInline == true)
@@ -185,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        internal void RelocateInlineAttachment(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachment, DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content)
+        public void RelocateInlineAttachment(DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo attachment, DotNetNuke.Modules.ActiveForums.Entities.ContentInfo content)
         {
             if (attachment == null || attachment.DisplayInline == false)
             {

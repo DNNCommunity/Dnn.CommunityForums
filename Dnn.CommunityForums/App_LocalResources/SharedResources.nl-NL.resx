@@ -1978,4 +1978,16 @@ Van,
   <data name="[RESX:ShowBoxesDesc].Text" xml:space="preserve">
     <value>Showblokken</value>
   </data>
+  <data name="[RESX:Continue].Text" xml:space="preserve">
+    <value>Ga verder</value>
+  </data>
+  <data name="[RESX:ClickContinueToStart].Text" xml:space="preserve">
+    <value>Klik op de knop doorgaan om te beginnen.</value>
+  </data>
+  <data name="[RESX:InitConfigScreen].Text" xml:space="preserve">
+    <value>&lt;h2 class="dcf-init-title-main"&gt;Bedankt voor het kiezen van DNN Community Forums.&lt;br&gt;Jouw manier om eenvoudig een volledige online gemeenschap op te bouwen. &lt;/h2&gt;
+&lt;p&gt;DNN Community Forums stelt je in staat om snel een rijk discussieforum voor je website op te zetten.&lt;/p&gt;
+&lt;p&gt;Of je nu een hobbyist bent die slechts één forum nodig heeft of een online community voor je bedrijf bouwt, DNN 
+    Community Forums is de toonaangevende oplossing. Zoals je snel zult zien, heeft geen enkel ander forumpakket voor DNN zoveel functies of de flexibiliteit van DNN Community Forums.&lt;/p&gt;</value>
+  </data>
 </root>

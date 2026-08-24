@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Constants;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicsView runat=server></{0}:TopicsView>")]
     public class TopicsView : ForumBase
@@ -75,22 +76,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             try
             {
-                if (this.ForumId < 1)
+                if (this.ForumId < 1 || this.ForumInfo == null || this.ForumInfo.Active == false)
                 {
                     this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                     this.Context.ApplicationInstance.CompleteRequest();
-                }
-
-                if (this.ForumInfo == null)
-                {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
-                    this.Context.ApplicationInstance.CompleteRequest();
-                }
-
-                if (this.ForumInfo.Active == false)
-                {
-                    this.Response.Redirect(this.NavigateUrl(this.TabId), false);
-                    this.Context.ApplicationInstance.CompleteRequest();
+                    return;
                 }
 
                 this.AppRelativeVirtualPath = "~/";
@@ -169,87 +159,86 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (topicsTemplate.Contains("[TOPICS]"))
                 {
                     string cacheKey = string.Format(CacheKeys.TopicsViewForUser, this.ModuleId, this.ForumId, this.UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, this.rowIndex, this.pageSize);
-                    DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(this.ForumModuleId, cacheKey);
+                    var ds = (DataSet)DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(this.ForumModuleId, cacheKey);
                     if (ds == null)
                     {
                         ds = DotNetNuke.Modules.ActiveForums.DataProvider.Instance().UI_TopicsView(this.PortalId, this.ForumModuleId, this.ForumId, this.UserId, this.rowIndex, this.pageSize, this.UserInfo.IsSuperUser, sort);
-                        DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(this.ModuleId, cacheKey, ds);
                     }
 
-                    if (ds.Tables.Count > 0)
+                    if (ds?.Tables?.Count <= 0 || ds?.Tables[0]?.Rows?.Count < 1 || ds?.Tables[1]?.Rows?.Count < 1 || ds?.Tables[3]?.Rows?.Count < 1)
                     {
-                        this.drForum = ds.Tables[0].Rows[0];
-                        this.drSecurity = ds.Tables[1].Rows[0];
-                        this.dtSubForums = ds.Tables[2];
-                        this.dtTopics = ds.Tables[3];
-                        if (this.PageId == 1)
+                        this.Response.Redirect(this.NavigateUrl(this.TabId), false);
+                        this.Context.ApplicationInstance.CompleteRequest();
+                        return;
+                    }
+
+                    this.drForum = ds.Tables[0].Rows[0];
+                    this.drSecurity = ds.Tables[1].Rows[0];
+                    this.dtSubForums = ds.Tables[2];
+                    this.dtTopics = ds.Tables[3];
+                    if (this.PageId == 1)
+                    {
+                        this.dtAnnounce = ds.Tables[4];
+                    }
+
+                    this.bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanView"].ToString()), this.ForumUser.UserRoleIds);
+                    this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanSubscribe"].ToString()), this.ForumUser.UserRoleIds);
+
+                    if (this.bView)
+                    {
+                        this.topicRowCount = Convert.ToInt32(this.drForum["TopicRowCount"]);
+                        if (this.UserId > 0)
                         {
-                            this.dtAnnounce = ds.Tables[4];
+                            this.isSubscribedForum = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId);
                         }
 
-                        this.bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanView"].ToString()), this.ForumUser.UserRoleIds);
-                        this.bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsFromPermSet(this.drSecurity["CanSubscribe"].ToString()), this.ForumUser.UserRoleIds);
-
-                        if (this.bView)
+                        if (this.ModuleSettings.UseSkinBreadCrumb)
                         {
-
-                            this.topicRowCount = Convert.ToInt32(this.drForum["TopicRowCount"]);
-                            if (this.UserId > 0)
-                            {
-                                this.isSubscribedForum = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, this.UserId, this.ForumId);
-                            }
-
-                            if (this.ModuleSettings.UseSkinBreadCrumb)
-                            {
-                                string groupURL = new ControlUtils().BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: this.ForumInfo.ForumGroup.PrefixURL, forumPrefix: string.Empty, forumGroupId: this.ForumInfo.ForumGroupId, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId);
-                                DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + groupURL + "\">" + this.ForumInfo.ForumGroup.GroupName + "</a>");
-                                topicsTemplate = topicsTemplate.Replace("<div class=\"afcrumb\">[FORUM:FORUMMAINLINK] > [FORUMGROUP:FORUMGROUPLINK]</div>", string.Empty);
-                            }
-
-                            if (topicsTemplate.Contains("[META]"))
-                            {
-                                this.MetaTemplate = TemplateUtils.GetTemplateSection(topicsTemplate, "[META]", "[/META]");
-                                topicsTemplate = TemplateUtils.ReplaceSubSection(topicsTemplate, string.Empty, "[META]", "[/META]");
-                            }
-
-                            // Parse Meta Template
-                            if (!string.IsNullOrEmpty(this.MetaTemplate))
-                            {
-                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(this.MetaTemplate)).ToString();
-                                this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl).ToString();
-                                this.MetaTitle = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[TITLE]", "[/TITLE]").Replace("[TITLE]", string.Empty).Replace("[/TITLE]", string.Empty);
-                                this.MetaTitle = this.MetaTitle.TruncateAtWord(SEOConstants.MaxMetaTitleLength);
-                                this.MetaDescription = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[DESCRIPTION]", "[/DESCRIPTION]").Replace("[DESCRIPTION]", string.Empty).Replace("[/DESCRIPTION]", string.Empty);
-                                this.MetaDescription = this.MetaDescription.TruncateAtWord(SEOConstants.MaxMetaDescriptionLength);
-                                this.MetaKeywords = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[KEYWORDS]", "[/KEYWORDS]").Replace("[KEYWORDS]", string.Empty).Replace("[/KEYWORDS]", string.Empty);
-                            }
-
-                            this.BindTopics(topicsTemplate);
-                        }
-                        else
-                        {
-                            this.Response.Redirect(this.NavigateUrl(this.TabId), false);
-                            this.Context.ApplicationInstance.CompleteRequest();
+                            string groupURL = new ControlUtils().BuildUrl(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: this.ForumInfo.ForumGroup.PrefixURL, forumPrefix: string.Empty, forumGroupId: this.ForumInfo.ForumGroupId, forumID: -1, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: 1, contentId: -1, socialGroupId: this.SocialGroupId);
+                            DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + groupURL + "\">" + this.ForumInfo.ForumGroup.GroupName + "</a>");
+                            topicsTemplate = topicsTemplate.Replace("<div class=\"afcrumb\">[FORUM:FORUMMAINLINK] > [FORUMGROUP:FORUMGROUPLINK]</div>", string.Empty);
                         }
 
-                        try
+                        if (topicsTemplate.Contains("[META]"))
                         {
-                            DotNetNuke.Framework.CDefault tempVar = this.BasePage;
-                            DotNetNuke.Modules.ActiveForums.Environment.UpdateMeta(ref tempVar, this.MetaTitle, this.MetaDescription, this.MetaKeywords);
+                            this.MetaTemplate = TemplateUtils.GetTemplateSection(topicsTemplate, "[META]", "[/META]");
+                            topicsTemplate = TemplateUtils.ReplaceSubSection(topicsTemplate, string.Empty, "[META]", "[/META]");
                         }
-                        catch (Exception ex)
+
+                        // Parse Meta Template
+                        if (!string.IsNullOrEmpty(this.MetaTemplate))
                         {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                            if (ex.InnerException != null)
-                            {
-                                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex.InnerException);
-                            }
+                            this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.RemoveObsoleteTokens(new StringBuilder(this.MetaTemplate)).ToString();
+                            this.MetaTemplate = DotNetNuke.Modules.ActiveForums.Services.Tokens.TokenReplacer.ReplaceForumTokens(new StringBuilder(this.MetaTemplate), this.ForumInfo, this.PortalSettings, this.ModuleSettings, new Services.URLNavigator().NavigationManager(), this.ForumUser, this.TabId, this.ForumUser.CurrentUserType, this.Request.Url, this.Request.RawUrl).ToString();
+                            this.MetaTitle = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[TITLE]", "[/TITLE]").Replace("[TITLE]", string.Empty).Replace("[/TITLE]", string.Empty);
+                            this.MetaTitle = this.MetaTitle.TruncateAtWord(SEOConstants.MaxMetaTitleLength);
+                            this.MetaDescription = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[DESCRIPTION]", "[/DESCRIPTION]").Replace("[DESCRIPTION]", string.Empty).Replace("[/DESCRIPTION]", string.Empty);
+                            this.MetaDescription = this.MetaDescription.TruncateAtWord(SEOConstants.MaxMetaDescriptionLength);
+                            this.MetaKeywords = TemplateUtils.GetTemplateSection(this.MetaTemplate, "[KEYWORDS]", "[/KEYWORDS]").Replace("[KEYWORDS]", string.Empty).Replace("[/KEYWORDS]", string.Empty);
                         }
+
+                        this.BindTopics(topicsTemplate);
                     }
                     else
                     {
                         this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                         this.Context.ApplicationInstance.CompleteRequest();
+                        return;
+                    }
+
+                    try
+                    {
+                        DotNetNuke.Framework.CDefault tempVar = this.BasePage;
+                        DotNetNuke.Modules.ActiveForums.Environment.UpdateMeta(ref tempVar, this.MetaTitle, this.MetaDescription, this.MetaKeywords);
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                        if (ex.InnerException != null)
+                        {
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex.InnerException);
+                        }
                     }
                 }
                 else
@@ -340,7 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.ctlForumSubs = (ForumView)this.LoadControl(typeof(ForumView), null);
                 this.ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 this.ctlForumSubs.ForumId = this.ForumId;
-                this.ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ForumModuleId).SubForums.Where(f => f.Active && !f.Hidden).ToList();
+                this.ctlForumSubs.Forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, this.ForumId).SubForums.Where(f => f.Active && !f.Hidden).ToList();
                 this.ctlForumSubs.ForumTabId = this.ForumTabId;
                 this.ctlForumSubs.ForumModuleId = this.ForumModuleId;
                 this.ctlForumSubs.SubsOnly = true;
@@ -372,7 +361,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseControls(string Template)
         {
-            string MyTheme = this.ModuleSettings.Theme;
+            //string MyTheme = this.ModuleSettings.Theme;
             string sOutput = Template;
             sOutput = "<%@ Register TagPrefix=\"ac\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>" + sOutput;
 
@@ -471,7 +460,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     PortalId = this.PortalId,
                     ContentId = Convert.ToInt32(drTopic["TopicContentId"]),
                     ForumId = Convert.ToInt32(drTopic["ForumId"]),
-                    Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(drTopic["ForumId"]), this.ForumModuleId),
+                    Forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ForumModuleId, Convert.ToInt32(drTopic["ForumId"])),
                     TopicId = Convert.ToInt32(drTopic["TopicId"]),
                     TopicType = (TopicTypes)Enum.Parse(typeof(TopicTypes), Convert.ToInt32(drTopic["TopicType"]).ToString()),
                     Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo
@@ -709,7 +698,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (replies + 1 > this.pageSize)
             {
                 List<string> Params = new List<string>();
-                sOut = "<div class=\"afpagermini\">(<img src=\"" + this.ModuleSettings.ThemeLocation + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
+                sOut = "<div class=\"afpagermini\">(<img src=\"" + ThemePath + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
 
                 // Jump to pages
                 int intPostPages = 0;

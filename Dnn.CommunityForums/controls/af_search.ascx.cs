@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // An intersection of the forums allows vs forums requested.
             var parseId = 0;
 
-            var forumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
+            var forumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Read);
             var forumsRequested = forumsAllowed;
             if (!string.IsNullOrEmpty(this.Forums))
             {
@@ -534,55 +534,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return this.NavigateUrl(this.TabId, string.Empty, @params.ToArray());
-        }
-
-        #endregion
-
-        #region "Deprecated"
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-
-        public string GetPostSnippet() => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetForumUrl() => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-
-        public string GetThreadUrl() => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-
-        public string GetPostUrl() => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-
-        public string GetIcon() => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-
-        public string GetLastPostAuthor() => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-
-        public string GetLastPostTime() => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public DataRow Get_currentRow() => this.currentRow;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-        public int GetSocialGroupId() => this.SocialGroupId;
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-        public string GetMiniPager() => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-        public class Keyword
-        {
-            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-            public string Value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")] 
-            public string HtmlEncodedValue => throw new NotImplementedException();
         }
 
         #endregion

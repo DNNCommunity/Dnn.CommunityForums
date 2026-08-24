@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string Render()
         {
-            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Edit).FromHashSetToDelimitedString(";");
+            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsForUser(this.ModuleId, this.ForumUser, DotNetNuke.Modules.ActiveForums.SecureActions.Edit).FromHashSetToDelimitedString(";");
             if (!string.IsNullOrEmpty(fs))
             {
                 this._canEdit = true;
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.ForumId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ModuleId, this.ForumId);
                     if (f != null)
                     {
                         forumPrefix = f.PrefixURL;
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else if (this.ForumGroupId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo g = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(this.ForumGroupId, this.ModuleId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo g = DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance.GetById(this.ForumGroupId, this.ModuleId);
                     if (g != null)
                     {
                         groupPrefix = g.PrefixURL;
@@ -106,11 +106,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             string tmp = string.Empty;
-            Data.Topics db = new Data.Topics();
             int recordCount = 0;
             int i = 0;
             sb.Append(this.HeaderTemplate);
-            using (IDataReader dr = db.TopicsList(this.PortalId, this.PageIndex, this.PageSize, this.ForumIds, this.CategoryId, this.TagId))
+            using (IDataReader dr = DotNetNuke.Data.SqlDataProvider.Instance().ExecuteReader("communityforums_TopicsList", this.PortalId, this.PageIndex, this.PageSize, this.ForumIds, this.CategoryId, this.TagId))
             {
                 while (dr.Read())
                 {
@@ -140,9 +139,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int pageCount = Convert.ToInt32(System.Math.Ceiling((double)recordCount / this.PageSize));
             ControlUtils cUtils = new ControlUtils();
             string otherPrefix = this.TagId > 0 ?
-                     Utilities.CleanName(new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(this.TagId).TagName) :
+                     Utilities.CleanName(DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance.GetById(this.TagId).TagName) :
                         (this.CategoryId > 0 ?
-                             Utilities.CleanName(new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().GetById(this.CategoryId).CategoryName) : string.Empty);
+                             Utilities.CleanName(DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance.GetById(this.CategoryId).CategoryName) : string.Empty);
             sb.Append(cUtils.BuildPager(portalId: this.PortalId, tabId: this.TabId, moduleId: this.ModuleId, groupPrefix: groupPrefix, forumPrefix: forumPrefix, forumGroupId: this.ForumGroupId, forumID: this.ForumId, tagId: this.TagId, categoryId: this.CategoryId, otherPrefix: otherPrefix, pageId: this.PageIndex, pageCount: pageCount));
             return sb.ToString();
         }
@@ -186,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 auth.FirstName = row[columnPrefix + "AuthorFirstName"].ToString();
                 auth.Username = row[columnPrefix + "AuthorUsername"].ToString();
 
-                DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
+                DotNetNuke.Entities.Portals.PortalSettings portalSettings = new Helpers.PortalSettingsHelper().GetPortalSettings(this.PortalId);
                 tmp = tmp.Replace("[TOPICURL]", cUtils.TopicURL(row, this.TabId, this.ModuleId));
                 tmp = tmp.Replace("[FORUMURL]", cUtils.ForumURL(row, this.TabId, this.ModuleId));
                 if (int.Parse(row["LastAuthorId"].ToString()) == -1)

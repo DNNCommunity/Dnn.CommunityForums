@@ -24,19 +24,29 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlTypes;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI.WebControls;
+    using System.Xml.Linq;
 
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
     using DotNetNuke.Modules.ActiveForums.Helpers;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Search.Entities;
 
     #region Topics Controller
-    public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
+    public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable, DotNetNuke.Entities.Modules.IPortable
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
         private readonly IPortalAliasService portalAliasService;
@@ -58,51 +68,20 @@ namespace DotNetNuke.Modules.ActiveForums
             this.portalSettings = portalSettings;
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
-        public int Topic_QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalId, moduleId, forumId, subject, body, userId, displayName, isApproved, iPAddress);
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split()")]
-        public void Replies_Split(int oldTopicId, int newTopicId, string listreplies, bool isNew) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(TopicInfo ti)")]
-        public int TopicSave(int portalId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-
-        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(TopicInfo ti)")]
-        public int TopicSave(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-
-        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId)")]
-        public int Topics_SaveToForum(int forumId, int topicId, int portalId, int moduleId)
+        #region "IPortable"
+        public string ExportModule(int moduleID)
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(moduleId, forumId, topicId);
-            return -1;
+            return DotNetNuke.Modules.ActiveForums.Helpers.ImportExportHelper.ExportModule(moduleId: moduleID);
         }
 
-        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId)")]
-        public int Topics_SaveToForum(int forumId, int topicId, int portalId, int moduleId, int lastReplyId)
+        public void ImportModule(int moduleID, string content, string version, int userID)
         {
-            Controllers.TopicController.SaveToForum(moduleId, forumId, topicId);
-            return -1;
+            DotNetNuke.Modules.ActiveForums.Helpers.ImportExportHelper.ImportModule(moduleId: moduleID, content: content, version: version, userId: userID);
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int portalId, int moduleId, int topicId) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
+        #endregion "IPortable"
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int portalId, int moduleId, int topicId, int forumId, int userId, bool withSecurity) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).GetById(topicId);
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteById(int TopicId)")]
-        public void Topics_Delete(int portalId, int moduleId, int forumId, int topicId, int delBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(moduleId).DeleteById(topicId, (DotNetNuke.Modules.ActiveForums.Enums.DeleteBehavior)(delBehavior));
-
-        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(int TopicId, int NewForumId)")]
-        public void Topics_Move(int portalId, int moduleId, int forumId, int topicId) => throw new NotImplementedException();
-
-        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(int TopicId)")]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ApproveTopic(int portalId, int tabId, int moduleId, int forumId, int topicId) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
-        public void UpdateModuleLastContentModifiedOnDate(int moduleId) => Utilities.UpdateModuleLastContentModifiedOnDate(moduleId);
-
-        #region ModuleSearchBase
+        #region "ModuleSearchBase"
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
@@ -154,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
                     }
 
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumid, moduleInfo.ModuleID);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleInfo.ModuleID, forumid);
 
                     // NOTE: indexer is called from scheduler and has no httpcontext
                     // so any code that relies on HttpContext cannot be used...
@@ -168,8 +147,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     string permittedRolesCanView = string.Empty;
                     if (!authorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
-                        string canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
-                        permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(portalSettings, string.Join(";", canView.Split(":".ToCharArray())));
+                        var delimiter = ";";
+                        var viewRolesAsDelimitedString = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIdsForRequestedAccess(moduleId: moduleInfo.ModuleID, permissionsId: forumid, requestedAccess: SecureActions.View).FromHashSetToDelimitedString(delimiter);
+                        permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(portalSettings: portalSettings, roles: viewRolesAsDelimitedString, delimiter: delimiter);
                         authorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }
 
@@ -213,7 +193,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
-        #endregion
+
+        #endregion "ModuleSearchBase"
 
         #region "IUpgradeable"
         public string UpgradeModule(string Version)
@@ -237,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "07.00.11":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.MoveSettings_070011();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.MoveSettings_070011();
                     }
                     catch (Exception ex)
                     {
@@ -263,8 +244,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "08.00.00":
                     try
                     {
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.Upgrade_Templates_080000();
                         var fc = new ForumsConfig();
-                        fc.Upgrade_Templates_080000();
                         fc.Install_Or_Upgrade_RenameThemeCssFiles_080000();
                         fc.Install_Or_Upgrade_RelocateDefaultThemeToLegacy_080000();
                         ForumsConfig.FillMissingTopicUrls_070012(); /* for anyone upgrading from 07.00.12-> 08.00.00 */
@@ -280,8 +261,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "08.01.00":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_080100();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080100();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_080100();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_080100();
                         ForumsConfig.Install_BanUser_NotificationType_080100();
                     }
                     catch (Exception ex)
@@ -296,11 +277,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         ForumsConfig.Merge_Permissions_080200();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
-                        ForumsConfig.Upgrade_EmailNotificationSubjectTokens_080200();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_080200();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.Upgrade_EmailNotificationSubjectTokens_080200();
                         ForumsConfig.Upgrade_RelocateSqlFiles_080200();
                         ForumsConfig.Install_Upgrade_CreateForumDefaultSettingsAndSecurity_080200();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddUrlPrefixLikes_080200();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.AddUrlPrefixLikes_080200();
                         ForumsConfig.Install_LikeNotificationType_080200();
                         ForumsConfig.Install_PinNotificationType_080200();
                     }
@@ -315,7 +296,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "09.00.00":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090000();
+                        var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                        var message = $"Removing obsolete module settings for {Version}";
+                        log.AddProperty("Message", message);
+                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_090000();
+                        log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                        message = $"Upgrading permissions for {Version}";
+                        log.AddProperty("Message", message);
+                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
                         ForumsConfig.Upgrade_PermissionSets_090000();
                     }
                     catch (Exception ex)
@@ -329,8 +320,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "09.01.00":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090100();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.AddAvatarModuleSettings_090100();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_090100();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.AddAvatarModuleSettings_090100();
                     }
                     catch (Exception ex)
                     {
@@ -356,7 +347,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "09.02.01":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090201();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_090201();
                         new ForumsConfig().Install_DefaultBadges_090201(upgrading: true);
                     }
                     catch (Exception ex)
@@ -371,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         ForumsConfig.Install_UserMentionNotificationType_090300();
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_090300();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.UpgradeSocialGroupForumConfigModuleSettings_090300();
                     }
                     catch (Exception ex)
                     {
@@ -397,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "09.06.00":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_090600();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_090600();
                         ForumsConfig.Upgrade_EnsureVanityNames_090600();
                     }
                     catch (Exception ex)
@@ -414,6 +405,25 @@ namespace DotNetNuke.Modules.ActiveForums
                         var fc = new ForumsConfig();
                         fc.RemoveLegacyAvatarsFolder_090700();
                         fc.RelocateAttachments_090700();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "10.00.00":
+                    try
+                    {
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.DeleteObsoleteModuleSettings_100000();
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.Remove_TemplatesTable_100000();
+
+                        /* ensure permissions are upgraded anyone upgrading from earlier than 09.00.00 to 10.00.00; 
+                         * "GroupKey" on settings table was changed to "SettingsKey" in 09.02.00 so the 09.00.00 upgrade task failed for anyone upgrading from earlier than 09.00.00 to 09.02.00->09.08.00;
+                         * ALSO handles additional "Mention" permission */
+                        DotNetNuke.Modules.ActiveForums.Helpers.Upgrades.Upgrade_PermissionSets_100000();
                     }
                     catch (Exception ex)
                     {
@@ -445,6 +455,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Logger.Error(message);
             }
         }
+
         #endregion
 
     }

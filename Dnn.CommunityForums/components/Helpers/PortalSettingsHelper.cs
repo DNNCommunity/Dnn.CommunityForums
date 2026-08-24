@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             }
             catch (Exception ex)
             {
-                    Exceptions.LogException(ex);
+                Exceptions.LogException(ex);
                 return null;
             }
         }

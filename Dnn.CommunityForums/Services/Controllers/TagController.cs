@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Web.Api;
 
@@ -78,12 +79,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 if (!string.IsNullOrEmpty(matchString))
                 {
                     var cachekey = string.Format(CacheKeys.TagMatches, this.ForumModuleId, matchString);
-                    var matchingTags = DataCache.ContentCacheRetrieve(this.ForumModuleId, cachekey) as List<TagMatchDto>;
+                    var matchingTags = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(this.ForumModuleId, cachekey) as List<TagMatchDto>;
                     if (matchingTags == null)
                     {
                         matchingTags = new List<TagMatchDto>();
                         matchingTags.AddRange(
-                        new DotNetNuke.Modules.ActiveForums.Controllers.TagController()
+                        DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance
                         .Find(
                             "WHERE PortalId = @0 AND ModuleId = @1 AND TagName <> '' AND TagName LIKE @2 ORDER By TagName",
                             this.ActiveModule.PortalID,
@@ -94,7 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             name = t.TagName,
                             portalSettings = this.PortalSettings,
                             }).ToList());
-                        DataCache.ContentCacheStore(this.ForumModuleId, cachekey, matchingTags);
+                        DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(this.ForumModuleId, cachekey, matchingTags);
                     }
 
                     if (matchingTags.Count > 0)

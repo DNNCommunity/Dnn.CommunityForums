@@ -31,10 +31,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel.DataAnnotations;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Services.FileSystem;
 
-    [TableName("activeforums_Content")]
+    [TableName("communityforums_Content")]
     [PrimaryKey("ContentId", AutoIncrement = true)]
     public class ContentInfo
     {
@@ -86,10 +87,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             if (this.postInfo == null)
             {
-                this.postInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)new DotNetNuke.Modules.ActiveForums.Controllers.TopicController(this.ModuleId).GetByContentId(this.ContentId);
+                this.postInfo = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetByContentId(this.ModuleId, this.ContentId);
                 if (this.postInfo == null)
                 {
-                    this.postInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.ModuleId).GetByContentId(this.ContentId);
+                    this.postInfo = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetByContentId(this.ModuleId, this.ContentId);
                 }
             }
 
@@ -98,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal string GetCacheKey() => string.Format(this.cacheKeyTemplate, this.ModuleId, this.ContentId);
 
-        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, this.GetCacheKey(), this);
+        internal void UpdateCache() => DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(this.ModuleId, this.GetCacheKey(), this);
 
         internal void ExtractEmbeddedImages()
         {
@@ -107,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             try
             {
                 const string Base64ImagePattern = @"(?<tag><img src=""(?<src>data:(?<mimetype>image\/[a-zA-Z]+);base64,(?<content>[A-Za-z0-9+\/]+=*)"")[^>]*>)";
-                var matches = RegexUtils.GetCachedRegex(Base64ImagePattern, RegexOptions.Compiled & RegexOptions.IgnoreCase).Matches(this.Body);
+                var matches = RegexUtils.GetCachedRegex(Base64ImagePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase).Matches(this.Body);
                 foreach (Match match in matches)
                 {
                     if (match.Groups["content"].Success)
@@ -156,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 DateUpdated = DateTime.UtcNow,
                                 DisplayInline = true,
                             };
-                            new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController().Save(attachment);
+                            DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.Save(attachment);
                             var width = file.Width;
                             var height = file.Height;
                             if (width > this.Post.Forum.FeatureSettings.MaxImageWidth ||
@@ -177,11 +178,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                 }
                             }
 
-                            var imgUrl = $"https://{this.Post.Forum.PortalSettings.DefaultPortalAlias}{DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file)}";
-                            imgUrl = Utilities.RemoveCultureFromUrl(Utilities.ResolveUrl(imgUrl, this.Post.Forum.PortalSettings), this.Post.Forum.PortalSettings);
+                            var fileUrl = DotNetNuke.Services.FileSystem.FileManager.Instance.GetUrl(file);
+                            var imgUrl = Utilities.GetImageUrl(fileUrl, this.Post.Forum.PortalSettings);
                             var tag = $"<img src=\"{imgUrl}\" width=\"{width}\" height=\"{height}\" loading=\"lazy\" />";
                             this.Body = this.Body.Replace(match.Groups["tag"].Value, tag);
-                            new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().Save(this, this.ContentId);
+                            DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance.Save(this, this.ContentId);
+
                         }
                     }
                 }
@@ -195,16 +197,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal void RemoveAttachments()
         {
-            var attachmentController = new DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController();
             var fileManager = DotNetNuke.Services.FileSystem.FileManager.Instance;
             var folderManager = DotNetNuke.Services.FileSystem.FolderManager.Instance;
             var attachmentFolder = folderManager.GetFolder(this.Post.PortalId, string.Format(DotNetNuke.Modules.ActiveForums.Globals.AttachmentsFolderNameFormatString, this.ModuleId, this.ContentId));
             var embeddedImagesFolder = folderManager.GetFolder(this.Post.PortalId, string.Format(Globals.EmbeddedImagesFolderNameFormatString, this.ModuleId, this.ContentId));
             var legacyAttachmentFolder = folderManager.GetFolder(this.Post.PortalId, DotNetNuke.Modules.ActiveForums.Globals.LegacyAttachmentsFolderName);
 
-            foreach (var attachment in attachmentController.GetByContentId(this.ContentId))
+            foreach (var attachment in DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.GetByContentId(this.ModuleId, this.ContentId))
             {
-                attachmentController.DeleteById(attachment.AttachmentId);
+                DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.Delete(attachment);
 
                 var file = attachment.FileId.HasValue && attachment.FileId.Value > 0 ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
                 if (file != null && (

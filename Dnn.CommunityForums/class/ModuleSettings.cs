@@ -22,11 +22,9 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
     using System.Collections;
-    using System.Reflection;
 
     using DotNetNuke.Modules.ActiveForums.Entities;
-
-    using Newtonsoft.Json;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
 
     public class ModuleSettings
     {
@@ -45,6 +43,18 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.MainSettings = new Hashtable();
             this.ModuleId = moduleId;
+        }
+
+        public ModuleSettings CreateMergedTabModuleSettings(Hashtable tabModuleSettingsToOverlay)
+        {
+            var consolidatedSettings = new Hashtable(this.MainSettings);
+
+            foreach (string key in tabModuleSettingsToOverlay.Keys)
+            {
+                consolidatedSettings[key] = tabModuleSettingsToOverlay[key];
+            }
+
+            return new ModuleSettings { ModuleId = this.ModuleId, MainSettings = consolidatedSettings };
         }
 
         public int PageSize => this.MainSettings.GetInt(SettingKeys.PageSize, 20);
@@ -77,17 +87,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string TimeFormatString => this.MainSettings.GetString(SettingKeys.TimeFormatString, "h:mm tt");
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        [JsonIgnore]
-        public int TimeZoneOffset => this.MainSettings.GetInt(SettingKeys.TimeZoneOffset);
-
         public bool UsersOnlineEnabled => this.MainSettings.GetBoolean(SettingKeys.UsersOnlineEnabled);
 
         public string MemberListMode => "Enabled";
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        [JsonIgnore]
-        public int ForumTemplateID => throw new NotImplementedException();
 
         public DateTime InstallDate => Utilities.SafeConvertDateTime(this.MainSettings[SettingKeys.InstallDate], Utilities.NullDate());
 
@@ -104,8 +106,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public int PMTabId => this.MainSettings.GetInt(SettingKeys.PMTabId, -1);
-
         public bool DisableAccountTab => this.MainSettings.GetBoolean(SettingKeys.DisableAccountTab);
 
         public string Theme
@@ -121,15 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string TemplatePath => string.Concat(this.ThemeLocation, "templates/");
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        [JsonIgnore]
-        public bool FullText => this.MainSettings.GetBoolean(SettingKeys.FullText);
-
         public string AllowSubTypes => this.MainSettings.GetString(SettingKeys.AllowSubTypes, string.Empty);
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        [JsonIgnore]
-        public bool MailQueue => true;
 
         public bool CacheTemplates => this.MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true);
 
@@ -170,25 +162,23 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool URLRewriteEnabled => this.MainSettings.GetBoolean(SettingKeys.EnableURLRewriter);
 
-        public string PrefixURLBase => this.MainSettings.GetString(SettingKeys.PrefixURLBase, string.Empty);
-
         public string PrefixURLOther => !this.URLRewriteEnabled
                            ? string.Empty
-                           : this.MainSettings.GetString(SettingKeys.PrefixURLOther, "other");
+                           : this.MainSettings.GetString(SettingKeys.PrefixURLOther, Views.views);
 
         public string PrefixURLTag => !this.URLRewriteEnabled
                            ? string.Empty
-                           : this.MainSettings.GetString(SettingKeys.PrefixURLTags, "tag");
+                           : this.MainSettings.GetString(SettingKeys.PrefixURLTags, Views.tag);
 
         public string PrefixURLCategory => !this.URLRewriteEnabled
                            ? string.Empty
-                           : this.MainSettings.GetString(SettingKeys.PrefixURLCategories, "category");
+                           : this.MainSettings.GetString(SettingKeys.PrefixURLCategories, Views.category);
 
         public string PrefixURLLikes => !this.URLRewriteEnabled
                     ? string.Empty
-                    : this.MainSettings.GetString(SettingKeys.PrefixURLLikes, Views.Likes);
+                    : this.MainSettings.GetString(SettingKeys.PrefixURLLikes, Views.likes);
 
-        public int DefaultPermissionId => this.MainSettings.GetInt(SettingKeys.DefaultPermissionId);
+        public int DefaultPermissionId => this.MainSettings.GetInt(SettingKeys.DefaultPermissionId, -1);
 
         public string DefaultSettingsKey => this.MainSettings.GetString(SettingKeys.DefaultSettingsKey) ?? $"M{this.ModuleId}";
 
@@ -201,20 +191,5 @@ namespace DotNetNuke.Modules.ActiveForums
         public bool ModeIsStandard => this.MainSettings.GetString(SettingKeys.Mode, ModuleModes.Standard).Equals(ModuleModes.Standard, StringComparison.InvariantCultureIgnoreCase);
 
         public bool ModeIsSocial => this.MainSettings.GetString(SettingKeys.Mode, ModuleModes.Standard).Equals(ModuleModes.SocialGroup, StringComparison.InvariantCultureIgnoreCase);
-    }
-
-    public class SettingsInfo
-    {
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static Hashtable GeneralSettings(int moduleId, string groupKey) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static string GetSetting(int moduleId, string groupKey, string settingName) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static bool SaveSetting(int moduleId, string settingKey, string settingName, string settingValue) => throw new NotImplementedException();
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static bool DeleteSetting(int moduleId, string groupKey, string settingName) => throw new NotImplementedException();
     }
 }

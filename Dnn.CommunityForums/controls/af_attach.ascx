@@ -80,7 +80,6 @@
             fileTypeNotAllowedMsg: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:Error:BlockedFile]"))%>",      
             allowedFileTypes: "<%= ForumInfo.FeatureSettings.AttachTypeAllowed %>",
             allowBrowseSite: <%= ForumInfo.FeatureSettings.AttachAllowBrowseSite ? 1 : 0 %>,
-            attachInsertAllowed: <%= ForumInfo.FeatureSettings.AttachInsertAllowed ? 1 : 0 %>,
             maxFileSizeExceededMsg: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(string.Format(LocalizeString("[RESX:Error:FileTooLarge]").EmptyIfNull(), ForumInfo.FeatureSettings.AttachMaxSize))%>",
             maxAttachmentCount: <%= ForumInfo.FeatureSettings.AttachCount %>,
             uploadButtonText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:UploadButton]"))%>"

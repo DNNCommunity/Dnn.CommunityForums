@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
 
     public class ActiveAdminBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
@@ -47,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId));
+                object obj = DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Retrieve(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId));
                 if (obj == null)
                 {
                     string sURL;
@@ -60,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sURL = string.Concat("http://", Common.Globals.GetDomainName(this.Request), "/");
                     }
 
-                    DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
+                    DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
 
@@ -77,7 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return new ModuleSettings { ModuleId = this.ModuleId, MainSettings = new ModuleController().GetModule(moduleID: this.ModuleId).ModuleSettings };
+                return SettingsBase.GetTabModuleSettings(this.ModuleId, this.TabModuleId);
             }
         }
 
@@ -108,9 +109,6 @@ namespace DotNetNuke.Modules.ActiveForums
             template.Controls.Add(new LiteralControl(string.Concat("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>")));
             return template;
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public void BindTemplateDropDown(DropDownList drp, DotNetNuke.Modules.ActiveForums.Templates.TemplateTypes templateType, string defaultText, string defaultValue) => throw new NotImplementedException();
 
         public string CurrentView
         {

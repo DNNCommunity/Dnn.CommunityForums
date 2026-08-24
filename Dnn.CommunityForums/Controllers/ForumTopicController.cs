@@ -20,56 +20,52 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
     using System.Linq;
 
-    internal class ForumTopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo>
+    using DotNetNuke.Modules.ActiveForums.Services.Cache;
+
+    internal class ForumTopicController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo, IForumTopicController, ForumTopicController>, IForumTopicController
     {
-        private int moduleId = -1;
-
-        internal override string cacheKeyTemplate => CacheKeys.ForumTopicInfo;
-
-        internal ForumTopicController()
+        protected override Func<IForumTopicController> GetFactory()
         {
+            return () => new ForumTopicController();
         }
 
-        internal ForumTopicController(int moduleId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetByTopicId(int moduleId, int topicId)
         {
-            this.moduleId = moduleId;
-        }
-
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetByTopicId(int topicId)
-        {
-            var cachekey = this.GetCacheKey(moduleId: this.moduleId, id: topicId);
-            var forumTopic = DataCache.ContentCacheRetrieve(this.moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo;
+            var cachekey = string.Format(CacheKeys.ForumTopicInfo, moduleId, topicId);
+            var forumTopic = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo;
             if (forumTopic == null)
             {
-                forumTopic = this.Find("WHERE TopicId = @0", topicId).FirstOrDefault();
+                forumTopic = this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).FirstOrDefault();
 
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.moduleId, cachekey, forumTopic);
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, forumTopic);
             }
 
             return forumTopic;
         }
 
-        internal DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetForForumIdTopicId(int forumId, int topicId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo GetForForumIdTopicId(int forumId, int topicId)
         {
-            return this.Find("WHERE ForumId = @0 AND TopicId = @1", forumId, topicId).FirstOrDefault();
+            return this._repositoryControllerBase.Find("WHERE ForumId = @0 AND TopicId = @1", forumId, topicId).FirstOrDefault();
         }
 
-        internal void Update(int forumId, int topicId)
+        public void Update(int moduleId, int forumId, int topicId)
         {
             var forumTopic = this.GetForForumIdTopicId(forumId, topicId);
             if (forumTopic == null)
             {
-                forumTopic = new DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo {
+                forumTopic = new DotNetNuke.Modules.ActiveForums.Entities.ForumTopicInfo
+                {
                     ForumId = forumId,
                     TopicId = topicId,
                     LastReplyId = null,
                 };
-                this.Insert(forumTopic);
+                this._repositoryControllerBase.Insert(forumTopic);
             }
 
-            var replies = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController(this.moduleId).GetByTopicId(topicId);
+            var replies = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetByTopicId(moduleId, topicId);
             if (replies.Any())
             {
                 forumTopic.LastReplyId = replies.Max(r => r.ReplyId);
@@ -79,13 +75,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 forumTopic.LastReplyId = null;
             }
 
-            this.Update(forumTopic);
+            this._repositoryControllerBase.Update(forumTopic);
         }
 
-        internal void DeleteForForum(int forumId)
+        public void DeleteForForum(int moduleId, int forumId)
         {
-            this.Delete("WHERE ForumId = @0", forumId);
-            DataCache.CacheClearPrefix(this.moduleId, CacheKeys.ForumTopicInfoPrefix);
+            this._repositoryControllerBase.Delete("WHERE ForumId = @0", forumId);
+            DotNetNuke.Modules.ActiveForums.Services.Cache.CacheBase.CacheClearPrefix(CacheKeys.ForumTopicInfoPrefix);
         }
     }
 }

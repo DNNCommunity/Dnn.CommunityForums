@@ -1694,17 +1694,23 @@ div.dcf-mod-edit-wrap {
  
  /* user badge display */
 .dcf-user-badges { --tooltip-color: white; --tooltip-bg-color: #444; --counter-color: white;  --counter-bg-color: red;}
-.dcf-user-badges { padding: 0.5em 0;}
+.dcf-user-badges {padding: 0.5em 0; container-type: inline-size}
 .dcf-user-badge-wrap { padding: 0.5em 0; position:relative;}
 .dcf-user-badge-item{display:flex; align-items: center; position:relative; cursor: pointer;}
 .dcf-user-badge-image{border: solid 1px #ddd; aspect-ratio: 1/1;text-align:center; padding: 0.6em; border-radius: 50%;}
 .dcf-user-badge-tooltip{position:absolute; left: -9999em; top: -1.5em; opacity: 0; color: var(--tooltip-color); background: var(--tooltip-bg-color); padding: 0.3em 0.5em; border-radius: 0.3em 0.3em 0.3em 0; white-space: nowrap;}
 .dcf-user-badge-tooltip::after{content: "";	display: block;	position: absolute; height: 6px; width: 10px; background: var(--tooltip-bg-color); left: 0; bottom: -5px; clip-path: polygon(0 0, 100% 0, 0 100%);}
-.dcf-user-badge-title{margin-left: 0.5em;}
+.dcf-user-badge-title{display: none;}
+@container (width > 150px) {
+    .dcf-user-badge-title {
+        display:block;
+        margin-left: 0.5em;
+    }
+}
 .dcf-user-badge-item:hover + .dcf-user-badge-tooltip{opacity: 1; left: 2.5em;}
 .dcf-user-badge-item:hover  .dcf-user-badge-image{border-color: var(--tooltip-bg-color); }
 .dcf-user-badge-wrap .dcf-user-badge-image img { border-style: none; }
-.dcf-user-badge-wrap .dcf-user-badge-count { position: absolute; display:block; bottom: 0.0; left: 0; background-color: var(--counter-bg-color);  font-size: 0.9em; border-radius: 0.9em; color: var(--counter-color); min-width: 1.8em; padding: 0.1em 0.4em; line-height: 1.6em;}
+.dcf-user-badge-wrap .dcf-user-badge-count { position: absolute; display:block; bottom: 0; left: 0; background-color: var(--counter-bg-color);  font-size: 0.9em; border-radius: 0.9em; color: var(--counter-color); min-width: 1.8em; padding: 0.1em 0.4em; line-height: 1.6em;}
 .dcf-user-badge-wrap .dcf-user-badge-image .dcf-user-badge-count:empty { display:none; }
 
 /* quick reply - issue 1661 */
