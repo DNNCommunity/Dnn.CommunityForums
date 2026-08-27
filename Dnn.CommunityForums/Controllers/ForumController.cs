@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in this._repositoryControllerBase.Find("WHERE ParentForumId = @0", forumId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in this._repositoryControllerBase.Find("WHERE ParentForumId = @0", forumId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList())
                 {
                     forum.LoadForumGroup();
                     forum.LoadProperties();
@@ -372,7 +372,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController.Instance.DeleteForForum(moduleId, forumId);
             new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().DeleteForForum(moduleId, forumId);
             this._repositoryControllerBase.DeleteById(forumId);
-            DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Forums_RepairSort", forumId, parentForumId);
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            ctx.Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Forums_RepairSort", forumId, parentForumId);
             DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.ClearAll(moduleId);
         }
 
@@ -546,7 +547,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                return DataContext.Instance().ExecuteQuery<DateTime>(System.Data.CommandType.Text, "SELECT LastAccessDate FROM {databaseOwner}{objectQualifier}communityforums_Forums_Tracking WHERE ForumId = @0 AND UserId = @1", forumId, userId).FirstOrDefault();
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                return ctx.ExecuteQuery<DateTime>(System.Data.CommandType.Text, "SELECT LastAccessDate FROM {databaseOwner}{objectQualifier}communityforums_Forums_Tracking WHERE ForumId = @0 AND UserId = @1", forumId, userId).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -559,7 +561,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_SaveTopicNextPrev", forumId);
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                ctx.Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_SaveTopicNextPrev", forumId);
                 return true;
             }
             catch (Exception ex)
@@ -573,7 +576,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Forums_LastUpdates", forumId);
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                ctx.Execute(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Forums_LastUpdates", forumId);
                 return true;
             }
             catch (Exception ex)

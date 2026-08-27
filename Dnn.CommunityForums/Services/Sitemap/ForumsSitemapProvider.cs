@@ -91,7 +91,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
             var sitemapMetricsByUrl = new Dictionary<string, SitemapUrlMetrics>(StringComparer.OrdinalIgnoreCase);
             var forumAverageLikeScoreByForumId = new Dictionary<int, double>();
 
-            var results = DataContext.Instance().ExecuteQuery<SearchSitemapResult>(
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            var results = ctx.ExecuteQuery<SearchSitemapResult>(
                 CommandType.StoredProcedure,
                 "{databaseOwner}{objectQualifier}communityforums_Search_GetSearchItemsFromBegDate",
                 module.ModuleID,

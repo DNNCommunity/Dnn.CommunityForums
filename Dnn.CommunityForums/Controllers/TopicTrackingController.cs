@@ -53,7 +53,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var topicReadCount = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey);
             if (topicReadCount == null)
             {
-                topicReadCount = DataContext.Instance().ExecuteQuery<int>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicReadCount = ctx.ExecuteQuery<int>(
                     System.Data.CommandType.Text,
                     "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Topics_Tracking tt LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_Topics t ON t.TopicId = tt.TopicId WHERE tt.UserId = @0 AND tt.ForumId = @1 AND t.IsDeleted = 0",
                     userId,
@@ -67,7 +68,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public int GetTopicsReadCountByUser(int moduleId, int userId)
         {
-            return DataContext.Instance().ExecuteQuery<int>(
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            return ctx.ExecuteQuery<int>(
                 System.Data.CommandType.Text,
                 "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Topics_Tracking tt WHERE tt.UserId = @0",
                 userId).FirstOrDefault();
@@ -75,7 +77,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public int GetTopicsReadCountByUser(int moduleId, int userId, DateTime minDateTime)
         {
-            return DataContext.Instance().ExecuteQuery<int>(
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            return ctx.ExecuteQuery<int>(
                 System.Data.CommandType.Text,
                 "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Topics_Tracking tt WHERE tt.UserId = @0 AND DateAdded IS NOT NULL AND DateAdded >= @1",
                 userId,

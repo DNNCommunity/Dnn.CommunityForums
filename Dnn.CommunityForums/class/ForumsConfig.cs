@@ -291,7 +291,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     attachmentFileNames.Add(new System.IO.FileInfo(attachmentFileName).Name);
                 }
 
-                var databaseFileNames = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT FileName FROM {databaseOwner}{objectQualifier}communityforums_Attachments ORDER BY FileName").ToList();
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var databaseFileNames = ctx.ExecuteQuery<string>(System.Data.CommandType.Text, "SELECT FileName FROM {databaseOwner}{objectQualifier}communityforums_Attachments ORDER BY FileName").ToList();
 
                 foreach (var attachmentFileName in attachmentFileNames)
                 {
@@ -1064,7 +1065,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Attachments]')) ALTER TABLE {databaseOwner}[{objectQualifier}communityforums_Attachments] DROP COLUMN FileData");
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                ctx.Execute(System.Data.CommandType.Text, "IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Attachments]')) ALTER TABLE {databaseOwner}[{objectQualifier}communityforums_Attachments] DROP COLUMN FileData");
             }
             catch (Exception ex)
             {
@@ -1154,10 +1156,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         /* use direct SQL command rather than DAL2 entity so the column can be removed after data is migrated */
                         byte[] fileBytes = null;
-                        var fileDataColumnObjectId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT object_id FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Attachments]')").FirstOrDefault();
+                        using var ctx = DotNetNuke.Data.DataContext.Instance();
+                        var fileDataColumnObjectId = ctx.ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT object_id FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Attachments]')").FirstOrDefault();
                         if (fileDataColumnObjectId != null)
                         {
-                            var fileData = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<byte[]>(System.Data.CommandType.Text, "SELECT FileData FROM {databaseOwner}[{objectQualifier}communityforums_Attachments] WHERE AttachmentId = @0", attachment.AttachmentId).FirstOrDefault();
+                            var fileData = ctx.ExecuteQuery<byte[]>(System.Data.CommandType.Text, "SELECT FileData FROM {databaseOwner}[{objectQualifier}communityforums_Attachments] WHERE AttachmentId = @0", attachment.AttachmentId).FirstOrDefault();
                             if (fileData != null && fileData.Length > 0)
                             {
                                 fileBytes = fileData;
@@ -1203,7 +1206,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         filelocation = orphanedAttachmentsPath + attachment.FileName;
                                         if (!System.IO.File.Exists(filelocation))
                                         {
-                                         filelocation = System.IO.Directory.EnumerateFiles(path: orphanedAttachmentsPath, searchPattern: string.Format(fileNameTemplate, attachment.ContentId, "*", attachment.FileName), searchOption: System.IO.SearchOption.AllDirectories).FirstOrDefault();
+                                            filelocation = System.IO.Directory.EnumerateFiles(path: orphanedAttachmentsPath, searchPattern: string.Format(fileNameTemplate, attachment.ContentId, "*", attachment.FileName), searchOption: System.IO.SearchOption.AllDirectories).FirstOrDefault();
                                         }
                                     }
                                 }
@@ -1363,161 +1366,168 @@ namespace DotNetNuke.Modules.ActiveForums
                     else
                     {
                         /* use direct SQL command rather than DAL2 entity so the column can be removed after data is migrated */
-                        byte[] fileBytes = null;
-                        var fileDataColumnObjectId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT object_id FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Attachments]')").FirstOrDefault();
-                        if (fileDataColumnObjectId != null)
+
+                        // Use an isolated DataContext scope to avoid "open DataReader" conflicts
+                        // when called during BeginRequest where DNN's shared connection may already
+                        // have an active DataReader open.
+                        using (var ctx = DotNetNuke.Data.DataContext.Instance())
                         {
-                            var fileData = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<byte[]>(System.Data.CommandType.Text, "SELECT FileData FROM {databaseOwner}[{objectQualifier}communityforums_Attachments] WHERE AttachmentId = @0", attachment.AttachmentId).FirstOrDefault();
-                            if (fileData != null && fileData.Length > 0)
+                            byte[] fileBytes = null;
+                            var fileDataColumnObjectId = ctx.ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT object_id FROM sys.columns WHERE [name] = N'FileData' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Attachments]')").FirstOrDefault();
+                            if (fileDataColumnObjectId != null)
                             {
-                                fileBytes = fileData;
-                            }
-
-                            if (fileBytes != null && fileBytes.Length > 0)
-                            {
-                                System.Drawing.Imaging.ImageFormat saveFormat = null;
-                                switch (attachment.ContentType.ToLowerInvariant())
+                                var fileData = ctx.ExecuteQuery<byte[]>(System.Data.CommandType.Text, "SELECT FileData FROM {databaseOwner}[{objectQualifier}communityforums_Attachments] WHERE AttachmentId = @0", attachment.AttachmentId).FirstOrDefault();
+                                if (fileData != null && fileData.Length > 0)
                                 {
-                                    case "image/jpeg":
-                                    case "image/jpg":
-                                        saveFormat = System.Drawing.Imaging.ImageFormat.Jpeg;
-                                        break;
-                                    case "image/gif":
-                                        saveFormat = System.Drawing.Imaging.ImageFormat.Gif;
-                                        break;
-                                    case "image/png":
-                                    case "image/x-png":
-                                        saveFormat = System.Drawing.Imaging.ImageFormat.Png;
-                                        break;
-                                    default:
-                                        // Unsupported image type
-                                        var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
-                                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                                        var message = $"Unable to determine or invalid content type {attachment.ContentType} for file {attachment.FileName} with user id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}";
-                                        log.AddProperty("Message", message);
-                                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-                                        return;
+                                    fileBytes = fileData;
                                 }
 
-                                attachment.FileName = System.IO.Path.ChangeExtension(attachment.FileName, saveFormat.ToString().ToLowerInvariant());
-                                using (var ms = new MemoryStream())
+                                if (fileBytes != null && fileBytes.Length > 0)
                                 {
-                                    ms.Write(fileBytes, 0, fileBytes.Length);
-                                    ms.Position = 0;
-
-                                    attachment.FileName = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.CreateUniqueFileName(embeddedImagesFolder.PhysicalPath, attachment.FileName);
-                                    file = fileManager.AddFile(embeddedImagesFolder, attachment.FileName, ms, true);
-                                }
-
-                                if (file != null)
-                                {
-                                    attachment.FileId = file.FileId;
-                                }
-                            }
-                        }
-
-                        if (fileDataColumnObjectId == null || fileBytes == null)
-                        {
-                            const string fileNameTemplate = Globals.LegacyAttachmentFileNameFormatString;
-                            var filelocation = legacyAttachmentsPath + attachment.FileName;
-                            if (!System.IO.File.Exists(filelocation))
-                            {
-                                filelocation = System.IO.Directory.EnumerateFiles(path: legacyAttachmentsPath, searchPattern: string.Format(fileNameTemplate, attachment.ContentId, "*", attachment.FileName), searchOption: System.IO.SearchOption.AllDirectories).FirstOrDefault();
-                                if (filelocation == null || !System.IO.File.Exists(filelocation))
-                                {
-                                    // If the file doesn't exist in the legacy attachment location, attempt to find it in the user's folder (legacy location for user-uploaded attachments)
-                                    var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUserById(content.Post.PortalId, attachment.UserId);
-                                    if (userInfo == null)
+                                    System.Drawing.Imaging.ImageFormat saveFormat = null;
+                                    switch (attachment.ContentType.ToLowerInvariant())
                                     {
-                                        var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
-                                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                                        var message = $"Unable to locate user with id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}";
-                                        log.AddProperty("Message", message);
-                                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-                                        return;
-                                    }
-
-                                    var userFolder = folderManager.GetUserFolder(userInfo);
-                                    if (userFolder == null)
-                                    {
-                                        var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
-                                        log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                                        var message = $"Unable to locate user folder for user id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}";
-                                        log.AddProperty("Message", message);
-                                        DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-                                        return;
-                                    }
-
-                                    filelocation = System.IO.Directory.EnumerateFiles(path: userFolder.PhysicalPath, searchPattern: string.Format(fileNameTemplate, attachment.ContentId, "*", attachment.FileName), searchOption: System.IO.SearchOption.AllDirectories).FirstOrDefault();
-                                    if (filelocation == null || !System.IO.File.Exists(filelocation))
-                                    {
-                                        // look in orphan attachments folder
-                                        filelocation = orphanedAttachmentsPath + attachment.FileName;
-                                        if (!System.IO.File.Exists(filelocation))
-                                        {
-                                            filelocation = System.IO.Directory.EnumerateFiles(path: orphanedAttachmentsPath, searchPattern: string.Format(fileNameTemplate, attachment.ContentId, "*", attachment.FileName), searchOption: System.IO.SearchOption.AllDirectories).FirstOrDefault();
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (filelocation == null || !System.IO.File.Exists(filelocation))
-                            {
-                                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
-                                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                                var message = $"Unable to locate file for attachment filename {attachment.FileName} for user id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}; removing attachment record";
-                                log.AddProperty("Message", message);
-                                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-                                DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.Delete(attachment);
-                                return;
-                            }
-
-                            using (System.Drawing.Image imageFile = System.Drawing.Image.FromFile(filelocation))
-                            {
-                                if (imageFile != null)
-                                {
-                                    using (var ms = new MemoryStream())
-                                    {
-                                        // pick save format by comparing RawFormat GUIDs
-                                        var raw = imageFile.RawFormat;
-                                        var saveFormat = System.Drawing.Imaging.ImageFormat.Png;
-
-                                        if (System.Drawing.Imaging.ImageFormat.Jpeg.Guid == raw.Guid)
-                                        {
+                                        case "image/jpeg":
+                                        case "image/jpg":
                                             saveFormat = System.Drawing.Imaging.ImageFormat.Jpeg;
-                                        }
-                                        else if (System.Drawing.Imaging.ImageFormat.Gif.Guid == raw.Guid)
-                                        {
+                                            break;
+                                        case "image/gif":
                                             saveFormat = System.Drawing.Imaging.ImageFormat.Gif;
-                                        }
-                                        else if (System.Drawing.Imaging.ImageFormat.Bmp.Guid == raw.Guid)
-                                        {
-                                            saveFormat = System.Drawing.Imaging.ImageFormat.Bmp;
-                                        }
-
-                                        attachment.FileName = System.IO.Path.ChangeExtension(attachment.FileName, $".{saveFormat.ToString().ToLowerInvariant()}");
-                                        attachment.FileName = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.CreateUniqueFileName(embeddedImagesFolder.PhysicalPath, attachment.FileName);
-
-                                        try
-                                        {
-                                            imageFile.Save(ms, saveFormat);
-                                            ms.Position = 0;
-                                            file = fileManager.AddFile(embeddedImagesFolder, attachment.FileName, ms, true);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                            break;
+                                        case "image/png":
+                                        case "image/x-png":
+                                            saveFormat = System.Drawing.Imaging.ImageFormat.Png;
+                                            break;
+                                        default:
+                                            // Unsupported image type
                                             var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
                                             log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
-                                            var message = $"Unable to add file to DNN file manager for attachment filename {attachment.FileName} for user id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}";
+                                            var message = $"Unable to determine or invalid content type {attachment.ContentType} for file {attachment.FileName} with user id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}";
                                             log.AddProperty("Message", message);
                                             DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-                                        }
+                                            return;
+                                    }
+
+                                    attachment.FileName = System.IO.Path.ChangeExtension(attachment.FileName, saveFormat.ToString().ToLowerInvariant());
+                                    using (var ms = new MemoryStream())
+                                    {
+                                        ms.Write(fileBytes, 0, fileBytes.Length);
+                                        ms.Position = 0;
+
+                                        attachment.FileName = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.CreateUniqueFileName(embeddedImagesFolder.PhysicalPath, attachment.FileName);
+                                        file = fileManager.AddFile(embeddedImagesFolder, attachment.FileName, ms, true);
+                                    }
+
+                                    if (file != null)
+                                    {
+                                        attachment.FileId = file.FileId;
                                     }
                                 }
                             }
 
-                            System.IO.File.Delete(filelocation);
+                            if (fileDataColumnObjectId == null || fileBytes == null)
+                            {
+                                const string fileNameTemplate = Globals.LegacyAttachmentFileNameFormatString;
+                                var filelocation = legacyAttachmentsPath + attachment.FileName;
+                                if (!System.IO.File.Exists(filelocation))
+                                {
+                                    filelocation = System.IO.Directory.EnumerateFiles(path: legacyAttachmentsPath, searchPattern: string.Format(fileNameTemplate, attachment.ContentId, "*", attachment.FileName), searchOption: System.IO.SearchOption.AllDirectories).FirstOrDefault();
+                                    if (filelocation == null || !System.IO.File.Exists(filelocation))
+                                    {
+                                        // If the file doesn't exist in the legacy attachment location, attempt to find it in the user's folder (legacy location for user-uploaded attachments)
+                                        var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUserById(content.Post.PortalId, attachment.UserId);
+                                        if (userInfo == null)
+                                        {
+                                            var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
+                                            log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                                            var message = $"Unable to locate user with id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}";
+                                            log.AddProperty("Message", message);
+                                            DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                                            return;
+                                        }
+
+                                        var userFolder = folderManager.GetUserFolder(userInfo);
+                                        if (userFolder == null)
+                                        {
+                                            var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
+                                            log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                                            var message = $"Unable to locate user folder for user id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}";
+                                            log.AddProperty("Message", message);
+                                            DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                                            return;
+                                        }
+
+                                        filelocation = System.IO.Directory.EnumerateFiles(path: userFolder.PhysicalPath, searchPattern: string.Format(fileNameTemplate, attachment.ContentId, "*", attachment.FileName), searchOption: System.IO.SearchOption.AllDirectories).FirstOrDefault();
+                                        if (filelocation == null || !System.IO.File.Exists(filelocation))
+                                        {
+                                            // look in orphan attachments folder
+                                            filelocation = orphanedAttachmentsPath + attachment.FileName;
+                                            if (!System.IO.File.Exists(filelocation))
+                                            {
+                                                filelocation = System.IO.Directory.EnumerateFiles(path: orphanedAttachmentsPath, searchPattern: string.Format(fileNameTemplate, attachment.ContentId, "*", attachment.FileName), searchOption: System.IO.SearchOption.AllDirectories).FirstOrDefault();
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (filelocation == null || !System.IO.File.Exists(filelocation))
+                                {
+                                    var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
+                                    log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                                    var message = $"Unable to locate file for attachment filename {attachment.FileName} for user id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}; removing attachment record";
+                                    log.AddProperty("Message", message);
+                                    DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance.Delete(attachment);
+                                    return;
+                                }
+
+                                using (System.Drawing.Image imageFile = System.Drawing.Image.FromFile(filelocation))
+                                {
+                                    if (imageFile != null)
+                                    {
+                                        using (var ms = new MemoryStream())
+                                        {
+                                            // pick save format by comparing RawFormat GUIDs
+                                            var raw = imageFile.RawFormat;
+                                            var saveFormat = System.Drawing.Imaging.ImageFormat.Png;
+
+                                            if (System.Drawing.Imaging.ImageFormat.Jpeg.Guid == raw.Guid)
+                                            {
+                                                saveFormat = System.Drawing.Imaging.ImageFormat.Jpeg;
+                                            }
+                                            else if (System.Drawing.Imaging.ImageFormat.Gif.Guid == raw.Guid)
+                                            {
+                                                saveFormat = System.Drawing.Imaging.ImageFormat.Gif;
+                                            }
+                                            else if (System.Drawing.Imaging.ImageFormat.Bmp.Guid == raw.Guid)
+                                            {
+                                                saveFormat = System.Drawing.Imaging.ImageFormat.Bmp;
+                                            }
+
+                                            attachment.FileName = System.IO.Path.ChangeExtension(attachment.FileName, $".{saveFormat.ToString().ToLowerInvariant()}");
+                                            attachment.FileName = DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.CreateUniqueFileName(embeddedImagesFolder.PhysicalPath, attachment.FileName);
+
+                                            try
+                                            {
+                                                imageFile.Save(ms, saveFormat);
+                                                ms.Position = 0;
+                                                file = fileManager.AddFile(embeddedImagesFolder, attachment.FileName, ms, true);
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                DotNetNuke.Modules.ActiveForums.Exceptions.LogException(ex);
+                                                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.HOST_ALERT.ToString() };
+                                                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                                                var message = $"Unable to add file to DNN file manager for attachment filename {attachment.FileName} for user id {attachment.UserId} while relocating attachment with id {attachment.AttachmentId} and content id {attachment.ContentId}";
+                                                log.AddProperty("Message", message);
+                                                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                System.IO.File.Delete(filelocation);
+                            }
                         }
                     }
 

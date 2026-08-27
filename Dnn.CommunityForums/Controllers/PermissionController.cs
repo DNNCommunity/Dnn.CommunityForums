@@ -850,9 +850,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sForums = string.Empty;
                 if (!string.IsNullOrEmpty(forumIds))
                 {
-                    foreach (string forumId in forumIds.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+                    var requestedForumIds = new HashSet<int>(
+                        forumIds.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                                .Select(id => Convert.ToInt32(id)));
+
+                    var allForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(moduleId);
+                    foreach (var forum in allForums.Where(f => requestedForumIds.Contains(f.ForumID)))
                     {
-                        DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(moduleId, Convert.ToInt32(forumId));
                         if (forum.FeatureSettings.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security?.ViewRoleIds, userRoleIds))
                         {
                             sForums += forum.ForumID.ToString() + ":";
