@@ -13,8 +13,8 @@
         <Description>Discussion Forum Module for DNN</Description>
         <Company>dnncommunity.org</Company>
         <Authors>dnncommunity.org</Authors>
-        <FileVersion>10.00.00.00</FileVersion>
-        <AssemblyVersion>10.00.00.00</AssemblyVersion>
+        <FileVersion>10.01.00.00</FileVersion>
+        <AssemblyVersion>10.01.00.00</AssemblyVersion>
         <IncludeSymbols>False</IncludeSymbols>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <AnalysisLevel>latest</AnalysisLevel>
