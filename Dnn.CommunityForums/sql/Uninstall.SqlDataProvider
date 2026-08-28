@@ -835,6 +835,9 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics_Tracking]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}communityforums_Topics_Tracking]
 GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topic_Properties]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}communityforums_Topic_Properties]
+GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}communityforums_Topics]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}communityforums_Topics]
 GO

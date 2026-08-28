@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Active Forums" type="Module" version="10.00.00">
+    <package name="Active Forums" type="Module" version="10.00.01">
       <friendlyName>DNN Community Forums</friendlyName>
       <description>DNN Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
@@ -494,6 +494,11 @@
                 <path>sql</path>
                 <name>10.00.00.SqlDataProvider</name>
                 <version>10.00.00</version>
+            </script>
+            <script type="Install">
+                <path>sql</path>
+                <name>10.00.01.SqlDataProvider</name>
+                <version>10.00.01</version>
             </script>
             <script type="UnInstall">
               <path>sql</path>
