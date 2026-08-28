@@ -174,7 +174,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
             }
 
-            var templates = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<TemplateInfoForConversion>(
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            var templates = ctx.ExecuteQuery<TemplateInfoForConversion>(
             System.Data.CommandType.Text,
             @"SELECT ModuleId, TemplateType, FileName, Template FROM {databaseOwner}[{objectQualifier}communityforums_Templates]");
             foreach (var templateInfo in templates)
@@ -300,7 +301,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     {
                         try
                         {
-                            var subject = DotNetNuke.Data.DataContext.Instance().ExecuteScalar<string>(
+                            using var ctx = DotNetNuke.Data.DataContext.Instance();
+                            var subject = ctx.ExecuteScalar<string>(
                             System.Data.CommandType.Text,
                             @"SELECT TOP 1 Subject FROM {databaseOwner}[{objectQualifier}communityforums_Templates] WHERE TemplateType = 8 & ModuleId = @0",
                             module.ModuleID);
@@ -441,7 +443,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             "PROFILETEMPLATEID",
                         })
                         {
-                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
+                            using var ctx = DotNetNuke.Data.DataContext.Instance();
+                            ctx.Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
                         }
 
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "FORUMTEMPLATEID");
@@ -655,7 +658,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
                         /* remove PMTABID and update PMTYPE from 2 to 1 if needed (removing ventrian messaging) */
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "PMTABID");
-                        DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "UPDATE {databaseOwner}{objectQualifier}ModuleSettings SET SettingValue = 1 WHERE ModuleId = @0 AND SettingName = 'PMTYPE' AND SettingValue = 2", module.ModuleID);
+                        using var ctx = DotNetNuke.Data.DataContext.Instance();
+                        ctx.Execute(System.Data.CommandType.Text, "UPDATE {databaseOwner}{objectQualifier}ModuleSettings SET SettingValue = 1 WHERE ModuleId = @0 AND SettingName = 'PMTYPE' AND SettingValue = 2", module.ModuleID);
 
                         /* remove URLBASE depending on how old the install is, it might be in ModuleSettings or it might be in communityforums_Settings, or both */
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "URLBASE");
@@ -664,7 +668,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                             "URLBASE",
                         })
                         {
-                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
+                            ctx.Execute(System.Data.CommandType.Text, "DELETE FROM {databaseOwner}{objectQualifier}communityforums_Settings WHERE ModuleId = @0 AND SettingName = @1", module.ModuleID, settingName);
                         }
                     }
                 }
@@ -682,8 +686,9 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DROP TABLE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Templates]");
-                DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, "DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Templates]");
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                ctx.Execute(System.Data.CommandType.Text, "DROP TABLE IF EXISTS {databaseOwner}[{objectQualifier}communityforums_Templates]");
+                ctx.Execute(System.Data.CommandType.Text, "DROP SYNONYM IF EXISTS {databaseOwner}[{objectQualifier}activeforums_Templates]");
             }
             catch (Exception ex)
             {

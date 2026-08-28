@@ -114,18 +114,26 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TotalReplies { get; set; }
 
         [IgnoreColumn]
-        public int TotalLikeCount => this.totalLikeCount ?? (this.totalLikeCount = DataContext.Instance().ExecuteQuery<int>(
-            CommandType.Text,
-            @"SELECT COUNT(1)
-                FROM {databaseOwner}{objectQualifier}communityforums_Likes l
-                INNER JOIN {databaseOwner}{objectQualifier}communityforums_Content c ON c.ContentId = l.PostId
-                LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_Topics t ON t.ContentId = c.ContentId
-                LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_Replies r ON r.ContentId = c.ContentId
-                LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_ForumTopics ftTopic ON ftTopic.TopicId = t.TopicId
-                LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_ForumTopics ftReply ON ftReply.TopicId = r.TopicId
-                WHERE l.Checked = 1
-                  AND COALESCE(ftTopic.ForumId, ftReply.ForumId) = @0",
-            this.ForumID).FirstOrDefault()).Value;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
+        public int TotalLikeCount
+        {
+            get
+            {
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                return this.totalLikeCount ?? (this.totalLikeCount = ctx.ExecuteQuery<int>(
+                        CommandType.Text,
+                        @"SELECT COUNT(1)
+                            FROM {databaseOwner}{objectQualifier}communityforums_Likes l
+                            INNER JOIN {databaseOwner}{objectQualifier}communityforums_Content c ON c.ContentId = l.PostId
+                            LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_Topics t ON t.ContentId = c.ContentId
+                            LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_Replies r ON r.ContentId = c.ContentId
+                            LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_ForumTopics ftTopic ON ftTopic.TopicId = t.TopicId
+                            LEFT OUTER JOIN {databaseOwner}{objectQualifier}communityforums_ForumTopics ftReply ON ftReply.TopicId = r.TopicId
+                            WHERE l.Checked = 1
+                                AND COALESCE(ftTopic.ForumId, ftReply.ForumId) = @0",
+                        this.ForumID).FirstOrDefault()).Value;
+            }
+        }
 
         [IgnoreColumn]
         public double AverageLikeScore => this.TotalTopics > 0 ? (double)this.TotalLikeCount / this.TotalTopics : 0D;

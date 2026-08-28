@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
@@ -118,8 +119,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var topicCount = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as int?;
             if (topicCount == null || !topicCount.HasValue)
             {
-                var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");-
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
@@ -156,7 +158,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     var skip = (pageId - 1) * pageSize;
                     var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                    var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                    using var ctx = DotNetNuke.Data.DataContext.Instance();
+                    var topicIds = ctx.ExecuteQuery<int?>(
                         System.Data.CommandType.Text,
                         $@"SELECT t.TopicId
                            FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
@@ -196,7 +199,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -230,7 +234,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT t.TopicId
                         FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -266,7 +271,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -306,7 +312,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT t.TopicId
                         FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -343,7 +350,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -379,7 +387,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT t.TopicId
                         FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -417,7 +426,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -451,7 +461,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         timeFrameMinutes = 0;
                     }
 
-                    var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                    using var ctx = DotNetNuke.Data.DataContext.Instance();
+                    var topicIds = ctx.ExecuteQuery<int?>(
                         System.Data.CommandType.Text,
                         $@"SELECT t.TopicId
                            FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -488,7 +499,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(DISTINCT TopicId)
                         FROM (
@@ -549,7 +561,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         timeFrameMinutes = 0;
                     }
 
-                    var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                    using var ctx = DotNetNuke.Data.DataContext.Instance();
+                    var topicIds = ctx.ExecuteQuery<int?>(
                         System.Data.CommandType.Text,
                         $@"SELECT DISTINCT TopicId
                             FROM (
@@ -620,7 +633,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(DISTINCT TopicId)
                             FROM (
@@ -674,7 +688,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         timeFrameMinutes = 0;
                     }
 
-                    var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                    using var ctx = DotNetNuke.Data.DataContext.Instance();
+                    var topicIds = ctx.ExecuteQuery<int?>(
                         System.Data.CommandType.Text,
                         $@"SELECT DISTINCT TopicId
                             FROM (
@@ -731,7 +746,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(DISTINCT t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -767,7 +783,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT DISTINCT TopicId
                             FROM (
@@ -801,17 +818,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(topicUrl))
                 {
-                    var topicId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
-                        System.Data.CommandType.Text,
-                        $@"SELECT t.TopicId
-                           FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
-                           INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
-                               ON ft.TopicId = t.TopicId
-                           WHERE ft.ForumId = @0
-                             AND t.URL_Hash = HASHBYTES('MD5', CONVERT(varbinary(8000), @1))
-                             AND t.URL = @1",
-                        forumId,
-                        topicUrl.Trim()).FirstOrDefault();
+                    using var ctx = DotNetNuke.Data.DataContext.Instance();
+                    var topicId = ctx.ExecuteQuery<int?>(
+                    System.Data.CommandType.Text,
+                    $@"SELECT t.TopicId
+                        FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
+                        INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
+                            ON ft.TopicId = t.TopicId
+                        WHERE ft.ForumId = @0
+                            AND t.URL_Hash = HASHBYTES('MD5', CONVERT(varbinary(8000), @1))
+                            AND t.URL = @1",
+                    forumId,
+                    topicUrl.Trim()).FirstOrDefault();
                     if (topicId.HasValue)
                     {
                         topicInfo = this.GetById(moduleId: moduleId, topicId: topicId.Value);

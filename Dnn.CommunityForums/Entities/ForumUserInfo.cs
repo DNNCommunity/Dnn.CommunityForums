@@ -558,13 +558,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int GetTopicCountSince(DateTime minDateTime)
         {
             string sSql = "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Content c INNER JOIN {databaseOwner}{objectQualifier}communityforums_Topics t ON t.ContentId = c.ContentId WHERE c.ModuleId = @0 AND c.AuthorId = @1 AND c.IsDeleted = 0 AND c.DateCreated >= @2";
-            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            return ctx.ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
         }
 
         public int GetReplyCountSince(DateTime minDateTime)
         {
             string sSql = "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Content c INNER JOIN {databaseOwner}{objectQualifier}communityforums_Replies r ON r.ContentId = c.ContentId WHERE c.ModuleId = @0 AND c.AuthorId = @1 AND c.IsDeleted = 0 AND c.DateCreated >= @2";
-            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            return ctx.ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
         }
 
         [IgnoreColumn]

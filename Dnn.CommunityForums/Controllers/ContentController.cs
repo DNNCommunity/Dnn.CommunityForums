@@ -88,7 +88,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                postCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                postCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(DISTINCT ContentId)
                         FROM (
@@ -139,7 +140,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                var postInfo = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<PostIdResult>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var postInfo = ctx.ExecuteQuery<PostIdResult>(
                     System.Data.CommandType.Text,
                     $@"SELECT ContentId, TopicId, ReplyId
                         FROM (
