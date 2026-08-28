@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using DotNetNuke.Collections;
     using DotNetNuke.Data;
@@ -30,28 +31,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     internal class RepositoryControllerBase<T>
         where T : class
     {
+        private static readonly PropertyInfo DateUpdatedProperty = typeof(T).GetProperty("DateUpdated");
+
         private IRepository<T> _repo;
-
-        private IRepository<T> Repo
-        {
-            get
-            {
-                if (this._repo == null)
-                {
-                    try
-                    {
-                        var ctx = DataContext.Instance();
-                        this._repo = ctx?.GetRepository<T>();
-                    }
-                    catch (Exception)
-                    {
-                        // DataContext may not be available in test environments.
-                    }
-                }
-
-                return this._repo;
-            }
-        }
 
         internal RepositoryControllerBase()
         {
@@ -59,22 +41,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal virtual IEnumerable<T> Get()
         {
-            return this.Repo.Get();
+            return this.WithRepository(repo => repo.Get());
         }
 
         internal virtual IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
         {
-            return this.Repo.Get(scopeValue);
+            return this.WithRepository(repo => repo.Get(scopeValue));
         }
 
         internal virtual T GetById<TProperty>(TProperty id)
         {
-            return this.Repo.GetById(id);
+            return this.WithRepository(repo => repo.GetById(id));
         }
 
         internal virtual T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
         {
-            return this.Repo.GetById(id, scopeValue);
+            return this.WithRepository(repo => repo.GetById(id, scopeValue));
         }
 
         internal T Save<TProperty>(T item, TProperty id)
@@ -93,50 +75,50 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? this.Get() : this.Repo.Find(sqlCondition, args);
+            return string.IsNullOrEmpty(sqlCondition) ? this.Get() : this.WithRepository(repo => repo.Find(sqlCondition, args));
         }
 
         internal IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args)
         {
-            return this.Repo.Find(pageIndex, pageSize, sqlCondition, args);
+            return this.WithRepository(repo => repo.Find(pageIndex, pageSize, sqlCondition, args));
         }
 
         internal void Update(T item)
         {
-            var property = typeof(T).GetProperty("DateUpdated");
-            if (property != null && property.CanWrite && property.PropertyType == typeof(System.DateTime))
+            if (DateUpdatedProperty != null && DateUpdatedProperty.CanWrite && DateUpdatedProperty.PropertyType == typeof(DateTime))
             {
-                property.SetValue(item, System.DateTime.UtcNow, null);
+                DateUpdatedProperty.SetValue(item, DateTime.UtcNow, null);
             }
-            this.Repo.Update(item);
+
+            this.WithRepository(repo => repo.Update(item));
         }
 
         internal void Update(string sqlCondition, params object[] args)
         {
             if (!string.IsNullOrEmpty(sqlCondition))
             {
-                this.Repo.Find(sqlCondition, args).ToList().ForEach(_ => this.Repo.Update(sqlCondition, args));
+                this.Find(sqlCondition, args).ToList().ForEach(this.Update);
             }
         }
 
         internal void Insert(T item)
         {
-            this.Repo.Insert(item);
+            this.WithRepository(repo => repo.Insert(item));
         }
 
         internal void Delete(string sqlCondition, params object[] args)
         {
-            this.Repo.Delete(sqlCondition, args);
+            this.WithRepository(repo => repo.Delete(sqlCondition, args));
         }
 
         internal void DeleteById<TProperty>(TProperty id)
         {
-            this.Repo.Delete(this.Repo.GetById(id));
+            this.WithRepository(repo => repo.Delete(repo.GetById(id)));
         }
 
         internal void Delete(T item)
         {
-            this.Repo.Delete(item);
+            this.WithRepository(repo => repo.Delete(item));
         }
 
         internal void DeleteByModuleId(int moduleId)
@@ -146,17 +128,57 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal int Count(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? this.Repo.Get().Count() : this.Repo.Find(sqlCondition, args).Count();
+            return string.IsNullOrEmpty(sqlCondition)
+                ? this.WithRepository(repo => repo.Get().Count())
+                : this.WithRepository(repo => repo.Find(sqlCondition, args).Count());
         }
 
         internal IPagedList<T> GetPage(int pageIndex, int pageSize)
         {
-            return this.Repo.GetPage(pageIndex, pageSize);
+            return this.WithRepository(repo => repo.GetPage(pageIndex, pageSize));
         }
 
         internal IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
         {
-            return this.Repo.GetPage(scopeValue, pageIndex, pageSize);
+            return this.WithRepository(repo => repo.GetPage(scopeValue, pageIndex, pageSize));
+        }
+
+        private TResult WithRepository<TResult>(Func<IRepository<T>, TResult> action)
+        {
+            if (this._repo != null)
+            {
+                return action(this._repo);
+            }
+
+            try
+            {
+                using var ctx = DataContext.Instance();
+                return action(ctx?.GetRepository<T>());
+            }
+            catch (Exception)
+            {
+                // DataContext may not be available in test environments.
+                return default;
+            }
+        }
+
+        private void WithRepository(Action<IRepository<T>> action)
+        {
+            if (this._repo != null)
+            {
+                action(this._repo);
+                return;
+            }
+
+            try
+            {
+                using var ctx = DataContext.Instance();
+                action(ctx?.GetRepository<T>());
+            }
+            catch (Exception)
+            {
+                // DataContext may not be available in test environments.
+            }
         }
     }
 }
