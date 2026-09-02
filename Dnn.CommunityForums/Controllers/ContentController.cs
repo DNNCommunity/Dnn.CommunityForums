@@ -173,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY
                         ) AS ContentIds",
                     forumsIdsList,
-                    timeFrameMinutes);
+                    timeFrameMinutes).ToList();
 
                 posts = postInfo.Where(postinfo => postinfo.ContentId.HasValue).Select(post =>
                 {
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
 
                     return (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(moduleId: moduleId, replyId: post.ReplyId.Value, topic: topic);
-                });
+                }).ToList();
 
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, posts);
             }

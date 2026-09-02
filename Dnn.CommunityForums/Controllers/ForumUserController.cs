@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> GetActiveUsers(int portalId, int moduleId)
         {
-            var forumUsers = this._repositoryControllerBase.Get().Where(u => u.PortalId.Equals(portalId));
+            var forumUsers = this._repositoryControllerBase.Get().Where(u => u.PortalId.Equals(portalId)).ToList();
             forumUsers.ForEach(forumUser => forumUser.ModuleId = moduleId);
             var users = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: false, portalId: portalId);
             var superUsers = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: true, portalId: DotNetNuke.Common.Utilities.Null.NullInteger);
@@ -637,7 +637,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             bool isAdmin = forumUser.IsAdmin || forumUser.IsSuperUser;
             var sb = new StringBuilder();
-            var users = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND DateLastActivity >= CAST(DATEADD(mi,@1,GETUTCDATE()) as datetime)", portalSettings.PortalId, -2);
+            var users = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND DateLastActivity >= CAST(DATEADD(mi,@1,GETUTCDATE()) as datetime)", portalSettings.PortalId, -2).ToList();
             foreach (var user in users)
             {
                 if (sb.Length > 0)

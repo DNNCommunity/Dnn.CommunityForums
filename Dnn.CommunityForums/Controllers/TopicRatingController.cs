@@ -56,12 +56,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public int Average(int topicId)
         {
-            return Utilities.SafeConvertInt(Math.Round(this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).Average(r => r.Rating), 0));
+            return Utilities.SafeConvertInt(Math.Round(this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).ToList().Average(r => r.Rating), 0));
         }
 
         public int Count(int topicId)
         {
-            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).Count();
+            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).ToList().Count();
         }
 
         public int Rate(int userId, int topicId, int rating, string ipAddress)

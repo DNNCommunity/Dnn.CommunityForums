@@ -855,7 +855,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 .Select(id => Convert.ToInt32(id)));
 
                     var allForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForums(moduleId);
-                    foreach (var forum in allForums.Where(f => requestedForumIds.Contains(f.ForumID)))
+                    var desiredForums = allForums.Where(f => requestedForumIds.Contains(f.ForumID)).ToList();
+                    foreach (var forum in desiredForums)
                     {
                         if (forum.FeatureSettings.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(forum.Security?.ViewRoleIds, userRoleIds))
                         {

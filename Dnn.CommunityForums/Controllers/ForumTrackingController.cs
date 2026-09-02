@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forumTrackingInfo == null)
             {
                 // this accommodates duplicates which may exist since currently no uniqueness applied in database
-                forumTrackingInfo = this._repositoryControllerBase.Find("WHERE UserId = @0 AND ForumId = @1", userId, forumId).OrderBy(t => t.LastAccessDateTime).FirstOrDefault();
+                forumTrackingInfo = this._repositoryControllerBase.Find("WHERE UserId = @0 AND ForumId = @1", userId, forumId).ToList().OrderBy(t => t.LastAccessDateTime).FirstOrDefault();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, forumTrackingInfo);
             }
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumTrackingInfo> GetForumsTrackingForUser(int userId)
         {
-            return this._repositoryControllerBase.Find("WHERE UserId = @0", userId).OrderBy(t => t.ForumId).ThenBy(t => t.LastAccessDateTime);
+            return this._repositoryControllerBase.Find("WHERE UserId = @0", userId).OrderBy(t => t.ForumId).ThenBy(t => t.LastAccessDateTime).ToList();
         }
     }
 }

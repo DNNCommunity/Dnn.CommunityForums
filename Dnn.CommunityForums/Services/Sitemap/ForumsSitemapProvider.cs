@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Sitemap
                 CommandType.StoredProcedure,
                 "{databaseOwner}{objectQualifier}communityforums_Search_GetSearchItemsFromBegDate",
                 module.ModuleID,
-                SqlDateTime.MinValue.Value);
+                SqlDateTime.MinValue.Value).ToList();
 
             foreach (SearchSitemapResult result in results)
             {

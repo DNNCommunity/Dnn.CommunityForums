@@ -108,7 +108,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in this._repositoryControllerBase.Get(moduleId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
+
+                var forumList = this._repositoryControllerBase.Get(moduleId).ToList();
+
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in forumList)
                 {
                     forum.LoadForumGroup();
                     forum.LoadSubForums();
@@ -119,8 +122,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadModuleInfo();
                     forum.LoadSecurity();
                     forum.LoadLastPost();
-                    forums.Add(forum);
                     forum.UpdateCache();
+                }
+
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in forumList
+                    .OrderBy(f => f.ForumGroup?.SortOrder)
+                    .ThenBy(f => f.SortOrder))
+                {
+                    forums.Add(forum);
                 }
 
                 DotNetNuke.Modules.ActiveForums.Services.Cache.SettingsCache.Store(moduleId, cacheKey, forums);
@@ -136,7 +145,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in this._repositoryControllerBase.Find("WHERE ParentForumId = @0", forumId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList())
+
+                var forumList = this._repositoryControllerBase.Get(moduleId).Where(f => f.ParentForumId == forumId).ToList();
+
+                foreach (var forum in forumList)
                 {
                     forum.LoadForumGroup();
                     forum.LoadProperties();
@@ -145,6 +157,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadMainSettings();
                     forum.LoadModuleInfo();
                     forum.LoadSecurity();
+                }
+
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in forumList
+                    .OrderBy(f => f.ForumGroup?.SortOrder)
+                    .ThenBy(f => f.SortOrder))
+                {
                     forums.Add(forum);
                 }
 

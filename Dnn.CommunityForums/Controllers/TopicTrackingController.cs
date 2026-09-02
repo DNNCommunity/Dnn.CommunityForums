@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicTrackingInfo == null)
             {
                 // this accommodates duplicates which may exist since currently no uniqueness applied in database
-                topicTrackingInfo = this._repositoryControllerBase.Find("WHERE UserId = @0 AND TopicId = @1", userId, topicId).OrderBy(t => t.DateAdded).FirstOrDefault();
+                topicTrackingInfo = this._repositoryControllerBase.Find("WHERE UserId = @0 AND TopicId = @1", userId, topicId).ToList().OrderBy(t => t.DateAdded).FirstOrDefault();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicTrackingInfo);
             }
 
