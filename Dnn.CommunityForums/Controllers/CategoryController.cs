@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public new void Delete(string sqlCondition, params object[] args)
         {
-            this._repositoryControllerBase.Find(sqlCondition, args).ForEach(c =>
+            this._repositoryControllerBase.Find(sqlCondition, args).ToList().ForEach(c =>
             {
                 this.topicCategoryController.DeleteForCategory(c.CategoryId);
                 this.DeleteById(c.CategoryId);

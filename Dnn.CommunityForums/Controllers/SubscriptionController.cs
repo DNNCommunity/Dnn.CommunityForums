@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (cached == null)
             {
-                var subscribed = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId).Count() == 1;
+                var subscribed = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId).ToList().Count() == 1;
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<bool>(subscribed));
                 return subscribed;
             }
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (cached == null)
             {
-                var subscribed = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId).Count() == 1;
+                var subscribed = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId).ToList().Count() == 1;
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<bool>(subscribed));
                 return subscribed;
             }

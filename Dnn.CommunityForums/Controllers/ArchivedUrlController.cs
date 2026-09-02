@@ -32,9 +32,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return () => new ArchivedURLController();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Readability")]
         public DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo FindByURL(int portalId, string url)
         {
-
             if (string.IsNullOrWhiteSpace(url))
             {
                 return null;
@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var cached = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(portalId, cacheKey) as DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo>;
             if (cached == null)
             {
-                var normalizedUrl = url.ToLowerInvariant();
+                var normalizedUrl = url.Trim().ToLowerInvariant();
 
                 // archived URLs are stored with trailing slash; add for consistent matching
                 if (!normalizedUrl.EndsWith("/"))
@@ -52,8 +52,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     normalizedUrl = normalizedUrl + '/';
                 }
 
-                var archivedURLInfo = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', CONVERT(varbinary(8000), @1))) AND URL = @1", portalId, normalizedUrl).FirstOrDefault();
-                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(portalId, cacheKey, new CacheEntry<DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo>(archivedURLInfo, archivedURLInfo != null));
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var archivedURLInfo = ctx.ExecuteQuery<DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo>(
+                    System.Data.CommandType.Text,
+                    $@"SELECT TOP (1) *
+                       FROM {{databaseOwner}}[{{objectQualifier}}communityforums_ArchivedURLs]
+                       WHERE PortalId = @0
+                         AND URL_Hash = CONVERT(binary(16), HASHBYTES('MD5', CONVERT(varbinary(8000), @1)))
+                         AND URL = @1",
+                    portalId,
+                    normalizedUrl)
+                    .FirstOrDefault();
+
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(
+                    portalId,
+                    cacheKey,
+                    new CacheEntry<DotNetNuke.Modules.ActiveForums.Entities.ArchivedURLInfo>(archivedURLInfo, archivedURLInfo != null));
 
                 return archivedURLInfo;
             }

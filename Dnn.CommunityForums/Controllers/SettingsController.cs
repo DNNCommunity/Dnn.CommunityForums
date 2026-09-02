@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.SettingsInfo> GetSettingsForModuleIdSettingsKey(int moduleID, string settingsKey)
         {
-            return this._repositoryControllerBase.Find("WHERE ModuleId = @0 AND SettingsKey = @1", moduleID, settingsKey);
+            return this._repositoryControllerBase.Find("WHERE ModuleId = @0 AND SettingsKey = @1", moduleID, settingsKey).ToList();
         }
 
         public Hashtable GetSettingsHashTableForModuleIdSettingsKey(int moduleId, string settingsKey)

@@ -486,7 +486,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString(this.Content.AuthorName.ToString(), format);
                     case "authordisplaynamelink":
                         {
-                            return PropertyAccess.FormatString(Controllers.ForumUserController.CanLinkToProfile(this.Forum.PortalSettings, this.Forum.MainSettings, this.ModuleId, Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID), this.Author.ForumUser) ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId, string.Empty, $"userId={this.Content.AuthorId}") : string.Empty, format);
+                            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID);
+                            return PropertyAccess.FormatString(Controllers.ForumUserController.CanLinkToProfile(this.Forum.PortalSettings, this.Forum.MainSettings, this.ModuleId, forumUser, this.Author.ForumUser) ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId, string.Empty, $"userId={this.Content.AuthorId}") : string.Empty, format);
                         }
 
                     case "authordisplayname":

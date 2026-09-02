@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (cached == null)
             {
-                var userBadges = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", portalId, moduleId, userId);
+                var userBadges = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", portalId, moduleId, userId).ToList();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo>>(userBadges, userBadges != null));
                 return userBadges;
             }
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (cached == null)
             {
-                var distinctUserBadges = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", portalId, moduleId, userId)
+                var distinctUserBadges = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2", portalId, moduleId, userId).ToList()
                     .GroupBy(b => b.BadgeId)
                     .Select(g => g.OrderByDescending(b => b.DateAssigned).First())
                     .ToList();
@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo> GetForUserAndBadge(int portalId, int moduleId, int userId, int badgeId)
         {
-            return this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2 AND BadgeId = @3", portalId, moduleId, userId, badgeId);
+            return this._repositoryControllerBase.Find("WHERE PortalId = @0 AND (ModuleId = @1 OR @1 = -1) AND UserId = @2 AND BadgeId = @3", portalId, moduleId, userId, badgeId).ToList();
         }
 
         public DotNetNuke.Modules.ActiveForums.Entities.UserBadgeInfo GetForUserAndBadgeAndDateAssigned(int portalId, int moduleId, int userId, int badgeId, DateTime dateAssigned)

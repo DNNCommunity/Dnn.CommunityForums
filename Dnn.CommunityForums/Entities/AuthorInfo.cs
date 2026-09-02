@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public new string DisplayName
         {
-            get => this.forumUserInfo.UserInfo?.DisplayName;
+            get => this.forumUserInfo.UserInfo?.DisplayName ?? (this.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]"));
             set => this.forumUserInfo.UserInfo.DisplayName = value;
         }
 
