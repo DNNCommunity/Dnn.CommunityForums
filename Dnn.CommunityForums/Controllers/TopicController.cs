@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Modules.ActiveForums.Extensions;
@@ -78,6 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     ti.Author = ti.GetAuthor(ti.PortalId, ti.ModuleId, ti.Content.AuthorId);
                 }
 
+                ti.GetLastReply();
                 if (ti.LastReply != null)
                 {
                     ti.LastReplyAuthor = ti.GetAuthor(ti.PortalId, ti.ModuleId, ti.LastReply.Content.AuthorId);
@@ -94,15 +96,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var ti = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
             if (ti == null)
             {
-                ti = this._repositoryControllerBase.Find("WHERE ContentId = @0", contentId).FirstOrDefault();
+                // Materialize the TopicId FIRST and exit the DataContext immediately
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicId = ctx.ExecuteQuery<int?>(System.Data.CommandType.Text, "SELECT TopicId FROM {databaseOwner}[{objectQualifier}communityforums_Topics] WHERE ContentId = @0", contentId).FirstOrDefault();
+
+                if (topicId.HasValue)
+                {
+                    ti = this.GetById(moduleId, topicId.Value);
+                }
+
+                DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, ti);
             }
 
-            if (ti != null)
-            {
-                ti = this.GetById(moduleId, ti.TopicId);
-            }
-
-            DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, ti);
             return ti;
         }
 
@@ -119,7 +124,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
@@ -134,6 +140,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             return topicCount.Value;
+        }
+
+        private static int NormalizeTimeFrameMinutes(int timeFrameMinutes)
+        {
+            return timeFrameMinutes.Equals(int.MaxValue) ? 0 : timeFrameMinutes;
+        }
+
+        private List<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> LoadTopicsByIds(int moduleId, IEnumerable<int?> topicIds)
+        {
+            var materializedTopicIds = topicIds
+                .Where(topicId => topicId.HasValue)
+                .Select(topicId => topicId.Value)
+                .ToList();
+
+            var topics = new List<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>(materializedTopicIds.Count);
+
+            foreach (var topicId in materializedTopicIds)
+            {
+                var topic = this.GetById(moduleId: moduleId, topicId: topicId);
+                if (topic != null)
+                {
+                    topics.Add(topic);
+                }
+            }
+
+            return topics;
         }
 
         public bool ShowAnnouncementsLink(int moduleId, HashSet<int> forumIds)
@@ -153,25 +185,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
-                {
-                    var skip = (pageId - 1) * pageSize;
-                    var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                    var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
-                        System.Data.CommandType.Text,
-                        $@"SELECT t.TopicId
-                           FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
-                           INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
-                               ON ft.TopicId = t.TopicId
-                           WHERE ft.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
-                             AND t.IsAnnounce = 1
-                             AND t.AnnounceStart <= GETUTCDATE()
-                             AND t.AnnounceEnd >= GETUTCDATE()
-                           ORDER BY t.AnnounceStart DESC
-                           OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
-                        forumsIdsList);
-                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
-                }
-
+                var skip = (pageId - 1) * pageSize;
+                var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
+                    System.Data.CommandType.Text,
+                    $@"SELECT t.TopicId
+                        FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
+                        INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
+                            ON ft.TopicId = t.TopicId
+                        WHERE ft.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
+                            AND t.IsAnnounce = 1
+                            AND t.AnnounceStart <= GETUTCDATE()
+                            AND t.AnnounceEnd >= GETUTCDATE()
+                        ORDER BY t.AnnounceStart DESC
+                        OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
+                    forumsIdsList).ToList();
+                topics = this.LoadTopicsByIds(moduleId, topicIds);
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topics);
             }
 
@@ -191,12 +221,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -204,7 +232,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                          AND t.ReplyCount > 0
                          AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)",
                     forumsIdsList,
-                    timeFrameMinutes).FirstOrDefault();
+                    normalizedTimeFrameMinutes).FirstOrDefault();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicCount);
             }
 
@@ -225,12 +253,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 var skip = (pageId - 1) * pageSize;
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT t.TopicId
                         FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -240,8 +266,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         ORDER BY t.ReplyCount DESC
                         OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
                     forumsIdsList,
-                    timeFrameMinutes);
-                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
+                    normalizedTimeFrameMinutes).ToList();
+                topics = this.LoadTopicsByIds(moduleId, topicIds);
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topics);
             }
 
@@ -261,12 +287,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -275,7 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                          AND t.StatusId = 1
                          AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)",
                     forumsIdsList,
-                    timeFrameMinutes).FirstOrDefault();
+                    normalizedTimeFrameMinutes).FirstOrDefault();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicCount);
             }
 
@@ -301,12 +325,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 var skip = (pageId - 1) * pageSize;
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT t.TopicId
                         FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -317,8 +339,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         ORDER BY t.DateCreated DESC
                         OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
                     forumsIdsList,
-                    timeFrameMinutes);
-                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
+                    normalizedTimeFrameMinutes).ToList();
+                topics = this.LoadTopicsByIds(moduleId, topicIds);
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topics);
             }
 
@@ -338,12 +360,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -353,7 +373,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                          AND t.StatusId NOT IN (0, 3)
                          AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)",
                     forumsIdsList,
-                    timeFrameMinutes).FirstOrDefault();
+                    normalizedTimeFrameMinutes).FirstOrDefault();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicCount);
             }
 
@@ -374,12 +394,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 var skip = (pageId - 1) * pageSize;
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT t.TopicId
                         FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -391,8 +409,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         ORDER BY t.DateCreated DESC
                         OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
                     forumsIdsList,
-                    timeFrameMinutes);
-                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
+                    normalizedTimeFrameMinutes).ToList();
+                topics = this.LoadTopicsByIds(moduleId, topicIds);
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topics);
             }
 
@@ -412,19 +430,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
                        WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                          AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)",
                     forumsIdsList,
-                    timeFrameMinutes).FirstOrDefault();
+                    normalizedTimeFrameMinutes).FirstOrDefault();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicCount);
             }
 
@@ -443,27 +459,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
-                {
-                    var skip = (pageId - 1) * pageSize;
-                    var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                    if (timeFrameMinutes.Equals(int.MaxValue))
-                    {
-                        timeFrameMinutes = 0;
-                    }
+                var skip = (pageId - 1) * pageSize;
+                var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                    var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
-                        System.Data.CommandType.Text,
-                        $@"SELECT t.TopicId
-                           FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
-                           WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
-                             AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)
-                           ORDER BY t.LastReplyDate DESC
-                           OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
-                        forumsIdsList,
-                        timeFrameMinutes);
-                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
-                }
-
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
+                    System.Data.CommandType.Text,
+                    $@"SELECT t.TopicId
+                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
+                        WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
+                            AND (@1=0 OR DATEDIFF(mi, t.LastReplyDate, GETUTCDATE()) <= @1)
+                        ORDER BY t.LastReplyDate DESC
+                        OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY",
+                    forumsIdsList,
+                    normalizedTimeFrameMinutes).ToList();
+                topics = this.LoadTopicsByIds(moduleId, topicIds);
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topics);
             }
 
@@ -483,12 +494,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(DISTINCT TopicId)
                         FROM (
@@ -521,7 +530,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 AND (@1=0 OR DATEDIFF(mi, tc.DateCreated, GETUTCDATE()) <= @1)
                         ) AS Topics",
                     forumsIdsList,
-                    timeFrameMinutes,
+                    normalizedTimeFrameMinutes,
                     authorId).FirstOrDefault();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicCount);
             }
@@ -541,61 +550,56 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
-                {
-                    var skip = (pageId - 1) * pageSize;
-                    var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                    if (timeFrameMinutes.Equals(int.MaxValue))
-                    {
-                        timeFrameMinutes = 0;
-                    }
+                var skip = (pageId - 1) * pageSize;
+                var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                    var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
-                        System.Data.CommandType.Text,
-                        $@"SELECT DISTINCT TopicId
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
+                    System.Data.CommandType.Text,
+                    $@"SELECT DISTINCT TopicId
+                        FROM (
+                            SELECT DISTINCT TopicIds.TopicId, c.DateCreated
                             FROM (
-                                SELECT DISTINCT TopicIds.TopicId, c.DateCreated
-                                FROM (
-                                    SELECT DISTINCT t.TopicId
-                                    FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
-                                        ON t.ContentId = c.ContentId
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
-                                        ON ft.TopicId = t.TopicId
-                                    WHERE c.AuthorId = @2
-                                        AND c.IsDeleted = 0
-                                        AND t.IsApproved = 1
-                                        AND ft.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
-                                        AND (@1=0 OR DATEDIFF(mi, c.DateCreated, GETUTCDATE()) <= @1)
-                                    UNION
-                                    SELECT DISTINCT r.TopicId
-                                    FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Replies] r
-                                        ON r.ContentId = c.ContentId
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
-                                        ON t.TopicId = r.TopicId
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Content] tc
-                                        ON tc.ContentId = t.ContentId
-                                    INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
-                                        ON ft.TopicId = r.TopicId
-                                    WHERE c.AuthorId = @2
-                                        AND c.IsDeleted = 0
-                                        AND t.IsApproved = 1
-                                        AND ft.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
-                                        AND (@1=0 OR DATEDIFF(mi, tc.DateCreated, GETUTCDATE()) <= @1)
-                                ) AS TopicIds
+                                SELECT DISTINCT t.TopicId
+                                FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
                                 INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
-                                    ON t.TopicId = TopicIds.TopicId
-                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
-                                    ON c.ContentId = t.ContentId
-                                    ORDER BY c.DateCreated DESC
-                                    OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY
-                            ) AS TopicIds",
-                        forumsIdsList,
-                        timeFrameMinutes,
-                        authorId);
-                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
-                }
-
+                                    ON t.ContentId = c.ContentId
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
+                                    ON ft.TopicId = t.TopicId
+                                WHERE c.AuthorId = @2
+                                    AND c.IsDeleted = 0
+                                    AND t.IsApproved = 1
+                                    AND ft.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
+                                    AND (@1=0 OR DATEDIFF(mi, c.DateCreated, GETUTCDATE()) <= @1)
+                                UNION
+                                SELECT DISTINCT r.TopicId
+                                FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Replies] r
+                                    ON r.ContentId = c.ContentId
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
+                                    ON t.TopicId = r.TopicId
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Content] tc
+                                    ON tc.ContentId = t.ContentId
+                                INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
+                                    ON ft.TopicId = r.TopicId
+                                WHERE c.AuthorId = @2
+                                    AND c.IsDeleted = 0
+                                    AND t.IsApproved = 1
+                                    AND ft.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
+                                    AND (@1=0 OR DATEDIFF(mi, tc.DateCreated, GETUTCDATE()) <= @1)
+                            ) AS TopicIds
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
+                                ON t.TopicId = TopicIds.TopicId
+                            INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Content] c
+                                ON c.ContentId = t.ContentId
+                                ORDER BY c.DateCreated DESC
+                                OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY
+                        ) AS TopicIds",
+                    forumsIdsList,
+                    normalizedTimeFrameMinutes,
+                    authorId).ToList();
+                topics = this.LoadTopicsByIds(moduleId, topicIds);
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topics);
             }
 
@@ -615,12 +619,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(DISTINCT TopicId)
                             FROM (
@@ -646,7 +648,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 ) AS TopicIds
                             ) AS TopicIds",
                     forumsIdsList,
-                    timeFrameMinutes,
+                    normalizedTimeFrameMinutes,
                     authorId).FirstOrDefault();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicCount);
             }
@@ -666,47 +668,42 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> topics = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>;
             if (topics == null)
             {
-                {
-                    var skip = (pageId - 1) * pageSize;
-                    var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                    if (timeFrameMinutes.Equals(int.MaxValue))
-                    {
-                        timeFrameMinutes = 0;
-                    }
+                var skip = (pageId - 1) * pageSize;
+                var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                    var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
-                        System.Data.CommandType.Text,
-                        $@"SELECT DISTINCT TopicId
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
+                    System.Data.CommandType.Text,
+                    $@"SELECT DISTINCT TopicId
+                        FROM (
+                            SELECT TopicIds.TopicId, TopicIds.LastReplyDate
                             FROM (
-                                SELECT TopicIds.TopicId, TopicIds.LastReplyDate
-                                FROM (
-                                    SELECT DISTINCT t.TopicId, t.LastReplyDate
-                                    FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
-                                    LEFT OUTER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Forums_Tracking] AS ftr
-                                    ON ftr.ForumId = t.ForumId AND ftr.UserId = @2
-                                    WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
-                                        AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)
-                                        AND (
-		                                        (
-			                                        t.TopicId NOT IN (SELECT TopicId FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tracking] WHERE UserId = @2)
-			                                        AND t.TopicId > IsNull(ftr.MaxTopicRead,0)
-		                                        )
-		                                        OR
-		                                        (
-			                                        ISNULL(t.LastReplyId, 0) > (SELECT IsNull(MAX(LastReplyId),0) FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tracking] WHERE UserId = @2 AND TopicId = t.TopicId)
-			                                        AND ISNULL(t.LastReplyId, 0) > IsNull(ftr.MaxReplyRead,0)
-		                                        )
-	                                        )                                    
-                                ) AS TopicIds
-                                ORDER BY TopicIds.LastReplyDate DESC
-                                OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY
-                            ) AS TopicIds",
-                        forumsIdsList,
-                        timeFrameMinutes,
-                        authorId);
-                    topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
-                }
-
+                                SELECT DISTINCT t.TopicId, t.LastReplyDate
+                                FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
+                                LEFT OUTER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_Forums_Tracking] AS ftr
+                                ON ftr.ForumId = t.ForumId AND ftr.UserId = @2
+                                WHERE t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
+                                    AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)
+                                    AND (
+		                                    (
+			                                    t.TopicId NOT IN (SELECT TopicId FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tracking] WHERE UserId = @2)
+			                                    AND t.TopicId > IsNull(ftr.MaxTopicRead,0)
+		                                    )
+		                                    OR
+		                                    (
+			                                    ISNULL(t.LastReplyId, 0) > (SELECT IsNull(MAX(LastReplyId),0) FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics_Tracking] WHERE UserId = @2 AND TopicId = t.TopicId)
+			                                    AND ISNULL(t.LastReplyId, 0) > IsNull(ftr.MaxReplyRead,0)
+		                                    )
+	                                    )                                    
+                            ) AS TopicIds
+                            ORDER BY TopicIds.LastReplyDate DESC
+                            OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY
+                        ) AS TopicIds",
+                    forumsIdsList,
+                    normalizedTimeFrameMinutes,
+                    authorId).ToList();
+                topics = this.LoadTopicsByIds(moduleId, topicIds);
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topics);
             }
 
@@ -726,12 +723,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicCount == null || !topicCount.HasValue)
             {
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                topicCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                topicCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(DISTINCT t.TopicId)
                        FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
@@ -740,7 +735,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                          AND t.ForumId IN (SELECT value FROM STRING_SPLIT(@0, ','))
                          AND (@1=0 OR DATEDIFF(mi, t.DateCreated, GETUTCDATE()) <= @1)",
                     forumsIdsList,
-                    timeFrameMinutes,
+                    normalizedTimeFrameMinutes,
                     tagId).FirstOrDefault();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topicCount);
             }
@@ -762,12 +757,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 var skip = (pageId - 1) * pageSize;
                 var forumsIdsList = forumIds.FromHashSetToDelimitedString<int>(",");
-                if (timeFrameMinutes.Equals(int.MaxValue))
-                {
-                    timeFrameMinutes = 0;
-                }
+                var normalizedTimeFrameMinutes = NormalizeTimeFrameMinutes(timeFrameMinutes);
 
-                var topicIds = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var topicIds = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT DISTINCT TopicId
                             FROM (
@@ -783,9 +776,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                     OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY
                                 ) AS TopicIds",
                     forumsIdsList,
-                    timeFrameMinutes,
-                    tagId);
-                topics = topicIds.Where(topicId => topicId.HasValue).Select(topicId => this.GetById(moduleId: moduleId, topicId: topicId.Value));
+                    normalizedTimeFrameMinutes,
+                    tagId).ToList();
+                topics = this.LoadTopicsByIds(moduleId, topicIds);
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, topics);
             }
 
@@ -801,17 +794,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(topicUrl))
                 {
-                    var topicId = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
-                        System.Data.CommandType.Text,
-                        $@"SELECT t.TopicId
-                           FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
-                           INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
-                               ON ft.TopicId = t.TopicId
-                           WHERE ft.ForumId = @0
-                             AND t.URL_Hash = HASHBYTES('MD5', CONVERT(varbinary(8000), @1))
-                             AND t.URL = @1",
-                        forumId,
-                        topicUrl.Trim()).FirstOrDefault();
+                    using var ctx = DotNetNuke.Data.DataContext.Instance();
+                    var topicId = ctx.ExecuteQuery<int?>(
+                    System.Data.CommandType.Text,
+                    $@"SELECT t.TopicId
+                        FROM {{databaseOwner}}[{{objectQualifier}}communityforums_Topics] t
+                        INNER JOIN {{databaseOwner}}[{{objectQualifier}}communityforums_ForumTopics] ft
+                            ON ft.TopicId = t.TopicId
+                        WHERE ft.ForumId = @0
+                            AND t.URL_Hash = HASHBYTES('MD5', CONVERT(varbinary(8000), @1))
+                            AND t.URL = @1",
+                    forumId,
+                    topicUrl.Trim()).FirstOrDefault();
                     if (topicId.HasValue)
                     {
                         topicInfo = this.GetById(moduleId: moduleId, topicId: topicId.Value);

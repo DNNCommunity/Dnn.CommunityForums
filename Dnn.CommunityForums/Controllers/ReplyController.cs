@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Linq;
     using System.Web;
 
@@ -75,7 +76,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo> GetByTopicId(int moduleId, int topicId)
         {
             var replies = new List<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>();
-            var replyIds = this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).Select(r => r.ReplyId).ToList();
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+
+            var replyIds = ctx.ExecuteQuery<int>(
+                CommandType.Text,
+                "SELECT ReplyId FROM {databaseOwner}[{objectQualifier}communityforums_Replies] WHERE TopicId = @0",
+                topicId).ToList();
 
             replyIds.ForEach(r =>
             {
@@ -90,12 +96,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var ri = DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo;
             if (ri == null)
             {
-                ri = this._repositoryControllerBase.Find("WHERE ContentId = @0", contentId).FirstOrDefault();
-            }
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var replyId = ctx.ExecuteQuery<int?>(
+                    CommandType.Text,
+                    "SELECT ReplyId FROM {databaseOwner}[{objectQualifier}communityforums_Replies] WHERE ContentId = @0",
+                    contentId).FirstOrDefault();
 
-            if (ri != null)
-            {
-                ri = this.GetById(moduleId, ri.ReplyId);
+                if (replyId.HasValue)
+                {
+                    ri = this.GetById(moduleId, replyId.Value);
+                }
             }
 
             DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, ri);

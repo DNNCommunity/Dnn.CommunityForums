@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            10.00.00
+            10.00.01
         </h3>
 <!--       
         <p>
@@ -74,7 +74,10 @@
 -->
         <h4>New Features &amp; Enhancements</h4>
         <ul>
+
+            <li>None at this time.</li>
             
+<!--
             <li>NEW: Export/import and sharing of module (IPortable + Sharable) are now fully supported (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1945">PR 1945</a>)</li>
             <li>NEW: "Forums Viewer" module can now have a different theme than "main" forums module (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1933">PR 1933</a>)</li>
             <li>NEW: Localization for initial configuration screen (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1947">PR 1947</a>)</li>
@@ -85,9 +88,6 @@
             <li>ENHANCED: Button styling for TipTap content editor (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1962">PR 1962</a>)</li>
             <li>ENHANCED: Don't log admin alerts on bad (bots) request; quietly redirect to main forums page (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/1523">Issue 1523</a>)</li>
 
-
-<!--
-            <li>None at this time.</li>
             <li>NEW: Web API endpoints for forums search functionality (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
             <li>NEW: Require URL prefix for forum/forum groups in Control Panel when friendly URLs are enabled (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1765">PR 1765</a>)</li>
             <li>NEW: During upgrade, ensure friendly URL/vanity names are properly populated when friendly URLs are enabled (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1767">PR 1767</a>)</li>
@@ -111,41 +111,18 @@
 <!--
           <li>None at this time.</li> 
           
--->
-            <li>FIX: "Automatic Links" feature now ignores invalid URLs (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1902">Issue 1902</a>)</li>
-            <li>FIX: Hide Badge titles when parent width is smaller than 150px (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1678">Issue 1678</a>)</li>
-            <li>FIX: Ignore null CreatedDate for user when displaying dashboard in Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1922">Issue 1922</a>)</li>
-            <li>FIX: Misspelled resource key for "italics" button in TipTap editor (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1900">Issue 1900</a>)</li>
-            <li>FIX: Update embedded image URLs to accommodate child portals (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1941">Issue 1941</a>)</li>
-            <li>FIX: Last reply name tokens showing original topic author's name rather than last replier (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1905">Issue 1905</a>)</li>
-            <li>FIX: "Ranks" page not loading in control panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1942">Issue 1942</a>)</li>
-            <li>FIX: Update block highlighting in TipTap content editor (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1957">PR 1957</a>)</li>            
-            <li>FIX: URL rewriter needs to ignore deleted instances of the forums module (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1981">Issue 1981</a>)</li>
+-->          
+            <li>FIX: Exceptions related to already open DataReader (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1987">Issue 1987</a>)</li>
+            <li>FIX: Better handling of bad URL parameters (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1983">Issue 1983</a>)</li>
             
 
         </ul>
 
         <h4>Tasks / Development Updates (and Technical Debt Reduction)</h4>
         <ul>
-            <li>Update minimum DNN version to 09.13.0 (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1911">PR 1911</a>)</li>
-            <li>Update to .NET Framework 4.8 (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1919">PR 1919</a>)</li>
-            <li>Rename database objects from activeforums_* to communityforums_* (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1912">PR 1953</a>)</li>
-            <li>Completes removal of template editor from Control Panel (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1413">Issue 1413</a>)</li>
-            <li>Implement ServiceLocatorService/Dependency Injection patterns (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1915">PR 1915</a>)</li>
-            <li>Refactor SQL scripts and remove legacy functions and procedures (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1928">PR 1928</a>)</li>
-            <li>Move ranks table to use DAL2/PetaPoco (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1943">PR 1943</a>)</li>
-            <li>Remove deprecated Ventrian messaging option (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1920">PR 1920</a>)</li>
-            <li>Remove deprecated methods and properties, and SQL procedures (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1909">Issue 1909</a>)</li>
-            <li>Remove deprecated/legacy URL rewriter and unused procedures (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1910">PR 1910</a>)</li>
-            <li>Remove obsolete "AFINSTALLED" module setting(<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1967">Issue 1967</a>)</li>
-            <li>Remove legacy Data/CommonDB/Null classes and change Microsoft.ApplicationBlocks.Data usage to use DotNetNuke.Data.SqlDataProvider.Instance() methods (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1926">PR 1926</a>)</li>
-            <li>Update build process to use modern/ESM gulpfile.mjs rather than gulpfile.js (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1959">Issue 1959</a>)</li>
-            <li>10.00.00 Release Prep (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1954">Issue 1954</a>)</li>
+            <li>10.00.01 Release Prep (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1996">Issue 1996</a>)</li>
             
 <!--
-            <li>Forum Viewer should use DNN Resource Manager to load module.css not load it directly (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1792">Issue 1792</a>)</li>
-            <li>Remove legacy calendar.css associated with previously-removed date picker control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1723">Issue 1723</a>)</li>
-            <li>09.06.03 Release Prep (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1800">Issue 1800</a>)</li>
 
             <li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>

@@ -558,13 +558,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int GetTopicCountSince(DateTime minDateTime)
         {
             string sSql = "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Content c INNER JOIN {databaseOwner}{objectQualifier}communityforums_Topics t ON t.ContentId = c.ContentId WHERE c.ModuleId = @0 AND c.AuthorId = @1 AND c.IsDeleted = 0 AND c.DateCreated >= @2";
-            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            return ctx.ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
         }
 
         public int GetReplyCountSince(DateTime minDateTime)
         {
             string sSql = "SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}communityforums_Content c INNER JOIN {databaseOwner}{objectQualifier}communityforums_Replies r ON r.ContentId = c.ContentId WHERE c.ModuleId = @0 AND c.AuthorId = @1 AND c.IsDeleted = 0 AND c.DateCreated >= @2";
-            return DataContext.Instance().ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            return ctx.ExecuteQuery<int>(System.Data.CommandType.Text, sSql, this.ModuleId, this.UserId, minDateTime).FirstOrDefault();
         }
 
         [IgnoreColumn]
@@ -648,11 +650,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "rankname":
                         return PropertyAccess.FormatString(this.UserId > 0 ? DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(this.ModuleId, this, 1) : string.Empty, format);
                     case "userprofilelink":
-                        return PropertyAccess.FormatString(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(portalSettings: this.PortalSettings,
-                                                                                                                                            moduleSettings: this.ModuleSettings,
-                                                                                                                                            moduleId: this.ModuleId,
-                                                                                                                                            accessingUser: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID),
-                                                                                                                                            forumUser: this) ? Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={this.UserId}" }) : string.Empty, format);
+                        {
+                            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID);
+                            return PropertyAccess.FormatString(
+                                DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.CanLinkToProfile(
+                                portalSettings: this.PortalSettings,
+                                moduleSettings: this.ModuleSettings,
+                                moduleId: this.ModuleId,
+                                accessingUser: forumUser,
+                                forumUser: this) ? Utilities.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { $"userId={this.UserId}" }) : string.Empty, format);
+                        }
+
                     case "signature":
                         var sSignature = string.Empty;
                         if (this.ModuleSettings.AllowSignatures != 0 && !this.PrefBlockSignatures && !this.SignatureDisabled)
@@ -692,16 +700,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString(this.Username, format);
                     case "userdisplaynamelink":
                         {
+                            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID);
                             return PropertyAccess.FormatString(
                                 Controllers.ForumUserController.CanLinkToProfile(
                                     this.PortalSettings,
                                     this.ModuleSettings,
                                     this.ModuleId,
-                                    new Controllers.ForumUserController().GetByUserId(
-                                        accessingUser.PortalID,
-                                        this.ModuleId, accessingUser.UserID),
+                                    forumUser,
                                     this)
-                                    ? Utilities.NavigateURL(this.PortalSettings.UserTabId,
+                                    ? Utilities.NavigateURL(
+                                        this.PortalSettings.UserTabId,
                                         string.Empty,
                                         $"userId={this.UserId}")
                                     : string.Empty,
@@ -709,18 +717,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                     case "userdisplayname":
-                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.DisplayName) ? this.Username :
+                        {
+                            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID);
+
+                            return PropertyAccess.FormatString(
+                            string.IsNullOrEmpty(this.DisplayName) ? this.Username :
                             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
                                 this.PortalSettings,
                                 this.ModuleSettings,
-                                isMod: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).GetIsMod(this.ModuleId),
-                                isAdmin: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsAdmin || DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsSuperUser,
+                                isMod: forumUser.GetIsMod(this.ModuleId),
+                                isAdmin: accessingUser.IsAdmin || accessingUser.IsSuperUser,
                                 this.UserId,
                                 this.Username,
                                 this.FirstName,
                                 this.LastName,
                                 this.DisplayName,
                                 accessingUser).Replace("&amp;#", "&#").Replace("Anonymous", this.Username), format);
+                        }
+
                     case "userfirstname":
                         return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.IsPropertyVisible(this.UserInfo, "FirstName", accessingUser)
                             ? PropertyAccess.FormatString(string.IsNullOrEmpty(this.FirstName) ? this.Username : this.FirstName, format)

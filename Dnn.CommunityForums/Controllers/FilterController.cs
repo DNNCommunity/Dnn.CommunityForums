@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 strMessage = newSubject;
             }
 
-            new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().Get(moduleId).OrderBy(f => f.FilterId).Take(100000).ForEach(filter =>
+            new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().Get(moduleId).OrderBy(f => f.FilterId).Take(100000).ToList().ForEach(filter =>
             {
                 var sReplace = filter.Replace;
                 var sFind = filter.Find;

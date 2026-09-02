@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (forumUser == null || forumUser.UserId == -1)
             {
                 return -1;
-            }            
+            }
 
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId, moduleId, forumId, false, -1);
 

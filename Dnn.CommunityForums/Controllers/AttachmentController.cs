@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (cached == null)
             {
-                var attachments = this._repositoryControllerBase.Find("WHERE ContentId = @0", contentId);
+                var attachments = this._repositoryControllerBase.Find("WHERE ContentId = @0", contentId).ToList();
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cacheKey, new DotNetNuke.Modules.ActiveForums.Services.Cache.CacheEntry<IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.AttachmentInfo>>(attachments, attachments != null));
                 return attachments;
             }

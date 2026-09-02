@@ -88,7 +88,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                postCount = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<int?>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                postCount = ctx.ExecuteQuery<int?>(
                     System.Data.CommandType.Text,
                     $@"SELECT COUNT(DISTINCT ContentId)
                         FROM (
@@ -139,7 +140,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     timeFrameMinutes = 0;
                 }
 
-                var postInfo = DotNetNuke.Data.DataContext.Instance().ExecuteQuery<PostIdResult>(
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var postInfo = ctx.ExecuteQuery<PostIdResult>(
                     System.Data.CommandType.Text,
                     $@"SELECT ContentId, TopicId, ReplyId
                         FROM (
@@ -171,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 OFFSET {skip} ROWS FETCH NEXT {pageSize} ROWS ONLY
                         ) AS ContentIds",
                     forumsIdsList,
-                    timeFrameMinutes);
+                    timeFrameMinutes).ToList();
 
                 posts = postInfo.Where(postinfo => postinfo.ContentId.HasValue).Select(post =>
                 {
@@ -182,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
 
                     return (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.GetById(moduleId: moduleId, replyId: post.ReplyId.Value, topic: topic);
-                });
+                }).ToList();
 
                 DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, posts);
             }

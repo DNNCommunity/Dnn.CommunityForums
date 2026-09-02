@@ -101,13 +101,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> GetForPost(int portalId, int moduleId, int postId)
         {
-            return this._repositoryControllerBase.Find("WHERE PostId = @0 AND Checked = 1", postId).ForEach(l =>
+            var likes = this._repositoryControllerBase.Find("WHERE PostId = @0 AND Checked = 1", postId).ToList();
+            foreach (var like in likes)
             {
-                l.PortalId = portalId;
-                l.ModuleId = moduleId;
-                l.GetContent();
-                l.Content?.GetPost();
-            }).ToList();
+                like.PortalId = portalId;
+                like.ModuleId = moduleId;
+                like.GetContent();
+                like.Content?.GetPost();
+            }
+
+            return likes;
         }
 
         public int Count(int moduleId, int postId)
