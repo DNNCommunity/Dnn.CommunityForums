@@ -803,6 +803,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             ON ft.TopicId = t.TopicId
                         WHERE ft.ForumId = @0
                             AND t.URL_Hash = HASHBYTES('MD5', CONVERT(varbinary(8000), @1))
+                            AND t.IsDeleted = 0
                             AND t.URL = @1",
                     forumId,
                     topicUrl.Trim()).FirstOrDefault();
