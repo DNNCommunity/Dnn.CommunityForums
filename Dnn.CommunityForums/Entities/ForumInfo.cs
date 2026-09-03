@@ -902,7 +902,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return this.FeatureSettings.AllowRSS && Controllers.PermissionController.HasRequiredPerm(this.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser)) ? PropertyAccess.FormatString(this.RssLink, format) : string.Empty;
                     case "modlink":
                         var modLink = Utilities.NavigateURL(this.GetTabId(), this.portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={this.ForumID}" });
-                        return PropertyAccess.FormatString(modLink, format);
+                        var loginLink = this.PortalSettings.LoginTabId > 0
+                            ? Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, $"returnUrl={modLink}")
+                            : Utilities.NavigateURL(this.GetTabId(), string.Empty, $"ctl=login&returnUrl={modLink}");
+                        return PropertyAccess.FormatString(loginLink, format);
 
                     case "subscribe-unsubscribe-label":
                         {
