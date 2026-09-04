@@ -58,7 +58,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private string forums;
         private int? searchDays;
         private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType? searchSortType;
-        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType? searchResultType;
         private int? searchId;
 
         private DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults searchResults;
@@ -75,6 +74,10 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            this.SearchAdvanced.ModuleConfiguration = this.ModuleConfiguration;
+            this.SearchAdvanced.ForumModuleId = this.ForumModuleId;
+            this.SearchAdvanced.ForumId = this.ForumId;
+            this.SearchAdvanced.ForumTabId = this.ForumTabId;
             string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.SearchResults, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
             try
@@ -189,6 +192,18 @@ namespace DotNetNuke.Modules.ActiveForums
                     var post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)repeaterItemEventArgs.Item.DataItem;
                     if (post != null)
                     {
+                        if (post.IsReply)
+                        {
+                            foreach (Control control in repeaterItemEventArgs.Item.Controls)
+                            {
+                                if (control is System.Web.UI.HtmlControls.HtmlGenericControl row)
+                                {
+                                    row.Attributes["class"] = $"{row.Attributes["class"]} af-search-reply".Trim();
+                                    break;
+                                }
+                            }
+                        }
+
                         foreach (Control control in repeaterItemEventArgs.Item.Controls)
                         {
                             string itemTemplate = string.Empty;
@@ -262,8 +277,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private int AuthorUserId => (int)(this.authorUserId ?? (this.authorUserId = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.User], 0)));
 
-        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType SearchResultType => (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)(this.searchResultType ?? (this.searchResultType = (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.ResultType], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByTopics)));
-
         private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType SearchSortType => (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)(this.searchSortType ?? (this.searchSortType = (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.Sort], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchSortType.SearchSortTypeRelevance)));
 
         private int SearchHours => (int)(this.searchDays ?? (this.searchDays = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.TimeSpan], 0)));
@@ -310,11 +323,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (this.SearchId > 0)
                     {
                         this.parameters.Add($"{SearchParamKeys.Search}=" + this.SearchId);
-                    }
-
-                    if ((int)this.SearchResultType > 0)
-                    {
-                        this.parameters.Add($"{SearchParamKeys.ResultType}={(int)this.SearchResultType}");
                     }
 
                     if (this.SearchHours > 0)
@@ -390,7 +398,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorUsername: this.AuthorUsername,
                 forumsToSearch: forumsRequested.Intersect(forumsAllowed).ToHashSet<int>().FromHashSetToDelimitedString(","),
                 tags: this.Tags,
-                resultType: this.SearchResultType,
+                resultType: DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByPosts,
                 sort: this.SearchSortType);
 
             this.searchId = (this.searchResults != null) ? this.searchResults.SearchId : 0;
@@ -411,7 +419,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 this.litRecordCount.Text = string.Format(this.GetSharedResource("[RESX:SearchRecords]"), this.rowIndex + 1, this.rowIndex + this.searchResults?.Results?.Count, this.searchResults?.Results?.Count);
 
-                var rptResults = this.SearchResultType.Equals(DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByTopics) ? this.rptTopics : this.rptPosts;
+                var rptResults = this.rptPosts;
 
                 this.pnlMessage.Visible = false;
 
