@@ -83,5 +83,16 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             Assert.That(actualResult.First().Name, Is.EqualTo(mockPropertyList.Object[0].Name));
             Assert.That(actualResult.First().Value, Is.EqualTo(mockPropertyList.Object[0].Value));
         }
+
+        [Test]
+        public void TopicPropertyInfoMapsTopicPropertiesTable()
+        {
+            var entityType = typeof(TopicPropertyInfo);
+
+            Assert.That(entityType.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.TableNameAttribute), false), Has.Length.EqualTo(1));
+            Assert.That(entityType.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.PrimaryKeyAttribute), false), Has.Length.EqualTo(1));
+            Assert.That(typeof(TopicPropertyInfo).GetProperty(nameof(TopicPropertyInfo.Topic)).GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.IgnoreColumnAttribute), false), Has.Length.EqualTo(1));
+            Assert.That(typeof(TopicPropertyInfo).GetProperty(nameof(TopicPropertyInfo.Property)).GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.IgnoreColumnAttribute), false), Has.Length.EqualTo(1));
+        }
     }
 }

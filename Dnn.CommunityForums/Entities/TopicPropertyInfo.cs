@@ -20,12 +20,66 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using System;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
+    [TableName("communityforums_Topic_Properties")]
+    [PrimaryKey("Id", AutoIncrement = true)]
     public class TopicPropertyInfo
     {
+        private PropertyInfo propertyInfo;
+        private TopicInfo topicInfo;
+
+        public int Id { get; set; }
+
+        public int TopicId { get; set; }
+
         public int PropertyId { get; set; }
 
+        [IgnoreColumn]
         public string Name { get; set; }
 
         public string Value { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public DateTime DateUpdated { get; set; }
+
+        [IgnoreColumn]
+        public TopicInfo Topic
+        {
+            get
+            {
+                if (this.topicInfo == null)
+                {
+                    this.topicInfo = Controllers.TopicController.Instance.GetById(this.TopicId);
+                    if (this.topicInfo == null)
+                    {
+                        this.topicInfo = new TopicInfo();
+                    }
+                }
+
+                return this.topicInfo;
+            }
+        }
+
+        [IgnoreColumn]
+        public PropertyInfo Property
+        {
+            get
+            {
+                if (this.propertyInfo == null)
+                {
+                    this.propertyInfo = new Controllers.PropertyController().GetById(this.PropertyId);
+                    if (this.propertyInfo == null)
+                    {
+                        this.propertyInfo = new PropertyInfo();
+                    }
+                }
+
+                return this.propertyInfo;
+            }
+        }
     }
 }
