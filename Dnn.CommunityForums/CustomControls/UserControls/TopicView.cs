@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 this.LoadData(this.PageId);
-                if (this.dtTopic?.Rows?.Count == 0)
+                if (this.dtTopic?.Rows?.Count == 0 || this.topic == null)
                 {
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId), false);
                     this.Context.ApplicationInstance.CompleteRequest();

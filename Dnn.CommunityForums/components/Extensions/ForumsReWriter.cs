@@ -405,7 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (archivedURL != null)
                         {
                             var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, archivedURL.TopicId);
-                            if (topic != null)
+                            if (topic != null && !topic.IsDeleted)
                             {
                                 Redirect(app, topic.GetLink());
                                 return;
@@ -424,7 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         this.ForumId = forum.ForumID;
                                         var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.FindByURL(this.ForumModuleId, this.ForumId, this.TopicSegment);
-                                        if (topic != null)
+                                        if (topic != null && !topic.IsDeleted)
                                         {
                                             this.TopicId = topic.TopicId;
                                             this.ViewUrlTypeValue = ViewUrlType.Default;
@@ -440,7 +440,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 {
                                     this.ForumGroupId = forumGroup.ForumGroupId;
                                     var forum = this.forumController.GetByUrlPrefix(this.ForumModuleId, this.ForumSegment);
-                                    if (forum != null && forum.PrefixURL.Equals(this.ForumSegment))
+                                    if (forum != null && forum.PrefixURL.Equals(this.ForumSegment) && forum.Active && !forum.Hidden)
                                     {
                                         this.ForumId = forum.ForumID;
                                         this.ViewUrlTypeValue = ViewUrlType.Default;
@@ -451,7 +451,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             else if (!string.IsNullOrEmpty(this.GroupSegment))
                             {
                                 var forumGroup = this.forumGroupController.GetByUrlPrefix(this.ForumModuleId, this.GroupSegment);
-                                if (forumGroup != null && forumGroup.PrefixURL.Equals(this.GroupSegment))
+                                if (forumGroup != null && forumGroup.PrefixURL.Equals(this.GroupSegment) && forumGroup.Active && !forumGroup.Hidden)
                                 {
                                     this.ForumGroupId = forumGroup.ForumGroupId;
                                     this.ViewUrlTypeValue = ViewUrlType.Default;
@@ -471,7 +471,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (this.TopicId > 0)
                     {
                         var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, this.TopicId);
-                        if (topic != null)
+                        if (topic != null && !topic.IsDeleted)
                         {
                             Redirect(app, topic.GetLink());
                             return;
@@ -497,7 +497,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!string.IsNullOrEmpty(topicUrl))
                 {
                     var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.FindByURL(this.ForumModuleId, this.ForumId, topicUrl);
-                    if (topic != null)
+                    if (topic != null && !topic.IsDeleted)
                     {
                         var link = topic.GetLink();
                         if (!string.IsNullOrEmpty(link))
