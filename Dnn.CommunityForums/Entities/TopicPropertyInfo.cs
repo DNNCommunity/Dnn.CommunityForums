@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Data;
 
     [TableName("communityforums_Topic_Properties")]
     [PrimaryKey("Id", AutoIncrement = true)]
@@ -30,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         private PropertyInfo propertyInfo;
         private TopicInfo topicInfo;
+        private string name;
 
         public int Id { get; set; }
 
@@ -38,7 +40,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PropertyId { get; set; }
 
         [IgnoreColumn]
-        public string Name { get; set; }
+        public string Name
+        {
+            get => this.name ?? this.GetProperty().Name;
+            set => this.name = value;
+        }
 
         public string Value { get; set; }
 
@@ -46,40 +52,24 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public DateTime DateUpdated { get; set; }
 
-        [IgnoreColumn]
-        public TopicInfo Topic
+        public TopicInfo GetTopic()
         {
-            get
+            if (this.topicInfo == null)
             {
-                if (this.topicInfo == null)
-                {
-                    this.topicInfo = Controllers.TopicController.Instance.GetById(this.TopicId);
-                    if (this.topicInfo == null)
-                    {
-                        this.topicInfo = new TopicInfo();
-                    }
-                }
-
-                return this.topicInfo;
+                this.topicInfo = ((IRepository<TopicInfo>)Controllers.TopicController.Instance).GetById(this.TopicId) ?? new TopicInfo();
             }
+
+            return this.topicInfo;
         }
 
-        [IgnoreColumn]
-        public PropertyInfo Property
+        public PropertyInfo GetProperty()
         {
-            get
+            if (this.propertyInfo == null)
             {
-                if (this.propertyInfo == null)
-                {
-                    this.propertyInfo = new Controllers.PropertyController().GetById(this.PropertyId);
-                    if (this.propertyInfo == null)
-                    {
-                        this.propertyInfo = new PropertyInfo();
-                    }
-                }
-
-                return this.propertyInfo;
+                this.propertyInfo = new Controllers.PropertyController().GetById(this.PropertyId) ?? new PropertyInfo();
             }
+
+            return this.propertyInfo;
         }
     }
 }
