@@ -223,16 +223,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString(this.Content.AuthorName, format);
                     case "authordisplaynamelink":
                         {
+                            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID);
                             return PropertyAccess.FormatString(
                                 Controllers.ForumUserController.CanLinkToProfile(
                                     this.Forum.PortalSettings,
                                     this.Forum.MainSettings,
                                     this.ModuleId,
-                                    Controllers.ForumUserController.Instance.GetByUserId(
-                                        accessingUser.PortalID,
-                                        this.ModuleId, accessingUser.UserID),
+                                    forumUser,
                                     this.Author.ForumUser)
-                                    ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
+                                    ? Utilities.NavigateURL(
+                                        this.Forum.PortalSettings.UserTabId,
                                         string.Empty,
                                         $"userId={this.Content.AuthorId}")
                                     : string.Empty,
@@ -240,17 +240,21 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                     case "authordisplayname":
-                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName :
+                        {
+                            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID);
+                            return PropertyAccess.FormatString(
+                                string.IsNullOrEmpty(this.Author?.DisplayName) ? this.Content.AuthorName :
                             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
                                 this.Forum.PortalSettings,
                                 this.Forum.MainSettings,
-                                isMod: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).GetIsMod(this.ModuleId),
-                                isAdmin: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsAdmin || DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsSuperUser,
+                                isMod: forumUser.GetIsMod(this.ModuleId),
+                                isAdmin: accessingUser.IsAdmin || accessingUser.IsSuperUser,
                                 this.Author.AuthorId,
                                 this.Author.Username,
                                 this.Author.FirstName,
                                 this.Author.LastName,
                                 this.Author.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.Content.AuthorName), format);
+                        }
                     case "authorfirstname":
                         return PropertyAccess.FormatString(string.IsNullOrEmpty(this.Author?.FirstName) ? this.Content.AuthorName : this.Author.FirstName, format);
                     case "authorlastname":
@@ -263,16 +267,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         return PropertyAccess.FormatString(this.ForumUser.Username, format);
                     case "userdisplaynamelink":
                         {
+                            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID);
                             return PropertyAccess.FormatString(
                                 Controllers.ForumUserController.CanLinkToProfile(
                                     this.Forum.PortalSettings,
                                     this.Forum.MainSettings,
                                     this.ModuleId,
-                                    Controllers.ForumUserController.Instance.GetByUserId(
-                                        accessingUser.PortalID,
-                                        this.ModuleId, accessingUser.UserID),
+                                    forumUser,
                                     this.ForumUser)
-                                    ? Utilities.NavigateURL(this.Forum.PortalSettings.UserTabId,
+                                    ? Utilities.NavigateURL(
+                                        this.Forum.PortalSettings.UserTabId,
                                         string.Empty,
                                         $"userId={this.UserId}")
                                     : string.Empty,
@@ -280,17 +284,21 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                     case "userdisplayname":
-                        return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.DisplayName) ? this.ForumUser.Username :
-                            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
-                                this.Forum.PortalSettings,
-                                this.Forum.MainSettings,
-                                isMod: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).GetIsMod(this.ModuleId),
-                                isAdmin: DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsAdmin || DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID).IsSuperUser,
-                                this.ForumUser.UserId,
-                                this.ForumUser.Username,
-                                this.ForumUser.FirstName,
-                                this.ForumUser.LastName,
-                                this.ForumUser.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.ForumUser.Username), format);
+                        {
+                            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(accessingUser.PortalID, this.ModuleId, accessingUser.UserID);
+                            return PropertyAccess.FormatString(
+                                string.IsNullOrEmpty(this.ForumUser?.DisplayName) ? this.ForumUser.Username :
+                                DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(
+                                    this.Forum.PortalSettings,
+                                    this.Forum.MainSettings,
+                                    isMod: forumUser.GetIsMod(this.ModuleId),
+                                    isAdmin: accessingUser.IsAdmin || accessingUser.IsSuperUser,
+                                    this.ForumUser.UserId,
+                                    this.ForumUser.Username,
+                                    this.ForumUser.FirstName,
+                                    this.ForumUser.LastName,
+                                    this.ForumUser.DisplayName).Replace("&amp;#", "&#").Replace("Anonymous", this.ForumUser.Username), format);
+                        }
                     case "userfirstname":
                         return PropertyAccess.FormatString(string.IsNullOrEmpty(this.ForumUser?.FirstName) ? this.ForumUser.Username : this.ForumUser.FirstName, format);
                     case "userlastname":

@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return;
             }
 
-            tag.Items = this.topicTagController.GetForTag(tagId).Count();
+            tag.Items = this.topicTagController.GetForTag(tagId).ToList().Count();
             this._repositoryControllerBase.Update(tag);
         }
 
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public new void Delete(string sqlCondition, params object[] args)
         {
-            this._repositoryControllerBase.Find(sqlCondition, args).ForEach(t =>
+            this._repositoryControllerBase.Find(sqlCondition, args).ToList().ForEach(t =>
             {
                 this.topicTagController.DeleteForTag(t.TagId);
                 this.DeleteById(t.TagId);
@@ -154,10 +154,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     return;
                 }
 
-                var existingTags = this.topicTagController.GetForTopic(post.TopicId);
+                var existingTags = this.topicTagController.GetForTopic(post.TopicId).ToList();
                 tags.Distinct().ToList().Where(t => !string.IsNullOrEmpty(t)).ForEach(t =>
                 {
-                    var tag = this._repositoryControllerBase.Find("WHERE TagName = @0", t).FirstOrDefault();
+                    var tag = this._repositoryControllerBase.Find("WHERE TagName = @0", t).ToList().FirstOrDefault();
                     if (tag == null)
                     {
                         tag = new TagInfo

@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo> GetActiveUsers(int portalId, int moduleId)
         {
-            var forumUsers = this._repositoryControllerBase.Get().Where(u => u.PortalId.Equals(portalId));
+            var forumUsers = this._repositoryControllerBase.Get().Where(u => u.PortalId.Equals(portalId)).ToList();
             forumUsers.ForEach(forumUser => forumUser.ModuleId = moduleId);
             var users = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: false, portalId: portalId);
             var superUsers = DotNetNuke.Entities.Users.UserController.GetUsers(includeDeleted: false, superUsersOnly: true, portalId: DotNetNuke.Common.Utilities.Null.NullInteger);
@@ -269,7 +269,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 var postsRemoved = new StringBuilder();
 
-                var contentForBannedUser = DataContext.Instance().ExecuteQuery<JournalContentForUser>(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Content_GetJournalKeysForUser", authorId, moduleId).ToList();
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                var contentForBannedUser = ctx.ExecuteQuery<JournalContentForUser>(System.Data.CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Content_GetJournalKeysForUser", authorId, moduleId).ToList();
                 string objectKey;
                 contentForBannedUser.ForEach(c =>
                 {
@@ -613,7 +614,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             sSql += "INNER JOIN {databaseOwner}{objectQualifier}communityforums_Forums as f ON f.ForumId = ft.ForumId ";
             sSql += "WHERE c.AuthorId = @1 AND t.IsApproved = 1 AND t.IsDeleted=0 AND f.PortalId=@0),0) ";
             sSql += "WHERE UserId = @1 AND PortalId = @0";
-            DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            ctx.Execute(System.Data.CommandType.Text, sSql, portalId, userId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, userId);
         }
 
@@ -626,7 +628,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             sSql += "INNER JOIN {databaseOwner}{objectQualifier}communityforums_Forums as f ON f.ForumId = ft.ForumId ";
             sSql += "WHERE c.AuthorId = @1 AND r.IsApproved = 1 AND r.IsDeleted=0 AND f.PortalId=@0),0) ";
             sSql += "WHERE UserId = @1 AND PortalId = @0";
-            DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, portalId, userId);
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            ctx.Execute(System.Data.CommandType.Text, sSql, portalId, userId);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(portalId, userId);
         }
 
@@ -634,7 +637,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             bool isAdmin = forumUser.IsAdmin || forumUser.IsSuperUser;
             var sb = new StringBuilder();
-            var users = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND DateLastActivity >= CAST(DATEADD(mi,@1,GETUTCDATE()) as datetime)", portalSettings.PortalId, -2);
+            var users = this._repositoryControllerBase.Find("WHERE PortalId = @0 AND DateLastActivity >= CAST(DATEADD(mi,@1,GETUTCDATE()) as datetime)", portalSettings.PortalId, -2).ToList();
             foreach (var user in users)
             {
                 if (sb.Length > 0)

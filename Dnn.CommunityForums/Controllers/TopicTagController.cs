@@ -42,12 +42,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTopic(int topicId)
         {
-            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId);
+            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).ToList();
         }
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTag(int tagId)
         {
-            return this._repositoryControllerBase.Find("WHERE TagId = @0", tagId);
+            return this._repositoryControllerBase.Find("WHERE TagId = @0", tagId).ToList();
         }
 
         public void DeleteForTag(int tagId)
@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void DeleteForTopic(int topicId)
         {
-            var tagsToRecount = this.GetForTopic(topicId).Select(x => x.TagId).Distinct();
+            var tagsToRecount = this.GetForTopic(topicId).Select(x => x.TagId).Distinct().ToList();
             this._repositoryControllerBase.Delete("WHERE TopicId = @0", topicId);
             tagsToRecount.ForEach(tagId =>
             {

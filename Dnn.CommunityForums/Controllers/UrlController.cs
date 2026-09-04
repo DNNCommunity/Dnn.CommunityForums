@@ -78,14 +78,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal static void ArchiveURL(int portalId, int forumGroupId, int forumId, int topicId, string uRL)
         {
-            DotNetNuke.Data.DataContext.Instance().Execute(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_Archive", portalId, forumGroupId, forumId, topicId, uRL);
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            ctx.Execute(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_Archive", portalId, forumGroupId, forumId, topicId, uRL);
         }
 
         internal static string GetUrl(int moduleId, int forumGroupId, int forumId, int topicId, int userId, int contentId)
         {
             try
             {
-                return DotNetNuke.Data.DataContext.Instance().ExecuteScalar<string>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Util_GetUrl", moduleId, forumGroupId, forumId, topicId, userId, contentId);
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                return ctx.ExecuteScalar<string>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_Util_GetUrl", moduleId, forumGroupId, forumId, topicId, userId, contentId);
             }
             catch
             {
@@ -104,7 +106,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
 
                 int tmpForumId = -1;
-                tmpForumId = DotNetNuke.Data.DataContext.Instance().ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckForumVanity", portalId, vanityName);
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                tmpForumId = ctx.ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckForumVanity", portalId, vanityName);
                 if (tmpForumId > 0 && forumId == -1)
                 {
                     return false;
@@ -131,7 +134,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             try
             {
                 int tmpForumGroupId = -1;
-                tmpForumGroupId = DotNetNuke.Data.DataContext.Instance().ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckGroupVanity", portalId, vanityName);
+                using var ctx = DotNetNuke.Data.DataContext.Instance();
+                tmpForumGroupId = ctx.ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckGroupVanity", portalId, vanityName);
                 if (tmpForumGroupId > 0 && forumGroupId == -1)
                 {
                     return false;
@@ -189,7 +193,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 uRL = uRL.Substring(0, uRL.Length - 1);
             }
 
-            return DotNetNuke.Data.DataContext.Instance().ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_TopicIdByURL", portalId, moduleId, uRL);
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            return ctx.ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_TopicIdByURL", portalId, moduleId, uRL);
         }
     }
 }

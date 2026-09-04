@@ -63,21 +63,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 int tempPageId = 0;
                 if (this.Request.QueryString[ParamKeys.PageId] != null)
                 {
-                    if (Utilities.IsNumeric(this.Request.QueryString[ParamKeys.PageId]))
-                    {
-                        tempPageId = Convert.ToInt32(this.Request.QueryString[ParamKeys.PageId]);
-                    }
+                    tempPageId = ParsePageId(this.Request.QueryString[ParamKeys.PageId], 1);
                 }
                 else if (this.Request.QueryString[Literals.Page] != null)
                 {
-                    if (Utilities.IsNumeric(this.Request.QueryString[Literals.Page]))
-                    {
-                        tempPageId = Convert.ToInt32(this.Request.QueryString[Literals.Page]);
-                    }
+                    tempPageId = ParsePageId(this.Request.QueryString[Literals.Page], 1);
                 }
                 else if (this.Params != string.Empty && this.Params.Contains(Literals.PageId))
                 {
-                    tempPageId = Convert.ToInt32(this.Params.Split('=')[1]);
+                    var pageIdSeparatorIndex = this.Params.IndexOf('=');
+                    tempPageId = pageIdSeparatorIndex >= 0 && pageIdSeparatorIndex < this.Params.Length - 1
+                        ? ParsePageId(this.Params.Substring(pageIdSeparatorIndex + 1), 1)
+                        : 1;
                 }
                 else
                 {
@@ -86,6 +83,25 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return tempPageId;
             }
+        }
+
+        private static int ParsePageId(string rawPageId, int defaultPageId)
+        {
+            if (string.IsNullOrWhiteSpace(rawPageId))
+            {
+                return defaultPageId;
+            }
+
+            var hashIndex = rawPageId.IndexOf('#');
+            if (hashIndex >= 0)
+            {
+                rawPageId = rawPageId.Substring(0, hashIndex);
+            }
+
+            int parsedPageId;
+            return int.TryParse(rawPageId, out parsedPageId) && parsedPageId > 0
+                ? parsedPageId
+                : defaultPageId;
         }
 
         public bool ShowToolbar { get; set; } = true;

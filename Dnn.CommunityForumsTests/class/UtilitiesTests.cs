@@ -65,6 +65,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test]
+        [TestCase("<img src=\"image.png\" />", ExpectedResult = true)]
+        [TestCase("<p><br /></p>", ExpectedResult = false)]
+        public bool InputIsValidTest(string input)
+        {
+            return Utilities.InputIsValid(input);
+        }
+
+        [Test]
         [TestCase("  this is a : messy string for a +url = 0 -", "this-is-a-messy-string-for-a-url-0")]
         public void CleanStringForUrlTest(string input, string expectedResult)
         {

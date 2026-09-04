@@ -30,26 +30,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     internal class RepositoryControllerBase<T>
         where T : class
     {
-        private IRepository<T> _repo;
-
         private IRepository<T> Repo
         {
             get
             {
-                if (this._repo == null)
-                {
                     try
                     {
                         var ctx = DataContext.Instance();
-                        this._repo = ctx?.GetRepository<T>();
+                        if (ctx == null)
+                        {
+                            // DataContext may not be available in test environments.
+                            throw new InvalidOperationException("DataContext is not available.");
+                        }
+
+                        return ctx.GetRepository<T>();
                     }
                     catch (Exception)
                     {
-                        // DataContext may not be available in test environments.
+                        return null;
                     }
-                }
-
-                return this._repo;
             }
         }
 
