@@ -91,8 +91,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 
             Assert.That(entityType.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.TableNameAttribute), false), Has.Length.EqualTo(1));
             Assert.That(entityType.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.PrimaryKeyAttribute), false), Has.Length.EqualTo(1));
-            Assert.That(typeof(TopicPropertyInfo).GetProperty(nameof(TopicPropertyInfo.Topic)).GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.IgnoreColumnAttribute), false), Has.Length.EqualTo(1));
-            Assert.That(typeof(TopicPropertyInfo).GetProperty(nameof(TopicPropertyInfo.Property)).GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.IgnoreColumnAttribute), false), Has.Length.EqualTo(1));
+            Assert.That(typeof(TopicPropertyInfo).GetMethod(nameof(TopicPropertyInfo.GetTopic)), Is.Not.Null);
+            Assert.That(typeof(TopicPropertyInfo).GetMethod(nameof(TopicPropertyInfo.GetProperty)), Is.Not.Null);
         }
     }
 }
