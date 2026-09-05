@@ -24,22 +24,41 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Collections.Generic;
     using System.Text;
 
-    internal class PropertyController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>
+    using DotNetNuke.Modules.ActiveForums.Entities;
+
+    internal class PropertyController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo, IPropertyController, PropertyController>, IPropertyController
     {
-        private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties { get; set; }
+        private readonly ITopicPropertyController topicPropertyController;
 
-        public PropertyController() : base()
+        protected override Func<IPropertyController> GetFactory()
+        {
+            return () => new PropertyController();
+        }
+
+        public PropertyController()
+            : this(DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance)
         {
         }
 
-        public PropertyController(IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> properties)
+        internal PropertyController(ITopicPropertyController topicPropertyController)
         {
-            this.Properties = properties;
+            this.topicPropertyController = topicPropertyController ?? throw new ArgumentNullException(nameof(topicPropertyController));
         }
 
-        internal string ListPropertiesJSON(int portalId, int objectType, int objectOwnerId)
+        public void Delete(DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo item)
         {
-            var list = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Find("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2", portalId, objectType, objectOwnerId);
+            if (item == null)
+            {
+                return;
+            }
+
+            this.topicPropertyController.DeleteForProperty(item.PropertyId);
+            this._repositoryControllerBase.Delete(item);
+        }
+
+        public string ListPropertiesJSON(int portalId, int objectType, int objectOwnerId)
+        {
+            var list = DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.Find("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2", portalId, objectType, objectOwnerId);
             StringBuilder sb = new StringBuilder();
             foreach (var p in list)
             {
@@ -84,6 +103,31 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             return sb.ToString();
+        }
+
+        public void DeleteById(int id)
+        {
+            this.topicPropertyController.DeleteForProperty(id);
+            this.Delete(this._repositoryControllerBase.GetById(id));
+        }
+
+        public DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo Save<TProperty>(DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo item, TProperty id)
+        {
+            if (id == null || id.Equals(0) || id.Equals(-1) || this._repositoryControllerBase.GetById(id) == null)
+            {
+                this._repositoryControllerBase.Insert(item);
+            }
+            else
+            {
+                this._repositoryControllerBase.Update(item);
+            }
+
+            return item;
+        }
+
+        public PropertyInfo Save(PropertyInfo item, int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

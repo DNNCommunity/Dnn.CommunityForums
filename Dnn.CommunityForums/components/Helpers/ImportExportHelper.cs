@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
                 var forumIds = forums.Select(f => f.ForumID).ToHashSet();
 
-                var properties = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get()
+                var properties = DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.Get()
                     .Where(p => p.PortalId == moduleInfo.PortalID
                         && p.ObjectType == 1
                         && forumIds.Contains(p.ObjectOwnerId))
@@ -871,7 +871,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     pendingForumParents[oldForumId] = oldParentForumId;
                 }
 
-                var propertyController = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController();
+                var propertyController = DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance;
 
                 foreach (var sourceProperty in GetElements(root, "properties", "property"))
                 {
