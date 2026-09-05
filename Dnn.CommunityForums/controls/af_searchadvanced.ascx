@@ -23,11 +23,6 @@
             <asp:DropDownList ID="drpSearchDays" runat="server" />
         </div>
         <div class="af-adv-search-row">
-            <asp:Label runat="server" ID="lblResultType" Text="[RESX:SearchResultType]" AssociatedControlID="drpResultType" />
-            <asp:DropDownList runat="server" ID="drpResultType">
-            </asp:DropDownList>
-        </div>
-        <div class="af-adv-search-row">
             <asp:Label runat="server" ID="lblSortType" Text="[RESX:SearchSort]" AssociatedControlID="drpSort" />
             <asp:DropDownList runat="server" ID="drpSort">
             </asp:DropDownList>

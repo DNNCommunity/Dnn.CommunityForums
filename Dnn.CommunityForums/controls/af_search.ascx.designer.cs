@@ -13,6 +13,11 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_search
     {
         /// <summary>
+        /// SearchAdvanced control.
+        /// </summary>
+        protected global::DotNetNuke.Modules.ActiveForums.af_searchadvanced SearchAdvanced;
+
+        /// <summary>
         /// Search control.
         /// </summary>
         /// <remarks>
