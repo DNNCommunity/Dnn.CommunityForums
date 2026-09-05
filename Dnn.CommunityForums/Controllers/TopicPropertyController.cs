@@ -22,9 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Xml;
 
     internal partial class TopicPropertyController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo, ITopicPropertyController, TopicPropertyController>, ITopicPropertyController
     {
@@ -58,62 +55,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this._repositoryControllerBase.Delete("WHERE TopicId = @0", topicId);
         }
 
-        public static string Serialize(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> properties)
+        public void SaveForTopic(int topicId, IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> properties)
         {
-            StringBuilder tData = new StringBuilder();
-            tData.Append("<topicdata>");
-            tData.Append("<properties>");
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo p in forum.Properties)
+            if (properties == null)
             {
-                tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
-                tData.Append("<name><![CDATA[");
-                tData.Append(p.Name);
-                tData.Append("]]></name>");
-                if (!string.IsNullOrEmpty(properties.Where(tp => tp.PropertyId == p.PropertyId).FirstOrDefault().Value))
-                {
-                    tData.Append("<value><![CDATA[");
-                    tData.Append(Utilities.XSSFilter(properties.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().Value));
-                    tData.Append("]]></value>");
-                }
-                else
-                {
-                    tData.Append("<value></value>");
-                }
-
-                tData.Append("</property>");
+                return;
             }
 
-            tData.Append("</properties>");
-            tData.Append("</topicdata>");
-            return tData.ToString();
-        }
-
-        public static List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> Deserialize(string xmlString)
-        {
-            List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> tp = new List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo>();
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.LoadXml(xmlString);
-            if (xDoc != null)
+            this.DeleteForTopic(topicId);
+            var propertyIds = new HashSet<int>();
+            foreach (var property in properties)
             {
-                System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//properties/property");
-                if (xNodeList.Count > 0)
+                if (propertyIds.Add(property.PropertyId) && !string.IsNullOrEmpty(property.Value))
                 {
-                    int i = 0;
-                    for (i = 0; i < xNodeList.Count; i++)
+                    this._repositoryControllerBase.Insert(new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo
                     {
-                        string pName = System.Net.WebUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
-                        string pValue = System.Net.WebUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
-                        int pId = Convert.ToInt32(xNodeList[i].Attributes["id"].Value);
-                        DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo p = new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo();
-                        p.Value = pValue;
-                        p.PropertyId = pId;
-                        tp.Add(p);
-                    }
+                        TopicId = topicId,
+                        PropertyId = property.PropertyId,
+                        Value = Utilities.XSSFilter(property.Value),
+                    });
                 }
             }
-
-            return tp;
         }
     }
 }

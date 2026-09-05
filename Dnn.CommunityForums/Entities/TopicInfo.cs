@@ -189,7 +189,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int NextTopic { get; set; }
 
-        public string TopicData { get; set; } = string.Empty;
+        [IgnoreColumn]
+        public IEnumerable<TopicPropertyInfo> TopicProperties { get; set; }
 
         [IgnoreColumn]
         public int? LastReplyId
@@ -435,13 +436,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get => this.selectedcategories ?? (this.selectedcategories = string.Join(";", this.SelectedCategories.Select(c => c.id.ToString())));
             set => this.selectedcategories = value;
-        }
-
-        [IgnoreColumn]
-        public IEnumerable<TopicPropertyInfo> TopicProperties
-        {
-            get => this.TopicData == string.Empty ? null : Controllers.TopicPropertyController.Deserialize(this.TopicData);
-            set => this.TopicData = Controllers.TopicPropertyController.Serialize(this.Forum, value);
         }
 
         [IgnoreColumn]
