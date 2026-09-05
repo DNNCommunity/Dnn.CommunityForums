@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public abstract void Topics_Move(int portalId, int moduleId, int forumId, int topicId);
 
-        public abstract int Topics_Save(int portalId, int moduleId, int topicId, int viewCount, int replyCount, bool isLocked, bool isPinned, string topicIcon, int statusId, bool isApproved, bool isDeleted, bool isAnnounce, bool isArchived, DateTime announceStart, DateTime announceEnd, string subject, string body, string summary, DateTime dateCreated, DateTime dateUpdated, int authorId, string authorName, string iPAddress, int topicType, int topicPriority, string uRL, string topicData);
+        public abstract int Topics_Save(int portalId, int moduleId, int topicId, int viewCount, int replyCount, bool isLocked, bool isPinned, string topicIcon, int statusId, bool isApproved, bool isDeleted, bool isAnnounce, bool isArchived, DateTime announceStart, DateTime announceEnd, string subject, string body, string summary, DateTime dateCreated, DateTime dateUpdated, int authorId, string authorName, string iPAddress, int topicType, int topicPriority, string uRL);
 
         public abstract void Replies_Split(int oldTopicId, int newTopicId, string listreplies, DateTime dateUpdated, int firstReplyId);
 

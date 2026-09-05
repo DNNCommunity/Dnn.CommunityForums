@@ -30,7 +30,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
-    using System.Xml;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -317,7 +316,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 TopicIcon = this.drForum["TopicIcon"].ToString(),
                 Priority = Convert.ToInt32(this.drForum["Priority"]),
                 TopicUrl = this.drForum["URL"].ToString(),
-                TopicData = this.drForum["TopicData"].ToString(),
                 NextTopic = Utilities.SafeConvertInt(this.drForum["NextTopic"]),
                 PrevTopic = Utilities.SafeConvertInt(this.drForum["PrevTopic"]),
                 ContentId = Utilities.SafeConvertInt(this.drForum["ContentId"]),
@@ -354,6 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Author.ForumUser.ModuleId = this.ForumModuleId;
 
             this.topic.Forum = this.ForumInfo;
+            this.topic.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance.GetForTopic(this.topic.TopicId);
 
             this.topic.LastReply.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.topic.LastReply.Content.AuthorId);
             this.topic.LastReply.Author.ForumUser.UserInfo.DisplayName = this.drForum["LastPostDisplayName"].ToString();
@@ -474,34 +473,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 var sProps = string.Empty;
 
-                if (!string.IsNullOrWhiteSpace(this.topic.TopicData))
+                if (this.topic.TopicProperties?.Any() == true)
                 {
                     var sPropTemplate = TemplateUtils.GetTemplateSection(sOutput, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
 
-                    try
+                    foreach (var p in this.topic.TopicProperties)
                     {
-                        var pl = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(this.topic.TopicData);
-                        foreach (var p in pl)
-                        {
-                            var pName = System.Net.WebUtility.HtmlDecode(p.Name);
-                            var pValue = System.Net.WebUtility.HtmlDecode(p.Value);
+                        var pName = System.Net.WebUtility.HtmlDecode(p.Name);
+                        var pValue = System.Net.WebUtility.HtmlDecode(p.Value);
 
-                            // This builds the replacement text for the properties template
-                            var tmp = sPropTemplate.Replace("[AF:PROPERTY:LABEL]", "[RESX:" + pName + "]");
-                            tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
-                            sProps += tmp;
+                        // This builds the replacement text for the properties template
+                        var tmp = sPropTemplate.Replace("[AF:PROPERTY:LABEL]", "[RESX:" + pName + "]");
+                        tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
+                        sProps += tmp;
 
-                            // This deals with any specific property tokens that may be present outside of the normal properties template
-                            sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
-                            sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":VALUE]", pValue);
-                            var pValueKey = string.IsNullOrWhiteSpace(pValue) ? string.Empty : Utilities.CleanName(pValue).ToLowerInvariant();
-                            sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":VALUEKEY]", pValueKey);
-                        }
-                    }
-                    catch (XmlException)
-                    {
-                        // Property XML is invalid
-                        // Nothing to do in this case but ignore the issue.
+                        // This deals with any specific property tokens that may be present outside of the normal properties template
+                        sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
+                        sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":VALUE]", pValue);
+                        var pValueKey = string.IsNullOrWhiteSpace(pValue) ? string.Empty : Utilities.CleanName(pValue).ToLowerInvariant();
+                        sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":VALUEKEY]", pValueKey);
                     }
                 }
 

@@ -54,6 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             "categories",
             "contents",
             "topics",
+            "topicProperties",
             "attachments",
             "likes",
             "userMentions",
@@ -157,6 +158,11 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 var topics = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.Get()
                     .Where(t => topicIds.Contains(t.TopicId))
                     .OrderBy(t => t.TopicId)
+                    .ToList();
+
+                var topicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance.Get()
+                    .Where(tp => topicIds.Contains(tp.TopicId))
+                    .OrderBy(tp => tp.Id)
                     .ToList();
 
                 var replies = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance.Get()
@@ -414,8 +420,13 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                 new XAttribute("priority", t.Priority),
                                 new XAttribute("topicUrl", t.TopicUrl ?? string.Empty),
                                 new XAttribute("prevTopic", t.PrevTopic),
-                                new XAttribute("nextTopic", t.NextTopic),
-                                new XAttribute("topicData", t.TopicData ?? string.Empty))),
+                                new XAttribute("nextTopic", t.NextTopic))),
+                        SerializeEntities("topicProperties", topicProperties, tp =>
+                            new XElement(
+                                "topicProperty",
+                                new XAttribute("topicId", tp.TopicId),
+                                new XAttribute("propertyId", tp.PropertyId),
+                                new XAttribute("value", tp.Value.EncodeInvalidXmlChars() ?? string.Empty))),
                         SerializeEntities("attachments", attachments, a =>
                             new XElement(
                                 "attachment",
@@ -612,6 +623,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 var replyMap = new Dictionary<int, int>();
                 var tagMap = new Dictionary<int, int>();
                 var categoryMap = new Dictionary<int, int>();
+                var propertyMap = new Dictionary<int, int>();
                 var badgeMap = new Dictionary<int, int>();
                 var permissionMap = new Dictionary<int, int>();
                 var settingsKeyMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -906,6 +918,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     };
 
                     propertyController.Insert(property);
+                    propertyMap[GetInt(sourceProperty, "propertyId")] = property.PropertyId;
                 }
 
                 foreach (var sourceCategory in GetElements(root, "categories", "category"))
@@ -986,11 +999,26 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                         TopicUrl = GetString(sourceTopic, "topicUrl"),
                         PrevTopic = GetInt(sourceTopic, "prevTopic"),
                         NextTopic = GetInt(sourceTopic, "nextTopic"),
-                        TopicData = GetString(sourceTopic, "topicData"),
                     };
 
                     ((IRepository<TopicInfo>)TopicController.Instance).Insert(topic);
                     topicMap[GetInt(sourceTopic, "topicId")] = topic.TopicId;
+                }
+
+                foreach (var sourceTopicProperty in GetElements(root, "topicProperties", "topicProperty"))
+                {
+                    if (!topicMap.TryGetValue(GetInt(sourceTopicProperty, "topicId"), out var newTopicId)
+                        || !propertyMap.TryGetValue(GetInt(sourceTopicProperty, "propertyId"), out var newPropertyId))
+                    {
+                        continue;
+                    }
+
+                    ((IRepository<TopicPropertyInfo>)TopicPropertyController.Instance).Insert(new TopicPropertyInfo
+                    {
+                        TopicId = newTopicId,
+                        PropertyId = newPropertyId,
+                        Value = GetString(sourceTopicProperty, "value"),
+                    });
                 }
 
                 foreach (var sourceAttachment in GetElements(root, "attachments", "attachment"))

@@ -483,32 +483,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
                             if (originalTopic.Forum.Properties != null && originalTopic.Forum.Properties.Count > 0)
                             {
-                                StringBuilder tData = new StringBuilder();
-                                tData.Append("<topicdata>");
-                                tData.Append("<properties>");
-                                foreach (var p in originalTopic.Forum.Properties)
-                                {
-                                    tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
-                                    tData.Append("<name><![CDATA[");
-                                    tData.Append(p.Name);
-                                    tData.Append("]]></name>");
-                                    if (!string.IsNullOrEmpty(dto.Topic.TopicProperties?.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().Value))
-                                    {
-                                        tData.Append("<value><![CDATA[");
-                                        tData.Append(Utilities.XSSFilter(dto.Topic.TopicProperties.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().Value));
-                                        tData.Append("]]></value>");
-                                    }
-                                    else
-                                    {
-                                        tData.Append("<value></value>");
-                                    }
-
-                                    tData.Append("</property>");
-                                }
-
-                                tData.Append("</properties>");
-                                tData.Append("</topicdata>");
-                                originalTopic.TopicData = tData.ToString();
+                                originalTopic.TopicProperties = dto.Topic.TopicProperties;
                             }
 
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(originalTopic);

@@ -46,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Helpers
                 "categories",
                 "contents",
                 "topics",
+                "topicProperties",
                 "attachments",
                 "likes",
                 "userMentions",

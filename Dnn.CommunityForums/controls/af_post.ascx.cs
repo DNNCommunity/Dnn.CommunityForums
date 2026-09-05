@@ -398,10 +398,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.contentId = ti.ContentId;
                 this.authorId = ti.Author.AuthorId;
 
-                if (!string.IsNullOrEmpty(ti.TopicData))
-                {
-                    this.ctlForm.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(ti.TopicData);
-                }
+                this.ctlForm.TopicProperties = ti.TopicProperties?.ToList();
 
                 if (ti.TopicType == TopicTypes.Poll)
                 {
@@ -770,34 +767,19 @@ namespace DotNetNuke.Modules.ActiveForums
             ti.TopicType = 0;
             if (this.ForumInfo.Properties != null && this.ForumInfo.Properties.Count > 0)
             {
-                var tData = new StringBuilder();
-                tData.Append("<topicdata>");
-                tData.Append("<properties>");
+                ti.TopicProperties = new List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo>();
                 foreach (var p in this.ForumInfo.Properties)
                 {
                     var pkey = "afprop-" + p.PropertyId.ToString();
-
-                    tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
-                    tData.Append("<name><![CDATA[");
-                    tData.Append(p.Name);
-                    tData.Append("]]></name>");
                     if (this.Request.Form[pkey] != null)
                     {
-                        tData.Append("<value><![CDATA[");
-                        tData.Append(Utilities.XSSFilter(this.Request.Form[pkey]));
-                        tData.Append("]]></value>");
+                        ti.TopicProperties.Add(new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo
+                        {
+                            PropertyId = p.PropertyId,
+                            Value = this.Request.Form[pkey],
+                        });
                     }
-                    else
-                    {
-                        tData.Append("<value></value>");
-                    }
-
-                    tData.Append("</property>");
                 }
-
-                tData.Append("</properties>");
-                tData.Append("</topicdata>");
-                ti.TopicData = tData.ToString();
             }
 
             this.TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);

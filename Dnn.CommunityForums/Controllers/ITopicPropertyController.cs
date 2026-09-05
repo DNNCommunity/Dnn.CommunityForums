@@ -32,6 +32,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> GetForProperty(int propertyId);
 
+        void SaveForTopic(int topicId, IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> properties);
+
         void DeleteForProperty(int propertyId);
 
         void DeleteForTopic(int topicId);

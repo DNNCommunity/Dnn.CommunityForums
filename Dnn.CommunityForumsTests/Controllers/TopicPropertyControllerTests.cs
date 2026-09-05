@@ -20,66 +20,21 @@
 
 namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     using DotNetNuke.Modules.ActiveForums.Controllers;
     using DotNetNuke.Modules.ActiveForums.Entities;
-    using Moq;
     using NUnit.Framework;
 
     [TestFixture()]
     public class TopicPropertyControllerTests : DotNetNuke.Modules.ActiveForumsTests.TestBase
     {
         [Test]
-        public void SerializeTest()
+        public void TopicInfoExposesTopicProperties()
         {
-            // Arrange
-            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings());
+            var property = typeof(TopicInfo).GetProperty(nameof(TopicInfo.TopicProperties));
 
-            mockForum.Object.ForumID = 1;
-            mockForum.Object.ForumName = "Test Forum";
-            mockForum.Object.Properties = new List<PropertyInfo>();
-            var prop1 = new PropertyInfo();
-            prop1.PropertyId = 1;
-            prop1.Name = "Test Property";
-            prop1.DefaultValue = "Test Value";
-            mockForum.Object.Properties.Add(prop1);
-
-            var mockPropertyList = new Mock<List<TopicPropertyInfo>>();
-            var prop2 = new TopicPropertyInfo();
-            prop2.PropertyId = 1;
-            prop2.Value = "Test Value";
-            mockPropertyList.Object.Add(prop2);
-
-            // Act
-            var actualResult = TopicPropertyController.Serialize(mockForum.Object, mockPropertyList.Object);
-
-            // Assert
-            var expectedResult = "<topicdata><properties><property id=\"1\"><name><![CDATA[Test Property]]></name><value><![CDATA[Test Value]]></value></property></properties></topicdata>";
-            Assert.That(actualResult, Is.EqualTo(expectedResult));
-        }
-
-        [Test]
-        public void DeserializeTest()
-        {
-            // Arrange
-            var mockPropertyList = new Mock<List<TopicPropertyInfo>>();
-            var prop1 = new TopicPropertyInfo();
-            prop1.PropertyId = 1;
-            prop1.Value = "Test Value";
-            mockPropertyList.Object.Add(prop1);
-
-            var serialized = "<topicdata><properties><property id=\"1\"><name><![CDATA[Test Property]]></name><value><![CDATA[Test Value]]></value></property></properties></topicdata>";
-
-            // Act
-            var actualResult = TopicPropertyController.Deserialize(serialized);
-
-            // Assert
-            Assert.That(actualResult, Has.Count.EqualTo(mockPropertyList.Object.Count));
-            Assert.That(actualResult.First().PropertyId, Is.EqualTo(mockPropertyList.Object[0].PropertyId));
-            Assert.That(actualResult.First().Name, Is.EqualTo(mockPropertyList.Object[0].Name));
-            Assert.That(actualResult.First().Value, Is.EqualTo(mockPropertyList.Object[0].Value));
+            Assert.That(property, Is.Not.Null);
+            Assert.That(property.PropertyType, Is.EqualTo(typeof(System.Collections.Generic.IEnumerable<TopicPropertyInfo>)));
+            Assert.That(property.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.IgnoreColumnAttribute), false), Has.Length.EqualTo(1));
         }
 
         [Test]
@@ -91,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             Assert.That(entityType.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.PrimaryKeyAttribute), false), Has.Length.EqualTo(1));
             Assert.That(typeof(TopicPropertyInfo).GetMethod(nameof(TopicPropertyInfo.GetTopic)), Is.Not.Null);
             Assert.That(typeof(TopicPropertyInfo).GetMethod(nameof(TopicPropertyInfo.GetProperty)), Is.Not.Null);
+            Assert.That(typeof(TopicPropertyController).GetMethod(nameof(TopicPropertyController.SaveForTopic)), Is.Not.Null);
         }
     }
 }
