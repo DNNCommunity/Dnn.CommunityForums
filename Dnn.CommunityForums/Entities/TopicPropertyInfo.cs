@@ -23,15 +23,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System;
 
     using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Data;
 
     [TableName("communityforums_Topic_Properties")]
     [PrimaryKey("Id", AutoIncrement = true)]
     public class TopicPropertyInfo
     {
-        private PropertyInfo propertyInfo;
-        private TopicInfo topicInfo;
-        private string name;
+        private DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo propertyInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
 
         public int Id { get; set; }
 
@@ -40,11 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PropertyId { get; set; }
 
         [IgnoreColumn]
-        public string Name
-        {
-            get => this.name ?? this.GetProperty().Name;
-            set => this.name = value;
-        }
+        public string Name => this.GetProperty().Name;
 
         public string Value { get; set; }
 
@@ -52,24 +46,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public DateTime DateUpdated { get; set; }
 
-        public TopicInfo GetTopic()
-        {
-            if (this.topicInfo == null)
-            {
-                this.topicInfo = ((IRepository<TopicInfo>)Controllers.TopicController.Instance).GetById(this.TopicId) ?? new TopicInfo();
-            }
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.GetTopic();
 
-            return this.topicInfo;
+        internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetTopic()
+        {
+            return this.topicInfo ??= DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.TopicId);
         }
 
-        public PropertyInfo GetProperty()
-        {
-            if (this.propertyInfo == null)
-            {
-                this.propertyInfo = new Controllers.PropertyController().GetById(this.PropertyId) ?? new PropertyInfo();
-            }
+        public DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo Property => this.GetProperty();
 
-            return this.propertyInfo;
+        internal PropertyInfo GetProperty()
+        {
+            return this.propertyInfo ??= DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.GetById(this.PropertyId);
         }
     }
 }

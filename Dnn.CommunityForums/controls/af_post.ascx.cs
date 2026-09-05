@@ -857,7 +857,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (!String.IsNullOrEmpty(this.ctlForm.PollQuestion) && !String.IsNullOrEmpty(this.ctlForm.PollOptions))
+            if (!string.IsNullOrEmpty(this.ctlForm.PollQuestion) && !string.IsNullOrEmpty(this.ctlForm.PollOptions))
             {
                 // var sPollQ = ctlForm.PollQuestion.Trim();
                 // sPollQ = Utilities.CleanString(PortalId, sPollQ, false, EditorTypes.TEXTBOX, true, false, ForumModuleId, string.Empty, false);

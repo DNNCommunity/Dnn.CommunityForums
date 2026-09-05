@@ -430,7 +430,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         internal List<PropertyInfo> LoadProperties()
         {
-            return this.properties = this.HasProperties ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get().Where(p => p.PortalId == this.PortalId && p.ObjectType == 1 && p.ObjectOwnerId == this.ForumID).ToList() : new List<PropertyInfo>();
+            return this.properties = this.HasProperties ? DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.Get().Where(p => p.PortalId == this.PortalId && p.ObjectType == 1 && p.ObjectOwnerId == this.ForumID).ToList() : new List<PropertyInfo>();
         }
 
         [IgnoreColumn]

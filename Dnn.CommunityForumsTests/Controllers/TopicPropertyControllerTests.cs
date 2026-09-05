@@ -49,7 +49,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var mockPropertyList = new Mock<List<TopicPropertyInfo>>();
             var prop2 = new TopicPropertyInfo();
             prop2.PropertyId = 1;
-            prop2.Name = "Test Property";
             prop2.Value = "Test Value";
             mockPropertyList.Object.Add(prop2);
 
@@ -68,7 +67,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var mockPropertyList = new Mock<List<TopicPropertyInfo>>();
             var prop1 = new TopicPropertyInfo();
             prop1.PropertyId = 1;
-            prop1.Name = "Test Property";
             prop1.Value = "Test Value";
             mockPropertyList.Object.Add(prop1);
 

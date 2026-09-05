@@ -26,9 +26,38 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System.Text;
     using System.Xml;
 
-    internal class TopicPropertyController : DotNetNuke.Modules.ActiveForums.Controllers.ControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo>
-
+    internal partial class TopicPropertyController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo, ITopicPropertyController, TopicPropertyController>, ITopicPropertyController
     {
+        protected override Func<ITopicPropertyController> GetFactory()
+        {
+            return () => new TopicPropertyController();
+        }
+
+        public void AddPropertyToTopic(int propertyId, int topicId)
+        {
+            this._repositoryControllerBase.Insert(new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo { PropertyId = propertyId, TopicId = topicId });
+        }
+
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> GetForTopic(int topicId)
+        {
+            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).ToList();
+        }
+
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> GetForProperty(int propertyId)
+        {
+            return this._repositoryControllerBase.Find("WHERE PropertyId = @0", propertyId).ToList();
+        }
+
+        public void DeleteForProperty(int propertyId)
+        {
+            this._repositoryControllerBase.Delete("WHERE PropertyId = @0", propertyId);
+        }
+
+        public void DeleteForTopic(int topicId)
+        {
+            this._repositoryControllerBase.Delete("WHERE TopicId = @0", topicId);
+        }
+
         public static string Serialize(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> properties)
         {
             StringBuilder tData = new StringBuilder();
@@ -77,7 +106,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         string pValue = System.Net.WebUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
                         int pId = Convert.ToInt32(xNodeList[i].Attributes["id"].Value);
                         DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo p = new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo();
-                        p.Name = pName;
                         p.Value = pValue;
                         p.PropertyId = pId;
                         tp.Add(p);
