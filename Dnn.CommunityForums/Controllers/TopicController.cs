@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     ti.LastReplyAuthor = ti.GetAuthor(ti.PortalId, ti.ModuleId, ti.LastReply.Content.AuthorId);
                 }
 
-                ti.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance.GetForTopic(ti.TopicId);
+                ti.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance.GetForTopic(ti.TopicId).ToList();
             }
 
             DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(moduleId, cachekey, ti);

@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int NextTopic { get; set; }
 
         [IgnoreColumn]
-        public IEnumerable<TopicPropertyInfo> TopicProperties { get; set; }
+        public List<TopicPropertyInfo> TopicProperties { get; set; }
 
         [IgnoreColumn]
         public int? LastReplyId

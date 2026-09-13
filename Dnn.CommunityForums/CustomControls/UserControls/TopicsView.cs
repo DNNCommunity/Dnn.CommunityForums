@@ -556,7 +556,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     topicInfo.LastReply.Content.Summary = topicInfo.Content.Summary;
                 }
 
-                topicInfo.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance.GetForTopic(topicInfo.TopicId);
+                topicInfo.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance.GetForTopic(topicInfo.TopicId).ToList();
                 if (!topicInfo.TopicProperties.Any())
                 {
                     topicTemplate = TemplateUtils.ReplaceSubSection(topicTemplate, string.Empty, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");

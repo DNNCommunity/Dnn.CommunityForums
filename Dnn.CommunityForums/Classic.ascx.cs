@@ -221,6 +221,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ctl = (ForumBase)this.LoadControl(Globals.ModulePath + "advanced.ascx");
                 }
+                else if (view.ToUpperInvariant() == "SEARCHADVANCED")
+                {
+                    ctl = (ForumBase)this.LoadControl(Globals.ModulePath + "controls/af_search.ascx");
+                }
                 else if ((view.ToUpperInvariant() == Views.Topics.ToUpperInvariant()) || (view.ToUpperInvariant() == "topics".ToUpperInvariant()))
                 {
                     ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.TopicsView();

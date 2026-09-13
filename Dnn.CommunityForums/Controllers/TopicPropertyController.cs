@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     internal partial class TopicPropertyController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo, ITopicPropertyController, TopicPropertyController>, ITopicPropertyController
     {
