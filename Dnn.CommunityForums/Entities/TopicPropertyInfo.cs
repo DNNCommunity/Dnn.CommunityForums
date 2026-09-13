@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
     using DotNetNuke.ComponentModel.DataAnnotations;
 
-    [TableName("communityforums_Topic_Properties")]
+    [TableName("communityforums_Topics_Properties")]
     [PrimaryKey("Id", AutoIncrement = true)]
     public class TopicPropertyInfo
     {
@@ -42,10 +42,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public string Value { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
-        public DateTime DateUpdated { get; set; }
+        public DateTime DateUpdated { get; set; } = DateTime.UtcNow;
 
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.GetTopic();
 
         internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetTopic()
@@ -53,6 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return this.topicInfo ??= DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.TopicId);
         }
 
+        [IgnoreColumn]
         public DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo Property => this.GetProperty();
 
         internal PropertyInfo GetProperty()

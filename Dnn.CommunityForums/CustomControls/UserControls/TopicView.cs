@@ -352,7 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.topic.Author.ForumUser.ModuleId = this.ForumModuleId;
 
             this.topic.Forum = this.ForumInfo;
-            this.topic.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance.GetForTopic(this.topic.TopicId);
+            this.topic.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance.GetForTopic(this.topic.TopicId).ToList();
 
             this.topic.LastReply.Author = new DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo(this.PortalId, this.ForumModuleId, this.topic.LastReply.Content.AuthorId);
             this.topic.LastReply.Author.ForumUser.UserInfo.DisplayName = this.drForum["LastPostDisplayName"].ToString();

@@ -483,7 +483,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
                             if (originalTopic.Forum.Properties != null && originalTopic.Forum.Properties.Count > 0)
                             {
-                                originalTopic.TopicProperties = dto.Topic.TopicProperties;
+                                originalTopic.TopicProperties = dto.Topic.TopicProperties.ToList();
                             }
 
                             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(originalTopic);

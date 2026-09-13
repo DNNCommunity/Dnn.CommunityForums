@@ -88,6 +88,7 @@
               <name>DotNetNuke.Modules.ActiveForums.dll</name>
               <sourceFileName>bin\DotNetNuke.Modules.ActiveForums.dll</sourceFileName>
               <version>10.01.00</version>
+             </assembly>
           </assemblies>
         </component>
 
