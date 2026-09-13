@@ -77,24 +77,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Event Handlers
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery-forumSelector.js");
+
+            this.btnSearch.Click += this.btnSearch_Click;
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery-forumSelector.js");
 
             try
             {
                 if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                 {
                     this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
-                }
-
-                this.btnSearch.Click += this.btnSearch_Click;
-
-                if (this.Page.IsPostBack)
-                {
-                    return;
                 }
 
                 this.txtSearch.Text = this.SearchText;
@@ -105,6 +105,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.BindSearchRange();
 
                 Utilities.BindEnum(pDDL: this.drpSort, enumType: typeof(Enums.SearchSortType), pColValue: ((int)this.SearchSortType).ToString(), addEmptyValue: false, localize: true, excludeIndex: -1);
+
+                var selectItem = this.drpSort.Items.FindByValue(((int)this.SearchSortType).ToString());
+                if (selectItem != null)
+                {
+                    selectItem.Selected = true;
+                }
 
                 // Update Meta Data
                 var basePage = this.BasePage;
@@ -127,8 +133,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            var searchDays = Convert.ToInt32(this.drpSearchDays.SelectedItem.Value);
-            var sortType = Convert.ToInt32(this.drpSort.SelectedValue);
+            var searchDays = Utilities.SafeConvertInt(this.drpSearchDays.SelectedValue);
+            var sortType = Utilities.SafeConvertInt(this.drpSort.SelectedValue);
 
             // Selected Forums
             var forums = string.Empty;

@@ -1,7 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="af_searchadvanced.ascx.cs" Inherits="DotNetNuke.Modules.ActiveForums.af_searchadvanced" %>
 <div class="af-adv-search">
-    <div class="af-adv-search-box">
-        <h2><asp:Literal runat="server" ID="litOptions" Text="[RESX:SearchOptions]" /></h2>
+    <span class="dcf-collapsible dcf-collapsible-opened" id="dcf-collapsible-SearchBoxWrapper" onclick="dcf_collapsible_toggle('SearchBoxWrapper');"><i class="fa fa-chevron-down" title=""></i></span>
+    <div id="SearchBoxWrapper" class="af-adv-search-box">
+        <h2><asp:literal runat="server" id="litOptions" text="[RESX:Search]" /></h2>
         <div class="af-adv-search-row">
             <asp:label runat="server" id="lblSearch" text="[RESX:Search] [RESX:For]:" associatedcontrolid="txtSearch" />
             <asp:textbox runat="server" columns="50" maxlength="255" id="txtSearch" />

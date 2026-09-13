@@ -128,6 +128,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int StatusId { get; set; }
 
         [IgnoreColumn]
+        public string SearchScoreDisplay { get; set; } = string.Empty;
+
+        [IgnoreColumn]
+        public float SearchScore { get; set; } = 0;
+
+        [IgnoreColumn]
         public string StatusCaption
         {
             get
@@ -776,6 +782,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                         return string.Empty;
+                    case "searchscore":
+                        return PropertyAccess.FormatString(this.SearchScore.ToString(), format);
+                    case "searchscoredisplay":
+                        return PropertyAccess.FormatString(!string.IsNullOrEmpty(this.SearchScoreDisplay) ? this.SearchScoreDisplay : this.SearchScore.ToString(), format);
                     case "status":
                         {
                             var bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));

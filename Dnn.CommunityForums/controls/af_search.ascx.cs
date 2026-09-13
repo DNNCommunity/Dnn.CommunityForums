@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Text;
     using System.Web.UI;
+    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Controls;
@@ -50,6 +51,8 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.Literal litKeywords = new Literal();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerTop = new PagerNav();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerBottom = new PagerNav();
+        
+        protected System.Web.UI.HtmlControls.HtmlGenericControl SearchResultsWrapper = new System.Web.UI.HtmlControls.HtmlGenericControl();
 
         private string searchText;
         private string tags;
@@ -65,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private List<string> parameters;
 
         private int pageSize = 20;
-        private int rowIndex;
+        private int pageIndex;
 
         private Control ctl;
         private DataRow currentRow;
@@ -192,18 +195,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     var post = (DotNetNuke.Modules.ActiveForums.Entities.IPostInfo)repeaterItemEventArgs.Item.DataItem;
                     if (post != null)
                     {
-                        if (post.IsReply)
-                        {
-                            foreach (Control control in repeaterItemEventArgs.Item.Controls)
-                            {
-                                if (control is System.Web.UI.HtmlControls.HtmlGenericControl row)
-                                {
-                                    row.Attributes["class"] = $"{row.Attributes["class"]} af-search-reply".Trim();
-                                    break;
-                                }
-                            }
-                        }
-
                         foreach (Control control in repeaterItemEventArgs.Item.Controls)
                         {
                             string itemTemplate = string.Empty;
@@ -364,8 +355,11 @@ namespace DotNetNuke.Modules.ActiveForums
             // If we don't have a search string, tag or user id, there is nothing we can do so exit
             if (string.IsNullOrEmpty(this.SearchText) && string.IsNullOrEmpty(this.Tags) && string.IsNullOrEmpty(this.AuthorUsername) && this.AuthorUserId <= 0)
             {
+                this.SearchResultsWrapper.Visible = false;
                 return;
             }
+
+            this.SearchResultsWrapper.Visible = true;
 
             this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.ModuleSettings.PageSize;
             if (this.pageSize < 5)
@@ -373,7 +367,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.pageSize = 10;
             }
 
-            this.rowIndex = (this.PageId - 1) * this.pageSize;
+            this.pageIndex = this.PageId;
+            if (this.pageIndex < 1)
+            {
+                this.pageIndex = 1;
+            }
 
             // Build the list of forums to search
             // An intersection of the forums allows vs forums requested.
@@ -390,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 portalId: this.PortalId,
                 moduleId: this.ForumModuleId,
                 userId: this.UserId,
-                rowIndex: this.rowIndex,
+                pageIndex: this.pageIndex,
                 pageSize: this.pageSize,
                 searchText: this.SearchText,
                 searchHours: this.SearchHours,
@@ -417,7 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.searchResults?.Results?.Count > 0)
             {
-                this.litRecordCount.Text = string.Format(this.GetSharedResource("[RESX:SearchRecords]"), this.rowIndex + 1, this.rowIndex + this.searchResults?.Results?.Count, this.searchResults?.Results?.Count);
+                this.litRecordCount.Text = string.Format(this.GetSharedResource("[RESX:SearchRecords]"), ((this.pageIndex - 1) * this.pageSize) + 1, Math.Min((int)this.searchResults?.HitCount, ((this.pageIndex - 1) * this.pageSize) + this.pageSize), this.searchResults?.HitCount);
 
                 var rptResults = this.rptPosts;
 
@@ -428,8 +426,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     rptResults.Visible = true;
                     rptResults.DataSource = this.searchResults?.Results;
                     rptResults.DataBind();
-                    this.BuildPager(this.PagerTop, this.searchResults.Results.Count);
-                    this.BuildPager(this.PagerBottom, this.searchResults.Results.Count);
+                    this.BuildPager(this.PagerTop, this.searchResults.HitCount);
+                    this.BuildPager(this.PagerBottom, this.searchResults.HitCount);
                 }
                 catch (Exception ex)
                 {
@@ -495,6 +493,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                     case "PagerBottom":
                         this.PagerBottom = (PagerNav)ctrl;
+                        break;
+                    case "SearchResultsWrap":
+                        this.SearchResultsWrapper = (HtmlGenericControl)ctrl;
                         break;
                 }
 
