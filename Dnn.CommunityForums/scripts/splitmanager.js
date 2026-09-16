@@ -15,7 +15,8 @@
         var splitManagerDialog;
         var existed = false;
 
-        opts.serviceurlbase = opts.servicesFramework.getServiceRoot('ActiveForums') + 'Topic/';
+        opts.forumServiceUrlBase = opts.servicesFramework.getServiceRoot('ActiveForums') + 'Forum/';
+        opts.topicServiceUrlBase = opts.servicesFramework.getServiceRoot('ActiveForums') + 'Topic/';
 
         function openSplitManagerDialog() {
 
@@ -87,7 +88,7 @@
 
         function loadTopics() {
             $.ajax({
-                url: opts.serviceurlbase + "GetTopicList?ForumId=" + forumId,
+                url: opts.topicServiceUrlBase + "GetTopicList?ForumId=" + forumId,
                 type: "GET",
                 contentType: "application/json",
                 dataType: "json",
@@ -132,7 +133,7 @@
             };
 
             $.ajax({
-                url: opts.serviceurlbase + "CreateSplit",
+                url: opts.topicServiceUrlBase + "CreateSplit",
                 type: "POST",
                 data: JSON.stringify(params),
                 contentType: "application/json",
@@ -171,7 +172,7 @@
             sourceForumId = $(e.currentTarget).attr('data-forumid');
 
             $.ajax({
-                url: opts.serviceurlbase + "GetForumsList?ForumId=" + sourceForumId,
+                url: opts.forumServiceUrlBase + "GetForumsList?ForumId=" + sourceForumId,
                 type: "GET",
                 contentType: "application/json",
                 dataType: "json",

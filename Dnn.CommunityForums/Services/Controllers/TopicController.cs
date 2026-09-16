@@ -374,28 +374,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         }
 
         /// <summary>
-        /// Gets the forums list available during topic splitting.
-        /// </summary>
-        /// <param name="forumId">Source forum ID.</param>
-        /// <returns>Forum ID / name pairs serialized as JSON.</returns>
-        [HttpGet]
-        [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Split)]
-        public HttpResponseMessage GetForumsList(int forumId)
-        {
-            var portalSettings = this.PortalSettings;
-            var userInfo = portalSettings.UserInfo;
-            var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, userInfo.UserID);
-            Dictionary<string, string> rows = new Dictionary<string, string>();
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds))))
-            {
-                rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
-            }
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, rows);
-        }
-
-        /// <summary>
         /// Splits replies from one topic into another topic.
         /// </summary>
         /// <param name="dto">Split request.</param>
