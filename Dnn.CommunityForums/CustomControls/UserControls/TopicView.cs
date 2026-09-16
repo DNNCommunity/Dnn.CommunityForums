@@ -841,6 +841,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sbOutput.Replace("[SPLITBUTTONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicSplitButtons, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser));
                 sbOutput.Replace("[TOPICID]", this.TopicId.ToString());
+                sbOutput.Replace("[FORUMID]", this.ForumId.ToString());
             }
             else
             {

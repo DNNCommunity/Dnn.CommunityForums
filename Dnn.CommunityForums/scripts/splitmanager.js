@@ -7,6 +7,7 @@
         var $wrap = $(opts.openTriggerScope);
         var topicId = -1;
         var forumId = -1;
+        var sourceForumId = -1;
         var oTopicId;
         var forumsList;
         var topicList;
@@ -14,7 +15,7 @@
         var splitManagerDialog;
         var existed = false;
 
-        opts.serviceurlbase = opts.servicesFramework.getServiceRoot('ActiveForums') + 'ForumService/';
+        opts.serviceurlbase = opts.servicesFramework.getServiceRoot('ActiveForums') + 'Topic/';
 
         function openSplitManagerDialog() {
 
@@ -123,6 +124,7 @@
 
             var params = {
                 OldTopicId: oTopicId,
+                ForumId: sourceForumId,
                 NewTopicId: topicId,
                 NewForumId: forumId,
                 Subject: subject,
@@ -166,9 +168,10 @@
             e.stopPropagation();
 
             oTopicId = $(e.currentTarget).attr('data-id');
+            sourceForumId = $(e.currentTarget).attr('data-forumid');
 
             $.ajax({
-                url: opts.serviceurlbase + "GetForumsList",
+                url: opts.serviceurlbase + "GetForumsList?ForumId=" + sourceForumId,
                 type: "GET",
                 contentType: "application/json",
                 dataType: "json",
