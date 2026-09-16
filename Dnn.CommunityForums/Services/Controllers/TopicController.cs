@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -54,6 +53,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             public int ForumId { get; set; }
 
             public DotNetNuke.Modules.ActiveForums.ViewModels.Topic Topic { get; set; }
+        }
+
+        private sealed class TopicListItem
+        {
+            public int TopicId { get; set; }
+
+            public string Subject { get; set; }
         }
 
         /// <summary>
@@ -353,18 +359,22 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.View)]
         public HttpResponseMessage GetTopicList(int forumId)
         {
-            var portalSettings = this.PortalSettings;
-            var userInfo = portalSettings.UserInfo;
-
-            DataSet ds = DataProvider.Instance().UI_TopicsView(portalSettings.PortalId, this.ActiveModule.ModuleID, forumId, userInfo.UserID, 0, 20, userInfo.IsSuperUser, SortColumns.ReplyCreated);
-            if (ds.Tables.Count > 3)
+            using var ctx = DotNetNuke.Data.DataContext.Instance();
+            var topics = ctx.ExecuteQuery<TopicListItem>(
+                System.Data.CommandType.Text,
+                $@"SELECT TOP 20
+                        t.TopicId,
+                        t.Subject
+                   FROM {{databaseOwner}}[{{objectQualifier}}vw_communityforums_TopicsView] t
+                   WHERE t.ForumId = @0
+                   ORDER BY t.IsPinned DESC, t.Priority DESC, COALESCE(t.LastReplyDate, t.DateCreated) DESC",
+                forumId).ToList();
+            if (topics.Count > 0)
             {
-                DataTable dtTopics = ds.Tables[3];
-
                 Dictionary<string, string> rows = new Dictionary<string, string>();
-                foreach (DataRow dr in dtTopics.Rows)
+                foreach (var topic in topics)
                 {
-                    rows.Add(dr["TopicId"].ToString(), dr["Subject"].ToString());
+                    rows.Add(topic.TopicId.ToString(), topic.Subject);
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, rows);
