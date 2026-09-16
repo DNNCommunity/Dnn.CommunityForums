@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public static bool CheckForumURL(int portalId, int moduleId, string vanityName, int forumId, int forumGroupId)
+        public static bool CheckIsForumURLAvailable(int portalId, int moduleId, string vanityName, int forumId, int forumGroupId)
         {
             try
             {
@@ -105,18 +105,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     vanityName = fg.PrefixURL + "/" + vanityName;
                 }
 
-                int tmpForumId = -1;
                 using var ctx = DotNetNuke.Data.DataContext.Instance();
-                tmpForumId = ctx.ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckForumVanity", portalId, vanityName);
-                if (tmpForumId > 0 && forumId == -1)
-                {
-                    return false;
-                }
-                else if (tmpForumId == forumId && forumId > 0)
+                var tmpForumId = ctx.ExecuteScalar<int?>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckForumVanity", portalId, vanityName);
+                if (!tmpForumId.HasValue) /* not used */
                 {
                     return true;
                 }
-                else if (tmpForumId <= 0)
+                else if (tmpForumId.HasValue && tmpForumId == forumId && forumId > 0) /* used by the same forum */
                 {
                     return true;
                 }
@@ -129,22 +124,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return false;
         }
 
-        public static bool CheckGroupURL(int portalId, int moduleId, string vanityName, int forumGroupId)
+        public static bool CheckIsGroupURLAvailable(int portalId, int moduleId, string vanityName, int forumGroupId)
         {
             try
             {
-                int tmpForumGroupId = -1;
                 using var ctx = DotNetNuke.Data.DataContext.Instance();
-                tmpForumGroupId = ctx.ExecuteScalar<int>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckGroupVanity", portalId, vanityName);
-                if (tmpForumGroupId > 0 && forumGroupId == -1)
-                {
-                    return false;
-                }
-                else if (tmpForumGroupId == forumGroupId && forumGroupId > 0)
+                var tmpForumGroupId = ctx.ExecuteScalar<int?>(CommandType.StoredProcedure, "{databaseOwner}{objectQualifier}communityforums_URL_CheckGroupVanity", portalId, vanityName);
+                if (!tmpForumGroupId.HasValue) /* not used */
                 {
                     return true;
                 }
-                else if (tmpForumGroupId <= 0)
+                else if (tmpForumGroupId.HasValue && tmpForumGroupId == forumGroupId && forumGroupId > 0) /* used by the same group */
                 {
                     return true;
                 }
