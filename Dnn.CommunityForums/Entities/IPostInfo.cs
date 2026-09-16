@@ -58,6 +58,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         int LikeCount { get; }
 
+        string SearchScoreDisplay { get; set; }
+
+        float SearchScore { get; set; }
+
         DotNetNuke.Modules.ActiveForums.Entities.AuthorInfo Author { get; set; }
 
         DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content { get; set; }

@@ -1,9 +1,14 @@
-<div class="dcf-search-results-wrap">
+<div id="SearchResultsWrap" runat="server" class="dcf-search-results-wrap">
     <div class="af-search-header">
-
-        <am:pagernav id="PagerTop" runat="server" />
-        <h2 class="af-search-title">[RESX:Search]</h2>
-        <br />
+        <div class="af-search-bar afgrouprow afgrouprow-f">
+            <span class="af-search-title">
+                <h2>[RESX:SearchTitle]</h2>
+            </span>
+            <span class="af-search-duration">
+                <asp:literal runat="server" id="litSearchDuration" />
+                <asp:literal runat="server" id="litSearchAge" />
+            </span>
+        </div>
         <asp:PlaceHolder runat="server" ID="phKeywords">
             <span class="af-search-criteria">[RESX:Search] [RESX:For]:<b>
                 <asp:Literal runat="server" ID="litKeywords"></asp:Literal>
@@ -23,20 +28,13 @@
             </span>
         </asp:PlaceHolder>
     </div>
-    <div class="af-search-bar afgrouprow afgrouprow-f">
-        <span class="af-search-duration">
-            <asp:Literal runat="server" ID="litSearchDuration" />
-            <asp:Literal runat="server" ID="litSearchAge" />
-        </span>
-        <span class="af-search-title">
-            <label>[RESX:SearchTitle]</label>
-        </span>
-    </div>
+
     <asp:Panel ID="pnlMessage" runat="server" Visible="true" CssClass="af-search-noresults">
         <asp:Literal ID="litMessage" runat="server" />
     </asp:Panel>
     <div class="af-search-results" style="position: relative;">
-
+        
+        <am:pagernav id="PagerTop" runat="server" />
         <!-- Post View -->
         <asp:Repeater runat="server" ID="rptPosts" Visible="False">
             <HeaderTemplate>
@@ -47,8 +45,9 @@
                     <div class="aftopicrow afsubject">
                         <span class="aftopictitle">[FORUMPOST:SUBJECTLINK|<a href="{0}" title="[FORUMPOST:BODYTITLE]" class="dcf-topic-link">[FORUMPOST:SUBJECT]</a>]
                         </span>
-                        <span class="aftopicsubtitle">[RESX:SearchPosted] [FORUMPOST:DATECREATED] [FORUMPOST:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMPOST:AUTHORDISPLAYNAME]</a>]</span>
+                        <span class="aftopicsubtitle">[RESX:SearchPosted] [FORUMPOST:DATEUPDATED] [FORUMPOST:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMPOST:AUTHORDISPLAYNAME]</a>]</span>
                         <span class="aftopicsubtitle">[FORUM:FORUMLINK|[RESX:IN] [RESX:SearchForum]<a href="{0}" class="dcf-forum-link">[FORUM:FORUMNAME]</a>]</span>
+                        <span class="aftopicsubtitle">[FORUMPOST:SEARCHSCOREDISPLAY|[RESX:SearchSortTypeRelevance]: {0}]</span>
                     </div>
                 </div>
             </ItemTemplate>
@@ -73,7 +72,7 @@
                     <div class="aftopicrow afsubject">
                         <span class="aftopictitle">[FORUMTOPIC:SUBJECTLINK|<a href="{0}" title="[FORUMTOPIC:BODYTITLE]" class="dcf-topic-link">[FORUMTOPIC:SUBJECT]</a>]
                         </span>
-                        <span class="aftopicsubtitle">[RESX:Started] [FORUMTOPIC:DATECREATED] [FORUMTOPIC:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>]</span>
+                        <span class="aftopicsubtitle">[RESX:Started] [FORUMTOPIC:DATEUPDATED] [FORUMTOPIC:AUTHORDISPLAYNAMELINK|[RESX:BY] <a href="{0}" class="af-profile-link" rel="nofollow">[FORUMTOPIC:AUTHORDISPLAYNAME]</a>]</span>
                     </div>
                     <div class="aftopicrow af-colstats af-colstats-replies">[FORUMTOPIC:REPLYCOUNT]</div>
                     <div class="aftopicrow af-colstats af-colstats-views">[FORUMTOPIC:VIEWCOUNT]</div>

@@ -746,12 +746,13 @@
 }
 .dnn-community-forums .af-search-bar .af-search-title {
   display: block;
-  font-size: 1.4em;
   padding: 0.5rem 0;
   margin: 0;
+  font-size: 1.4em;
 }
 .dnn-community-forums .dcf-search-results-wrap .af-search-title {
   margin-top: 1rem;
+  font-size: 1.4em;
 }
 .dnn-community-forums .af-adv-search .af-adv-search-header .af-adv-search-title {
   display: block;

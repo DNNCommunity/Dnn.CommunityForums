@@ -126,6 +126,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Summary => this.Content.Summary;
 
         [IgnoreColumn]
+        public string SearchScoreDisplay { get; set; } = string.Empty;
+
+        [IgnoreColumn]
+        public float SearchScore { get; set; } = 0;
+
+        [IgnoreColumn]
         public int LikeCount
         {
             get
@@ -480,6 +486,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                         return string.Empty;
+                    case "searchscore":
+                        return PropertyAccess.FormatString(this.SearchScore.ToString(), format);
+                    case "searchscoredisplay":
+                        return PropertyAccess.FormatString(!string.IsNullOrEmpty(this.SearchScoreDisplay) ? this.SearchScoreDisplay : this.SearchScore.ToString(), format);
                     case "authorid":
                         return PropertyAccess.FormatString(this.Content.AuthorId.ToString(), format);
                     case "authorname":

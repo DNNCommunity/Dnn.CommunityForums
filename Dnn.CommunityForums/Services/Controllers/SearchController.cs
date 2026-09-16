@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     portalId: this.PortalSettings.PortalId,
                     moduleId: this.ForumModuleId,
                     userId: this.UserInfo.UserID,
-                    rowIndex: dto.RowIndex,
+                    pageIndex: dto.RowIndex,
                     pageSize: dto.PageSize,
                     searchText: System.Net.WebUtility.UrlEncode(dto.Query),
                     searchHours: dto.SearchHours,
