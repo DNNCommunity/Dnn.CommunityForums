@@ -56,18 +56,39 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             public DotNetNuke.Modules.ActiveForums.ViewModels.Topic Topic { get; set; }
         }
 
+        /// <summary>
+        /// Represents a request to split replies from an existing topic.
+        /// </summary>
         public class CreateSplitDto
         {
+            /// <summary>
+            /// Gets or sets the source forum ID.
+            /// </summary>
             public int ForumId { get; set; }
 
+            /// <summary>
+            /// Gets or sets the source topic ID.
+            /// </summary>
             public int OldTopicId { get; set; }
 
+            /// <summary>
+            /// Gets or sets the destination topic ID.
+            /// </summary>
             public int NewTopicId { get; set; }
 
+            /// <summary>
+            /// Gets or sets the destination forum ID.
+            /// </summary>
             public int NewForumId { get; set; }
 
+            /// <summary>
+            /// Gets or sets the subject for a newly created topic.
+            /// </summary>
             public string Subject { get; set; }
 
+            /// <summary>
+            /// Gets or sets the reply IDs being split.
+            /// </summary>
             public string Replies { get; set; }
         }
 
@@ -336,7 +357,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             var userInfo = portalSettings.UserInfo;
 
             DataSet ds = DataProvider.Instance().UI_TopicsView(portalSettings.PortalId, this.ActiveModule.ModuleID, forumId, userInfo.UserID, 0, 20, userInfo.IsSuperUser, SortColumns.ReplyCreated);
-            if (ds.Tables.Count > 0)
+            if (ds.Tables.Count > 3)
             {
                 DataTable dtTopics = ds.Tables[3];
 
@@ -346,7 +367,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     rows.Add(dr["TopicId"].ToString(), dr["Subject"].ToString());
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, System.Web.Helpers.Json.Encode(rows));
+                return this.Request.CreateResponse(HttpStatusCode.OK, rows);
             }
 
             return this.Request.CreateResponse(HttpStatusCode.NotFound);
@@ -371,7 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
             }
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, System.Web.Helpers.Json.Encode(rows));
+            return this.Request.CreateResponse(HttpStatusCode.OK, rows);
         }
 
         /// <summary>

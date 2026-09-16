@@ -154,7 +154,7 @@
             var $list = $('#' + list);
             $list.find('option').remove();
             if (json == null) return;
-            var arr = $.parseJSON(json);
+            var arr = typeof (json) === 'string' ? $.parseJSON(json) : json;
             if (arr != null) {
                 $.each(arr, function (key, value) {
                     $list.append('<option value=' + key + '>' + value + '</option>');
