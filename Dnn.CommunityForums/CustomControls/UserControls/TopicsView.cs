@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(this.ModuleId, cacheKey, ds);
                     }
 
-                    if (ds?.Tables?.Count <= 0 || ds?.Tables[0]?.Rows?.Count < 1 || ds?.Tables[1]?.Rows?.Count < 1 || ds?.Tables[3]?.Rows?.Count < 1)
+                    if (ds?.Tables?.Count <= 0 || ds?.Tables[0]?.Rows?.Count < 1 || ds?.Tables[1]?.Rows?.Count < 1)
                     {
                         this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                         this.Context.ApplicationInstance.CompleteRequest();
