@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Linq;
     using System.Text;
     using System.Web.UI;
+    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Modules.ActiveForums.Controls;
@@ -50,6 +51,8 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.Literal litKeywords = new Literal();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerTop = new PagerNav();
         protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerBottom = new PagerNav();
+        
+        protected System.Web.UI.HtmlControls.HtmlGenericControl SearchResultsWrapper = new System.Web.UI.HtmlControls.HtmlGenericControl();
 
         private string searchText;
         private string tags;
@@ -58,7 +61,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private string forums;
         private int? searchDays;
         private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType? searchSortType;
-        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType? searchResultType;
         private int? searchId;
 
         private DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults searchResults;
@@ -66,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private List<string> parameters;
 
         private int pageSize = 20;
-        private int rowIndex;
+        private int pageIndex;
 
         private Control ctl;
         private DataRow currentRow;
@@ -75,6 +77,10 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            this.SearchAdvanced.ModuleConfiguration = this.ModuleConfiguration;
+            this.SearchAdvanced.ForumModuleId = this.ForumModuleId;
+            this.SearchAdvanced.ForumId = this.ForumId;
+            this.SearchAdvanced.ForumTabId = this.ForumTabId;
             string template = DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.SearchResults, SettingsBase.GetModuleSettings(this.ForumModuleId).DefaultFeatureSettings.TemplateFileNameSuffix, this.ForumUser);
 
             try
@@ -262,8 +268,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private int AuthorUserId => (int)(this.authorUserId ?? (this.authorUserId = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.User], 0)));
 
-        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType SearchResultType => (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)(this.searchResultType ?? (this.searchResultType = (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.ResultType], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByTopics)));
-
         private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType SearchSortType => (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)(this.searchSortType ?? (this.searchSortType = (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.Sort], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchSortType.SearchSortTypeRelevance)));
 
         private int SearchHours => (int)(this.searchDays ?? (this.searchDays = Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.TimeSpan], 0)));
@@ -312,11 +316,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.parameters.Add($"{SearchParamKeys.Search}=" + this.SearchId);
                     }
 
-                    if ((int)this.SearchResultType > 0)
-                    {
-                        this.parameters.Add($"{SearchParamKeys.ResultType}={(int)this.SearchResultType}");
-                    }
-
                     if (this.SearchHours > 0)
                     {
                         this.parameters.Add($"{SearchParamKeys.TimeSpan}={this.SearchHours}");
@@ -356,8 +355,11 @@ namespace DotNetNuke.Modules.ActiveForums
             // If we don't have a search string, tag or user id, there is nothing we can do so exit
             if (string.IsNullOrEmpty(this.SearchText) && string.IsNullOrEmpty(this.Tags) && string.IsNullOrEmpty(this.AuthorUsername) && this.AuthorUserId <= 0)
             {
+                this.SearchResultsWrapper.Visible = false;
                 return;
             }
+
+            this.SearchResultsWrapper.Visible = true;
 
             this.pageSize = (this.UserId > 0) ? this.UserDefaultPageSize : this.ModuleSettings.PageSize;
             if (this.pageSize < 5)
@@ -365,7 +367,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.pageSize = 10;
             }
 
-            this.rowIndex = (this.PageId - 1) * this.pageSize;
+            this.pageIndex = this.PageId;
+            if (this.pageIndex < 1)
+            {
+                this.pageIndex = 1;
+            }
 
             // Build the list of forums to search
             // An intersection of the forums allows vs forums requested.
@@ -382,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 portalId: this.PortalId,
                 moduleId: this.ForumModuleId,
                 userId: this.UserId,
-                rowIndex: this.rowIndex,
+                pageIndex: this.pageIndex,
                 pageSize: this.pageSize,
                 searchText: this.SearchText,
                 searchHours: this.SearchHours,
@@ -390,7 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorUsername: this.AuthorUsername,
                 forumsToSearch: forumsRequested.Intersect(forumsAllowed).ToHashSet<int>().FromHashSetToDelimitedString(","),
                 tags: this.Tags,
-                resultType: this.SearchResultType,
+                resultType: DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByPosts,
                 sort: this.SearchSortType);
 
             this.searchId = (this.searchResults != null) ? this.searchResults.SearchId : 0;
@@ -409,9 +415,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.searchResults?.Results?.Count > 0)
             {
-                this.litRecordCount.Text = string.Format(this.GetSharedResource("[RESX:SearchRecords]"), this.rowIndex + 1, this.rowIndex + this.searchResults?.Results?.Count, this.searchResults?.Results?.Count);
+                this.litRecordCount.Text = string.Format(this.GetSharedResource("[RESX:SearchRecords]"), ((this.pageIndex - 1) * this.pageSize) + 1, Math.Min((int)this.searchResults?.HitCount, ((this.pageIndex - 1) * this.pageSize) + this.pageSize), this.searchResults?.HitCount);
 
-                var rptResults = this.SearchResultType.Equals(DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByTopics) ? this.rptTopics : this.rptPosts;
+                var rptResults = this.rptPosts;
 
                 this.pnlMessage.Visible = false;
 
@@ -420,8 +426,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     rptResults.Visible = true;
                     rptResults.DataSource = this.searchResults?.Results;
                     rptResults.DataBind();
-                    this.BuildPager(this.PagerTop, this.searchResults.Results.Count);
-                    this.BuildPager(this.PagerBottom, this.searchResults.Results.Count);
+                    this.BuildPager(this.PagerTop, this.searchResults.HitCount);
+                    this.BuildPager(this.PagerBottom, this.searchResults.HitCount);
                 }
                 catch (Exception ex)
                 {
@@ -487,6 +493,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                     case "PagerBottom":
                         this.PagerBottom = (PagerNav)ctrl;
+                        break;
+                    case "SearchResultsWrap":
+                        this.SearchResultsWrapper = (HtmlGenericControl)ctrl;
                         break;
                 }
 

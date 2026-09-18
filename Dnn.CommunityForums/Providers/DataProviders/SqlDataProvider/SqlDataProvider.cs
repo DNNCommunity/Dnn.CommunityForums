@@ -208,12 +208,12 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Data.SqlDataProvider.Instance().ExecuteNonQuery("communityforums_Topics_Move", PortalId, ModuleId, ForumId, TopicId);
         }
 
-        public override int Topics_Save(int PortalId, int ModuleId, int TopicId, int ViewCount, int ReplyCount, bool IsLocked, bool IsPinned, string TopicIcon, int StatusId, bool IsApproved, bool IsDeleted, bool IsAnnounce, bool IsArchived, DateTime AnnounceStart, DateTime AnnounceEnd, string Subject, string Body, string Summary, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress, int TopicType, int priority, string URL, string TopicData)
+        public override int Topics_Save(int PortalId, int ModuleId, int TopicId, int ViewCount, int ReplyCount, bool IsLocked, bool IsPinned, string TopicIcon, int StatusId, bool IsApproved, bool IsDeleted, bool IsAnnounce, bool IsArchived, DateTime AnnounceStart, DateTime AnnounceEnd, string Subject, string Body, string Summary, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress, int TopicType, int priority, string URL)
         {
             Subject = Utilities.NormalizeHtmlForStorage(Subject);
             Body = Utilities.NormalizeHtmlForStorage(Body);
             Summary = Utilities.NormalizeHtmlForStorage(Summary);
-            return DotNetNuke.Data.SqlDataProvider.Instance().ExecuteScalar<int>("communityforums_Topics_Save", PortalId, ModuleId, TopicId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsApproved, IsDeleted, IsAnnounce, IsArchived, Null.GetNull(AnnounceStart, DBNull.Value), Null.GetNull(AnnounceEnd, DBNull.Value), Subject, Body, Summary, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress, TopicType, priority, URL, TopicData);
+            return DotNetNuke.Data.SqlDataProvider.Instance().ExecuteScalar<int>("communityforums_Topics_Save", PortalId, ModuleId, TopicId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsApproved, IsDeleted, IsAnnounce, IsArchived, Null.GetNull(AnnounceStart, DBNull.Value), Null.GetNull(AnnounceEnd, DBNull.Value), Subject, Body, Summary, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress, TopicType, priority, URL);
         }
 
         public override void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, DateTime dateUpdate, int FirstReplyId)

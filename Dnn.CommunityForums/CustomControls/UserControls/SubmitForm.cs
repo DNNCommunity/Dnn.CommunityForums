@@ -951,7 +951,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 this.Body = this.Body.Replace("&nbsp;", " ");
                 string tmpBody = Utilities.StripHTMLTag(this.Body);
-                if (string.IsNullOrEmpty(tmpBody))
+                if (string.IsNullOrEmpty(tmpBody) && !Regex.IsMatch(this.Body, @"<img\b", RegexOptions.IgnoreCase))
                 {
                     this.reqCustomBody.Visible = true;
                 }

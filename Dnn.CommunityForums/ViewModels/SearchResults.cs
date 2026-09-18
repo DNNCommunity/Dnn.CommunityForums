@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
     {
         public int SearchId { get; }
 
-        public int RowCount => this.Results?.Count ?? 0;
+        public int HitCount { get; set; }
 
         public int SearchDuration { get; set; }
 
@@ -39,42 +39,8 @@ namespace DotNetNuke.Modules.ActiveForums.ViewModels
 
         public List<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo> Results { get; set; }
 
-        public List<DotNetNuke.Modules.ActiveForums.ViewModels.Topic> Topics { get; set; }
-
         public SearchResults()
         {
         }
-
-        public SearchResults(DataTable dt)
-        {
-            if (dt == null || dt.Rows.Count == 0)
-            {
-                return;
-            }
-
-            var row = dt.Rows[0];
-            this.SearchId = GetIntFromRow(row, 0);
-            this.SearchDuration = GetIntFromRow(row, 2);
-            this.SearchAge = GetIntFromRow(row, 3);
-        }
-
-
-        private static int GetIntFromRow(DataRow row, int index)
-        {
-            if (row == null || index < 0 || index >= row.Table.Columns.Count || row.IsNull(index))
-            {
-                return 0;
-            }
-
-            var val = row[index];
-            if (val == null)
-            {
-                return 0;
-            }
-
-            int parsed;
-            return int.TryParse(val.ToString(), out parsed) ? parsed : 0;
-        }
-
     }
 }

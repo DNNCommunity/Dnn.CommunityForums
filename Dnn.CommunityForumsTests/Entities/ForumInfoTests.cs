@@ -21,12 +21,10 @@
 namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 {
     using System.Collections.Generic;
+    using System.Globalization;
 
     using DotNetNuke.Modules.ActiveForums;
-    using DotNetNuke.Modules.ActiveForums.Entities;
     using DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs;
-
-    using Moq;
 
     using NUnit.Framework;
 
@@ -137,6 +135,25 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 
             // Assert
             Assert.That(averageLikeScore, Is.EqualTo(2.5D));
+        }
+
+        [Test]
+        public void GetProperty_ModLink_ReturnsLoginUrlWithModerationReturnUrl()
+        {
+            // Arrange
+            var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.AnnouncementsForumId);
+            bool propertyNotFound = false;
+            var moderationUrl = Utilities.NavigateURL(forum.GetTabId(), string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forum.ForumID}" });
+            var expectedUrl = forum.PortalSettings.LoginTabId > 0
+                ? Utilities.NavigateURL(forum.PortalSettings.LoginTabId, string.Empty, $"returnUrl={moderationUrl}")
+                : Utilities.NavigateURL(forum.GetTabId(), string.Empty, $"ctl=login&returnUrl={moderationUrl}");
+
+            // Act
+            var actualUrl = forum.GetProperty("modlink", string.Empty, CultureInfo.InvariantCulture, this.User12Info, DotNetNuke.Services.Tokens.Scope.DefaultSettings, ref propertyNotFound);
+
+            // Assert
+            Assert.That(propertyNotFound, Is.False);
+            Assert.That(actualUrl, Is.EqualTo(expectedUrl));
         }
 
         private static void SetTotalLikeCountCache(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, int totalLikeCount)

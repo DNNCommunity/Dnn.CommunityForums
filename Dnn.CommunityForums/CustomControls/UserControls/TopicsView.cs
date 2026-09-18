@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Store(this.ModuleId, cacheKey, ds);
                     }
 
-                    if (ds?.Tables?.Count <= 0 || ds?.Tables[0]?.Rows?.Count < 1 || ds?.Tables[1]?.Rows?.Count < 1 || ds?.Tables[3]?.Rows?.Count < 1)
+                    if (ds?.Tables?.Count <= 0 || ds?.Tables[0]?.Rows?.Count < 1 || ds?.Tables[1]?.Rows?.Count < 1)
                     {
                         this.Response.Redirect(this.NavigateUrl(this.TabId), false);
                         this.Context.ApplicationInstance.CompleteRequest();
@@ -491,7 +491,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     Rating = Convert.ToInt32(drTopic["TopicRating"]),
                     Priority = Convert.ToInt32(drTopic["Priority"]),
                     TopicUrl = drTopic["TopicURL"].ToString(),
-                    TopicData = drTopic["TopicData"].ToString(),
                     LastReply = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo
                     {
                         ReplyId = Convert.ToInt32(drTopic["LastReplyId"]),
@@ -557,7 +556,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     topicInfo.LastReply.Content.Summary = topicInfo.Content.Summary;
                 }
 
-                if (string.IsNullOrEmpty(topicInfo.TopicData))
+                topicInfo.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance.GetForTopic(topicInfo.TopicId).ToList();
+                if (!topicInfo.TopicProperties.Any())
                 {
                     topicTemplate = TemplateUtils.ReplaceSubSection(topicTemplate, string.Empty, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                 }
@@ -565,8 +565,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     string sPropTemplate = TemplateUtils.GetTemplateSection(topicTemplate, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                     string sProps = string.Empty;
-                    var pl = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(topicInfo.TopicData);
-                    foreach (var p in pl)
+                    foreach (var p in topicInfo.TopicProperties)
                     {
                         string tmp = sPropTemplate;
                         var pName = System.Net.WebUtility.HtmlDecode(p.Name);

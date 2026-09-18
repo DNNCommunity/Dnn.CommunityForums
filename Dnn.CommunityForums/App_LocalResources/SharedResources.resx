@@ -171,6 +171,9 @@
   <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
     <value>&lt;span class="dcf-auth-false-login"&gt;Please &lt;a href="{0}" onclick="return {1};"&gt;login&lt;/a&gt; to post a reply.&lt;/span&gt;</value>
   </data>
+  <data name="[RESX:ModerationPleaseLogin].Text" xml:space="preserve">
+    <value>&lt;span class="dcf-auth-false-login"&gt;Please &lt;a href="{0}"&gt;login&lt;/a&gt; to review and moderate pending content.&lt;/span&gt;</value>
+  </data>
   <data name="PostedDate.Text" xml:space="preserve">
     <value>Posted:</value>
   </data>

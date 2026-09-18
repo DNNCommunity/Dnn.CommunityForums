@@ -40,7 +40,7 @@ function hasEditorContent(value) {
         .replace(/&nbsp;/gi, " ")    // normalize non-breaking spaces
         .trim();
 
-    return textOnly.length > 0;
+    return textOnly.length > 0 || /<img\b/i.test(value);
 }
 
 function afQuickSubmit() {

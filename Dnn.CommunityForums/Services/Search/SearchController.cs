@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
             int portalId,
             int moduleId,
             int userId,
-            int rowIndex,
+            int pageIndex,
             int pageSize,
             string searchText,
             int searchHours,
@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                 portalId,
                 moduleId,
                 userId,
-                rowIndex,
+                pageIndex,
                 pageSize,
                 searchText,
                 searchHours,
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                 int portalId,
                 int moduleId,
                 int userId,
-                int rowIndex,
+                int pageIndex,
                 int pageSize,
                 string searchText,
                 int searchHours,
@@ -88,14 +88,29 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                 DateTime startQuery = DateTime.UtcNow;
 
                 IList<DotNetNuke.Services.Search.Entities.SearchResult> searchResults = null;
-                var query = new DotNetNuke.Services.Search.Entities.SearchQuery();
-                query.PortalIds = new[] { portalId };
-                query.ModuleId = moduleId;
-                query.SearchTypeIds = new[] { SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId };
-                query.Tags = tags?.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
-                query.AllowLeadingWildcard = true;
-                query.WildCardSearch = true;
-                query.SortField = sort.Equals(SearchSortType.SearchSortTypeRelevance) ? SortFields.Relevance : SortFields.LastModified;
+                var totalHits = 0;
+                if (pageIndex < 1)
+                {
+                    pageIndex = 1;
+                }
+
+                if (pageSize < 1)
+                {
+                    pageSize = 10;
+                }
+
+                var query = new DotNetNuke.Services.Search.Entities.SearchQuery
+                {
+                    PortalIds = new[] { portalId },
+                    ModuleId = moduleId,
+                    SearchTypeIds = new[] { SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId },
+                    Tags = tags?.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList(),
+                    AllowLeadingWildcard = true,
+                    WildCardSearch = true,
+                    SortField = sort.Equals(SearchSortType.SearchSortTypeRelevance) ? SortFields.Relevance : SortFields.LastModified,
+                    PageIndex = pageIndex,
+                    PageSize = pageSize,
+                };
                 if (searchHours > 0)
                 {
                     query.BeginModifiedTimeUtc = DateTime.UtcNow.AddHours(-1 * searchHours);
@@ -119,15 +134,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
 
                 try
                 {
-                    searchResults = DotNetNuke.Services.Search.Controllers.SearchController.Instance.ModuleSearch(query).Results;
+                    var search = DotNetNuke.Services.Search.Controllers.SearchController.Instance.ModuleSearch(query);
+                    totalHits = search.TotalHits;
+                    searchResults = search.Results;
                 }
                 catch (Exception ex)
                 {
                     Exceptions.LogException(ex);
                 }
 
-                var results = new DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults();
-                results.Results = new List<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>();
+                var results = new DotNetNuke.Modules.ActiveForums.ViewModels.SearchResults
+                {
+                    HitCount = totalHits,
+                    Results = new List<DotNetNuke.Modules.ActiveForums.Entities.IPostInfo>(),
+                };
 
                 if (searchResults != null)
                 {
@@ -155,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                         searchResultsPruned = searchResultsPruned.Where(doc => !doc.NumericKeys.ContainsKey("ReplyId") || (doc.NumericKeys.ContainsKey("ReplyId") && doc.NumericKeys["ReplyId"] < 1)).ToList();
                     }
 
-                    foreach (var result in searchResultsPruned.Skip(rowIndex * pageSize).Take(pageSize))
+                    foreach (var result in searchResultsPruned)
                     {
                         DotNetNuke.Modules.ActiveForums.Entities.IPostInfo post = null;
                         var topicId = DotNetNuke.Common.Utilities.Null.NullInteger;
@@ -183,6 +203,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
                             }
                         }
 
+                        post.SearchScore = result.Score;
+                        post.SearchScoreDisplay = result.DisplayScore;
                         results.Results.Add(post);
                     }
                 }

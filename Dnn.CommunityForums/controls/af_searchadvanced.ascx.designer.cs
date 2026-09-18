@@ -139,22 +139,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpSearchDays;
         /// <summary>
-        /// lblResultType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblResultType;
-        /// <summary>
-        /// drpResultType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList drpResultType;
-        /// <summary>
         /// lblSortType control.
         /// </summary>
         /// <remarks>

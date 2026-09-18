@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="moduleId">The module identifier.</param>
         /// <param name="userId">The current user identifier.</param>
-        /// <param name="rowIndex">Zero-based index of the first result row to return.</param>
+        /// <param name="pageIndex">Page number of rows to return.</param>
         /// <param name="pageSize">Number of rows to return.</param>
         /// <param name="searchText">The search text.</param>
         /// <param name="searchHours">Limit results to the last N hours.</param>
@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Search
             int portalId,
             int moduleId,
             int userId,
-            int rowIndex,
+            int pageIndex,
             int pageSize,
             string searchText,
             int searchHours,

@@ -221,6 +221,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ctl = (ForumBase)this.LoadControl(Globals.ModulePath + "advanced.ascx");
                 }
+                else if (view.ToUpperInvariant() == "SEARCHADVANCED")
+                {
+                    ctl = (ForumBase)this.LoadControl(Globals.ModulePath + "controls/af_search.ascx");
+                }
                 else if ((view.ToUpperInvariant() == Views.Topics.ToUpperInvariant()) || (view.ToUpperInvariant() == "topics".ToUpperInvariant()))
                 {
                     ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.TopicsView();
@@ -454,15 +458,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 lang = "en-US";
             }
 
-            ClientAPI.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
+            ClientAPI.RegisterClientReference(objPage: this.Page, eRef: ClientAPI.ClientNamespaceReferences.dnn);
 
-            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery-searchPopup.js");
+            ClientResourceManager.RegisterScript(page: this.Page, filePath: $"{Globals.ModulePath}scripts/jquery-searchPopup.js");
 
-            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/json2009.min.js");
-            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afcommon.js");
-            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afutils.js");
-            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "active/amlib.js");
-            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ModulePath + "active/am-ui.css");
+            ClientResourceManager.RegisterScript(page: this.Page, filePath: $"{Globals.ModulePath}scripts/json2009.min.js");
+            ClientResourceManager.RegisterScript(page: this.Page, filePath: $"{Globals.ModulePath}scripts/afcommon.js");
+            ClientResourceManager.RegisterScript(page: this.Page, filePath: $"{Globals.ModulePath}scripts/afutils.js");
+            ClientResourceManager.RegisterScript(page: this.Page, filePath: $"{Globals.ModulePath}active/amlib.js");
+            ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}active/am-ui.css");
 
             StringBuilder sb = new StringBuilder();
             string handlerURL = VirtualPathUtility.ToAbsolute(Globals.ModulePath + "handlers/forumhelper.ashx") + "?TabId=" + this.TabId.ToString() + "&PortalId=" + this.PortalId.ToString() + "&moduleid=" + this.ModuleId + "&language=" + lang;
@@ -538,9 +542,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.ForumId > 0 && this.ForumUser.GetIsMod(this.ForumModuleId))
             {
+                ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}Resources/jquery-ui-1.14.2.custom/jquery-ui.min.css", priority: 105);
+
                 Controls.HtmlControlLoader ctl = new Controls.HtmlControlLoader();
                 ctl.ControlId = "aftopicedit";
-                ctl.Height = "500px";
+                ctl.Height = "550px";
                 ctl.Width = "500px";
                 ctl.Name = Utilities.GetSharedResource("[RESX:TopicQuickEdit]");
                 ctl.FilePath = Globals.ModulePath + "controls/htmlcontrols/quickedit.ascx";

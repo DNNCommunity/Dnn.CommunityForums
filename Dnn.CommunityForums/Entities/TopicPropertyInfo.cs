@@ -20,12 +20,46 @@
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using System;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
+    [TableName("communityforums_Topics_Properties")]
+    [PrimaryKey("Id", AutoIncrement = true)]
     public class TopicPropertyInfo
     {
+        private DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo propertyInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
+
+        public int Id { get; set; }
+
+        public int TopicId { get; set; }
+
         public int PropertyId { get; set; }
 
-        public string Name { get; set; }
+        [IgnoreColumn]
+        public string Name => this.GetProperty().Name;
 
         public string Value { get; set; }
+
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+
+        public DateTime DateUpdated { get; set; } = DateTime.UtcNow;
+
+        [IgnoreColumn]
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.GetTopic();
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetTopic()
+        {
+            return this.topicInfo ??= DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.TopicId);
+        }
+
+        [IgnoreColumn]
+        public DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo Property => this.GetProperty();
+
+        internal PropertyInfo GetProperty()
+        {
+            return this.propertyInfo ??= DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.GetById(this.PropertyId);
+        }
     }
 }

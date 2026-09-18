@@ -52,7 +52,17 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (this.Request.IsAuthenticated && (this.ForumUser.GetIsMod(this.ForumModuleId) || this.ForumUser.IsSuperUser || this.ForumUser.IsAdmin))
+            if (!this.Request.IsAuthenticated)
+            {
+                var loginUrl = this.PortalSettings.LoginTabId > 0
+                    ? Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, $"returnUrl={this.Request.RawUrl}")
+                    : Utilities.NavigateURL(this.TabId, string.Empty, $"ctl=login&returnUrl={this.Request.RawUrl}");
+
+                this.litTopics.Text = string.Format(Utilities.GetSharedResource("[RESX:ModerationPleaseLogin]"), loginUrl);
+                return;
+            }
+
+            if (this.ForumUser.GetIsMod(this.ForumModuleId) || this.ForumUser.IsSuperUser || this.ForumUser.IsAdmin)
             {
                 if (this.ForumId > 0)
                 {

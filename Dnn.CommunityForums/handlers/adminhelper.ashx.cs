@@ -23,6 +23,7 @@ using DotNetNuke.Modules.ActiveForums.Enums;
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
     using System;
+    using System.Linq;
     using System.Text;
     using System.Web;
     using Newtonsoft.Json.Linq;
@@ -462,7 +463,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
             }
 
-            new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Save<int>(pi, pi.PropertyId);
+            DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.Save(pi, pi.PropertyId);
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ModuleId, pi.ObjectOwnerId);
             fi.HasProperties = true;
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
@@ -471,7 +472,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private string PropertyList()
         {
             return !string.IsNullOrEmpty(this.Params["ObjectOwnerId"].ToString())
-                ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().ListPropertiesJSON(this.PortalId, Convert.ToInt32(this.Params["ObjectType"]), Convert.ToInt32(this.Params["ObjectOwnerId"]))
+                ? DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.ListPropertiesJSON(this.PortalId, Convert.ToInt32(this.Params["ObjectType"]), Convert.ToInt32(this.Params["ObjectOwnerId"]))
                 : string.Empty;
         }
 
@@ -479,7 +480,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             int propertyId = -1;
             int sortOrder = -1;
-            DotNetNuke.Modules.ActiveForums.Controllers.PropertyController pc = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController();
 
             string props = this.Params["props"].ToString();
             props = props.Remove(props.LastIndexOf("^"));
@@ -489,11 +489,11 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 {
                     propertyId = Convert.ToInt32(s.Split('|')[0]);
                     sortOrder = Convert.ToInt32(s.Split('|')[1]);
-                    DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo pi = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().GetById(propertyId);
+                    DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo pi = DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.GetById(propertyId);
                     if (pi != null)
                     {
                         pi.SortOrder = sortOrder;
-                        pc.Save<int>(pi, pi.PropertyId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.Save(pi, pi.PropertyId);
                     }
                 }
             }
@@ -501,17 +501,15 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         internal void PropertyDelete()
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.PropertyController pc = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController();
-            DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo prop = pc.GetById(Convert.ToInt32(this.Params["propertyid"]));
+            DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo prop = DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.GetById(Convert.ToInt32(this.Params["propertyid"]));
             if (prop != null)
             {
-                pc.DeleteById(Convert.ToInt32(this.Params["propertyid"]));
-                if (!(pc.Count("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2", this.PortalId, prop.ObjectType, prop.ObjectOwnerId) > 0))
+                DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.DeleteById(Convert.ToInt32(this.Params["propertyid"]));
+                if (!(DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance.Find("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2", this.PortalId, prop.ObjectType, prop.ObjectOwnerId).ToList().Count() > 0))
                 {
-                    var fc = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance;
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(this.ModuleId, prop.ObjectOwnerId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetById(this.ModuleId, prop.ObjectOwnerId);
                     fi.HasProperties = false;
-                    fc.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
                 }
             }
         }

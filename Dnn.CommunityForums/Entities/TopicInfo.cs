@@ -128,6 +128,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int StatusId { get; set; }
 
         [IgnoreColumn]
+        public string SearchScoreDisplay { get; set; } = string.Empty;
+
+        [IgnoreColumn]
+        public float SearchScore { get; set; } = 0;
+
+        [IgnoreColumn]
         public string StatusCaption
         {
             get
@@ -189,7 +195,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         public int NextTopic { get; set; }
 
-        public string TopicData { get; set; } = string.Empty;
+        [IgnoreColumn]
+        public List<TopicPropertyInfo> TopicProperties { get; set; }
 
         [IgnoreColumn]
         public int? LastReplyId
@@ -435,13 +442,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get => this.selectedcategories ?? (this.selectedcategories = string.Join(";", this.SelectedCategories.Select(c => c.id.ToString())));
             set => this.selectedcategories = value;
-        }
-
-        [IgnoreColumn]
-        public IEnumerable<TopicPropertyInfo> TopicProperties
-        {
-            get => this.TopicData == string.Empty ? null : Controllers.TopicPropertyController.Deserialize(this.TopicData);
-            set => this.TopicData = Controllers.TopicPropertyController.Serialize(this.Forum, value);
         }
 
         [IgnoreColumn]
@@ -782,6 +782,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         }
 
                         return string.Empty;
+                    case "searchscore":
+                        return PropertyAccess.FormatString(this.SearchScore.ToString(), format);
+                    case "searchscoredisplay":
+                        return PropertyAccess.FormatString(!string.IsNullOrEmpty(this.SearchScoreDisplay) ? this.SearchScoreDisplay : this.SearchScore.ToString(), format);
                     case "status":
                         {
                             var bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Forum.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.Forum.PortalSettings, accessingUser));

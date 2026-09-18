@@ -1,7 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="af_searchadvanced.ascx.cs" Inherits="DotNetNuke.Modules.ActiveForums.af_searchadvanced" %>
 <div class="af-adv-search">
-    <div class="af-adv-search-box">
-        <h2><asp:Literal runat="server" ID="litOptions" Text="[RESX:SearchOptions]" /></h2>
+        <h2><asp:literal runat="server" id="litOptions" text="[RESX:Search]" /></h2>
+        <span class="dcf-collapsible dcf-collapsible-opened" id="dcf-collapsible-SearchBoxWrapper" onclick="dcf_collapsible_toggle('SearchBoxWrapper');"><i class="fa fa-chevron-down" title="Hide/Show Search Criteria"></i></span>
+        <div id="SearchBoxWrapper" class="af-adv-search-box">
         <div class="af-adv-search-row">
             <asp:label runat="server" id="lblSearch" text="[RESX:Search] [RESX:For]:" associatedcontrolid="txtSearch" />
             <asp:textbox runat="server" columns="50" maxlength="255" id="txtSearch" />
@@ -21,11 +22,6 @@
         <div class="af-adv-search-row">
             <asp:Label runat="server" ID="lblSearchDays" AssociatedControlID="drpSearchDays" Text="[RESX:SearchTimeFrame]" />
             <asp:DropDownList ID="drpSearchDays" runat="server" />
-        </div>
-        <div class="af-adv-search-row">
-            <asp:Label runat="server" ID="lblResultType" Text="[RESX:SearchResultType]" AssociatedControlID="drpResultType" />
-            <asp:DropDownList runat="server" ID="drpResultType">
-            </asp:DropDownList>
         </div>
         <div class="af-adv-search-row">
             <asp:Label runat="server" ID="lblSortType" Text="[RESX:SearchSort]" AssociatedControlID="drpSort" />

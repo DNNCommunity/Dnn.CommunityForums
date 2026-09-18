@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.ContentController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.AttachmentController.Instance);
+            services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.PropertyController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.TagController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.ForumTopicController.Instance);
@@ -45,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController.Instance);
+            services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController.Instance);
             services.AddSingleton(x => DotNetNuke.Modules.ActiveForums.Controllers.TopicTrackingController.Instance);

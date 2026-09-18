@@ -1990,4 +1990,7 @@ Van,
 &lt;p&gt;Of je nu een hobbyist bent die slechts één forum nodig heeft of een online community voor je bedrijf bouwt, DNN 
     Community Forums is de toonaangevende oplossing. Zoals je snel zult zien, heeft geen enkel ander forumpakket voor DNN zoveel functies of de flexibiliteit van DNN Community Forums.&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:ModerationPleaseLogin].Text" xml:space="preserve">
+    <value>&lt;span class="dcf-auth-false-login"&gt;&lt;a href="{0}"&gt;Log in&lt;/a&gt; om lopende inhoud te bekijken en te modereren.&lt;/span&gt;</value>
+  </data>
 </root>

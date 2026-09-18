@@ -1953,4 +1953,7 @@ Da
 &lt;p&gt;I DNN Community Forums ti permettono di creare rapidamente un forum di discussione ricco di funzionalità per il tuo sito web.&lt;/p&gt;
 &lt;p&gt;Che tu sia un hobbista che ha solo bisogno di un forum o stia costruendo una community online per la tua attività, DNN Community Forums è la soluzione principale. Come vedrete presto, nessun altro pacchetto di forum per DNN offre tante funzionalità o la flessibilità DNN Community Forums.&lt;/p&gt;</value>
   </data>
+  <data name="[RESX:ModerationPleaseLogin].Text" xml:space="preserve">
+    <value>&lt;span class="dcf-auth-false-login"&gt;Per &lt;a href="{0}"&gt;favore, accedi&lt;/a&gt; per recensire e moderare i contenuti in sospeso.&lt;/span&gt;</value>
+  </data>
 </root>

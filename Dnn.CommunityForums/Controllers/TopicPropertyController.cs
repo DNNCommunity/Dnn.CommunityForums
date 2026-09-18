@@ -23,69 +23,60 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Xml;
 
-    internal class TopicPropertyController : DotNetNuke.Modules.ActiveForums.Controllers.ControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo>
-
+    internal partial class TopicPropertyController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo, ITopicPropertyController, TopicPropertyController>, ITopicPropertyController
     {
-        public static string Serialize(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> properties)
+        protected override Func<ITopicPropertyController> GetFactory()
         {
-            StringBuilder tData = new StringBuilder();
-            tData.Append("<topicdata>");
-            tData.Append("<properties>");
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo p in forum.Properties)
-            {
-                tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
-                tData.Append("<name><![CDATA[");
-                tData.Append(p.Name);
-                tData.Append("]]></name>");
-                if (!string.IsNullOrEmpty(properties.Where(tp => tp.PropertyId == p.PropertyId).FirstOrDefault().Value))
-                {
-                    tData.Append("<value><![CDATA[");
-                    tData.Append(Utilities.XSSFilter(properties.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().Value));
-                    tData.Append("]]></value>");
-                }
-                else
-                {
-                    tData.Append("<value></value>");
-                }
-
-                tData.Append("</property>");
-            }
-
-            tData.Append("</properties>");
-            tData.Append("</topicdata>");
-            return tData.ToString();
+            return () => new TopicPropertyController();
         }
 
-        public static List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> Deserialize(string xmlString)
+        public void AddPropertyToTopic(int propertyId, int topicId)
         {
-            List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> tp = new List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo>();
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.LoadXml(xmlString);
-            if (xDoc != null)
+            this._repositoryControllerBase.Insert(new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo { PropertyId = propertyId, TopicId = topicId });
+        }
+
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> GetForTopic(int topicId)
+        {
+            return this._repositoryControllerBase.Find("WHERE TopicId = @0", topicId).ToList();
+        }
+
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> GetForProperty(int propertyId)
+        {
+            return this._repositoryControllerBase.Find("WHERE PropertyId = @0", propertyId).ToList();
+        }
+
+        public void DeleteForProperty(int propertyId)
+        {
+            this._repositoryControllerBase.Delete("WHERE PropertyId = @0", propertyId);
+        }
+
+        public void DeleteForTopic(int topicId)
+        {
+            this._repositoryControllerBase.Delete("WHERE TopicId = @0", topicId);
+        }
+
+        public void SaveForTopic(int topicId, IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> properties)
+        {
+            if (properties == null)
             {
-                System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//properties/property");
-                if (xNodeList.Count > 0)
-                {
-                    int i = 0;
-                    for (i = 0; i < xNodeList.Count; i++)
-                    {
-                        string pName = System.Net.WebUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
-                        string pValue = System.Net.WebUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
-                        int pId = Convert.ToInt32(xNodeList[i].Attributes["id"].Value);
-                        DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo p = new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo();
-                        p.Name = pName;
-                        p.Value = pValue;
-                        p.PropertyId = pId;
-                        tp.Add(p);
-                    }
-                }
+                return;
             }
 
-            return tp;
+            this.DeleteForTopic(topicId);
+            var propertyIds = new HashSet<int>();
+            foreach (var property in properties)
+            {
+                if (propertyIds.Add(property.PropertyId) && !string.IsNullOrEmpty(property.Value))
+                {
+                    this._repositoryControllerBase.Insert(new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo
+                    {
+                        TopicId = topicId,
+                        PropertyId = property.PropertyId,
+                        Value = Utilities.XSSFilter(property.Value),
+                    });
+                }
+            }
         }
     }
 }

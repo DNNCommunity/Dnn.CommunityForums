@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string searchText;
         private string tags;
-        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType? searchResultType;
         private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType? searchSortType;
         private string authorUsername;
         private string forums;
@@ -47,8 +46,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private string SearchText => (string)(this.searchText ?? (this.searchText = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.Request.Params[SearchParamKeys.Query] + string.Empty))).Replace("\"", string.Empty).Trim()));
 
         private string AuthorUsername => (string)(this.authorUsername ?? (this.authorUsername = Utilities.CheckSqlString(Utilities.StripHTMLTag(Utilities.XSSFilter(this.Request.Params[SearchParamKeys.Author] + string.Empty))).Trim()));
-
-        private DotNetNuke.Modules.ActiveForums.Enums.SearchResultType SearchResultType => (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)(this.searchResultType ?? (this.searchResultType = (DotNetNuke.Modules.ActiveForums.Enums.SearchResultType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.ResultType], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchResultType.SearchByTopics)));
 
         private DotNetNuke.Modules.ActiveForums.Enums.SearchSortType SearchSortType => (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)(this.searchSortType ?? (this.searchSortType = (DotNetNuke.Modules.ActiveForums.Enums.SearchSortType)Utilities.SafeConvertInt(this.Request.Params[SearchParamKeys.Sort], (int)DotNetNuke.Modules.ActiveForums.Enums.SearchSortType.SearchSortTypeRelevance)));
 
@@ -80,24 +77,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Event Handlers
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery-forumSelector.js");
+
+            this.btnSearch.Click += this.btnSearch_Click;
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery-forumSelector.js");
 
             try
             {
                 if (this.Request.QueryString[Literals.GroupId] != null && Utilities.IsNumeric(this.Request.QueryString[Literals.GroupId]))
                 {
                     this.SocialGroupId = Convert.ToInt32(this.Request.QueryString[Literals.GroupId]);
-                }
-
-                this.btnSearch.Click += this.btnSearch_Click;
-
-                if (this.Page.IsPostBack)
-                {
-                    return;
                 }
 
                 this.txtSearch.Text = this.SearchText;
@@ -107,8 +104,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.BindForumList();
                 this.BindSearchRange();
 
-                Utilities.BindEnum(pDDL: this.drpResultType, enumType: typeof(Enums.SearchResultType), pColValue: ((int)this.SearchResultType).ToString(), addEmptyValue: false, localize: true, excludeIndex: -1);
                 Utilities.BindEnum(pDDL: this.drpSort, enumType: typeof(Enums.SearchSortType), pColValue: ((int)this.SearchSortType).ToString(), addEmptyValue: false, localize: true, excludeIndex: -1);
+
+                var selectItem = this.drpSort.Items.FindByValue(((int)this.SearchSortType).ToString());
+                if (selectItem != null)
+                {
+                    selectItem.Selected = true;
+                }
 
                 // Update Meta Data
                 var basePage = this.BasePage;
@@ -131,9 +133,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            var searchDays = Convert.ToInt32(this.drpSearchDays.SelectedItem.Value);
-            var resultType = Convert.ToInt32(this.drpResultType.SelectedItem.Value);
-            var sortType = Convert.ToInt32(this.drpSort.SelectedValue);
+            var searchDays = Utilities.SafeConvertInt(this.drpSearchDays.SelectedValue);
+            var sortType = Utilities.SafeConvertInt(this.drpSort.SelectedValue);
 
             // Selected Forums
             var forums = string.Empty;
@@ -169,11 +170,6 @@ namespace DotNetNuke.Modules.ActiveForums
             if (searchDays > 0)
             {
                 @params.Add($"{SearchParamKeys.TimeSpan}={searchDays}");
-            }
-
-            if (resultType > 0)
-            {
-                @params.Add($"{SearchParamKeys.ResultType}={resultType}");
             }
 
             if (sortType > 0)

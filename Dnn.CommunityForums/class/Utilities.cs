@@ -612,7 +612,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             body = body.Trim();
 
-            if (string.IsNullOrEmpty(StripHTMLTag(body)) && !body.ToUpper().Contains("<CODE"))
+            if (string.IsNullOrEmpty(StripHTMLTag(body)) &&
+                !body.ToUpper().Contains("<CODE") &&
+                !Regex.IsMatch(body, @"<img\b", RegexOptions.IgnoreCase))
             {
                 return false;
             }
