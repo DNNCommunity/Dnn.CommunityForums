@@ -69,9 +69,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/ControlPanel.css");
-            ClientResourceManager.RegisterStyleSheet(this.Page, string.Concat("~/DesktopModules/ActiveForums/themes/", this.MainSettings.Theme, "/jquery-ui.min.css"));
-            ClientResourceManager.RegisterStyleSheet(this.Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
+            ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}ControlPanel.css");
+            ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
+            ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}Resources/jquery-ui-1.14.2.custom/jquery-ui.min.css", priority: 105);
 
             this.lblProd.Visible = true;
             this.lblCopy.Visible = true;
