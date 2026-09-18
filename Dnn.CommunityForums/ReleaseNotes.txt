@@ -27,10 +27,10 @@
         <blockquote class="dcf-oldnews">
 
             <h2 class="muy-importante">
-                Upgrading to 10.0.x if you access database tables using SQL
+                Upgrading to 10.x.x if you access database tables using SQL
             </h2>
             <p>
-                If you're upgrading to version 10.0 AND you access database tables using SQL, you NEED to view the important release note FYI wiki article below. 
+                If you're upgrading to version 10.x AND you access database tables using SQL, you NEED to view the important release note FYI wiki article below. 
             </p>
 
             <ul>
@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            10.00.01
+            10.01.00
         </h3>
 <!--       
         <p>
@@ -74,8 +74,12 @@
 -->
         <h4>New Features &amp; Enhancements</h4>
         <ul>
-
-            <li>None at this time.</li>
+        
+            <li>ENHANCED: Search UI simplified into single critera/results page (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/1861">Issue 1861</a>)</li>
+            <li>ENHANCED: Posts with just an image (without any text) are now allowed in forums (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/1965">Issue 1965</a>)</li>
+            <li>ENHANCED: Easier login from moderator notification emails/login link on moderation page (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/1984">Issue 1984</a>)</li>
+            <li>ENHANCED: Friendly URL rewriter now ignores deleted posts and silently redirects to main forum page without logging an exception (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/2002">Issue 2002</a>)</li>
+            <li>ENHANCED: Topic properties are now stored in their own SQL table rather than as an XML document within the topics table (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/749">Issue 749</a>)</li>
             
 <!--
             <li>NEW: Export/import and sharing of module (IPortable + Sharable) are now fully supported (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1945">PR 1945</a>)</li>
@@ -108,19 +112,19 @@
         <h4>Bug Fixes</h4>
 
         <ul>
-<!--
-          <li>None at this time.</li> 
+            <li>FIX: Topic options dialog not readable on DNN 10 (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/2014">Issue 2014</a>)</li>
           
--->          
-            <li>FIX: Exceptions related to already open DataReader (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1987">Issue 1987</a>)</li>
+<!--     
+          <li>None at this time.</li> 
             <li>FIX: Better handling of bad URL parameters (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1983">Issue 1983</a>)</li>
-            
+        
+-->         
 
         </ul>
 
         <h4>Tasks / Development Updates (and Technical Debt Reduction)</h4>
         <ul>
-            <li>10.00.01 Release Prep (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1996">Issue 1996</a>)</li>
+            <li>10.01.00 Release Prep (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/2013">Issue 2013</a>)</li>
             
 <!--
 
