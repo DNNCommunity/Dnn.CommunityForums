@@ -1,0 +1,1591 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="[RESX:Actions:DeleteConfirm].Text" xml:space="preserve">
+    <value>Bu öğeyi silmek istediğinizden emin misiniz?</value>
+  </data>
+  <data name="[RESX:Active].Text" xml:space="preserve">
+    <value>Etkin</value>
+  </data>
+  <data name="[RESX:Button:Cancel].Text" xml:space="preserve">
+    <value>İptal</value>
+  </data>
+  <data name="[RESX:Button:Delete].Text" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="[RESX:Button:Save].Text" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="[RESX:Dashboard].Text" xml:space="preserve">
+    <value>Pano</value>
+  </data>
+  <data name="[RESX:Forum].Text" xml:space="preserve">
+    <value>Forum</value>
+  </data>
+  <data name="[RESX:ForumDesc].Text" xml:space="preserve">
+    <value>Açıklama</value>
+  </data>
+  <data name="[RESX:ForumGroup].Text" xml:space="preserve">
+    <value>Grup / Forum</value>
+  </data>
+  <data name="[RESX:ForumName].Text" xml:space="preserve">
+    <value>Forum Adı</value>
+  </data>
+  <data name="[RESX:GroupName].Text" xml:space="preserve">
+    <value>Forum Grubu</value>
+  </data>
+  <data name="[RESX:Hidden].Text" xml:space="preserve">
+    <value>Gizli</value>
+  </data>
+  <data name="[RESX:Mod].Text" xml:space="preserve">
+    <value>Moderasyon</value>
+  </data>
+  <data name="[RESX:Security].Text" xml:space="preserve">
+    <value>Güvenlik</value>
+  </data>
+  <data name="[RESX:Settings].Text" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
+  <data name="[RESX:Stats].Text" xml:space="preserve">
+    <value>İstatistikler</value>
+  </data>
+  <data name="[RESX:Actions:Complete].Text" xml:space="preserve">
+    <value>Tamamlandı</value>
+  </data>
+  <data name="[RESX:Actions:ForumSaved].Text" xml:space="preserve">
+    <value>Forum Başarıyla Kaydedildi</value>
+  </data>
+  <data name="[RESX:Actions:GroupSaved].Text" xml:space="preserve">
+    <value>Grup Başarıyla Kaydedildi</value>
+  </data>
+  <data name="[RESX:AllowAttach].Text" xml:space="preserve">
+    <value>Ekler</value>
+  </data>
+  <data name="[RESX:AllowedTypes].Text" xml:space="preserve">
+    <value>İzin Verilen Türler</value>
+  </data>
+  <data name="[RESX:AllowHTML].Text" xml:space="preserve">
+    <value>HTML Girişi</value>
+  </data>
+  <data name="[RESX:AllowPostIcon].Text" xml:space="preserve">
+    <value>Gönderi Simgeleri</value>
+  </data>
+  <data name="[RESX:AllowRSS].Text" xml:space="preserve">
+    <value>RSS</value>
+  </data>
+  <data name="[RESX:AllowScripts].Text" xml:space="preserve">
+    <value>Betikler</value>
+  </data>
+  <data name="[RESX:Disabled].Text" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="[RESX:EditorStyle].Text" xml:space="preserve">
+    <value>Stil</value>
+  </data>
+  <data name="[RESX:EditorToolBar].Text" xml:space="preserve">
+    <value>Araç Çubuğu</value>
+  </data>
+  <data name="[RESX:EditorType].Text" xml:space="preserve">
+    <value>Düzenleyici</value>
+  </data>
+  <data name="[RESX:EmailAddress].Text" xml:space="preserve">
+    <value>E-posta Adresi</value>
+  </data>
+  <data name="[RESX:Emoticons].Text" xml:space="preserve">
+    <value>İfadeler</value>
+  </data>
+  <data name="[RESX:Enabled].Text" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="[RESX:EnableFilter].Text" xml:space="preserve">
+    <value>Filtreler</value>
+  </data>
+  <data name="[RESX:Feature].Text" xml:space="preserve">
+    <value>Özellikler</value>
+  </data>
+  <data name="[RESX:FileStore].Text" xml:space="preserve">
+    <value>Dosya Deposu</value>
+  </data>
+  <data name="[RESX:ForumOwner].Text" xml:space="preserve">
+    <value>Forum Sahibi</value>
+  </data>
+  <data name="[RESX:IndexContent].Text" xml:space="preserve">
+    <value>İçeriği Dizinle</value>
+  </data>
+  <data name="[RESX:MaxAttach].Text" xml:space="preserve">
+    <value>Dosya Sayısı</value>
+  </data>
+  <data name="[RESX:MaxFileSize].Text" xml:space="preserve">
+    <value>Maks. Dosya Boyutu (KB)</value>
+  </data>
+  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
+    <value>Maks. Görsel Yüksekliği</value>
+  </data>
+  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
+    <value>Maks. Görsel Genişliği</value>
+  </data>
+  <data name="[RESX:SecureObjects].Text" xml:space="preserve">
+    <value>Roller/Kullanıcılar</value>
+  </data>
+  <data name="[RESX:Status].Text" xml:space="preserve">
+    <value>Özellikleri Etkinleştir ve/veya Devre Dışı Bırak</value>
+  </data>
+  <data name="[RESX:UniqueFileNames].Text" xml:space="preserve">
+    <value>Benzersiz Dosya Adları</value>
+  </data>
+  <data name="[RESX:AvatarDimensions].Text" xml:space="preserve">
+    <value>Avatar Boyutları</value>
+  </data>
+  <data name="[RESX:DateFormat].Text" xml:space="preserve">
+    <value>Tarih Biçimi</value>
+  </data>
+  <data name="[RESX:DateTime].Text" xml:space="preserve">
+    <value>Tarih ve Saat Ayarları</value>
+  </data>
+  <data name="[RESX:DefaultCache].Text" xml:space="preserve">
+    <value>Önbellek Deposu</value>
+  </data>
+  <data name="[RESX:DefaultPageSize].Text" xml:space="preserve">
+    <value>Varsayılan Sayfa Boyutu</value>
+  </data>
+  <data name="[RESX:EnableAvatarsLinks].Text" xml:space="preserve">
+    <value>Avatar Bağlantıları</value>
+  </data>
+  <data name="[RESX:EnableAvatars].Text" xml:space="preserve">
+    <value>Avatarlar</value>
+  </data>
+  <data name="[RESX:EnableProfiles].Text" xml:space="preserve">
+    <value>Etkin</value>
+  </data>
+  <data name="[RESX:EnableSubscriptions].Text" xml:space="preserve">
+    <value>Abonelikler</value>
+  </data>
+  <data name="[RESX:ForumStatSettings].Text" xml:space="preserve">
+    <value>İstatistik Ayarları</value>
+  </data>
+  <data name="[RESX:ForumTheme].Text" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="[RESX:MainSettings].Text" xml:space="preserve">
+    <value>Ana Ayarlar</value>
+  </data>
+  <data name="[RESX:MemberListMode].Text" xml:space="preserve">
+    <value>Üye Listesi Modu</value>
+  </data>
+  <data name="[RESX:ServerTimeZone].Text" xml:space="preserve">
+    <value>Saat Dilimi Farkı</value>
+  </data>
+  <data name="[RESX:Signatures].Text" xml:space="preserve">
+    <value>İmzalar</value>
+  </data>
+  <data name="[RESX:StatsEnabled].Text" xml:space="preserve">
+    <value>Etkin</value>
+  </data>
+  <data name="[RESX:StatsInterval].Text" xml:space="preserve">
+    <value>Güncelleme Aralığı</value>
+  </data>
+  <data name="[RESX:TimeFormat].Text" xml:space="preserve">
+    <value>Saat Biçimi</value>
+  </data>
+  <data name="[RESX:UserDisplayMode].Text" xml:space="preserve">
+    <value>Kullanıcı Görüntüleme Modu</value>
+  </data>
+  <data name="[RESX:UserProfiles].Text" xml:space="preserve">
+    <value>Kullanıcı Profili Ayarları</value>
+  </data>
+  <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve">
+    <value>Çevrimiçi Kullanıcıları Göster</value>
+  </data>
+  <data name="[RESX:About].Text" xml:space="preserve">
+    <value>Hakkında</value>
+  </data>
+  <data name="[RESX:DisplayName].Text" xml:space="preserve">
+    <value>Görünen Ad</value>
+  </data>
+  <data name="[RESX:Filters].Text" xml:space="preserve">
+    <value>Filtreler</value>
+  </data>
+  <data name="[RESX:FirstName].Text" xml:space="preserve">
+    <value>Ad</value>
+  </data>
+  <data name="[RESX:FullName].Text" xml:space="preserve">
+    <value>Ad Soyad</value>
+  </data>
+  <data name="[RESX:LastName].Text" xml:space="preserve">
+    <value>Soyad</value>
+  </data>
+  <data name="[RESX:ManageForums].Text" xml:space="preserve">
+    <value>Forumları Yönet</value>
+  </data>
+  <data name="[RESX:MemberListModeDisabledAll].Text" xml:space="preserve">
+    <value>Devre Dışı - Tüm Kullanıcılar</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledAll].Text" xml:space="preserve">
+    <value>Etkin - Tüm Kullanıcılar</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledMod].Text" xml:space="preserve">
+    <value>Etkin - Moderatörler</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledReg].Text" xml:space="preserve">
+    <value>Etkin - Kayıtlı Kullanıcılar</value>
+  </data>
+  <data name="[RESX:QuickLinks].Text" xml:space="preserve">
+    <value>Hızlı Bağlantılar</value>
+  </data>
+  <data name="[RESX:QuickStats].Text" xml:space="preserve">
+    <value>Hızlı İstatistikler</value>
+  </data>
+  <data name="[RESX:Ranks].Text" xml:space="preserve">
+    <value>Rütbeler</value>
+  </data>
+  <data name="[RESX:RecentMembers].Text" xml:space="preserve">
+    <value>Son Üyeler</value>
+  </data>
+  <data name="[RESX:RecentTopics].Text" xml:space="preserve">
+    <value>Son Konular</value>
+  </data>
+  <data name="[RESX:SigDisable].Text" xml:space="preserve">
+    <value>Devre Dışı</value>
+  </data>
+  <data name="[RESX:SigHTML].Text" xml:space="preserve">
+    <value>HTML ve Düz Metne İzin Ver</value>
+  </data>
+  <data name="[RESX:SigPlainText].Text" xml:space="preserve">
+    <value>Yalnızca Düz Metne İzin Ver</value>
+  </data>
+  <data name="[RESX:SubscriptionOptions].Text" xml:space="preserve">
+    <value>Abonelik Seçenekleri:</value>
+  </data>
+  <data name="[RESX:TopForums].Text" xml:space="preserve">
+    <value>En Popüler Forumlar</value>
+  </data>
+  <data name="[RESX:TopMembers].Text" xml:space="preserve">
+    <value>En Aktif Üyeler</value>
+  </data>
+  <data name="[RESX:UserName].Text" xml:space="preserve">
+    <value>Kullanıcı Adı</value>
+  </data>
+  <data name="[RESX:Categories].Text" xml:space="preserve">
+    <value>Kategoriler</value>
+  </data>
+  <data name="[RESX:CustomFields].Text" xml:space="preserve">
+    <value>Özel Alanlar</value>
+  </data>
+  <data name="[RESX:Features].Text" xml:space="preserve">
+    <value>Özellikler</value>
+  </data>
+  <data name="[RESX:Forums].Text" xml:space="preserve">
+    <value>Forumlar</value>
+  </data>
+  <data name="[RESX:Tags].Text" xml:space="preserve">
+    <value>Etiketler</value>
+  </data>
+  <data name="[RESX:Templates].Text" xml:space="preserve">
+    <value>Şablonlar</value>
+  </data>
+  <data name="[RESX:QuickReplyForm].Text" xml:space="preserve">
+    <value>Hızlı Yanıt Formu</value>
+  </data>
+  <data name="[RESX:ReplyForm].Text" xml:space="preserve">
+    <value>Yanıt Formu</value>
+  </data>
+  <data name="[RESX:Tips:Active].Text" xml:space="preserve">
+    <value>Bir forumu kolayca açmak veya kapatmak için bu kutuyu işaretleyin.</value>
+  </data>
+  <data name="[RESX:Tips:EmailAddress].Text" xml:space="preserve">
+    <value>Bildirimler gönderilirken Gönderen (From) adresi olarak kullanılacak e-posta adresini girin. </value>
+  </data>
+  <data name="[RESX:Tips:ForumDesc].Text" xml:space="preserve">
+    <value>Forum için kısa bir açıklama girin.</value>
+  </data>
+  <data name="[RESX:Tips:ForumGroup].Text" xml:space="preserve">
+    <value>Bu forumun bağlı olacağı üst grubu seçin veya alt forum oluşturmak için bir forum seçin</value>
+  </data>
+  <data name="[RESX:Tips:ForumName].Text" xml:space="preserve">
+    <value>Bu forumun adını girin.</value>
+  </data>
+  <data name="[RESX:Tips:Hidden].Text" xml:space="preserve">
+    <value>Bu forumu, erişim yetkisi olmayan kullanıcılar için forum listesinde gizlemek üzere bu kutuyu işaretleyin.</value>
+  </data>
+  <data name="[RESX:Tips:QuickReplyForm].Text" xml:space="preserve">
+    <value>Hızlı yanıt formunun görüntülenmesinde kullanılacak şablonu seçin.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyForm].Text" xml:space="preserve">
+    <value>Kullanıcıların yanıt oluştururken kullanacağı formun şablonunu seçin.</value>
+  </data>
+  <data name="[RESX:Tips:TopicForm].Text" xml:space="preserve">
+    <value>Kullanıcıların yeni konu oluştururken kullanacağı formun şablonunu seçin.</value>
+  </data>
+  <data name="[RESX:TopicForm].Text" xml:space="preserve">
+    <value>Konu Formu</value>
+  </data>
+  <data name="[RESX:All].Text" xml:space="preserve">
+    <value>Tümü</value>
+  </data>
+  <data name="[RESX:DateCreated].Text" xml:space="preserve">
+    <value>Oluşturulma Tarihi</value>
+  </data>
+  <data name="[RESX:DateUpdated].Text" xml:space="preserve">
+    <value>Güncellenme Tarihi</value>
+  </data>
+  <data name="[RESX:Details].Text" xml:space="preserve">
+    <value>Ayrıntılar</value>
+  </data>
+  <data name="[RESX:Email].Text" xml:space="preserve">
+    <value>E-posta</value>
+  </data>
+  <data name="[RESX:ForumView].Text" xml:space="preserve">
+    <value>Forum Görünümü</value>
+  </data>
+  <data name="[RESX:HTML].Text" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="[RESX:PlainText].Text" xml:space="preserve">
+    <value>Düz Metin</value>
+  </data>
+  <data name="[RESX:Subject].Text" xml:space="preserve">
+    <value>Başlık</value>
+  </data>
+  <data name="[RESX:System].Text" xml:space="preserve">
+    <value>Sistem</value>
+  </data>
+  <data name="[RESX:Title].Text" xml:space="preserve">
+    <value>Başlık</value>
+  </data>
+  <data name="[RESX:TopicsView].Text" xml:space="preserve">
+    <value>Konular Görünümü</value>
+  </data>
+  <data name="[RESX:TopicView].Text" xml:space="preserve">
+    <value>Konu Görünümü</value>
+  </data>
+  <data name="[RESX:Actions:RequiredFields].Text" xml:space="preserve">
+    <value>Lütfen zorunlu alanlara değer girin</value>
+  </data>
+  <data name="[RESX:Actions:Warning].Text" xml:space="preserve">
+    <value>UYARI</value>
+  </data>
+  <data name="[RESX:ConfigureProperties].Text" xml:space="preserve">
+    <value>Seçenekleri Yapılandır</value>
+  </data>
+  <data name="[RESX:Author].Text" xml:space="preserve">
+    <value>Yazar</value>
+  </data>
+  <data name="[RESX:Date].Text" xml:space="preserve">
+    <value>Tarih</value>
+  </data>
+  <data name="[RESX:Default].Text" xml:space="preserve">
+    <value>Varsayılan</value>
+  </data>
+  <data name="[RESX:Name].Text" xml:space="preserve">
+    <value>Ad</value>
+  </data>
+  <data name="[RESX:NewForumGroup].Text" xml:space="preserve">
+    <value>Yeni Forum Grubu</value>
+  </data>
+  <data name="[RESX:NewForum].Text" xml:space="preserve">
+    <value>Yeni Forum</value>
+  </data>
+  <data name="[RESX:NoData].Text" xml:space="preserve">
+    <value>Veri Bulunamadı</value>
+  </data>
+  <data name="[RESX:NoForums].Text" xml:space="preserve">
+    <value>Forum Bulunamadı</value>
+  </data>
+  <data name="[RESX:NoMembers].Text" xml:space="preserve">
+    <value>Üye Bulunamadı</value>
+  </data>
+  <data name="[RESX:NoTopics].Text" xml:space="preserve">
+    <value>Konu Bulunamadı</value>
+  </data>
+  <data name="[RESX:Replies].Text" xml:space="preserve">
+    <value>Yanıtlar</value>
+  </data>
+  <data name="[RESX:Topics].Text" xml:space="preserve">
+    <value>Konular</value>
+  </data>
+  <data name="[RESX:Topic].Text" xml:space="preserve">
+    <value>Konu</value>
+  </data>
+  <data name="[RESX:TotalActiveMembers].Text" xml:space="preserve">
+    <value>Toplam Aktif Üye</value>
+  </data>
+  <data name="[RESX:TotalForums].Text" xml:space="preserve">
+    <value>Toplam Forum</value>
+  </data>
+  <data name="[RESX:TotalMembers].Text" xml:space="preserve">
+    <value>Toplam Üye</value>
+  </data>
+  <data name="[RESX:TotalReplies].Text" xml:space="preserve">
+    <value>Toplam Yanıt</value>
+  </data>
+  <data name="[RESX:TotalTopics].Text" xml:space="preserve">
+    <value>Toplam Konu</value>
+  </data>
+  <data name="[RESX:Groups].Text" xml:space="preserve">
+    <value>Gruplar</value>
+  </data>
+  <data name="[RESX:Members].Text" xml:space="preserve">
+    <value>Üyeler</value>
+  </data>
+  <data name="[RESX:Actions:SettingsSaved].Text" xml:space="preserve">
+    <value>Ayarlar güncellendi!</value>
+  </data>
+  <data name="[RESX:Approved].Text" xml:space="preserve">
+    <value>Onaylandı</value>
+  </data>
+  <data name="[RESX:AuditLog].Text" xml:space="preserve">
+    <value>Günlük Kaydı ve İzleme</value>
+  </data>
+  <data name="[RESX:AutoTrustLevel].Text" xml:space="preserve">
+    <value>Otomatik Güven Düzeyi</value>
+  </data>
+  <data name="[RESX:Database].Text" xml:space="preserve">
+    <value>Veritabanı</value>
+  </data>
+  <data name="[RESX:DefaultTrust].Text" xml:space="preserve">
+    <value>Varsayılan Güven</value>
+  </data>
+  <data name="[RESX:DeleteAction].Text" xml:space="preserve">
+    <value>Silme Davranışı</value>
+  </data>
+  <data name="[RESX:Deleted].Text" xml:space="preserve">
+    <value>Silindi</value>
+  </data>
+  <data name="[RESX:DropDownDefault].Text" xml:space="preserve">
+    <value>-- SEÇİN --</value>
+  </data>
+  <data name="[RESX:DropDownDisabled].Text" xml:space="preserve">
+    <value>-- DEVRE DIŞI --</value>
+  </data>
+  <data name="[RESX:EmailTemplates].Text" xml:space="preserve">
+    <value>E-posta Şablonları</value>
+  </data>
+  <data name="[RESX:FileSystem].Text" xml:space="preserve">
+    <value>Dosya Sistemi</value>
+  </data>
+  <data name="[RESX:FloodInterval].Text" xml:space="preserve">
+    <value>Gönderi Bekleme Süresi</value>
+  </data>
+  <data name="[RESX:Full].Text" xml:space="preserve">
+    <value>Tam</value>
+  </data>
+  <data name="[RESX:LoggingLevel].Text" xml:space="preserve">
+    <value>Günlük Kaydı Düzeyi</value>
+  </data>
+  <data name="[RESX:Moderated].Text" xml:space="preserve">
+    <value>Moderasyonlu</value>
+  </data>
+  <data name="[RESX:Moderate].Text" xml:space="preserve">
+    <value>Orta</value>
+  </data>
+  <data name="[RESX:Moved].Text" xml:space="preserve">
+    <value>Taşındı</value>
+  </data>
+  <data name="[RESX:None].Text" xml:space="preserve">
+    <value>Hiçbiri</value>
+  </data>
+  <data name="[RESX:NotTrusted].Text" xml:space="preserve">
+    <value>Güvenilmeyen</value>
+  </data>
+  <data name="[RESX:No].Text" xml:space="preserve">
+    <value>Hayır</value>
+  </data>
+  <data name="[RESX:Recycle].Text" xml:space="preserve">
+    <value>Geri Dönüşüm</value>
+  </data>
+  <data name="[RESX:Rejected].Text" xml:space="preserve">
+    <value>Reddedildi</value>
+  </data>
+  <data name="[RESX:Remove].Text" xml:space="preserve">
+    <value>Kaldır</value>
+  </data>
+  <data name="[RESX:Tips:CacheStore].Text" xml:space="preserve">
+    <value>Önbelleğe alınan öğelerin saklanacağı konumu seçin.  </value>
+  </data>
+  <data name="[RESX:DeleteAction:Intro].Text" xml:space="preserve">
+    <value>İçerik silindiğinde ne olacağını seçin. &lt;b&gt;Kaldır&lt;/b&gt; - İçeriği veritabanından kaldırır.  &lt;b&gt;Geri Dönüşüm&lt;/b&gt; - İçerik silindi olarak işaretlenir ve veritabanında kalır.</value>
+  </data>
+  <data name="[RESX:FloodControl:Intro].Text" xml:space="preserve">
+    <value>Bir kullanıcının iki gönderi arasında beklemesi gereken saniye sayısı.</value>
+  </data>
+  <data name="[RESX:Tips:ForumTheme].Text" xml:space="preserve">
+    <value>Forumunuz için görsel temayı seçin.</value>
+  </data>
+  <data name="[RESX:Tips:LoggingLevel].Text" xml:space="preserve">
+    <value>Forumlarınız için günlük kaydı düzeyini seçin.&lt;br /&gt;Devre Dışı - Hiçbir etkinlik kaydedilmez&lt;br /&gt;Orta - Taşıma ve Silme işlemleri kaydedilir.&lt;br /&gt;Tam - Tüm etkinlikler kaydedilir.</value>
+  </data>
+  <data name="[RESX:Tips:Moderated].Text" xml:space="preserve">
+    <value>Konuların ve yanıtların forumda görünmeden önce onaylanmasını istiyorsanız bu özelliği etkinleştirin.</value>
+  </data>
+  <data name="[RESX:Tips:PageSize].Text" xml:space="preserve">
+    <value>Konular ve yanıtlar sayfasında görüntülenmesini istediğiniz varsayılan öğe sayısını girin.</value>
+  </data>
+  <data name="[RESX:Tips:ServerTimeZone].Text" xml:space="preserve">
+    <value>Saat dilimi farkı, zaman hesaplamalarını gerektiği şekilde ayarlamanıza olanak tanır.  Çoğu durumda bu değeri 0 olarak bırakırsınız.</value>
+  </data>
+  <data name="[RESX:Trusted].Text" xml:space="preserve">
+    <value>Güvenilir</value>
+  </data>
+  <data name="[RESX:Yes].Text" xml:space="preserve">
+    <value>Evet</value>
+  </data>
+  <data name="[RESX:Actions:DeleteComplete].Text" xml:space="preserve">
+    <value>Öğe silindi</value>
+  </data>
+  <data name="[RESX:Actions:GenericSaved].Text" xml:space="preserve">
+    <value>Kaydetme Tamamlandı!</value>
+  </data>
+  <data name="[RESX:Actions:MinMax].Text" xml:space="preserve">
+    <value>Minimum Puan, Maksimum Puandan küçük olmalıdır</value>
+  </data>
+  <data name="[RESX:Activity].Text" xml:space="preserve">
+    <value>Etkinlik</value>
+  </data>
+  <data name="[RESX:AddFilter].Text" xml:space="preserve">
+    <value>Filtre Öğesi Ekle</value>
+  </data>
+  <data name="[RESX:AnswerPointValue].Text" xml:space="preserve">
+    <value>Yanıt Gönderisi Sağlama</value>
+  </data>
+  <data name="[RESX:Close].Text" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="[RESX:CommunitySettings].Text" xml:space="preserve">
+    <value>Topluluk Ayarları</value>
+  </data>
+  <data name="[RESX:Delete].Text" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="[RESX:Display].Text" xml:space="preserve">
+    <value>Görünüm</value>
+  </data>
+  <data name="[RESX:Emoticon].Text" xml:space="preserve">
+    <value>İfade</value>
+  </data>
+  <data name="[RESX:FilterType].Text" xml:space="preserve">
+    <value>Filtre Türü</value>
+  </data>
+  <data name="[RESX:Find].Text" xml:space="preserve">
+    <value>Aranacak Metin</value>
+  </data>
+  <data name="[RESX:MarkAnswerPointValue].Text" xml:space="preserve">
+    <value>Gönderiyi Yanıt Olarak İşaretleme</value>
+  </data>
+  <data name="[RESX:MarkUp].Text" xml:space="preserve">
+    <value>İşaretleme/Metin</value>
+  </data>
+  <data name="[RESX:MaxPoints].Text" xml:space="preserve">
+    <value>Maks. Puan</value>
+  </data>
+  <data name="[RESX:MinPoints].Text" xml:space="preserve">
+    <value>Min. Puan</value>
+  </data>
+  <data name="[RESX:ModPointValue].Text" xml:space="preserve">
+    <value>Gönderi Moderasyonu</value>
+  </data>
+  <data name="[RESX:PointValue].Text" xml:space="preserve">
+    <value>Puan</value>
+  </data>
+  <data name="[RESX:RankName].Text" xml:space="preserve">
+    <value>Ad</value>
+  </data>
+  <data name="[RESX:RanksNew].Text" xml:space="preserve">
+    <value>Yeni Rütbe Düzeyi</value>
+  </data>
+  <data name="[RESX:RanksRecognition].Text" xml:space="preserve">
+    <value>Rütbeler</value>
+  </data>
+  <data name="[RESX:RegEx].Text" xml:space="preserve">
+    <value>Düzenli İfade</value>
+  </data>
+  <data name="[RESX:Replace].Text" xml:space="preserve">
+    <value>Yerine Konacak Metin</value>
+  </data>
+  <data name="[RESX:ReplyPointValue].Text" xml:space="preserve">
+    <value>Yanıt</value>
+  </data>
+  <data name="[RESX:TopicPointValue].Text" xml:space="preserve">
+    <value>Yeni Konu</value>
+  </data>
+  <data name="[RESX:Actions:RestoreConfirm].Text" xml:space="preserve">
+    <value>Mevcut tüm filtreleri silip varsayılan filtre setini yüklemek istediğinizden emin misiniz?</value>
+  </data>
+  <data name="[RESX:ManageTags].Text" xml:space="preserve">
+    <value>Etiketleri Yönet</value>
+  </data>
+  <data name="[RESX:RestoreDefaults].Text" xml:space="preserve">
+    <value>Varsayılan Filtreleri Yükle</value>
+  </data>
+  <data name="[RESX:Items].Text" xml:space="preserve">
+    <value>Öğeler</value>
+  </data>
+  <data name="[RESX:TagName].Text" xml:space="preserve">
+    <value>Etiket Adı</value>
+  </data>
+  <data name="[RESX:EnablePoints].Text" xml:space="preserve">
+    <value>Puan Sistemi</value>
+  </data>
+  <data name="[RESX:ModEmail].Text" xml:space="preserve">
+    <value>Moderatör E-postası</value>
+  </data>
+  <data name="[RESX:PostInfo].Text" xml:space="preserve">
+    <value>Gönderi Bilgisi</value>
+  </data>
+  <data name="[RESX:ProfileAdvanced].Text" xml:space="preserve">
+    <value>Gelişmiş</value>
+  </data>
+  <data name="[RESX:ProfileBasic].Text" xml:space="preserve">
+    <value>Temel</value>
+  </data>
+  <data name="[RESX:ProfileDisabled].Text" xml:space="preserve">
+    <value>Devre Dışı</value>
+  </data>
+  <data name="[RESX:ProfileType].Text" xml:space="preserve">
+    <value>Profil Türü</value>
+  </data>
+  <data name="[RESX:Profile].Text" xml:space="preserve">
+    <value>Kullanıcı Profili</value>
+  </data>
+  <data name="[RESX:AutoSubscribe].Text" xml:space="preserve">
+    <value>Otomatik Abonelikler</value>
+  </data>
+  <data name="[RESX:SelectRoles].Text" xml:space="preserve">
+    <value>Rolleri Seçin</value>
+  </data>
+  <data name="[RESX:Actions:ForumDeleted].Text" xml:space="preserve">
+    <value>Öğe silindi</value>
+  </data>
+  <data name="[RESX:Exit].Text" xml:space="preserve">
+    <value>Çıkış</value>
+  </data>
+  <data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve">
+    <value>Grup Ayarlarını Devral</value>
+  </data>
+  <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve">
+    <value>Özellik ayarlarını gruptan devralmak için bu kutuyu işaretleyin.</value>
+  </data>
+  <data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve">
+    <value>Grup Güvenliğini Devral</value>
+  </data>
+  <data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve">
+    <value>Güvenlik ayarlarını gruptan devralmak için bu kutuyu işaretleyin.</value>
+  </data>
+  <data name="[RESX:ClickToAdd].Text" xml:space="preserve">
+    <value>Eklemek İçin Tıklayın</value>
+  </data>
+  <data name="[RESX:Tips:EnableAvatars].Text" xml:space="preserve">
+    <value>Avatarların etkinleştirilip etkinleştirilmeyeceğini ve ilgili seçenekleri belirleyin.</value>
+  </data>
+  <data name="[RESX:Tips:EnablePoints].Text" xml:space="preserve">
+    <value>Puan sistemini etkinleştirin veya devre dışı bırakın ve uygun puan değerlerini belirleyin.</value>
+  </data>
+  <data name="[RESX:Tips:EnableProfiles].Text" xml:space="preserve">
+    <value>Profillerin nasıl görüntüleneceğini seçin&lt;br /&gt;Temel - varsayılan DNN Community Forums profili&lt;br /&gt;Gelişmiş - Yüklüyse DNN Community Profile modülündeki profili görüntüler.&lt;br /&gt;Devre Dışı - profiller devre dışı bırakılır.</value>
+  </data>
+  <data name="[RESX:Tips:MemberListMode].Text" xml:space="preserve">
+    <value>Üye listesine kimlerin erişebileceğini seçin.</value>
+  </data>
+  <data name="[RESX:Tips:Signatures].Text" xml:space="preserve">
+    <value>İmzaların etkinleştirilip etkinleştirilmeyeceğini ve nasıl görüntüleneceğini seçin.</value>
+  </data>
+  <data name="[RESX:Tips:Subscriptions].Text" xml:space="preserve">
+    <value>Kullanıcıların forumlara abone olup olamayacağını ve hangi abonelik türlerine izin verileceğini seçin.</value>
+  </data>
+  <data name="[RESX:Tips:UserDisplayMode].Text" xml:space="preserve">
+    <value>Üye adının nasıl görünmesini istediğinizi seçin.</value>
+  </data>
+  <data name="[RESX:DefaultDisabled].Text" xml:space="preserve">
+    <value>-- Devre Dışı --</value>
+  </data>
+  <data name="[RESX:PMPage].Text" xml:space="preserve">
+    <value>Özel Mesajlaşma Sayfası</value>
+  </data>
+  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve">
+    <value>Özel mesajlaşma modülünün yüklü olduğu sayfayı seçin.</value>
+  </data>
+  <data name="[RESX:AdminNotification].Text" xml:space="preserve">
+    <value>Yönetici Bildirimi</value>
+  </data>
+  <data name="[RESX:AlwaysApprove].Text" xml:space="preserve">
+    <value>Her zaman onayla</value>
+  </data>
+  <data name="[RESX:AlwaysModerate].Text" xml:space="preserve">
+    <value>Her zaman moderasyona al</value>
+  </data>
+  <data name="[RESX:AutoResponse].Text" xml:space="preserve">
+    <value>Otomatik Yanıt</value>
+  </data>
+  <data name="[RESX:CreateUsers].Text" xml:space="preserve">
+    <value>Kullanıcıları Otomatik Oluştur</value>
+  </data>
+  <data name="[RESX:EOMTag].Text" xml:space="preserve">
+    <value>EOM Etiketi</value>
+  </data>
+  <data name="[RESX:ModerateType].Text" xml:space="preserve">
+    <value>Moderasyonlu</value>
+  </data>
+  <data name="[RESX:OtherOptions].Text" xml:space="preserve">
+    <value>Diğer Seçenekler</value>
+  </data>
+  <data name="[RESX:POP3Password].Text" xml:space="preserve">
+    <value>POP3 Parolası</value>
+  </data>
+  <data name="[RESX:POP3UserName].Text" xml:space="preserve">
+    <value>POP3 Kullanıcı Adı</value>
+  </data>
+  <data name="[RESX:RejectMessage].Text" xml:space="preserve">
+    <value>Ret Bildirimi</value>
+  </data>
+  <data name="[RESX:RemoveHTML].Text" xml:space="preserve">
+    <value>HTML Kodlarını Kaldır</value>
+  </data>
+  <data name="[RESX:RequireEOM].Text" xml:space="preserve">
+    <value>EOM Etiketi Zorunlu</value>
+  </data>
+  <data name="[RESX:RestrictAlias].Text" xml:space="preserve">
+    <value>E-posta Adresine Göre Kısıtla</value>
+  </data>
+  <data name="[RESX:SiteAlias].Text" xml:space="preserve">
+    <value>Site Adresi</value>
+  </data>
+  <data name="[RESX:SubscriberNotification].Text" xml:space="preserve">
+    <value>Abone Bildirimi</value>
+  </data>
+  <data name="[RESX:Tips:AdminNotify].Text" xml:space="preserve">
+    <value>Bu, e-posta yoluyla bir konu veya yanıt oluşturulduğunda bu forumun moderatörlerine gönderilecek isteğe bağlı bir şablondur.  Bu şablon yalnızca ileti moderasyona tabi olmadığında kullanılır.</value>
+  </data>
+  <data name="[RESX:Tips:AllowHTML].Text" xml:space="preserve">
+    <value>Kullanıcıların HTML etiketleri kullanarak gönderi oluşturmasına izin verin.  Daha fazla ayrıntı için özellikler simgesine tıklayın.</value>
+  </data>
+  <data name="[RESX:Tips:Attachments].Text" xml:space="preserve">
+    <value>Kullanıcıların gönderileriyle birlikte dosya eki yüklemesine izin verin.   Daha fazla ayrıntı için özellikler simgesine tıklayın.</value>
+  </data>
+  <data name="[RESX:Tips:AutoCreateUsers].Text" xml:space="preserve">
+    <value>E-posta adresine göre kullanıcı hesabı bulunamadığında yeni kullanıcıların otomatik olarak oluşturulması için bu seçeneği etkinleştirin.</value>
+  </data>
+  <data name="[RESX:Tips:AutoRepsonse].Text" xml:space="preserve">
+    <value>Bu, kullanıcıya e-postasının alındığını bildirmek için gönderilebilecek isteğe bağlı bir şablondur.</value>
+  </data>
+  <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve">
+    <value>Otomatik olarak abone yapılacak ve bu foruma gönderilen yeni içerikler için e-posta bildirimi alacak rolleri seçin.</value>
+  </data>
+  <data name="[RESX:Tips:EMORequired].Text" xml:space="preserve">
+    <value>Yukarıda belirtilen İleti Sonu etiketini içermeyen iletileri reddetmek için bu seçeneği etkinleştirin.</value>
+  </data>
+  <data name="[RESX:Tips:Emoticons].Text" xml:space="preserve">
+    <value>Kullanıcıların gönderilerine ifadeler (gülen yüzler) eklemesine izin verin.</value>
+  </data>
+  <data name="[RESX:Tips:EOMTag].Text" xml:space="preserve">
+    <value>İleti Sonu (EOM) etiketi, kullanıcı e-posta ile yanıt verdiğinde yalnızca yeni bilgilerin dahil edilmesini sağlayan bir yöntemdir.  Kullanıcı bu etiketi kendi iletisinden sonra ve önceki iletinin metninden önce eklemelidir.</value>
+  </data>
+  <data name="[RESX:Tips:Filters].Text" xml:space="preserve">
+    <value>Bir kullanıcının gönderisi gönderildiğinde içindeki metni değiştirmek için filtreleri kullanın.</value>
+  </data>
+  <data name="[RESX:Tips:IndexContent].Text" xml:space="preserve">
+    <value>Bu forumdaki içeriğin DNN site aramasına dahil edilmesini sağlar.</value>
+  </data>
+  <data name="[RESX:Tips:MailConnector].Text" xml:space="preserve">
+    <value>Kullanıcıların gönderilere e-posta ile yanıt vermesini sağlar.  Daha fazla ayrıntı için özellikler simgesine tıklayın.</value>
+  </data>
+  <data name="[RESX:Tips:ModType].Text" xml:space="preserve">
+    <value>Forumun varsayılan moderasyon ayarlarını geçersiz kılmanızı sağlar.</value>
+  </data>
+  <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve">
+    <value>Bu foruma özel e-posta adresi.  Bu adres, site e-posta adresini ve forum ayarlarında girilmiş olabilecek e-posta adresini geçersiz kılar.</value>
+  </data>
+  <data name="[RESX:Tips:POPMailServer].Text" xml:space="preserve">
+    <value>POP3 sunucunuzun alan adını veya IP adresini girin.  Örn. mail.sirketim.com</value>
+  </data>
+  <data name="[RESX:Tips:POPPassword].Text" xml:space="preserve">
+    <value>Yukarıda belirtilen hesabın parolasını girin.</value>
+  </data>
+  <data name="[RESX:Tips:POPUserName].Text" xml:space="preserve">
+    <value>POP3 posta sunucusuna bağlanmak için kullanılacak kullanıcı adını girin.</value>
+  </data>
+  <data name="[RESX:Tips:PostIcon].Text" xml:space="preserve">
+    <value>Kullanıcının, gönderisini tanımlamaya yardımcı olacak bir simgeyi listeden seçmesine izin verin.</value>
+  </data>
+  <data name="[RESX:Tips:RejectNotify].Text" xml:space="preserve">
+    <value>Bu şablon, kullanıcının e-posta iletisi reddedildiğinde kullanıcıya gönderilir.</value>
+  </data>
+  <data name="[RESX:Tips:RestrictByAlias].Text" xml:space="preserve">
+    <value>Yalnızca doğrudan yukarıda belirtilen e-posta adresine gönderilmiş iletileri içe aktarmak için bu seçeneği etkinleştirin.  Bu hesaba ait posta kutusundaki tüm iletileri içe aktarmak istiyorsanız bu özelliği devre dışı bırakın.</value>
+  </data>
+  <data name="[RESX:Tips:RSS].Text" xml:space="preserve">
+    <value>Kullanıcıların bu foruma RSS ile abone olmasına izin verin.  Yalnızca Okuma erişimi olan güvenlik rolleri abone olabilir.</value>
+  </data>
+  <data name="[RESX:Tips:Scripts].Text" xml:space="preserve">
+    <value>Kullanıcıların gönderilerine JavaScript eklemesine izin verin. Önerilmez.</value>
+  </data>
+  <data name="[RESX:Tips:SiteURL].Text" xml:space="preserve">
+    <value>Bu, portalınızın varsayılan web sitesi adresi olmalıdır.</value>
+  </data>
+  <data name="[RESX:Tips:StripHTML].Text" xml:space="preserve">
+    <value>E-posta iletilerinden HTML kodlarını kaldırmak için bu seçeneği belirleyin.</value>
+  </data>
+  <data name="[RESX:Tips:SubNotify].Text" xml:space="preserve">
+    <value>Bu seçenek, e-posta kullanan kullanıcılara gönderilmek üzere varsayılan e-posta abonelik şablonu dışında bir şablon seçmenizi sağlar.</value>
+  </data>
+  <data name="[RESX:Tips:Tags].Text" xml:space="preserve">
+    <value>Yazarların gönderi oluştururken etiket girmesine izin verin.</value>
+  </data>
+  <data name="[RESX:Tips:AllowLikes].Text" xml:space="preserve">
+    <value>Ziyaretçilerin konu gönderilerini ve yanıtları 'beğenmesine' izin verin.</value>
+  </data>
+  <data name="[RESX:EditTimeLimit].Text" xml:space="preserve">
+    <value>Düzenleme Süresi</value>
+  </data>
+  <data name="[RESX:NewTopicsOnly].Text" xml:space="preserve">
+    <value>Yalnızca Yeni Konular</value>
+  </data>
+  <data name="[RESX:EditControl:Intro].Text" xml:space="preserve">
+    <value>Kullanıcının gönderisini yalnızca oluşturulduğu andan itibaren belirli bir dakika içinde düzenlemesine izin verir.  Kullanıcının ayrıca düzenleme izni de olmalıdır.  Bu özelliği devre dışı bırakmak için değeri 0 olarak ayarlayın.</value>
+  </data>
+  <data name="[RESX:Tips:AnswerPointValue].Text" xml:space="preserve">
+    <value>Bir konuya yanıtı sağlayan üyeye verilecek puan.</value>
+  </data>
+  <data name="[RESX:Tips:MarkAnswerPointValue].Text" xml:space="preserve">
+    <value>Konunun yazarına bir yanıtı seçtiğinde verilecek puan.</value>
+  </data>
+  <data name="[RESX:Tips:ModPointValue].Text" xml:space="preserve">
+    <value>Bir gönderiyi moderasyondan geçiren moderatöre verilecek puan.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyPointValue].Text" xml:space="preserve">
+    <value>Yeni bir yanıt oluşturan üyeye verilecek puan.</value>
+  </data>
+  <data name="[RESX:Tips:TopicPointValue].Text" xml:space="preserve">
+    <value>Yeni bir konu oluşturan üyeye verilecek puan.</value>
+  </data>
+  <data name="[RESX:EOMALL].Text" xml:space="preserve">
+    <value>TÜMÜ - Zorunlu</value>
+  </data>
+  <data name="[RESX:EOMOptional].Text" xml:space="preserve">
+    <value>İsteğe Bağlı</value>
+  </data>
+  <data name="[RESX:EOMReplies].Text" xml:space="preserve">
+    <value>Yanıtlar - Zorunlu</value>
+  </data>
+  <data name="[RESX:Tips:AvatarDimensions].Text" xml:space="preserve">
+    <value> Avatarlar için maksimum yükseklik ve genişliği seçin</value>
+  </data>
+  <data name="[RESX:Tips:EnableAvatarLinks].Text" xml:space="preserve">
+    <value>Kullanıcılarınızın başka bir sunucuda barındırılan avatarlara bağlantı vermesine izin verin.</value>
+  </data>
+  <data name="[RESX:Tips:SubscriptionOptions].Text" xml:space="preserve">
+    <value>Kullanıcılarınızın kullanabileceği abonelik yöntemlerini seçin.</value>
+  </data>
+  <data name="[RESX:Administrators].Text" xml:space="preserve">
+    <value>Yöneticiler</value>
+  </data>
+  <data name="[RESX:AllUsers].Text" xml:space="preserve">
+    <value>Tüm Kullanıcılar</value>
+  </data>
+  <data name="[RESX:Moderators].Text" xml:space="preserve">
+    <value>Moderatörler</value>
+  </data>
+  <data name="[RESX:PermittedRoles].Text" xml:space="preserve">
+    <value>İzin Verilen Kullanıcılar</value>
+  </data>
+  <data name="[RESX:RegisteredUsers].Text" xml:space="preserve">
+    <value>Kayıtlı Kullanıcılar</value>
+  </data>
+  <data name="[RESX:TrustedUsers].Text" xml:space="preserve">
+    <value>Güvenilir Kullanıcılar</value>
+  </data>
+  <data name="[RESX:AddRole].Text" xml:space="preserve">
+    <value>Rol Ekle</value>
+  </data>
+  <data name="[RESX:AddUserName].Text" xml:space="preserve">
+    <value>Kullanıcı Adı Ekle</value>
+  </data>
+  <data name="[RESX:Roles].Text" xml:space="preserve">
+    <value>Roller</value>
+  </data>
+  <data name="[RESX:Tips:AddRoles].Text" xml:space="preserve">
+    <value>Güvenlik tablosuna eklemek istediğiniz rolü seçin ve ardından artı simgesine tıklayın.  </value>
+  </data>
+  <data name="[RESX:Tips:AddUser].Text" xml:space="preserve">
+    <value>Güvenlik tablosuna eklemek istediğiniz kişinin kullanıcı adını girin ve ardından artı simgesine tıklayın.</value>
+  </data>
+  <data name="[RESX:UserNameNotFound].Text" xml:space="preserve">
+    <value>Girdiğiniz kullanıcı adı bulunamadı.</value>
+  </data>
+  <data name="[RESX:MoveDown].Text" xml:space="preserve">
+    <value>Aşağı Taşı</value>
+  </data>
+  <data name="[RESX:MoveUp].Text" xml:space="preserve">
+    <value>Yukarı Taşı</value>
+  </data>
+  <data name="[RESX:Tips:UsersOnlineEnabled].Text" xml:space="preserve">
+    <value>Kullanıcının çevrimiçi olduğunu ve forumları ziyaret ettiğini göstermek için bu özelliği etkinleştirin.</value>
+  </data>
+  <data name="[RESX:ForumsGroups].Text" xml:space="preserve">
+    <value>Forum Listesi</value>
+  </data>
+  <data name="[RESX:Save].Text" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="[RESX:Maint:Days].Text" xml:space="preserve">
+    <value>gün</value>
+  </data>
+  <data name="[RESX:Maint:Execute].Text" xml:space="preserve">
+    <value>Çalıştır</value>
+  </data>
+  <data name="[RESX:Maint:NoActivityPast].Text" xml:space="preserve">
+    <value>Son Etkinliği Şu Süreyi Aşan Konular</value>
+  </data>
+  <data name="[RESX:Maint:TestRun].Text" xml:space="preserve">
+    <value>Deneme Çalıştırması</value>
+  </data>
+  <data name="[RESX:Maint:TopicsByUser].Text" xml:space="preserve">
+    <value>Kullanıcıya Göre Konular</value>
+  </data>
+  <data name="[RESX:Maint:TopicsOlderThan].Text" xml:space="preserve">
+    <value>Şu Süreden Eski Konular</value>
+  </data>
+  <data name="[RESX:Maint:WithoutReplies].Text" xml:space="preserve">
+    <value>Yanıtı olmayan konular</value>
+  </data>
+  <data name="[RESX:MaintenanceInstruct].Text" xml:space="preserve">
+    <value>Forumlarınızdan içerik kaldırmak için aşağıdaki ölçütleri belirleyin.  Etkilenecek konu sayısını öğrenmek için "Deneme Çalıştırması" düğmesine tıklayın.  Bakımı başlatmak için "Çalıştır" düğmesine tıklayın.  Bu işlemin tamamlanması birkaç dakika sürebilir.  Lütfen bu sayfadan ayrılmadan önce işlemin tamamlanmasını bekleyin.</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Recycle:Desc].Text" xml:space="preserve">
+    <value>silindi olarak işaretlenecektir</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Recycle].Text" xml:space="preserve">
+    <value>Geri Dönüşüm</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Remove:Desc].Text" xml:space="preserve">
+    <value>kalıcı olarak silinecektir</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Remove].Text" xml:space="preserve">
+    <value>Kaldır</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning].Text" xml:space="preserve">
+    <value>Devam etmeden önce veritabanınızın yedeğini aldığınızdan emin olun.  Konular, ana ayarlar sekmesinde belirlediğiniz kaldırma yöntemine göre silinecektir.&lt;br /&gt;&lt;br /&gt;
+Kaldırma yönteminiz şu anda {0} olarak ayarlı.  Konularınız, aşağıda belirttiğiniz ölçütlere göre {1}.</value>
+  </data>
+  <data name="[RESX:Maintenance].Text" xml:space="preserve">
+    <value>Bakım</value>
+  </data>
+  <data name="[RESX:Tips:MaintActivityOlderThan].Text" xml:space="preserve">
+    <value>Gün sayısını girin.  Bu ayar, belirttiğiniz gün sayısı içinde yanıt almamış konulara uygulanır.</value>
+  </data>
+  <data name="[RESX:Tips:MaintOlderThan].Text" xml:space="preserve">
+    <value>Gün sayısını girin. Bu ayar, belirttiğiniz gün sayısından daha eski konulara uygulanır.</value>
+  </data>
+  <data name="[RESX:Tips:MaintTopicsByUser].Text" xml:space="preserve">
+    <value>Kullanıcı kimliğini (ID) girin.  Bu, işlemi yalnızca belirtilen kullanıcı kimliği tarafından oluşturulan konularla sınırlar.</value>
+  </data>
+  <data name="[RESX:Tips:MaintWithOutReplies].Text" xml:space="preserve">
+    <value>Hiç yanıt almamış tüm konuları kaldırmak için bu seçeneği etkinleştirin.</value>
+  </data>
+  <data name="[RESX:Maint:DryRunResults].Text" xml:space="preserve">
+    <value>{0} konu kaldırılacak.</value>
+  </data>
+  <data name="[RESX:Maint:RequiredCriteria].Text" xml:space="preserve">
+    <value>Lütfen seçtiğiniz ölçütleri kontrol edip tekrar deneyin.</value>
+  </data>
+  <data name="[RESX:ProcessComplete].Text" xml:space="preserve">
+    <value>İşlem başarıyla tamamlandı!</value>
+  </data>
+  <data name="[RESX:Warning:Maint].Text" xml:space="preserve">
+    <value>Bu işlemi çalıştırmak istediğinizden emin misiniz?</value>
+  </data>
+  <data name="[RESX:Actions:FinalConfirm].Text" xml:space="preserve">
+    <value>Emin olmak için soruyoruz: Bu öğeyi ve ilgili tüm verileri gerçekten silmek istiyor musunuz?</value>
+  </data>
+  <data name="[RESX:Actions:ForumDeleteConfirm].Text" xml:space="preserve">
+    <value>UYARI! - Bu öğenin silinmesi, ilgili tüm içeriği kalıcı olarak silecektir. Yedeğiniz yoksa devam etmeyin.\n İlgili tüm içeriği silmek için Tamam düğmesine tıklayın.  Çıkmak için İptal düğmesine tıklayın.</value>
+  </data>
+  <data name="[RESX:Actions:GroupDeleted].Text" xml:space="preserve">
+    <value>Grup ve ilgili tüm içerik silindi.</value>
+  </data>
+  <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve">
+    <value>Kullanıcı Dostu URL Adreslerini Etkinleştir</value>
+  </data>
+  <data name="[RESX:RequireCaptcha].Text" xml:space="preserve">
+    <value>Anonim Kullanıcılar İçin Captcha</value>
+  </data>
+  <data name="[RESX:Tips:EnableShortUrls].Text" xml:space="preserve">
+    <value>Bu özelliği etkinleştirdiğinizde DNN Community Forums yalnızca gereken en az sayıda parametreyi ekler.</value>
+  </data>
+  <data name="[RESX:Captcha:Intro].Text" xml:space="preserve">
+    <value>İstenmeyen (spam) içeriği önlemeye yardımcı olmak için anonim kullanıcıların rastgele bir güvenlik kodu girmesini zorunlu kılmak üzere bu özelliği etkinleştirin.</value>
+  </data>
+  <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve">
+    <value>Bu özelliği etkinleştirdiğinizde DNN Community Forums, temanızdaki (skin) gezinti yolu (breadcrumb) öğesini günceller.  Bu yalnızca DNN Breadcrumb tema nesnesiyle desteklenir.</value>
+  </data>
+  <data name="[RESX:UseSkinBreadcrumb].Text" xml:space="preserve">
+    <value>Tema Gezinti Yolunu Güncelle</value>
+  </data>
+  <data name="[RESX:EnableAutoLink].Text" xml:space="preserve">
+    <value>Otomatik Bağlantıları Etkinleştir</value>
+  </data>
+  <data name="[RESX:AutoLink:Intro].Text" xml:space="preserve">
+    <value>DNN Community Forums modülünün web sitesi adreslerini otomatik olarak köprülere dönüştürmesi için bu seçeneği etkinleştirin.</value>
+  </data>
+  <data name="[RESX:CategoryName].Text" xml:space="preserve">
+    <value>Kategori Adı</value>
+  </data>
+  <data name="[RESX:Tips:TopicPriority].Text" xml:space="preserve">
+    <value>Konu Önceliği, konuların tarihe göre sıralanmak yerine listede daha üstte görünmesini sağlar.  Tüm konular için varsayılan öncelik 0 değeridir.  Öncelik ne kadar yüksekse konu listede o kadar üstte görünür.</value>
+  </data>
+  <data name="[RESX:TopicPriority].Text" xml:space="preserve">
+    <value>Konu Önceliğine İzin Ver</value>
+  </data>
+  <data name="[RESX:Community].Text" xml:space="preserve">
+    <value>Topluluk</value>
+  </data>
+  <data name="[RESX:Everyone].Text" xml:space="preserve">
+    <value>Herkes</value>
+  </data>
+  <data name="[RESX:FriendsOnly].Text" xml:space="preserve">
+    <value>Yalnızca Arkadaşlar</value>
+  </data>
+  <data name="[RESX:SecurityOption].Text" xml:space="preserve">
+    <value>Günlük (Journal) Güvenliği</value>
+  </data>
+  <data name="[RESX:VanityName].Text" xml:space="preserve">
+    <value>Özel Ad</value>
+  </data>
+  <data name="[RESX:ViewRoles].Text" xml:space="preserve">
+    <value>Okuyabilen Rol</value>
+  </data>
+  <data name="[RESX:Tips:VanityName].Text" xml:space="preserve">
+    <value>Bu foruma erişilirken URL içinde kullanılmasını istediğiniz adı girin.  </value>
+  </data>
+  <data name="[RESX:AddProperty].Text" xml:space="preserve">
+    <value>Yeni Özellik Ekle</value>
+  </data>
+  <data name="[RESX:DataType].Text" xml:space="preserve">
+    <value>Veri Türü</value>
+  </data>
+  <data name="[RESX:IsHidden].Text" xml:space="preserve">
+    <value>Gizli</value>
+  </data>
+  <data name="[RESX:IsReadOnly].Text" xml:space="preserve">
+    <value>Salt Okunur</value>
+  </data>
+  <data name="[RESX:IsRequired].Text" xml:space="preserve">
+    <value>Zorunlu</value>
+  </data>
+  <data name="[RESX:Label].Text" xml:space="preserve">
+    <value>Etiket</value>
+  </data>
+  <data name="[RESX:Properties].Text" xml:space="preserve">
+    <value>Özellikler</value>
+  </data>
+  <data name="[RESX:PropertyName].Text" xml:space="preserve">
+    <value>Özellik Adı</value>
+  </data>
+  <data name="[RESX:TopicProperties:Intro].Text" xml:space="preserve">
+    <value>Konu özellikleri hakkında daha fazla bilgi</value>
+  </data>
+  <data name="[RESX:TopicProperties].Text" xml:space="preserve">
+    <value>Konu Özellikleri</value>
+  </data>
+  <data name="[RESX:ValidationExpression].Text" xml:space="preserve">
+    <value>Giriş Doğrulama</value>
+  </data>
+  <data name="[RESX:Visibility].Text" xml:space="preserve">
+    <value>Görünürlük</value>
+  </data>
+  <data name="[RESX:ListName].Text" xml:space="preserve">
+    <value>Liste Seçin</value>
+  </data>
+  <data name="[RESX:List].Text" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="[RESX:Text].Text" xml:space="preserve">
+    <value>Metin</value>
+  </data>
+  <data name="[RESX:WARN:DeleteProperty].Text" xml:space="preserve">
+    <value>Bu özelliği silmek istediğinizden emin misiniz?</value>
+  </data>
+  <data name="[RESX:YesNo].Text" xml:space="preserve">
+    <value>Evet/Hayır</value>
+  </data>
+  <data name="[RESX:AutoLink].Text" xml:space="preserve">
+    <value>Otomatik Köprüler</value>
+  </data>
+  <data name="[RESX:AvatarOptions].Text" xml:space="preserve">
+    <value>Avatar Seçenekleri</value>
+  </data>
+  <data name="[RESX:Captcha].Text" xml:space="preserve">
+    <value>Captcha (İstenmeyen İçerik Önleme)</value>
+  </data>
+  <data name="[RESX:CommunityOptions:Intro].Text" xml:space="preserve">
+    <value>Aşağıdaki ayarlar, forumlarınızdaki topluluk özelliklerini denetlemenizi sağlar.</value>
+  </data>
+  <data name="[RESX:CommunityOptions].Text" xml:space="preserve">
+    <value>Topluluk Seçenekleri</value>
+  </data>
+  <data name="[RESX:DeleteActionSelect].Text" xml:space="preserve">
+    <value>İşlem Seçin</value>
+  </data>
+  <data name="[RESX:EditControl].Text" xml:space="preserve">
+    <value>İçerik Düzenleme Denetimi</value>
+  </data>
+  <data name="[RESX:FloodControl].Text" xml:space="preserve">
+    <value>Yinelenen Gönderi ve Kötüye Kullanım Önleme</value>
+  </data>
+  <data name="[RESX:FriendlyURLOptions].Text" xml:space="preserve">
+    <value>Kullanıcı Dostu URL Seçenekleri</value>
+  </data>
+  <data name="[RESX:MainFeatures:Intro].Text" xml:space="preserve">
+    <value>Aşağıdaki özellikler tüm forumlarda kullanılır.  Belirli özellikleri aşağıdan etkinleştirebilir veya devre dışı bırakabilirsiniz.</value>
+  </data>
+  <data name="[RESX:MainFeatures].Text" xml:space="preserve">
+    <value>Ana Özellikler</value>
+  </data>
+  <data name="[RESX:MainSettings:Intro].Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="[RESX:Members:Intro].Text" xml:space="preserve">
+    <value>Aşağıdaki ayarlar, üyelerin forumlarınızda nasıl etkileşimde bulunacağını denetlemenizi sağlar.</value>
+  </data>
+  <data name="[RESX:PointsOptions].Text" xml:space="preserve">
+    <value>Puan Sistemi Seçenekleri</value>
+  </data>
+  <data name="[RESX:PostingOptions:Intro].Text" xml:space="preserve">
+    <value>Aşağıdaki ayarlar, forumlarınızda içerik oluşturmanın çeşitli yönlerini denetlemenizi sağlar.</value>
+  </data>
+  <data name="[RESX:PostingOptions].Text" xml:space="preserve">
+    <value>İçerik Seçenekleri</value>
+  </data>
+  <data name="[RESX:URLPrefixBase].Text" xml:space="preserve">
+    <value>Temel Yol</value>
+  </data>
+  <data name="[RESX:URLPrefixCategory].Text" xml:space="preserve">
+    <value>Kategori Yolu</value>
+  </data>
+  <data name="[RESX:URLPrefixOther].Text" xml:space="preserve">
+    <value>Görünümler Yolu</value>
+  </data>
+  <data name="[RESX:URLPrefixTag].Text" xml:space="preserve">
+    <value>Etiket Yolu</value>
+  </data>
+  <data name="[RESX:PleaseWait].Text" xml:space="preserve">
+    <value>Yükleniyor...  Lütfen bekleyin.</value>
+  </data>
+  <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve">
+    <value>Dikkat: DNN Community Forums URL İşleyicisinin yüklenmesi veya kaldırılması web.config dosyanızda değişiklik yapılmasını gerektirir.  \n\nBu değişikliği şimdi yapmak istediğinizden emin misiniz?</value>
+  </data>
+  <data name="[RESX:ListCheckBoxes].Text" xml:space="preserve">
+    <value>Liste - Çoklu Seçim </value>
+  </data>
+  <data name="[RESX:ListDropDown].Text" xml:space="preserve">
+    <value>Liste - Tekli Seçim</value>
+  </data>
+  <data name="[RESX:GetSupport].Text" xml:space="preserve">
+    <value>DNN Community Forums Desteği İçin Tıklayın</value>
+  </data>
+  <data name="[RESX:GetUpdates].Text" xml:space="preserve">
+    <value>Ürün Güncellemelerini Denetle</value>
+  </data>
+  <data name="ControlTitle_edit.Text" xml:space="preserve">
+    <value>Kontrol Paneli</value>
+  </data>
+  <data name="[RESX:CreatePostCount].Text" xml:space="preserve">
+    <value>Konu Açmak İçin Gönderi Sayısı</value>
+  </data>
+  <data name="[RESX:ReplyPostCount].Text" xml:space="preserve">
+    <value>Yanıt Vermek İçin Gönderi Sayısı</value>
+  </data>
+  <data name="[RESX:Tips:CreatePostCount].Text" xml:space="preserve">
+    <value>Bir kullanıcının yeni konu oluşturabilmesi için sahip olması gereken minimum gönderi sayısı.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyPostCount].Text" xml:space="preserve">
+    <value>Bir kullanıcının bir konuya yanıt verebilmesi için sahip olması gereken minimum gönderi sayısı.</value>
+  </data>
+  <data name="[RESX:AllowBrowseSite].Text" xml:space="preserve">
+    <value>Sitede Gezinmeye İzin Ver</value>
+  </data>
+  <data name="[RESX:AllowLikes].Text" xml:space="preserve">
+    <value>Beğenilere İzin Ver</value>
+  </data>
+  <data name="[RESX:Theme].Text" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="[RESX:Parent].Text" xml:space="preserve">
+    <value>Üst Öğe:</value>
+  </data>
+  <data name="[RESX:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Sabitle</value>
+  </data>
+  <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Dosya Ekle</value>
+  </data>
+  <data name="[RESX:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Kullanıcıları Yönet</value>
+  </data>
+  <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
+    <value>Oluştur</value>
+  </data>
+  <data name="[RESX:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="[RESX:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
+  <data name="[RESX:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Kilitle</value>
+  </data>
+  <data name="[RESX:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Moderasyon</value>
+  </data>
+  <data name="[RESX:SecGrid:Move].Text" xml:space="preserve">
+    <value>Taşı</value>
+  </data>
+  <data name="[RESX:SecGrid:Read].Text" xml:space="preserve">
+    <value>Oku</value>
+  </data>
+  <data name="[RESX:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Yanıtla</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe]Text" xml:space="preserve">
+    <value>Abone Ol</value>
+  </data>
+  <data name="[RESX:SecGrid:View].Text" xml:space="preserve">
+    <value>Görüntüle</value>
+  </data>
+  <data name="[RESX:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Duyuru Yap</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Abone Ol</value>
+  </data>
+  <data name="[RESX:SecGrid:Trust].Text" xml:space="preserve">
+    <value>Güven</value>
+  </data>
+  <data name="[RESX:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Etiketle</value>
+  </data>
+  <data name="[RESX:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Önceliklendir</value>
+  </data>
+  <data name="[RESX:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Kategorilere Ayır</value>
+  </data>
+  <data name="[RESX:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Anket</value>
+  </data>
+  <data name="[RESX:SecGrid:Split].Text" xml:space="preserve">
+    <value>Böl</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Kendi konularını Duyuru olarak işaretleyebilir. Duyurular normal konu listesinin üzerinde görüntülenir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Yeni konulara ve yanıtlara dosya yükleyip ekleyebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:ManageUsers].Text" xml:space="preserve">
+    <value>Diğer kullanıcıların seçeneklerini yönetebilir, kural dışı davranan bir kullanıcıyı uzaklaştırabilir, kullanıcının tüm içeriğini silebilir ve DNN kullanıcı hesabını devre dışı bırakabilir. Süper Kullanıcılar veya Yöneticiler üzerinde kullanılamaz. Yalnızca güvenilir moderatörlere veya Yönetici rollerine verilmelidir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Yeni bir konunun hangi kategorilere ait olduğunu belirleyebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Create].Text" xml:space="preserve">
+    <value>Yeni Konu düğmesini görebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Kendi gönderilerini silebilir. Moderasyon + Silme yetkisine sahip kullanıcılar forumdaki herhangi bir konuyu veya yanıtı silebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Kendi gönderilerini düzenleyebilir. Bunun için bir süre sınırı olabilir veya olmayabilir. Moderasyon + Düzenleme yetkisine sahip kullanıcılar herhangi bir konuyu veya yanıtı düzenleyebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Kendi oluşturduğu konuları kilitleyebilir. Moderasyon + Kilitleme yetkisine sahip kullanıcılar forumdaki herhangi bir konuyu kilitleyebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Moderasyon arayüzüne erişim sağlar. Moderasyon bekleyen konuları ve yanıtları onaylayabilir, reddedebilir veya silebilir. Ayrıca Düzenleme, Silme, Kilitleme, Sabitleme ve Bölme yetkileriyle birleştirilerek bu işlemler forumdaki herhangi bir konu üzerinde gerçekleştirilebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Move].Text" xml:space="preserve">
+    <value>Kullanıcılar kendi konularını farklı bir foruma taşıyabilir. Moderasyon + Taşıma yetkisine sahip kullanıcılar herhangi bir konuyu farklı bir foruma taşıyabilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Kendi oluşturduğu konuları sabitleyebilir. Bir konunun sabitlenmesi, konunun konu listesinin en üstünde kalmasını sağlar. Moderasyon + Sabitleme yetkisine sahip kullanıcılar herhangi bir konuyu sabitleyebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Oluşturduğu yeni konulara anket ekleyebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Bir konunun öncelik numarasını belirleyebilir. Öncelik numarası, konunun konu listesinde nerede görüneceğini belirler. Konu sabitlemeye benzer, ancak daha ayrıntılı bir belirleme yapılmasına olanak tanır.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Read].Text" xml:space="preserve">
+    <value>Konu başlığını görebilir ve içeriği görmek için başlığa tıklayabilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Daha önce oluşturulmuş bir konuya yanıt verebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Split].Text" xml:space="preserve">
+    <value>Kullanıcı kendi konusunu ve yanıtlarını farklı konulara bölebilir. Moderasyon + Bölme yetkisine sahip kullanıcı herhangi bir konuyu ve yanıtlarını farklı konulara bölebilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Yeni konular ve yanıtlar hakkında e-posta bildirimleri almak için kaydolabilir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Konulara etiket ekleyebilir/etiketleri yönetebilir. Gönderilere (konulara ve/veya yanıtlara) girilen tüm etiketler otomatik olarak hem konuya hem de forumlar genelinde kullanılabilen etiket listesine eklenir.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
+    <value>Güven yetkisine sahip kullanıcı, forum için yapılandırılmışsa moderasyonu otomatik olarak atlar.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:View].Text" xml:space="preserve">
+    <value>Konuyu listede görebilir, ancak açamaz.</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Basics].Text" xml:space="preserve">
+    <value>Temel</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Advanced].Text" xml:space="preserve">
+    <value>Gelişmiş</value>
+  </data>
+  <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
+    <value>Yöneticiler/Moderatörler</value>
+  </data>
+  <data name="[RESX:ModuleDefaults].Text" xml:space="preserve">
+    <value>Varsayılan Ayarlar ve Güvenlik</value>
+  </data>
+  <data name="[RESX:Actions:DefaultsSaved].Text" xml:space="preserve">
+    <value>Varsayılan Ayarlar ve Güvenlik Kaydedildi</value>
+  </data>
+  <data name="[RESX:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Varsayılan Ayarları Devral</value>
+  </data>
+  <data name="[RESX:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Varsayılan Güvenliği Devral</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleSecurity].Text" xml:space="preserve">
+    <value>Varsayılan modül özellik ayarlarını devralmak için bu kutuyu işaretleyin.</value>
+  </data>
+  <data name="[RESX:Tips:InheritModuleFeatures].Text" xml:space="preserve">
+    <value>Varsayılan modül güvenliğini devralmak için bu kutuyu işaretleyin.</value>
+  </data>
+  <data name="[RESX:DefaultSettings].Text" xml:space="preserve">
+    <value>Varsayılan Güvenlik ve Özellik Ayarları</value>
+  </data>
+  <data name="[RESX:InheritsSecurity].Text" xml:space="preserve">
+    <value>Güvenliği Devralıyor</value>
+  </data>
+  <data name="[RESX:InheritsSettings].Text" xml:space="preserve">
+    <value>Ayarları Devralıyor</value>
+  </data>
+  <data name="[RESX:Tips:InheritSecurityOn].Text" xml:space="preserve">
+    <value>{0}, güvenlik ayarlarını {1} öğesinden devralıyor</value>
+  </data>
+  <data name="[RESX:Tips:InheritSecurityRecommended].Text" xml:space="preserve">
+    <value>{0} ile {1} aynı güvenlik ayarlarına sahip; bu nedenle {0} için 'güvenliği devral' seçeneğini etkinleştirmeniz önerilir</value>
+  </data>
+  <data name="[RESX:Tips:InheritSettingsOn].Text" xml:space="preserve">
+    <value>{0}, ayarlarını {1} öğesinden devralıyor</value>
+  </data>
+  <data name="[RESX:Tips:InheritSettingsRecommended].Text" xml:space="preserve">
+    <value>{0} ile {1} aynı ayarlara sahip; bu nedenle {0} için 'ayarları devral' seçeneğini etkinleştirmeniz önerilir</value>
+  </data>
+  <data name="[RESX:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>E-posta Konu Şablonu</value>
+  </data>
+  <data name="[RESX:Tips:EmailSubjectTemplate].Text" xml:space="preserve">
+    <value>Bildirim gönderilirken konu satırı olarak kullanılacak şablonu girin. Şablon belirteçler (token) içerebilir. Belirteçlerle ilgili belgeler için lütfen DNN Community Forums GitHub deposunu (https://github.com/DNNCommunity/Dnn.CommunityForums) ziyaret edin ve wiki sayfalarını inceleyin.</value>
+  </data>
+  <data name="[RESX:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Şablon Dosya Adı Soneki</value>
+  </data>
+  <data name="[RESX:Tips:TemplateFileNameSuffix].Text" xml:space="preserve">
+    <value>Şablonlar alınırken kullanılacak bir metin girin. Örneğin, moderasyonlu forumlar için ayrı şablon dosyalarınız olmasını istiyorsanız 'moderated' girin; böylece şablonlar dosya adının bir parçası olarak 'moderated' kullanılarak alınır. Örn. TopicsView şablonu alınırken yalnızca 'TopicsView.ascx' yerine 'TopicsView-moderated.ascx' kullanılır.</value>
+  </data>
+  <data name="[RESX:BadgeName].Text" xml:space="preserve">
+    <value>Rozet</value>
+  </data>
+  <data name="[RESX:SortOrder].Text" xml:space="preserve">
+    <value>Sıralama Düzeni</value>
+  </data>
+  <data name="[RESX:Badges].Text" xml:space="preserve">
+    <value>Rozetler</value>
+  </data>
+  <data name="[RESX:Badge].Text" xml:space="preserve">
+    <value>Rozet</value>
+  </data>
+  <data name="[RESX:BadgeNew].Text" xml:space="preserve">
+    <value>Yeni Rozet</value>
+  </data>
+  <data name="[RESX:BadgeThreshold].Text" xml:space="preserve">
+    <value>Eşik Değeri</value>
+  </data>
+  <data name="[RESX:BadgeMetric].Text" xml:space="preserve">
+    <value>Ölçüt</value>
+  </data>
+  <data name="[RESX:BadgeImage].Text" xml:space="preserve">
+    <value>Görsel</value>
+  </data>
+  <data name="[RESX:BadgeMetricManual].Text" xml:space="preserve">
+    <value>Elle Verilen</value>
+  </data>
+  <data name="[RESX:Description].Text" xml:space="preserve">
+    <value>Açıklama</value>
+  </data>
+  <data name="[RESX:BadgeMetricNewUser].Text" xml:space="preserve">
+    <value>Yeni Kullanıcı</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsCreated].Text" xml:space="preserve">
+    <value>Oluşturulan Konular</value>
+  </data>
+  <data name="[RESX:BadgeMetricRepliesCreated].Text" xml:space="preserve">
+    <value>Yanıtlanan Konular</value>
+  </data>
+  <data name="[RESX:BadgeMetricLikesReceived].Text" xml:space="preserve">
+    <value>Alınan Beğeniler</value>
+  </data>
+  <data name="[RESX:BadgeMetricTopicsRead].Text" xml:space="preserve">
+    <value>Okunan Konular</value>
+  </data>
+  <data name="[RESX:Button:UpdateBadgeUsers].Text" xml:space="preserve">
+    <value>Kullanıcıları Güncelle</value>
+  </data>
+  <data name="[RESX:BadgeImageMarkup].Text" xml:space="preserve">
+    <value>Rozet için HTML işaretlemesi (örn. font-awesome)</value>
+  </data>
+  <data name="[RESX:BadgeOneTimeAward].Text" xml:space="preserve">
+    <value>Kullanıcı bu rozeti yalnızca bir kez kazanabilir</value>
+  </data>
+  <data name="[RESX:BadgeIntervalDays].Text" xml:space="preserve">
+    <value>Bu rozetin kazanımları arasındaki gün sayısı</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Gönderilerde diğer kullanıcılardan bahsedebilir (forum için özellik etkinse)</value>
+  </data>
+  <data name="[RESX:SecGrid:Mention].Text" xml:space="preserve">
+    <value>Bahset</value>
+  </data>
+  <data name="[RESX:Tips:UserMentions].Text" xml:space="preserve">
+    <value>Etkinleştirilirse, bir kullanıcı gönderide @ kullanarak bahsetmeye başladığında hangi kullanıcı listesinin görüntüleneceğini seçebilirsiniz</value>
+  </data>
+  <data name="[RESX:UserMentionVisibility].Text" xml:space="preserve">
+    <value>Kullanıcı Bahsetme Görünürlüğü</value>
+  </data>
+  <data name="[RESX:RegisteredUsersPlusAdmins].Text" xml:space="preserve">
+    <value>Kayıtlı Kullanıcılar ve Yöneticiler (Süper Kullanıcılar hariç)</value>
+  </data>
+  <data name="[RESX:UserMentions].Text" xml:space="preserve">
+    <value>Kullanıcı Bahsetmeleri</value>
+  </data>
+  <data name="[RESX:NotActive].Text" xml:space="preserve">
+    <value>Etkin Değil</value>
+  </data>
+</root>

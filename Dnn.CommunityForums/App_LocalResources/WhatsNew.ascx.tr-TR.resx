@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="[RESX:AllowURLParams].Text" xml:space="preserve">
+    <value>URL Parametrelerine İzin Ver</value>
+  </data>
+  <data name="[RESX:CacheTimeOut].Text" xml:space="preserve">
+    <value>Önbellek zaman aşımı</value>
+  </data>
+  <data name="[RESX:EnableRSS].Text" xml:space="preserve">
+    <value>RSS Etkinleştir</value>
+  </data>
+  <data name="[RESX:FilterByTag].Text" xml:space="preserve">
+    <value>Etikete Göre Filtrele</value>
+  </data>
+  <data name="[RESX:HTMLFooter].Text" xml:space="preserve">
+    <value>HTML Alt Bilgi</value>
+  </data>
+  <data name="[RESX:HTMLHeader].Text" xml:space="preserve">
+    <value>HTML Üst Bilgi</value>
+  </data>
+  <data name="[RESX:HTMLTemplate].Text" xml:space="preserve">
+    <value>Şablon</value>
+  </data>
+  <data name="[RESX:IgnoreSecurity].Text" xml:space="preserve">
+    <value>Güvenliği Yok Say</value>
+  </data>
+  <data name="[RESX:IncludeBody].Text" xml:space="preserve">
+    <value>Gövdeyi Dahil Et</value>
+  </data>
+  <data name="[RESX:Minutes].Text" xml:space="preserve">
+    <value>dakika</value>
+  </data>
+  <data name="[RESX:NumberOfItems].Text" xml:space="preserve">
+    <value>Öğe Sayısı</value>
+  </data>
+  <data name="[RESX:RandomOrder].Text" xml:space="preserve">
+    <value>Rastgele Sıra</value>
+  </data>
+  <data name="[RESX:Token:AuthorDisplayName].Text" xml:space="preserve">
+    <value>Gönderiyi oluşturan kişinin kendi seçtiği adı görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:AuthorFirstName].Text" xml:space="preserve">
+    <value>Gönderiyi oluşturan kişinin adını görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:AuthorId].Text" xml:space="preserve">
+    <value>Gönderiyi oluşturan kişinin kullanıcı kimliğini (ID) görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:AuthorLastName].Text" xml:space="preserve">
+    <value>Gönderiyi oluşturan kişinin soyadını görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:AuthorUserName].Text" xml:space="preserve">
+    <value>Gönderiyi oluşturan kişinin kullanıcı adını görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:BodyHTML].Text" xml:space="preserve">
+    <value>Gönderinin tam metnini HTML biçimlendirmesiyle görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:BodyText].Text" xml:space="preserve">
+    <value>Gönderideki tüm HTML biçimlendirmesini kaldırır.</value>
+  </data>
+  <data name="[RESX:Token:BodyXX].Text" xml:space="preserve">
+    <value>XX yerine görüntülenmesini istediğiniz düz metin karakter sayısını yazın.</value>
+  </data>
+  <data name="[RESX:Token:Date].Text" xml:space="preserve">
+    <value>Gönderinin oluşturulduğu tarihi görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:FooterOnly].Text" xml:space="preserve">
+    <value>Aşağıdaki belirteçler Alt Bilgi bölümünde kullanılabilir.</value>
+  </data>
+  <data name="[RESX:Token:ForumGroupId].Text" xml:space="preserve">
+    <value>Gönderinin ait olduğu Forum Grubunun benzersiz kimliğini oluşturur.</value>
+  </data>
+  <data name="[RESX:Token:ForumGroupName].Text" xml:space="preserve">
+    <value>Gönderinin ait olduğu Forum Grubunun adını görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:ForumId].Text" xml:space="preserve">
+    <value>Gönderinin bulunduğu Forumun benzersiz kimliğini görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:ForumName].Text" xml:space="preserve">
+    <value>Gönderinin ait olduğu Forumun adını görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:ForumURL].Text" xml:space="preserve">
+    <value>Gönderinin bulunduğu forumun URL adresini oluşturur.</value>
+  </data>
+  <data name="[RESX:Token:PostURL].Text" xml:space="preserve">
+    <value>İlgili gönderinin tam URL adresini oluşturur.</value>
+  </data>
+  <data name="[RESX:Token:ReplyCount].Text" xml:space="preserve">
+    <value>Konunun yanıt sayısını oluşturur.</value>
+  </data>
+  <data name="[RESX:Token:ReplyId].Text" xml:space="preserve">
+    <value>Görüntülenen öğe bir yanıtsa gönderinin yanıt kimliğini oluşturur.</value>
+  </data>
+  <data name="[RESX:Token:RSSIconLink].Text" xml:space="preserve">
+    <value>Varsayılan RSS simgesini RSS akışına giden bir köprü olarak görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:RSSICON].Text" xml:space="preserve">
+    <value>Varsayılan RSS simgesini görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:RSSURL].Text" xml:space="preserve">
+    <value>RSS akışının URL adresini görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:SubjectLink].Text" xml:space="preserve">
+    <value>Başlığı, gönderiye giden bir köprü olarak oluşturur.</value>
+  </data>
+  <data name="[RESX:Token:Subject].Text" xml:space="preserve">
+    <value>Gönderinin başlığını görüntüler.</value>
+  </data>
+  <data name="[RESX:Token:TemplateOnly].Text" xml:space="preserve">
+    <value>Aşağıdaki belirteçler Şablon bölümünde kullanılabilir.</value>
+  </data>
+  <data name="[RESX:Token:TopicId].Text" xml:space="preserve">
+    <value>Gönderinin benzersiz konu kimliğini oluşturur.</value>
+  </data>
+  <data name="[RESX:Token:TopicModuleId].Text" xml:space="preserve">
+    <value>Gönderinin bulunduğu forum örneğinin modül kimliğini oluşturur.</value>
+  </data>
+  <data name="[RESX:Token:TopicsURL].Text" xml:space="preserve">
+    <value>Konunun URL adresini oluşturur.</value>
+  </data>
+  <data name="[RESX:Token:TopicTabId].Text" xml:space="preserve">
+    <value>Gönderinin bulunduğu sayfanın sekme kimliğini (Tab ID) oluşturur.</value>
+  </data>
+  <data name="[RESX:TopicsOnly].Text" xml:space="preserve">
+    <value>Yalnızca Konular</value>
+  </data>
+  <data name="[RESX:Update].Text" xml:space="preserve">
+    <value>Güncelle</value>
+  </data>
+</root>
