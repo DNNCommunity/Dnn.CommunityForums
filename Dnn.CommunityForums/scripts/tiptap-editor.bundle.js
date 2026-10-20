@@ -49649,13 +49649,14 @@ class TipTapEditorController {
         ];
 
         // Create a div container for the buttons
+        const parser = new DOMParser();
         const buttonsContainer = document.createElement("div");
         buttonsContainer.setAttribute("class", "dcf-tiptap-buttons");
         this.editorElement.appendChild(buttonsContainer);
         for (let i = 0; i < this.actions.length; i++) {
             let a = this.actions[i];
             a.button = document.createElement("button");
-            a.button.setAttribute("title", a.title || a.name);
+            a.button.setAttribute("title", parser.parseFromString(a.title || a.name, "text/html").body.textContent);
             a.button.setAttribute("class", "dcf-tiptap-button dcf-tiptap-button-" + a.name);
             a.button.innerHTML = "<i class=\"fa " + a.fontTag + "\"></i>";
             a.button.addEventListener("click", (event) => {
