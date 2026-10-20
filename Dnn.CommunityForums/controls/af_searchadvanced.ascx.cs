@@ -257,6 +257,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 },
                 includeHiddenForums: false,
                 includeInactiveForums: false);
+
+            if (this.lbForums.Items.Count < this.lbForums.Rows)
+            {
+                this.lbForums.Rows = Math.Max(3, this.lbForums.Items.Count);
+            }
         }
 
         #endregion

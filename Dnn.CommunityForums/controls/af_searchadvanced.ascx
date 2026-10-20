@@ -17,7 +17,7 @@
         </div>
         <div class="af-adv-search-row">
             <asp:Label runat="server" ID="lblForums" Text="[RESX:SearchInForums]" AssociatedControlID="lbForums" />
-            <asp:ListBox runat="server" ID="lbForums" CssClass="af-adv-search-list" SelectionMode="Multiple" Rows="6" />
+            <asp:ListBox runat="server" ID="lbForums" CssClass="af-adv-search-list" SelectionMode="Multiple" Rows="12" />
         </div>
         <div class="af-adv-search-row">
             <asp:Label runat="server" ID="lblSearchDays" AssociatedControlID="drpSearchDays" Text="[RESX:SearchTimeFrame]" />
