@@ -24,7 +24,7 @@
 	    </div>
     </div>
     <div class="af-attach-editor-list" style="clear:left;">
-	    <table style="display: none;">
+	    <table id="<%=ClientID%>_attachmentTable" hidden="hidden">
 		    <thead>
 			    <tr>
 				    <td><%=GetSharedResource("[RESX:FileName]")%></td>
@@ -41,13 +41,14 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
+    const initializeAttachmentManager = function () {
 
-        var options = {
+        const options = {
             elementId: "<%= ClientID %>",
             editorType: <%=(int)ForumInfo.FeatureSettings.EditorType%>,
             moduleId: <%=ModuleId%>,
             forumId: <%=ForumId%>,
+            attachmentTableId: "<%=ClientID%>_attachmentTable",
             attachmentsClientId: "<%=AttachmentsClientId %>",
             titleText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:Attachments:BrowseSite:Title]"))%>",
             nameHeaderText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:FileName]"))%>",
@@ -68,11 +69,18 @@
             uploadButtonText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:UploadButton]"))%>"
         };
 
-        var attachmentMgr = new AFAttachmentManager(jQuery, options);
+        const attachmentMgr = new AFAttachmentManager(jQuery, options);
 
         attachmentMgr.initialize();
 
-    });
+    };
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeAttachmentManager);
+    }
+    else {
+        initializeAttachmentManager();
+    }
 
     
 </script>
