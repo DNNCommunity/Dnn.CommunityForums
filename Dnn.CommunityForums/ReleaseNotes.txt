@@ -46,7 +46,7 @@
             DNN Community Forums Release Notes
         </h2>
         <h3>
-            10.01.00
+            10.02.00
         </h3>
 <!--       
         <p>
@@ -75,34 +75,13 @@
         <h4>New Features &amp; Enhancements</h4>
         <ul>
         
-            <li>ENHANCED: Search UI simplified into single critera/results page (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/1861">Issue 1861</a>)</li>
-            <li>ENHANCED: Posts with just an image (without any text) are now allowed in forums (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/1965">Issue 1965</a>)</li>
-            <li>ENHANCED: Easier login from moderator notification emails/login link on moderation page (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/1984">Issue 1984</a>)</li>
-            <li>ENHANCED: Friendly URL rewriter now ignores deleted posts and silently redirects to main forum page without logging an exception (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/2002">Issue 2002</a>)</li>
-            <li>ENHANCED: Topic properties are now stored in their own SQL table rather than as an XML document within the topics table (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/749">Issue 749</a>)</li>
+            <li>NEW: Turkish language localization (Thanks <a target="_blank" href="https://github.com/idumlupinar">Ismet D.</a>!!! (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/2024">PR 2024</a>)</li>
+            <li>ENHANCED: HTML decoding for TipTap editor icon tooltips to support accented languages (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/2030">PR 2030</a>)</li>
+            <li>ENHANCED: Improved styling of TipTap editor icons (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/2020">PR 2020</a>)</li>
+            <li>ENHANCED: Larger forum list box in search UI (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/2029">PR 2029</a>)</li>
             
 <!--
-            <li>NEW: Export/import and sharing of module (IPortable + Sharable) are now fully supported (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1945">PR 1945</a>)</li>
-            <li>NEW: "Forums Viewer" module can now have a different theme than "main" forums module (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1933">PR 1933</a>)</li>
-            <li>NEW: Localization for initial configuration screen (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1947">PR 1947</a>)</li>
-            <li>ENHANCED: Improved handling of content within &lt;code&gt; tags (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1949">PR 1949</a>)</li>
-            <li>ENHANCED: Improved caching logic, significantly reducing database calls for certain scenarios (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1917">PR 1917</a>)</li>
-            <li>ENHANCED: Remove deprecated URLBASE friendly URL module setting (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1918">PR 1918</a>)</li>
-            <li>ENHANCED: Reposition "Mark All Read" button in "Not Read" filtered topics view (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1907">PR 1907</a>)</li>
-            <li>ENHANCED: Button styling for TipTap content editor (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1962">PR 1962</a>)</li>
-            <li>ENHANCED: Don't log admin alerts on bad (bots) request; quietly redirect to main forums page (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issue/1523">Issue 1523</a>)</li>
-
-            <li>NEW: Web API endpoints for forums search functionality (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1758">PR 1758</a>)</li>
-            <li>NEW: Require URL prefix for forum/forum groups in Control Panel when friendly URLs are enabled (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1765">PR 1765</a>)</li>
-            <li>NEW: During upgrade, ensure friendly URL/vanity names are properly populated when friendly URLs are enabled (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1767">PR 1767</a>)</li>
-            <li>NEW: In forums list in Control Panel, show labels for forums/forum groups that are hidden and/or not active (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1754">PR 1754</a>)</li>
-            <li>UPDATE: [FORUMAUTHOR:FIRSTNAME] and [FORUMAUTHOR:LASTNAME] tokens now honor DNN profile visibility settings (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1740">PR 1740</a>)</li>
-            <li>UPDATE: Change icon in search popup from gray to blue to match toolbar icon (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/1751">PR 1751</a>)</li>
-
-
-            <li>UPDATE: When upgrading, don't send notifications during initial backfill of badge awards (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1632">Issue 1632</a>)</li>
-            <li>UPDATE: When upgrading, don't install badges on forums in "Social Group" configuration; those can be added manually if desired (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1621">Issue 1621</a>)</li>
-            <li>UPDATE: If multiple instances of DNN Community Forums are installed, only display user badges associated with the specific module instance (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1637">Issue 1637</a>)</li>
+            
             <li>NEW: (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/TBD">PR# TBD</a>)</li>
             <li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>)</li>
             <li>None at this time.</li>
@@ -112,7 +91,10 @@
         <h4>Bug Fixes</h4>
 
         <ul>
-            <li>FIX: Topic options dialog not readable on DNN 10 (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/2014">Issue 2014</a>)</li>
+            <li>FIX: Error when saving in "My Settings" (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/2031">Issue 2031</a>)</li>
+            <li>FIX: What's New module not showing new posts (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/2032">Issue 2032</a>)</li>
+            <li>FIX: Changing sort order in topic view not working with friendly URLs (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/2033">Issue 2033</a>)</li>
+            <li>FIX: Installer showing incorrect license text (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/2027">Issue 2027</a>)</li>
           
 <!--     
           <li>None at this time.</li> 
@@ -124,7 +106,8 @@
 
         <h4>Tasks / Development Updates (and Technical Debt Reduction)</h4>
         <ul>
-            <li>10.01.00 Release Prep (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/2013">Issue 2013</a>)</li>
+            <li>Move split-related APIs to TopicController and ForumController (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/1850">Issue 1850</a>)</li>
+            <li>10.02.00 Release Prep (<a target="_blank" href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/2038">Issue 2038</a>)</li>
             
 <!--
 
