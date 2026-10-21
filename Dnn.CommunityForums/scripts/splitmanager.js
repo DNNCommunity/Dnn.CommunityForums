@@ -7,6 +7,7 @@
         var $wrap = $(opts.openTriggerScope);
         var topicId = -1;
         var forumId = -1;
+        var sourceForumId = -1;
         var oTopicId;
         var forumsList;
         var topicList;
@@ -14,7 +15,8 @@
         var splitManagerDialog;
         var existed = false;
 
-        opts.serviceurlbase = opts.servicesFramework.getServiceRoot('ActiveForums') + 'ForumService/';
+        opts.forumServiceUrlBase = opts.servicesFramework.getServiceRoot('ActiveForums') + 'Forum/';
+        opts.topicServiceUrlBase = opts.servicesFramework.getServiceRoot('ActiveForums') + 'Topic/';
 
         function openSplitManagerDialog() {
 
@@ -86,7 +88,7 @@
 
         function loadTopics() {
             $.ajax({
-                url: opts.serviceurlbase + "GetTopicList?ForumId=" + forumId,
+                url: opts.topicServiceUrlBase + "GetTopicList?ForumId=" + forumId,
                 type: "GET",
                 contentType: "application/json",
                 dataType: "json",
@@ -123,6 +125,7 @@
 
             var params = {
                 OldTopicId: oTopicId,
+                ForumId: sourceForumId,
                 NewTopicId: topicId,
                 NewForumId: forumId,
                 Subject: subject,
@@ -130,7 +133,7 @@
             };
 
             $.ajax({
-                url: opts.serviceurlbase + "CreateSplit",
+                url: opts.topicServiceUrlBase + "CreateSplit",
                 type: "POST",
                 data: JSON.stringify(params),
                 contentType: "application/json",
@@ -152,7 +155,7 @@
             var $list = $('#' + list);
             $list.find('option').remove();
             if (json == null) return;
-            var arr = $.parseJSON(json);
+            var arr = typeof (json) === 'string' ? $.parseJSON(json) : json;
             if (arr != null) {
                 $.each(arr, function (key, value) {
                     $list.append('<option value=' + key + '>' + value + '</option>');
@@ -166,9 +169,10 @@
             e.stopPropagation();
 
             oTopicId = $(e.currentTarget).attr('data-id');
+            sourceForumId = $(e.currentTarget).attr('data-forumid');
 
             $.ajax({
-                url: opts.serviceurlbase + "GetForumsList",
+                url: opts.forumServiceUrlBase + "GetForumsList?ForumId=" + sourceForumId,
                 type: "GET",
                 contentType: "application/json",
                 dataType: "json",

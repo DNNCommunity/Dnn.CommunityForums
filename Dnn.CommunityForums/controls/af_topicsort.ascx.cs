@@ -94,14 +94,9 @@ namespace DotNetNuke.Modules.ActiveForums
         private void drpSort_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             var sort = this.drpSort.SelectedItem.Value;
-            var dest = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(this.TabId, string.Empty,
-                                                             new[]
-                                                                 {
-                                                                     ParamKeys.ViewType + "=" + Views.Topic,
-                                                                     ParamKeys.ForumId + "=" + this.ForumId,
-                                                                     ParamKeys.TopicId + "=" + this.TopicId,
-                                                                     ParamKeys.Sort + "=" + sort,
-                                                                 });
+            var topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Instance.GetById(this.ForumModuleId, this.TopicId);
+            var dest = new ControlUtils().BuildUrl(portalId: this.PortalSettings.PortalId, tabId: this.TabId, moduleId: this.ForumModuleId, groupPrefix: topic.Forum.ForumGroup.PrefixURL, forumPrefix: topic.Forum.PrefixURL, forumGroupId: topic.Forum.ForumGroupId, forumID: topic.Forum.ForumID, topicId: this.TopicId, topicURL: topic.TopicUrl, tagId: -1, categoryId: -1, otherPrefix: string.Empty, pageId: this.PageId, contentId: -1, socialGroupId: topic.Forum.SocialGroupId);
+            dest += (dest.Contains("?") ? "&" : "?") + ParamKeys.Sort + "=" + sort;
             this.Response.Redirect(dest, false);
             this.Context.ApplicationInstance.CompleteRequest();
         }

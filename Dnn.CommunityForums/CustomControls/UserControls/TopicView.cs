@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Get our Row Index
             this.rowIndex = (pageId - 1) * this.pageSize;
-            string cacheKey = string.Format(CacheKeys.TopicViewForUser, this.ModuleId, this.TopicId, this.UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, this.rowIndex, this.pageSize);
+            string cacheKey = string.Format(CacheKeys.TopicViewForUser, this.ModuleId, this.TopicId, this.UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, this.rowIndex, this.pageSize, this.defaultSort);
             DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(this.ForumModuleId, cacheKey);
             if (ds == null)
             {
@@ -840,7 +840,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (sOutput.Contains("[SPLITBUTTONS]") && (this.bSplit && (this.bModerate || (this.topic.Author.AuthorId == this.UserId))) && (this.topic.ReplyCount > 0))
             {
                 sbOutput.Replace("[SPLITBUTTONS]", DotNetNuke.Modules.ActiveForums.Controllers.TemplateController.Template_Get(this.ForumModuleId, Enums.TemplateType.TopicSplitButtons, this.ForumInfo.FeatureSettings.TemplateFileNameSuffix, this.ForumUser));
-                sbOutput.Replace("[TOPICID]", this.TopicId.ToString());
             }
             else
             {

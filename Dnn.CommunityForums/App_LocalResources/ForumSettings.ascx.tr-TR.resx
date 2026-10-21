@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdvancedOptions.Text" xml:space="preserve">
+    <value>Gelişmiş Seçenekler</value>
+  </data>
+  <data name="AnswerPointValue.Text" xml:space="preserve">
+    <value>Yanıt Sağlama</value>
+  </data>
+  <data name="AutoLink.Help" xml:space="preserve">
+    <value>DNN Community Forums modülünün web sitesi adreslerini otomatik olarak köprülere dönüştürmesi için bu seçeneği etkinleştirin.</value>
+  </data>
+  <data name="AutoLink.Text" xml:space="preserve">
+    <value>Otomatik Köprüler</value>
+  </data>
+  <data name="CommunityOptions.Text" xml:space="preserve">
+    <value>Topluluk Seçenekleri</value>
+  </data>
+  <data name="ContentOptions.Text" xml:space="preserve">
+    <value>İçerik Seçenekleri</value>
+  </data>
+  <data name="Default.Text" xml:space="preserve">
+    <value>Varsayılan</value>
+  </data>
+  <data name="DefaultDisabled.Text" xml:space="preserve">
+    <value>-- Devre Dışı --</value>
+  </data>
+  <data name="DefaultPageSize.Help" xml:space="preserve">
+    <value>Konular ve yanıtlar sayfasında görüntülenmesini istediğiniz varsayılan öğe sayısını girin.</value>
+  </data>
+  <data name="DefaultPageSize.Text" xml:space="preserve">
+    <value>Varsayılan Sayfa Boyutu</value>
+  </data>
+  <data name="DefaultProfile.Text" xml:space="preserve">
+    <value>Varsayılan Profil</value>
+  </data>
+  <data name="DeleteBehavior.Help" xml:space="preserve">
+    <value>İçerik silindiğinde ne olacağını seçin. &lt;b&gt;Kaldır&lt;/b&gt; - İçeriği veritabanından kaldırır.  &lt;b&gt;Geri Dönüşüm&lt;/b&gt; - İçerik silindi olarak işaretlenir ve veritabanında kalır. DNN artımlı aramasından yararlanmak istiyorsanız bu seçeneği belirleyin.</value>
+  </data>
+  <data name="DeleteBehavior.Text" xml:space="preserve">
+    <value>Silme Davranışı</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Görünen Ad</value>
+  </data>
+  <data name="DisplaySettings.Text" xml:space="preserve">
+    <value>Görüntüleme Ayarları</value>
+  </data>
+  <data name="EditInterval.Help" xml:space="preserve">
+    <value>Kullanıcının gönderisini yalnızca oluşturulduğu andan itibaren belirli bir dakika içinde düzenlemesine izin verir.  Kullanıcının ayrıca düzenleme izni de olmalıdır.  Bu özelliği devre dışı bırakmak için değeri 0 olarak ayarlayın.</value>
+  </data>
+  <data name="EditInterval.Text" xml:space="preserve">
+    <value>Düzenleme Süresi</value>
+  </data>
+  <data name="EnablePoints.Help" xml:space="preserve">
+    <value>Puan sistemi, kullanıcıların forumda belirli işlemler için puan kazanarak rütbelerini yükseltmesini sağlar.</value>
+  </data>
+  <data name="EnablePoints.Text" xml:space="preserve">
+    <value>Puan Sistemi</value>
+  </data>
+  <data name="EnableURLRewriter.Help" xml:space="preserve">
+    <value>Bu modül için kullanıcı dostu URL yeniden yazıcısını etkinleştirmek istiyorsanız bu seçeneği belirleyin.  </value>
+  </data>
+  <data name="EnableURLRewriter.Text" xml:space="preserve">
+    <value>Kullanıcı Dostu URL Adreslerini Etkinleştir</value>
+  </data>
+  <data name="FirstName.Text" xml:space="preserve">
+    <value>Ad</value>
+  </data>
+  <data name="FloodInterval.Help" xml:space="preserve">
+    <value>Bir kullanıcının iki gönderi arasında beklemesi gereken saniye sayısı.</value>
+  </data>
+  <data name="FloodInterval.Text" xml:space="preserve">
+    <value>Gönderi Bekleme Süresi</value>
+  </data>
+  <data name="ForumTheme.Help" xml:space="preserve">
+    <value>Forumunuz için görsel temayı seçin.</value>
+  </data>
+  <data name="ForumTheme.Text" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="FullName.Text" xml:space="preserve">
+    <value>Ad Soyad</value>
+  </data>
+  <data name="LastName.Text" xml:space="preserve">
+    <value>Soyad</value>
+  </data>
+  <data name="MainFeatures.Text" xml:space="preserve">
+    <value>Ana Özellikler</value>
+  </data>
+  <data name="MarkAnswerPointValue.Text" xml:space="preserve">
+    <value>Yanıtı İşaretleme</value>
+  </data>
+  <data name="Mode.Help" xml:space="preserve">
+    <value>Modülü Sosyal Gruplar için bir sayfada kullanmıyorsanız her zaman Standart modu kullanın.  Sosyal Grup modu yalnızca URL içinde her zaman bir GroupId bulunacağını bildiğiniz durumlarda kullanılmalıdır.</value>
+  </data>
+  <data name="Mode.Text" xml:space="preserve">
+    <value>Forum Modu</value>
+  </data>
+  <data name="ModPointValue.Text" xml:space="preserve">
+    <value>Gönderi Moderasyonu</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>Hayır</value>
+  </data>
+  <data name="ProfileType.Help" xml:space="preserve">
+    <value>Kullanacağınız profil türünü seçin. Varsayılan profil, standart site profiliyle aynıdır.</value>
+  </data>
+  <data name="ProfileType.Text" xml:space="preserve">
+    <value>Profil Türü</value>
+  </data>
+  <data name="Recycle.Text" xml:space="preserve">
+    <value>Silindi Olarak İşaretle</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve">
+    <value>İçeriği Hemen Kaldır</value>
+  </data>
+  <data name="ReplyPointValue.Text" xml:space="preserve">
+    <value>Yanıt</value>
+  </data>
+  <data name="SignatureDisabled.Text" xml:space="preserve">
+    <value>Devre Dışı</value>
+  </data>
+  <data name="SignatureHTML.Text" xml:space="preserve">
+    <value>Düz Metin ve HTML Kodlarına İzin Ver</value>
+  </data>
+  <data name="SignaturePlainText.Text" xml:space="preserve">
+    <value>Yalnızca Düz Metne İzin Ver</value>
+  </data>
+  <data name="SocialGroups.Text" xml:space="preserve">
+    <value>Sosyal Gruplar</value>
+  </data>
+  <data name="Standard.Text" xml:space="preserve">
+    <value>Standart</value>
+  </data>
+  <data name="TopicPointValue.Text" xml:space="preserve">
+    <value>Yeni Konu</value>
+  </data>
+  <data name="URLPrefixCategory.Help" xml:space="preserve">
+    <value>Forum kategorilerini tanımlamak için URL içinde kullanılacak metindir.</value>
+  </data>
+  <data name="URLPrefixCategory.Text" xml:space="preserve">
+    <value>Kategori Yolu</value>
+  </data>
+  <data name="URLPrefixOther.Help" xml:space="preserve">
+    <value>Diğer forum görünümlerinde URL içinde kullanılacak metindir.  </value>
+  </data>
+  <data name="URLPrefixOther.Text" xml:space="preserve">
+    <value>Görünümler Yolu</value>
+  </data>
+  <data name="URLPrefixTag.Help" xml:space="preserve">
+    <value>Forum etiketlerini tanımlamak için URL içinde kullanılacak metindir.</value>
+  </data>
+  <data name="URLPrefixTag.Text" xml:space="preserve">
+    <value>Etiket Yolu</value>
+  </data>
+  <data name="UserDisplayMode.Help" xml:space="preserve">
+    <value>Forumlarda üye adlarının görüntülenmesinde kullanmak istediğiniz biçimi seçin.</value>
+  </data>
+  <data name="UserDisplayMode.Text" xml:space="preserve">
+    <value>Üye Adı Görüntüleme Biçimi</value>
+  </data>
+  <data name="UserName.Text" xml:space="preserve">
+    <value>Kullanıcı Adı</value>
+  </data>
+  <data name="UserSignatures.Help" xml:space="preserve">
+    <value>İmzaların etkinleştirilip etkinleştirilmeyeceğini ve kullanılabilecek biçimi seçin.</value>
+  </data>
+  <data name="UserSignatures.Text" xml:space="preserve">
+    <value>Kullanıcı İmzaları</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Evet</value>
+  </data>
+  <data name="ForumGroupTemplate.Help" xml:space="preserve">
+    <value>Yeni forumlar için kullanılacak Forum Grubunu seçin.  Bu yalnızca Sosyal Gruplar için otomatik olarak oluşturulan forumlarda geçerlidir.</value>
+  </data>
+  <data name="ForumGroupTemplate.Text" xml:space="preserve">
+    <value>Yeni Forumlar İçin Forum Grubu</value>
+  </data>
+  <data name="GroupAdmin.Text" xml:space="preserve">
+    <value>Grup Sahipleri</value>
+  </data>
+  <data name="GroupMember.Text" xml:space="preserve">
+    <value>Grup Üyeleri</value>
+  </data>
+  <data name="ModeratorPermissions.Text" xml:space="preserve">
+    <value>Moderatör İzinleri</value>
+  </data>
+  <data name="UserPermissions.Text" xml:space="preserve">
+    <value>Kullanıcı İzinleri</value>
+  </data>
+  <data name="Anon.Text" xml:space="preserve">
+    <value>Anonim Kullanıcı</value>
+  </data>
+  <data name="AvatarSize.Help" xml:space="preserve">
+    <value>Bir avatar için maksimum yükseklik ve genişliği girin.</value>
+  </data>
+  <data name="AvatarSize.Text" xml:space="preserve">
+    <value>Avatar Boyutu</value>
+  </data>
+  <data name="Height.Text" xml:space="preserve">
+    <value>Yükseklik</value>
+  </data>
+  <data name="RegisteredUser.Text" xml:space="preserve">
+    <value>Kayıtlı Kullanıcı</value>
+  </data>
+  <data name="Width.Text" xml:space="preserve">
+    <value>Genişlik</value>
+  </data>
+  <data name="MessagingCore.Text" xml:space="preserve">
+    <value>DNN Mesajlaşma</value>
+  </data>
+  <data name="MessagingDisabled.Text" xml:space="preserve">
+    <value>Devre Dışı</value>
+  </data>
+  <data name="MessagingType.Text" xml:space="preserve">
+    <value>Mesajlaşma Türü</value>
+  </data>
+  <data name="MessagingType.Help" xml:space="preserve">
+    <value>DNN mesajlaşmayı etkinleştirin veya devre dışı bırakın.</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>DNN Community Forums Ayarları</value>
+  </data>
+  <data name="UsersOnline.Help" xml:space="preserve">
+    <value>Forum modülünü o anda kullanan kullanıcıların görüntülenmesini etkinleştirin veya devre dışı bırakın.</value>
+  </data>
+  <data name="UsersOnline.Text" xml:space="preserve">
+    <value>Çevrimiçi Kullanıcıları Görüntülemeyi Etkinleştir</value>
+  </data>
+  <data name="UseSkinBreadCrumb.Help" xml:space="preserve">
+    <value>Üstteki gezinti yolu için AF gezinti yolu yerine tema (skin) gezinti yolunu kullanın.  Bu ayarın alttaki AF gezinti yolunu etkilemediğini unutmayın.</value>
+  </data>
+  <data name="UseSkinBreadCrumb.Text" xml:space="preserve">
+    <value>Tema Gezinti Yolunu Kullan</value>
+  </data>
+  <data name="DateFormat.Help" xml:space="preserve">
+    <value>Tarih değerlerini görüntülemek için kullanılan biçim dizesi.</value>
+  </data>
+  <data name="DateFormat.Text" xml:space="preserve">
+    <value>Tarih Biçimi</value>
+  </data>
+  <data name="ProfileDisabled.Text" xml:space="preserve">
+    <value>Profil Bağlantıları Devre Dışı</value>
+  </data>
+  <data name="TimeFormat.Help" xml:space="preserve">
+    <value>Saat değerlerini görüntülemek için kullanılan biçim dizesi.</value>
+  </data>
+  <data name="TimeFormat.Text" xml:space="preserve">
+    <value>Saat Biçimi</value>
+  </data>
+  <data name="Admins.Text" xml:space="preserve">
+    <value>Yöneticiler</value>
+  </data>
+  <data name="AuthenticatedUsers.Text" xml:space="preserve">
+    <value>Kimliği Doğrulanmış Kullanıcılar</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve">
+    <value>Devre Dışı</value>
+  </data>
+  <data name="Everyone.Text" xml:space="preserve">
+    <value>Herkes</value>
+  </data>
+  <data name="Moderators.Text" xml:space="preserve">
+    <value>Moderatörler</value>
+  </data>
+  <data name="ProfileVisibility.Help" xml:space="preserve">
+    <value>Hangi kullanıcıların tıklayarak bir kullanıcının profilini görebileceğini belirler.</value>
+  </data>
+  <data name="ProfileVisibility.Text" xml:space="preserve">
+    <value>Profil Görünürlüğü</value>
+  </data>
+  <data name="CacheTemplates.Help" xml:space="preserve">
+    <value>Normalde etkin olmalıdır; şablonları düzenliyorsanız ve sonuçları hemen görmek istiyorsanız devre dışı bırakın.</value>
+  </data>
+  <data name="CacheTemplates.Text" xml:space="preserve">
+    <value>Şablon Önbelleğini Etkinleştir</value>
+  </data>
+  <data name="ApplicationRestart.Text" xml:space="preserve">
+    <value>Modül ayarları değiştirildikten sonra uygulama yeniden başlatılıyor</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Yasakla</value>
+  </data>
+  <data name="[RESX:SecGrid:pin].Text" xml:space="preserve">
+    <value>Sabitle</value>
+  </data>
+  <data name="[RESX:SecGrid:attach].Text" xml:space="preserve">
+    <value>Dosya Ekle</value>
+  </data>
+  <data name="[RESX:SecGrid:manageusers].Text" xml:space="preserve">
+    <value>Kullanıcıları Yönet</value>
+  </data>
+  <data name="[RESX:SecGrid:create].Text" xml:space="preserve">
+    <value>Oluştur</value>
+  </data>
+  <data name="[RESX:SecGrid:delete].Text" xml:space="preserve">
+    <value>Sil</value>
+  </data>
+  <data name="[RESX:SecGrid:edit].Text" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
+  <data name="[RESX:SecGrid:lock].Text" xml:space="preserve">
+    <value>Kilitle</value>
+  </data>
+  <data name="[RESX:SecGrid:moderate].Text" xml:space="preserve">
+    <value>Moderasyon</value>
+  </data>
+  <data name="[RESX:SecGrid:move].Text" xml:space="preserve">
+    <value>Taşı</value>
+  </data>
+  <data name="[RESX:SecGrid:read].Text" xml:space="preserve">
+    <value>Oku</value>
+  </data>
+  <data name="[RESX:SecGrid:reply].Text" xml:space="preserve">
+    <value>Yanıtla</value>
+  </data>
+  <data name="[RESX:SecGrid:subscribe]Text" xml:space="preserve">
+    <value>Abone Ol</value>
+  </data>
+  <data name="[RESX:SecGrid:view].Text" xml:space="preserve">
+    <value>Görüntüle</value>
+  </data>
+  <data name="[RESX:SecGrid:announce].Text" xml:space="preserve">
+    <value>Duyuru Yap</value>
+  </data>
+  <data name="[RESX:SecGrid:subscribe].Text" xml:space="preserve">
+    <value>Abone Ol</value>
+  </data>
+  <data name="[RESX:SecGrid:trust].Text" xml:space="preserve">
+    <value>Güven</value>
+  </data>
+  <data name="[RESX:SecGrid:tag].Text" xml:space="preserve">
+    <value>Etiketle</value>
+  </data>
+  <data name="[RESX:SecGrid:prioritize].Text" xml:space="preserve">
+    <value>Önceliklendir</value>
+  </data>
+  <data name="[RESX:SecGrid:categorize].Text" xml:space="preserve">
+    <value>Kategorilere Ayır</value>
+  </data>
+  <data name="[RESX:SecGrid:poll].Text" xml:space="preserve">
+    <value>Anket</value>
+  </data>
+  <data name="[RESX:SecGrid:split].Text" xml:space="preserve">
+    <value>Böl</value>
+  </data>
+  <data name="URLPrefixLikes.Text" xml:space="preserve">
+    <value>Beğeniler Yolu</value>
+  </data>
+  <data name="URLPrefixLikes.Help" xml:space="preserve">
+    <value>Forum beğenilerini tanımlamak için URL içinde kullanılacak metindir.</value>
+  </data>
+  <data name="AvatarRefreshType.Text" xml:space="preserve">
+    <value>Avatarları Yenile</value>
+  </data>
+  <data name="AvatarRefreshGravatar.Text" xml:space="preserve">
+    <value>Gravatar</value>
+  </data>
+  <data name="AvatarRefreshType.Help" xml:space="preserve">
+    <value>Seçilen hizmeti kullanarak avatarları düzenli aralıklarla yeniler</value>
+  </data>
+  <data name="AvatarRefreshDisabled.Text" xml:space="preserve">
+    <value>Devre Dışı</value>
+  </data>
+  <data name="[RESX:SecGrid:mention].Text" xml:space="preserve">
+    <value>Bahset</value>
+  </data>
+</root>

@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
@@ -133,6 +134,37 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 var user = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID);
                 return this.Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.GetForumsHtmlOption(this.ForumModuleId, user, includeHiddenForums: true));
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
+        /// <summary>
+        /// Gets the forums list available during topic splitting.
+        /// </summary>
+        /// <param name="forumId">Source forum ID.</param>
+        /// <returns>Forum ID / name pairs.</returns>
+        [HttpGet]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Split)]
+        public HttpResponseMessage GetForumsList(int forumId)
+        {
+            try
+            {
+                var portalSettings = this.PortalSettings;
+                var userInfo = portalSettings.UserInfo;
+                var forumUser = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Instance.GetByUserId(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, userInfo.UserID);
+                Dictionary<string, string> rows = new Dictionary<string, string>();
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Instance.Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(f.Security.ViewRoleIds, forumUser.UserRoleIds))))
+                {
+                    rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, rows);
             }
             catch (Exception ex)
             {

@@ -71,11 +71,11 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <Output TaskParameter="Include" ItemName="CleanUpTxtFiles" />
     </CreateItem>
 
-    <CreateItem Include="**\License.txt">
+    <CreateItem Include=".\License.txt">
       <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
     </CreateItem>
 
-    <CreateItem Include="**\ReleaseNotes.txt">
+    <CreateItem Include=".\ReleaseNotes.txt">
       <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
     </CreateItem>
 

@@ -35,7 +35,8 @@
 .dcf-tiptap-buttons {
     .dcf-tiptap-button {
         border: none;
-        background: var(--dcf-button-background);
+        background: var(--dcf-button-background);        
+        color: currentColor;
         padding: 0.3em 0.5em;
         min-width: 2em;
         margin: 0 0.2em;
@@ -65,8 +66,8 @@
 		overflow: hidden;
 }
 .dcf-tiptap-drag-handle::after {
-         content: '';
-		display:inline-block;
+	    content: '';
+	    display:inline-block;
         width: 1em;
         height: 0.3em;
 		border-top: solid 1px var(--dcf-drag-handle-line-color);
