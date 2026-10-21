@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Get our Row Index
             this.rowIndex = (pageId - 1) * this.pageSize;
-            string cacheKey = string.Format(CacheKeys.TopicViewForUser, this.ModuleId, this.TopicId, this.UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, this.rowIndex, this.pageSize);
+            string cacheKey = string.Format(CacheKeys.TopicViewForUser, this.ModuleId, this.TopicId, this.UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, this.rowIndex, this.pageSize, this.defaultSort);
             DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.Services.Cache.ContentCache.Retrieve(this.ForumModuleId, cacheKey);
             if (ds == null)
             {
