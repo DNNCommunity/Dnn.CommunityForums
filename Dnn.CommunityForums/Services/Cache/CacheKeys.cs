@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Cache
         internal const string ForumViewPrefix = "AF-{0}-FV-";
         internal const string ForumViewForUser = "AF-{0}-FV-{1}-{2}-{3}-{4}";
         internal const string TopicViewPrefix = "AF-{0}-TV-";
-        internal const string TopicViewForUser = "AF-{0}-TV-{1}-{2}-{3}-{4}-{5}";
+        internal const string TopicViewForUser = "AF-{0}-TV-{1}-{2}-{3}-{4}-{5}-{6}";
         internal const string TopicsViewPrefix = "AF-{0}-TVS-";
         internal const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}-{3}-{4}-{5}";
         internal const string ForumViewTemplate = "AF-{0}-fvt-{1}";
