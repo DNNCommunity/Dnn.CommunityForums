@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 
-                var forumList = this._repositoryControllerBase.Get(moduleId).ToList();
+                var forumList = moduleId.Equals(DotNetNuke.Common.Utilities.Null.NullInteger) ? this._repositoryControllerBase.Get().ToList() : this._repositoryControllerBase.Get(moduleId).ToList();
 
                 foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in forumList)
                 {
