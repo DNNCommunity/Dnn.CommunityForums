@@ -1956,4 +1956,22 @@ Da
   <data name="[RESX:ModerationPleaseLogin].Text" xml:space="preserve">
     <value>&lt;span class="dcf-auth-false-login"&gt;Per &lt;a href="{0}"&gt;favore, accedi&lt;/a&gt; per recensire e moderare i contenuti in sospeso.&lt;/span&gt;</value>
   </data>
+  <data name="[RESX:UserEditor:TrustLevel].Text" xml:space="preserve">
+    <value>Livello di attendibilità:</value>
+  </data>
+  <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
+    <value>Neutrale - predefinito</value>
+  </data>
+  <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
+    <value>Errore durante il recupero del profilo utente</value>
+  </data>
+  <data name="[RESX:UserEditor:UpdateProfileError].Text" xml:space="preserve">
+    <value>Errore durante l'aggiornamento del profilo utente</value>
+  </data>
+  <data name="[RESX:Update].Text" xml:space="preserve">
+    <value>Aggiornare</value>
+  </data>
+  <data name="[RESX:User].Text" xml:space="preserve">
+    <value>Utente</value>
+  </data>
 </root>
