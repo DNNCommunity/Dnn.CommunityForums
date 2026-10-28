@@ -1962,38 +1962,14 @@ Saygılarımla,
     Community Forums lider çözümdür. Birazdan göreceğiniz gibi, DNN için başka hiçbir forum paketi DNN Community Forums kadar çok özelliğe veya esnekliğe sahip değildir.
 &lt;/p&gt;</value>
   </data>
-  <data name="[RESX:UserEditor:Title].Text" xml:space="preserve">
-    <value>Kullanıcıyı Düzenle:</value>
-  </data>
   <data name="[RESX:UserEditor:TrustLevel].Text" xml:space="preserve">
     <value>Güven Düzeyi:</value>
-  </data>
-  <data name="[RESX:UserEditor:Untrusted].Text" xml:space="preserve">
-    <value>Güvenilmez</value>
   </data>
   <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
     <value>Nötr - Varsayılan</value>
   </data>
-  <data name="[RESX:UserEditor:Trusted].Text" xml:space="preserve">
-    <value>Güvenilir</value>
-  </data>
-  <data name="[RESX:UserEditor:UserCaption].Text" xml:space="preserve">
-    <value>Kullanıcı Başlığı:</value>
-  </data>
-  <data name="[RESX:UserEditor:RewardPoints].Text" xml:space="preserve">
-    <value>Ödül Puanları:</value>
-  </data>
-  <data name="[RESX:UserEditor:Signature].Text" xml:space="preserve">
-    <value>İmza:</value>
-  </data>
-  <data name="[RESX:UserEditor:Update].Text" xml:space="preserve">
-    <value>Kullanıcıyı Güncelle</value>
-  </data>
   <data name="[RESX:UserEditor:UpdateBadges].Text" xml:space="preserve">
     <value>Rozetleri Güncelle</value>
-  </data>
-  <data name="[RESX:UserEditor:Cancel].Text" xml:space="preserve">
-    <value>İptal</value>
   </data>
   <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
     <value>Kullanıcı profili alınırken hata oluştu</value>

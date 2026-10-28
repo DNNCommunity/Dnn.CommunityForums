@@ -1993,38 +1993,14 @@ Van,
   <data name="[RESX:ModerationPleaseLogin].Text" xml:space="preserve">
     <value>&lt;span class="dcf-auth-false-login"&gt;&lt;a href="{0}"&gt;Log in&lt;/a&gt; om lopende inhoud te bekijken en te modereren.&lt;/span&gt;</value>
   </data>
-  <data name="[RESX:UserEditor:Title].Text" xml:space="preserve">
-    <value>Gebruiker bewerken:</value>
-  </data>
   <data name="[RESX:UserEditor:TrustLevel].Text" xml:space="preserve">
     <value>Vertrouwensniveau:</value>
-  </data>
-  <data name="[RESX:UserEditor:Untrusted].Text" xml:space="preserve">
-    <value>Niet vertrouwd</value>
   </data>
   <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
     <value>Neutraal - standaard</value>
   </data>
-  <data name="[RESX:UserEditor:Trusted].Text" xml:space="preserve">
-    <value>Vertrouwd</value>
-  </data>
-  <data name="[RESX:UserEditor:UserCaption].Text" xml:space="preserve">
-    <value>Gebruikerstitel:</value>
-  </data>
-  <data name="[RESX:UserEditor:RewardPoints].Text" xml:space="preserve">
-    <value>Beloningspunten:</value>
-  </data>
-  <data name="[RESX:UserEditor:Signature].Text" xml:space="preserve">
-    <value>Handtekening:</value>
-  </data>
-  <data name="[RESX:UserEditor:Update].Text" xml:space="preserve">
-    <value>Gebruiker bijwerken</value>
-  </data>
   <data name="[RESX:UserEditor:UpdateBadges].Text" xml:space="preserve">
     <value>Badges bijwerken</value>
-  </data>
-  <data name="[RESX:UserEditor:Cancel].Text" xml:space="preserve">
-    <value>Annuleren</value>
   </data>
   <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
     <value>Fout bij ophalen van gebruikersprofiel</value>

@@ -1953,38 +1953,14 @@ De,
   <data name="[RESX:ModerationPleaseLogin].Text" xml:space="preserve">
     <value>&lt;span class="dcf-auth-false-login"&gt;Veuillez &lt;a href="{0}"&gt;vous connecter&lt;/a&gt; pour évaluer et modérer le contenu en attente.&lt;/span&gt;</value>
   </data>
-  <data name="[RESX:UserEditor:Title].Text" xml:space="preserve">
-    <value>Modifier l'utilisateur :</value>
-  </data>
   <data name="[RESX:UserEditor:TrustLevel].Text" xml:space="preserve">
     <value>Niveau de confiance :</value>
-  </data>
-  <data name="[RESX:UserEditor:Untrusted].Text" xml:space="preserve">
-    <value>Non fiable</value>
   </data>
   <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
     <value>Neutre - par défaut</value>
   </data>
-  <data name="[RESX:UserEditor:Trusted].Text" xml:space="preserve">
-    <value>Fiable</value>
-  </data>
-  <data name="[RESX:UserEditor:UserCaption].Text" xml:space="preserve">
-    <value>Libellé de l'utilisateur :</value>
-  </data>
-  <data name="[RESX:UserEditor:RewardPoints].Text" xml:space="preserve">
-    <value>Points de récompense :</value>
-  </data>
-  <data name="[RESX:UserEditor:Signature].Text" xml:space="preserve">
-    <value>Signature :</value>
-  </data>
-  <data name="[RESX:UserEditor:Update].Text" xml:space="preserve">
-    <value>Mettre à jour l'utilisateur</value>
-  </data>
   <data name="[RESX:UserEditor:UpdateBadges].Text" xml:space="preserve">
     <value>Mettre à jour les badges</value>
-  </data>
-  <data name="[RESX:UserEditor:Cancel].Text" xml:space="preserve">
-    <value>Annuler</value>
   </data>
   <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
     <value>Erreur lors de la récupération du profil utilisateur</value>
