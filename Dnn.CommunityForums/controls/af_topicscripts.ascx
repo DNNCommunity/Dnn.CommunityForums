@@ -29,6 +29,19 @@
             openTriggerSelector: ".af-button-edituser",
             servicesFramework: $.ServicesFramework(<%=ModuleId%>), 
             baseUrl: '<%=GetBaseUrl()%>',
+            titleText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:Title]")) %>",
+            trustLevelText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:TrustLevel]")) %>",
+            untrustedText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:Untrusted]")) %>",
+            neutralText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:Neutral]")) %>",
+            trustedText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:Trusted]")) %>",
+            userCaptionText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:UserCaption]")) %>",
+            rewardPointsText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:RewardPoints]")) %>",
+            signatureText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:Signature]")) %>",
+            updateText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:Update]")) %>",
+            updateBadges: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:UpdateBadges]")) %>",
+            cancelText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:Cancel]")) %>",
+            getUserProfileErrorText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:GetProfileError]")) %>",
+            updateUserProfileErrorText: "<%= System.Web.HttpUtility.JavaScriptStringEncode(DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:UserEditor:UpdateProfileError]")) %>"
         });
 
         // Split selected posts

@@ -1962,4 +1962,43 @@ From,
     Community Forums is the leading solution. As you will soon see, no other forum package for DNN has as many features or the flexibility of DNN Community Forums.
 &lt;/p&gt;</value>
   </data>
+  <data name="[RESX:UserEditor:Title].Text" xml:space="preserve">
+    <value>Edit User:</value>
+  </data>
+  <data name="[RESX:UserEditor:TrustLevel].Text" xml:space="preserve">
+    <value>Trust Level:</value>
+  </data>
+  <data name="[RESX:UserEditor:Untrusted].Text" xml:space="preserve">
+    <value>Not Trusted</value>
+  </data>
+  <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
+    <value>Neutral - Default</value>
+  </data>
+  <data name="[RESX:UserEditor:Trusted].Text" xml:space="preserve">
+    <value>Trusted</value>
+  </data>
+  <data name="[RESX:UserEditor:UserCaption].Text" xml:space="preserve">
+    <value>User Caption:</value>
+  </data>
+  <data name="[RESX:UserEditor:RewardPoints].Text" xml:space="preserve">
+    <value>Reward Points:</value>
+  </data>
+  <data name="[RESX:UserEditor:Signature].Text" xml:space="preserve">
+    <value>Signature:</value>
+  </data>
+  <data name="[RESX:UserEditor:Update].Text" xml:space="preserve">
+    <value>Update User</value>
+  </data>
+  <data name="[RESX:UserEditor:UpdateBadges].Text" xml:space="preserve">
+    <value>Update Badges</value>
+  </data>
+  <data name="[RESX:UserEditor:Cancel].Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
+    <value>Error Retrieving User Profile</value>
+  </data>
+  <data name="[RESX:UserEditor:UpdateProfileError].Text" xml:space="preserve">
+    <value>Error Updating User Profile</value>
+  </data>
 </root>

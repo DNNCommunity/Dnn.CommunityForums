@@ -1956,4 +1956,43 @@ De
   <data name="[RESX:ModerationPleaseLogin].Text" xml:space="preserve">
     <value>&lt;span class="dcf-auth-false-login"&gt;Por favor &lt;a href="{0}"&gt;, inicia sesión&lt;/a&gt; para revisar y moderar el contenido pendiente.&lt;/span&gt;</value>
   </data>
+  <data name="[RESX:UserEditor:Title].Text" xml:space="preserve">
+    <value>Editar usuario:</value>
+  </data>
+  <data name="[RESX:UserEditor:TrustLevel].Text" xml:space="preserve">
+    <value>Nivel de confianza:</value>
+  </data>
+  <data name="[RESX:UserEditor:Untrusted].Text" xml:space="preserve">
+    <value>No confiable</value>
+  </data>
+  <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
+    <value>Neutral - Predeterminado</value>
+  </data>
+  <data name="[RESX:UserEditor:Trusted].Text" xml:space="preserve">
+    <value>Confiable</value>
+  </data>
+  <data name="[RESX:UserEditor:UserCaption].Text" xml:space="preserve">
+    <value>Etiqueta del usuario:</value>
+  </data>
+  <data name="[RESX:UserEditor:RewardPoints].Text" xml:space="preserve">
+    <value>Puntos de recompensa:</value>
+  </data>
+  <data name="[RESX:UserEditor:Signature].Text" xml:space="preserve">
+    <value>Firma:</value>
+  </data>
+  <data name="[RESX:UserEditor:Update].Text" xml:space="preserve">
+    <value>Actualizar usuario</value>
+  </data>
+  <data name="[RESX:UserEditor:UpdateBadges].Text" xml:space="preserve">
+    <value>Actualizar insignias</value>
+  </data>
+  <data name="[RESX:UserEditor:Cancel].Text" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
+    <value>Error al recuperar el perfil del usuario</value>
+  </data>
+  <data name="[RESX:UserEditor:UpdateProfileError].Text" xml:space="preserve">
+    <value>Error al actualizar el perfil del usuario</value>
+  </data>
 </root>
