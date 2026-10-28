@@ -1968,13 +1968,16 @@ From,
   <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
     <value>Neutral - Default</value>
   </data>
-  <data name="[RESX:UserEditor:UpdateBadges].Text" xml:space="preserve">
-    <value>Update Badges</value>
-  </data>
   <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
     <value>Error Retrieving User Profile</value>
   </data>
   <data name="[RESX:UserEditor:UpdateProfileError].Text" xml:space="preserve">
     <value>Error Updating User Profile</value>
+  </data>
+  <data name="[RESX:Update].Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="[RESX:User].Text" xml:space="preserve">
+    <value>User</value>
   </data>
 </root>

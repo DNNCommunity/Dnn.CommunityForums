@@ -32,7 +32,19 @@ amaf.resx = {
     OrderedListDesc: '[RESX:OrderedListDesc]',
     BulletedListDesc: '[RESX:BulletedListDesc]',
     QuoteDesc: '[RESX:QuoteDesc]',
-    ShowBoxesDesc: '[RESX:ShowBoxesDesc]'
+    ShowBoxesDesc: '[RESX:ShowBoxesDesc]',
+    UserEditorTitle: '[RESX:Edit] [RESX:User]:',
+    UserEditorTrustLevel: '[RESX:UserEditor:TrustLevel]',
+    UserEditorUntrusted: '[RESX:NotTrusted]',
+    UserEditorNeutral: '[RESX:UserEditor:Neutral]',
+    UserEditorTrusted: '[RESX:Trusted]',
+    UserEditorUserCaption: '[RESX:UserCaption]',
+    UserEditorRewardPoints: '[RESX:RewardPoints]',
+    UserEditorSignature: '[RESX:Signature]',
+    UserEditorUpdate: '[RESX:Update] [RESX:User]',
+    UserEditorUpdateBadges: '[RESX:Update] [RESX:Badge]',
+    UserEditorCancel: '[RESX:Cancel]',
+    UserEditorGetProfileError: '[RESX:UserEditor:GetProfileError]',
+    UserEditorUpdateProfileError: '[RESX:UserEditor:UpdateProfileError]'
 };
-
 

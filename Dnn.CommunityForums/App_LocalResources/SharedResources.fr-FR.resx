@@ -1959,13 +1959,16 @@ De,
   <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
     <value>Neutre - par défaut</value>
   </data>
-  <data name="[RESX:UserEditor:UpdateBadges].Text" xml:space="preserve">
-    <value>Mettre à jour les badges</value>
-  </data>
   <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
     <value>Erreur lors de la récupération du profil utilisateur</value>
   </data>
   <data name="[RESX:UserEditor:UpdateProfileError].Text" xml:space="preserve">
     <value>Erreur lors de la mise à jour du profil utilisateur</value>
+  </data>
+  <data name="[RESX:Update].Text" xml:space="preserve">
+    <value>Mettre à jour</value>
+  </data>
+  <data name="[RESX:User].Text" xml:space="preserve">
+    <value>Utilisateur</value>
   </data>
 </root>

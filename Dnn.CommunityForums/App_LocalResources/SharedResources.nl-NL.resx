@@ -1999,13 +1999,16 @@ Van,
   <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
     <value>Neutraal - standaard</value>
   </data>
-  <data name="[RESX:UserEditor:UpdateBadges].Text" xml:space="preserve">
-    <value>Badges bijwerken</value>
-  </data>
   <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
     <value>Fout bij ophalen van gebruikersprofiel</value>
   </data>
   <data name="[RESX:UserEditor:UpdateProfileError].Text" xml:space="preserve">
     <value>Fout bij bijwerken van gebruikersprofiel</value>
+  </data>
+  <data name="[RESX:Update].Text" xml:space="preserve">
+    <value>Bijwerken</value>
+  </data>
+  <data name="[RESX:User].Text" xml:space="preserve">
+    <value>Gebruiker</value>
   </data>
 </root>

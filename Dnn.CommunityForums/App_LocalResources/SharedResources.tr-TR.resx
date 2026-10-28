@@ -1968,13 +1968,16 @@ Saygılarımla,
   <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
     <value>Nötr - Varsayılan</value>
   </data>
-  <data name="[RESX:UserEditor:UpdateBadges].Text" xml:space="preserve">
-    <value>Rozetleri Güncelle</value>
-  </data>
   <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
     <value>Kullanıcı profili alınırken hata oluştu</value>
   </data>
   <data name="[RESX:UserEditor:UpdateProfileError].Text" xml:space="preserve">
     <value>Kullanıcı profili güncellenirken hata oluştu</value>
+  </data>
+  <data name="[RESX:Update].Text" xml:space="preserve">
+    <value>Güncelle</value>
+  </data>
+  <data name="[RESX:User].Text" xml:space="preserve">
+    <value>Kullanıcı</value>
   </data>
 </root>
