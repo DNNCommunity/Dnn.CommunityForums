@@ -139,7 +139,6 @@ function saveRank() {
 	jQuery(function ($) {
 		var opts = {};
 		opts.callbackTrue = function () {
-			$(this).dialog("close");
 			var data = {};
 			data.action = 10;
 			data.RankId = rank.RankId;

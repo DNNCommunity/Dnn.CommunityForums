@@ -467,6 +467,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ClientResourceManager.RegisterScript(page: this.Page, filePath: $"{Globals.ModulePath}scripts/afutils.js");
             ClientResourceManager.RegisterScript(page: this.Page, filePath: $"{Globals.ModulePath}active/amlib.js");
             ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}active/am-ui.css");
+            ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}Resources/native-dialog.css");
 
             StringBuilder sb = new StringBuilder();
             string handlerURL = VirtualPathUtility.ToAbsolute(Globals.ModulePath + "handlers/forumhelper.ashx") + "?TabId=" + this.TabId.ToString() + "&PortalId=" + this.PortalId.ToString() + "&moduleid=" + this.ModuleId + "&language=" + lang;
@@ -542,8 +543,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (this.ForumId > 0 && this.ForumUser.GetIsMod(this.ForumModuleId))
             {
-                ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}Resources/jquery-ui-1.14.2.custom/jquery-ui.min.css", priority: 105);
-
                 Controls.HtmlControlLoader ctl = new Controls.HtmlControlLoader();
                 ctl.ControlId = "aftopicedit";
                 ctl.Height = "550px";
