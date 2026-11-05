@@ -242,7 +242,6 @@ function redirectBadgeUsers() {
 	jQuery(function ($) {
 		var opts = {};
 		opts.callbackTrue = function () {
-			$(this).dialog("close");
 			var data = {};
 			data.action = 16;
 			data.BadgeId = badge.BadgeId;

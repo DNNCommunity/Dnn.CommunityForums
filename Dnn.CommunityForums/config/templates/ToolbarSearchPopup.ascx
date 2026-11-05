@@ -20,7 +20,7 @@
         <span>
             <i class="fa fa-search fa-fw fa-blue"></i>[DCF:TOOLBAR-SEARCHTEXT|<span class="dcf-search-link-text">{0}</span>][FORUM:TOOLBAR-SEARCHTEXT|<span class="dcf-search-link-text">{0}</span>]
         </span>
-        <span class="ui-icon ui-icon-triangle-1-s"></span>
+        <i class="fa fa-caret-down"></i>
     </span>
     <div class="dcf-search-popup aftb-search-popup">
         <div class="dcf-search-input">

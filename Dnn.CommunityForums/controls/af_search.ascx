@@ -7,7 +7,7 @@
 
     $(document).ready(function() {
 
-        $('.af-search-modify').button().click(function () {
+        $('.af-search-modify').click(function () {
             document.location.href = '<%=GetSearchUrl()%>';
             return false;
         });

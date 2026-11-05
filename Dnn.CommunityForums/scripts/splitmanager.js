@@ -37,7 +37,7 @@
                 html += "</select></div>";
                 html += "</fieldset>";
 
-                splitManagerDialog = $("<div id='afSplitManagerDialog' class='dnnForm dnnClear'/>").html(html).dialog(opts);
+                splitManagerDialog = am.UI.CreateDialog('afSplitManagerDialog', opts.titleText, html, { width: 650 });
 
                 splitManagerDialog.find("#subjectExistingItem").hide();
 
@@ -70,19 +70,15 @@
                 });
             }
 
-            splitManagerDialog.dialog({
-                minWidth: 650,
-                modal: true,
-                resizable: false,
-                title: opts.titleText,
+            splitManagerDialog = am.UI.CreateDialog('afSplitManagerDialog', opts.titleText, null, {
+                width: 650,
                 buttons: [
                     { text: opts.splitText, click: splitStart, class: "dnnPrimaryAction" },
-                    { text: opts.cancelText, click: function () { $(this).dialog("close"); }, class: "dnnSecondaryAction" }
-                ],
-                close: function () { }
+                    { text: opts.cancelText, click: function () { am.UI.CloseDialog(splitManagerDialog); }, class: "dnnSecondaryAction" }
+                ]
             });
 
-            splitManagerDialog.dialog('open');
+            am.UI.OpenDialog(splitManagerDialog);
 
         };
 
@@ -140,12 +136,12 @@
                 dataType: "json",
                 beforeSend: opts.servicesFramework.setModuleHeaders
             }).done(function (data) {
-                splitManagerDialog.dialog('close');
+                am.UI.CloseDialog(splitManagerDialog);
                 amaf_splitCancel()
                 afreload();
             }).fail(function (xhr, status) {
                 alert('Splitting Error');
-                splitManagerDialog.dialog('close');
+                am.UI.CloseDialog(splitManagerDialog);
                 amaf_splitCancel()
                 afreload();
             });
@@ -200,9 +196,7 @@
         splitText: "Split",
         cancelText: "Cancel",
         selectForumText: "Select forum",
-        selectTopicText: "Select topic",
-        dialogClass: 'dnnFormPopup dnnClear',
-        autoOpen: false
+        selectTopicText: "Select topic"
     };
 
 } (jQuery));
