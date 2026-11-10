@@ -170,7 +170,10 @@ am.UI = {
             closeButton.type = 'button';
             closeButton.className = 'dcf-native-dialog-close';
             closeButton.setAttribute('aria-label', 'Close');
-            closeButton.textContent = '\u00d7';
+            var closeIcon = document.createElement('i');
+            closeIcon.className = 'fa fa-times';
+            closeIcon.setAttribute('aria-hidden', 'true');
+            closeButton.appendChild(closeIcon);
             closeButton.addEventListener('click', function () {
                 am.UI.CloseDialog(dialog);
             });
