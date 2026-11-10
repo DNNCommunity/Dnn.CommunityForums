@@ -8,7 +8,6 @@
 <dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css" />
 <dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/ActiveForums/scripts/splitmanager.js" Priority="104" />
 
-
 <script type="text/javascript">
     $(document).ready(function() {
 
@@ -29,6 +28,19 @@
             openTriggerSelector: ".af-button-edituser",
             servicesFramework: $.ServicesFramework(<%=ModuleId%>), 
             baseUrl: '<%=GetBaseUrl()%>',
+            titleText: amaf.resx.UserEditorTitle,
+            trustLevelText: amaf.resx.UserEditorTrustLevel,
+            untrustedText: amaf.resx.UserEditorUntrusted,
+            neutralText: amaf.resx.UserEditorNeutral,
+            trustedText: amaf.resx.UserEditorTrusted,
+            userCaptionText: amaf.resx.UserEditorUserCaption,
+            rewardPointsText: amaf.resx.UserEditorRewardPoints,
+            signatureText: amaf.resx.UserEditorSignature,
+            updateText: amaf.resx.UserEditorUpdate,
+            updateBadges: amaf.resx.UserEditorUpdateBadges,
+            cancelText: amaf.resx.UserEditorCancel,
+            getUserProfileErrorText: amaf.resx.UserEditorGetProfileError,
+            updateUserProfileErrorText: amaf.resx.UserEditorUpdateProfileError
         });
 
         // Split selected posts

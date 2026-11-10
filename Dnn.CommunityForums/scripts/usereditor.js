@@ -92,7 +92,7 @@
                 }).done(function (data) {
                 openEditUserDialog(data);
             }).fail(function (xhr, status) {
-                alert('Error Retriving User Profile');
+                alert(opts.getUserProfileErrorText);
             });
         });
         function updateUser() {
@@ -115,7 +115,7 @@
                     editUserDialog.dialog('close');
                     afreload();
                 }).fail(function (xhr, status) {
-                    alert('Error Updating User Profile');
+                    alert(opts.updateUserProfileErrorText);
                 });   
         }
 

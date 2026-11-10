@@ -1953,4 +1953,22 @@ De,
   <data name="[RESX:ModerationPleaseLogin].Text" xml:space="preserve">
     <value>&lt;span class="dcf-auth-false-login"&gt;Veuillez &lt;a href="{0}"&gt;vous connecter&lt;/a&gt; pour évaluer et modérer le contenu en attente.&lt;/span&gt;</value>
   </data>
+  <data name="[RESX:UserEditor:TrustLevel].Text" xml:space="preserve">
+    <value>Niveau de confiance :</value>
+  </data>
+  <data name="[RESX:UserEditor:Neutral].Text" xml:space="preserve">
+    <value>Neutre - par défaut</value>
+  </data>
+  <data name="[RESX:UserEditor:GetProfileError].Text" xml:space="preserve">
+    <value>Erreur lors de la récupération du profil utilisateur</value>
+  </data>
+  <data name="[RESX:UserEditor:UpdateProfileError].Text" xml:space="preserve">
+    <value>Erreur lors de la mise à jour du profil utilisateur</value>
+  </data>
+  <data name="[RESX:Update].Text" xml:space="preserve">
+    <value>Mettre à jour</value>
+  </data>
+  <data name="[RESX:User].Text" xml:space="preserve">
+    <value>Utilisateur</value>
+  </data>
 </root>
