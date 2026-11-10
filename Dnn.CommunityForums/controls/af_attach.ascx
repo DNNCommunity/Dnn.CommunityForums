@@ -2,13 +2,10 @@
 <%@ Import Namespace="DotNetNuke.Common.Utilities" %>
 <%@ Import Namespace="DotNetNuke.Modules.ActiveForums.Extensions" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
-<dnn:DnnJsInclude runat="server" FilePath="knockout.js" PathNameAlias="SharedScripts" Priority="100"></dnn:DnnJsInclude>
 <dnn:DnnJsInclude runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.js" Priority="105"></dnn:DnnJsInclude>
 <dnn:DnnCssInclude runat="server" FilePath="~/Resources/Shared/Components/UserFileManager/UserFileManager.css"></dnn:DnnCssInclude>
 <dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/ActiveForums/Scripts/afattach.js" Priority="106"></dnn:DnnJsInclude>
-<!-- ko stopBinding: true -->  
 <div id="<%=ClientID%>">
-    <!-- ko stopBinding: true -->
     <div class="af-userFileManager"></div>
     <div class="af-attach-upload af-fileupload">
 	    <div class="fileupload-picker">
@@ -26,10 +23,8 @@
             </div>
 	    </div>
     </div>
-    <!-- /ko -->
     <div class="af-attach-editor-list" style="clear:left;">
-        <!-- ko if:hasAttachments -->
-	    <table>
+	    <table id="<%=ClientID%>_attachmentTable" hidden="hidden">
 		    <thead>
 			    <tr>
 				    <td><%=GetSharedResource("[RESX:FileName]")%></td>
@@ -38,33 +33,22 @@
 				    <td><%=GetSharedResource("[RESX:Delete]")%></td>
 			    </tr>
 		    </thead>
-		    <tbody data-bind="foreach: attachments">
-		        <tr>
-                    <td><i data-bind="attr: { 'class' : $root.getIconClass($data) }"></i> <span data-bind="text:fileName"></span></td>
-                    <td data-bind="text:(fileSize || fileSizeText)"></td>
-                    <td>
-                    
-                        <span class="fa fa-plus fa-fw fa-blue" data-bind="click: $root.insertImage, visible: (contentType && contentType.match(/^image\/(jpeg|png|gif)$/i)) || (fileName && fileName.match(/\.(jpe?g|png|gif)$/i))"></span>
-                    </td>
-                    <td><span class="fa fa-trash fa-fw fa-blue" data-bind="click:$root.removeAttachment" /></td>
-		        </tr>
-		    </tbody>
+		    <tbody></tbody>
 	    </table>
-        <!-- /ko -->
     </div>
 </div>
-<!-- /ko -->
 
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
+    const initializeAttachmentManager = function () {
 
-        var options = {
+        const options = {
             elementId: "<%= ClientID %>",
             editorType: <%=(int)ForumInfo.FeatureSettings.EditorType%>,
             moduleId: <%=ModuleId%>,
             forumId: <%=ForumId%>,
+            attachmentTableId: "<%=ClientID%>_attachmentTable",
             attachmentsClientId: "<%=AttachmentsClientId %>",
             titleText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:Attachments:BrowseSite:Title]"))%>",
             nameHeaderText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:FileName]"))%>",
@@ -85,11 +69,18 @@
             uploadButtonText: "<%=DotNetNuke.UI.Utilities.ClientAPI.GetSafeJSString(LocalizeString("[RESX:UploadButton]"))%>"
         };
 
-        var attachmentMgr = new AFAttachmentManager(jQuery, ko, options);
+        const attachmentMgr = new AFAttachmentManager(jQuery, options);
 
         attachmentMgr.initialize();
 
-    });
+    };
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeAttachmentManager);
+    }
+    else {
+        initializeAttachmentManager();
+    }
 
     
 </script>
