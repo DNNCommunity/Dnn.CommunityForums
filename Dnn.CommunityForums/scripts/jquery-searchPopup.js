@@ -9,9 +9,6 @@
 
             var popup = obj.find('.aftb-search-popup');
 
-            var button = obj.find('button');
-            button.button({ icons: { primary: "ui-icon-search" } });
-
             popup.css('left', (obj.width() - popup.width()) + "px");
             popup.css('top', obj.height() + "px");
 
@@ -19,7 +16,7 @@
 
                 obj.data('visible', !obj.data('visible'));
 
-                $('.ui-icon', this).toggleClass('ui-icon-triangle-1-s ui-icon-triangle-1-n');
+                $('.fa-caret-down, .fa-caret-up', this).toggleClass('fa-caret-down fa-caret-up');
                 $('.aftb-search-popup', obj).toggle();
 
             });
@@ -48,7 +45,7 @@
 
                 if (obj.has(e.target).length === 0 && obj.data('visible')) {
                     obj.data('visible', false);
-                    $('.ui-icon', obj).toggleClass('ui-icon-triangle-1-s ui-icon-triangle-1-n');
+                    $('.fa-caret-down, .fa-caret-up', obj).toggleClass('fa-caret-down fa-caret-up');
                     $('.aftb-search-popup', obj).toggle();
                 }
                     

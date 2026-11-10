@@ -5,8 +5,6 @@ function renderDG(){
 	<%=agBadges.ClientID%>.Callback();
 };
 var badgeOptions = {};
-badgeOptions.width = "500";
-badgeOptions.height = "350";
 badgeOptions.modtitle = "[RESX:Badge]";
 function openDialog(row){
 	var badgeid;
@@ -164,7 +162,7 @@ function redirectBadgeUsers() {
         </footertemplate>
     </am:activegrid>
 </div>
-<div id="afBadgeEdit" style="width: 500px; height: 350px; display: none;" title="[RESX:Badge]">
+<div id="afBadgeEdit" style="display: none;" title="[RESX:Badge]">
     <div class="dnnForm">
         <div class="dnnFormItem">
             <label>
@@ -242,7 +240,6 @@ function redirectBadgeUsers() {
 	jQuery(function ($) {
 		var opts = {};
 		opts.callbackTrue = function () {
-			$(this).dialog("close");
 			var data = {};
 			data.action = 16;
 			data.BadgeId = badge.BadgeId;

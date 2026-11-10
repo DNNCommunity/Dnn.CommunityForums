@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}ControlPanel.css");
             ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
-            ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}Resources/jquery-ui-1.14.2.custom/jquery-ui.min.css", priority: 105);
+            ClientResourceManager.RegisterStyleSheet(page: this.Page, filePath: $"{Globals.ModulePath}Resources/native-dialog.css", priority: 105);
 
             this.lblProd.Visible = true;
             this.lblCopy.Visible = true;

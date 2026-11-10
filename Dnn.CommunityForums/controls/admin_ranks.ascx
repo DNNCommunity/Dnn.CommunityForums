@@ -7,8 +7,6 @@ function renderDG(){
 	<%=agRanks.ClientID%>.Callback();
 };
 var rankOptions = {};
-rankOptions.width = "500";
-rankOptions.height = "350";
 rankOptions.modtitle = "[RESX:RanksRecognition]";
 function openDialog(row){
 	var rankid;
@@ -102,7 +100,7 @@ function saveRank() {
 		<footertemplate></table></footertemplate>
 	</am:ActiveGrid>
 </div>
-<div id="afRankEdit" style="width:500px;height:350px;display:none;" title="[RESX:RanksRecognition]">
+<div id="afRankEdit" style="display:none;" title="[RESX:RanksRecognition]">
 	<div class="dnnForm">
 		<div class="dnnFormItem">
 			<label>
@@ -139,7 +137,6 @@ function saveRank() {
 	jQuery(function ($) {
 		var opts = {};
 		opts.callbackTrue = function () {
-			$(this).dialog("close");
 			var data = {};
 			data.action = 10;
 			data.RankId = rank.RankId;

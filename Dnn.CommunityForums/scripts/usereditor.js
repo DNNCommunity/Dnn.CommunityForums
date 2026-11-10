@@ -28,7 +28,7 @@
                 html += "<div class='dnnFormItem'><div class='dnnLabel'><label for='signature'>" + opts.signatureText + "</label></div><textarea rows='2' cols='20' id='signature' name='signature'/></div>";
                 html += "</fieldset>";
                                 
-                editUserDialog = $("<div id='afEditUserDialog' class='dnnForm dnnClear'/>").html(html).dialog(opts);
+                editUserDialog = am.UI.CreateDialog('afEditUserDialog', opts.titleText + ' ' + userName, html, { width: 650 });
                 
                 // Numeric Input Only
                 editUserDialog.find("#rewardPoints").keydown(function (event) {
@@ -51,28 +51,21 @@
             editUserDialog.find('#rewardPoints').val(userData.RewardPoints);
             editUserDialog.find('#signature').val(userData.Signature);
        
-            editUserDialog.dialog({
-                minWidth: 650,
-                modal: true,
-                resizable: false,
-                title: opts.titleText + ' ' + userName,
-                open: function () { editUserDialog.find("#trustLevel").focus(); },
+            editUserDialog = am.UI.CreateDialog('afEditUserDialog', opts.titleText + ' ' + userName, null, {
+                width: 650,
                 buttons: [
                     { text: opts.updateText, click: updateUser },
                     { text: opts.updateBadges, click: redirectUpdateBadges },
-                    { text: opts.cancelText, click: function () { $(this).dialog("close"); } }
-                ],
-                close: function () { }
+                    { text: opts.cancelText, click: function () { am.UI.CloseDialog(editUserDialog); } }
+                ]
             });
 
-            editUserDialog.dialog('open');
+            am.UI.OpenDialog(editUserDialog, function () { editUserDialog.find("#trustLevel").focus(); });
 
         };
         function redirectUpdateBadges() {
             window.location.replace(opts.baseUrl + "/afv/grid/afgt/userbadges?uid=" + userId);
         }
-
-        $(opts.openTriggerSelector).button({ icons: { primary:'ui-icon-person' } });
 
         $wrap.on('click', opts.openTriggerSelector, function (e) {
 
@@ -112,36 +105,13 @@
                     contentType: "application/json",
                     beforeSend: opts.servicesFramework.setModuleHeaders
                 }).done(function (data) {
-                    editUserDialog.dialog('close');
+                    am.UI.CloseDialog(editUserDialog);
                     afreload();
                 }).fail(function (xhr, status) {
                     alert(opts.updateUserProfileErrorText);
                 });   
         }
 
-        $(opts.openTriggerSelector).button({ icons: { primary:'ui-icon-person' } });
-
-        $wrap.on('click', opts.openTriggerSelector, function (e) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            userId = $(e.currentTarget).attr('data-id');
-            userName = $(e.currentTarget).attr('data-name');
-
-            $.ajax(
-            {
-                url: opts.serviceurlbase + "GetUserProfile?UserID=" + userId,
-                type: "GET",
-                contentType: "application/json",
-                dataType: "json",
-                beforeSend: opts.servicesFramework.setModuleHeaders
-            }).done(function (data) {
-                openEditUserDialog(data);
-            }).fail(function (xhr, status) {
-                alert('Error Retriving User Profile');
-            });
-        });
     };
 
     $.fn.afUserEditor.defaultOptions = {
@@ -157,9 +127,7 @@
         rewardPointsText: "Reward Points:",
         updateText: "Update User",
         updateBadges: "Update Badges",
-        cancelText: "Cancel",
-        dialogClass: 'dnnFormPopup dnnClear',
-        autoOpen: false
+        cancelText: "Cancel"
     };
 
 }(jQuery));

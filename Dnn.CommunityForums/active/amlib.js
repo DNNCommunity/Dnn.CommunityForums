@@ -147,44 +147,143 @@ am.Utils = {
 };
 am.UI = {
     currentModalDiv: null,
+    CreateDialog: function (id, title, content, options) {
+        var dialog = document.getElementById(id);
+        var dialogContent;
+        var actions;
+        options = options || {};
+
+        if (dialog === null) {
+            dialog = document.createElement('dialog');
+            dialog.id = id;
+            dialog.className = 'dcf-native-dialog dnnFormPopup dnnClear';
+            dialog.setAttribute('aria-labelledby', id + 'Title');
+
+            var header = document.createElement('header');
+            header.className = 'dcf-native-dialog-header';
+            var titleElement = document.createElement('h2');
+            titleElement.className = 'dcf-native-dialog-title';
+            titleElement.id = id + 'Title';
+            header.appendChild(titleElement);
+
+            var closeButton = document.createElement('button');
+            closeButton.type = 'button';
+            closeButton.className = 'dcf-native-dialog-close';
+            closeButton.setAttribute('aria-label', 'Close');
+            var closeIcon = document.createElement('i');
+            closeIcon.className = 'fa fa-times';
+            closeIcon.setAttribute('aria-hidden', 'true');
+            closeButton.appendChild(closeIcon);
+            closeButton.addEventListener('click', function () {
+                am.UI.CloseDialog(dialog);
+            });
+            header.appendChild(closeButton);
+
+            dialogContent = document.createElement('div');
+            dialogContent.className = 'dcf-native-dialog-content dnnForm dnnClear';
+            actions = document.createElement('div');
+            actions.className = 'dcf-native-dialog-actions';
+            dialog.appendChild(header);
+            dialog.appendChild(dialogContent);
+            dialog.appendChild(actions);
+            document.body.appendChild(dialog);
+        }
+
+        dialog.querySelector('.dcf-native-dialog-title').textContent = title || '';
+
+        dialogContent = dialog.querySelector('.dcf-native-dialog-content');
+        if (content !== null && typeof content !== 'undefined') {
+            while (dialogContent.firstChild) {
+                dialogContent.removeChild(dialogContent.firstChild);
+            }
+
+            if (typeof content === 'string') {
+                dialogContent.innerHTML = content;
+            } else {
+                dialogContent.appendChild(content);
+            }
+        }
+
+        if (options.width) {
+            dialog.style.width = /^\d+$/.test(options.width) ? options.width + 'px' : options.width;
+        }
+
+        if (options.height) {
+            dialog.style.height = /^\d+$/.test(options.height) ? options.height + 'px' : options.height;
+        }
+
+        actions = dialog.querySelector('.dcf-native-dialog-actions');
+        actions.hidden = !options.buttons || options.buttons.length === 0;
+        while (actions.firstChild) {
+            actions.removeChild(actions.firstChild);
+        }
+
+        if (options.buttons) {
+            options.buttons.forEach(function (item) {
+                var button = document.createElement('button');
+                button.type = 'button';
+                button.className = item.class || '';
+                button.textContent = item.text;
+                button.addEventListener('click', function () {
+                    item.click.call(dialog);
+                });
+                actions.appendChild(button);
+            });
+        }
+
+        return $(dialog);
+    },
+    OpenDialog: function (dialog, onOpen) {
+        if (!dialog) {
+            return;
+        }
+
+        var element = dialog.jquery ? dialog[0] : dialog;
+        if (element.open) {
+            return;
+        }
+
+        if (typeof element.showModal === 'function') {
+            element.showModal();
+        } else {
+            element.setAttribute('open', '');
+        }
+
+        if (onOpen) {
+            onOpen.call(element);
+        }
+    },
+    CloseDialog: function (dialog) {
+        if (!dialog) {
+            return;
+        }
+
+        var element = dialog.jquery ? dialog[0] : dialog;
+        if (typeof element.close === 'function') {
+            element.close();
+        } else {
+            element.removeAttribute('open');
+        }
+    },
     LoadDiv: function (id, options) {
+        var content = document.getElementById(id);
+        var width = options && options.width ? options.width : parseInt(content.style.width, 10);
+        var height = options && options.height ? options.height : parseInt(content.style.height, 10);
+        var title = options && (options.title || options.modtitle) ? options.title || options.modtitle : content.getAttribute('title');
+        content.style.display = '';
+        content.style.width = '';
+        content.style.height = '';
 
-        var $modal = $('#' + id);
-        var width = $modal.width();
-        var height = $modal.height();
-        var modtitle = document.getElementById(id).getAttribute('title');
-        if (typeof (options) != 'undefined') {
-            width = options.width;
-            height = options.height;
-            modtitle = options.title;
+        var dialogOptions = { width: width, height: height };
+        var dialog = this.CreateDialog(id + 'Dialog', title, content, dialogOptions);
+        this.OpenDialog(dialog);
+
+        if (options && options.loadEvent) {
+            eval(options.loadEvent);
         }
-        $modal.dialog({
-            modal: true,
-            autoOpen: true,
-            dialogClass: "dnnFormPopup",
-            position: { at: "center" },
-            minWidth: width,
-            minHeight: height,
-            maxWidth: width,
-            maxHeight: height,
-            resizable: false,
-            closeOnEscape: true,
-            title: modtitle,
-            close: function (event, ui) {
-                $(this).dialog("destroy");
-            }
-        });
-
-        if (typeof (options) != 'undefined') {
-            if (typeof (options.loadEvent) != 'undefined') {
-                eval(options.loadEvent);
-            }
-        }
-        
-
     },
     CloseDiv: function (id) {
-        $("#" + id).dialog("close");
+        this.CloseDialog(document.getElementById(id + 'Dialog'));
     },
   
     GetStyle: function (id, propName) {
