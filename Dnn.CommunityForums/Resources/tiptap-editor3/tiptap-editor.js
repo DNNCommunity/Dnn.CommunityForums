@@ -34,19 +34,19 @@ export default class TipTapEditorController {
     createEditor(editorID, initialText, tabId, moduleId, forumId) {
         this.editorElement = document.querySelector('#' + editorID)
         this.actions = [
-            { name: "bold", title: amaf.resx.BoldDesc, fontTag: "fa-bold", command: 'toggleBold', disable: true },
-            { name: "italic", title: amaf.resx.ItalicsDesc, fontTag: "fa-italic", command: 'toggleItalic', disable: true },
-            { name: "underline", title: amaf.resx.UnderlineDesc, fontTag: "fa-underline", command: 'toggleUnderline', disable: true },
-            { name: "strike", title: amaf.resx.StrikeDesc, fontTag: "fa-strikethrough", command: 'toggleStrike', disable: true },
-            { name: "undo", title: amaf.resx.UndoDesc, fontTag: "fa-undo", command: 'undo', disable: true },
-            { name: "redo", title: amaf.resx.RedoDesc, fontTag: "fa-repeat", command: 'redo', disable: true },
-            { name: "code", title: amaf.resx.CodeDesc, fontTag: "fa-code", command: 'toggleCode', disable: true },
-            { name: "orderedList", title: amaf.resx.OrderedListDesc, fontTag: "fa-list-ol", command: 'toggleOrderedList' },
-            { name: "bulletList", title: amaf.resx.BulletedListDesc, fontTag: "fa-list-ul", command: 'toggleBulletList' },
-            { name: "blockquote", title: amaf.resx.QuoteDesc, fontTag: "fa-quote-left", command: 'toggleBlockquote' },
+            { name: "bold", title: amaf.resxUtil.getText("BoldDesc"), fontTag: "fa-bold", command: 'toggleBold', disable: true },
+            { name: "italic", title: amaf.resxUtil.getText("ItalicsDesc"), fontTag: "fa-italic", command: 'toggleItalic', disable: true },
+            { name: "underline", title: amaf.resxUtil.getText("UnderlineDesc"), fontTag: "fa-underline", command: 'toggleUnderline', disable: true },
+            { name: "strike", title: amaf.resxUtil.getText("StrikeDesc"), fontTag: "fa-strikethrough", command: 'toggleStrike', disable: true },
+            { name: "undo", title: amaf.resxUtil.getText("UndoDesc"), fontTag: "fa-undo", command: 'undo', disable: true },
+            { name: "redo", title: amaf.resxUtil.getText("RedoDesc"), fontTag: "fa-repeat", command: 'redo', disable: true },
+            { name: "code", title: amaf.resxUtil.getText("CodeDesc"), fontTag: "fa-code", command: 'toggleCode', disable: true },
+            { name: "orderedList", title: amaf.resxUtil.getText("OrderedListDesc"), fontTag: "fa-list-ol", command: 'toggleOrderedList' },
+            { name: "bulletList", title: amaf.resxUtil.getText("BulletedListDesc"), fontTag: "fa-list-ul", command: 'toggleBulletList' },
+            { name: "blockquote", title: amaf.resxUtil.getText("QuoteDesc"), fontTag: "fa-quote-left", command: 'toggleBlockquote' },
             { 
                 name: "showBoxes",
-                title: amaf.resx.ShowBoxesDesc || "Show boxes",
+                title: amaf.resxUtil.getText("ShowBoxesDesc") || "Show boxes",
                 fontTag: "fa-object-group",
                 command: "toggleShowBoxes",
                 isActive: () => {
@@ -57,14 +57,13 @@ export default class TipTapEditorController {
         ];
 
         // Create a div container for the buttons
-        const parser = new DOMParser();
         const buttonsContainer = document.createElement("div");
         buttonsContainer.setAttribute("class", "dcf-tiptap-buttons");
         this.editorElement.appendChild(buttonsContainer);
         for (let i = 0; i < this.actions.length; i++) {
             let a = this.actions[i];
             a.button = document.createElement("button");
-            a.button.setAttribute("title", parser.parseFromString(a.title || a.name, "text/html").body.textContent);
+            a.button.setAttribute("title", a.title || a.name);
             a.button.setAttribute("class", "dcf-tiptap-button dcf-tiptap-button-" + a.name);
             a.button.innerHTML = "<i class=\"fa " + a.fontTag + "\"></i>"
             a.button.addEventListener("click", (event) => {

@@ -1,8 +1,9 @@
 ﻿if (typeof (amaf) == 'undefined') {
     amaf = {};
 };
+
 amaf.resx = {
-    DelTopic:'[RESX:Delete]',
+    DelTopic: '[RESX:Delete]',
     EditTopic: '[RESX:Edit]',
     Lock: '[RESX:Lock]',
     UnLock: '[RESX:UnLock]',
@@ -48,3 +49,36 @@ amaf.resx = {
     UserEditorUpdateProfileError: '[RESX:UserEditor:UpdateProfileError]'
 };
 
+amaf.resxUtil = (function () {
+    const parser = new DOMParser();
+
+    function decodeHtml(value) {
+        const input = value == null ? '' : String(value);
+        return parser.parseFromString(input, 'text/html').body.textContent || '';
+    }
+
+    function encodeHtml(value) {
+        const input = value == null ? '' : String(value);
+        const div = document.createElement('div');
+        div.textContent = input;
+        return div.innerHTML;
+    }
+
+    function getRaw(key) {
+        return amaf.resx[key] || '';
+    }
+
+    function getText(key) {
+        return decodeHtml(getRaw(key));
+    }
+
+    function getHtml(key) {
+        return encodeHtml(decodeHtml(getRaw(key)));
+    }
+
+    return {
+        getRaw: getRaw,
+        getText: getText,
+        getHtml: getHtml
+    };
+}());
