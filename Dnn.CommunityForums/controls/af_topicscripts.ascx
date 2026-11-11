@@ -28,19 +28,19 @@
             openTriggerSelector: ".af-button-edituser",
             servicesFramework: $.ServicesFramework(<%=ModuleId%>), 
             baseUrl: '<%=GetBaseUrl()%>',
-            titleText: amaf.resx.UserEditorTitle,
-            trustLevelText: amaf.resx.UserEditorTrustLevel,
-            untrustedText: amaf.resx.UserEditorUntrusted,
-            neutralText: amaf.resx.UserEditorNeutral,
-            trustedText: amaf.resx.UserEditorTrusted,
-            userCaptionText: amaf.resx.UserEditorUserCaption,
-            rewardPointsText: amaf.resx.UserEditorRewardPoints,
-            signatureText: amaf.resx.UserEditorSignature,
-            updateText: amaf.resx.UserEditorUpdate,
-            updateBadges: amaf.resx.UserEditorUpdateBadges,
-            cancelText: amaf.resx.UserEditorCancel,
-            getUserProfileErrorText: amaf.resx.UserEditorGetProfileError,
-            updateUserProfileErrorText: amaf.resx.UserEditorUpdateProfileError
+            titleText: amaf.resxUtil.getText("UserEditorTitle"),
+            trustLevelText: amaf.resxUtil.getText("UserEditorTrustLevel"),
+            untrustedText: amaf.resxUtil.getText("UserEditorUntrusted"),
+            neutralText: amaf.resxUtil.getText("UserEditorNeutral"),
+            trustedText: amaf.resxUtil.getText("UserEditorTrusted"),
+            userCaptionText: amaf.resxUtil.getText("UserEditorUserCaption"),
+            rewardPointsText: amaf.resxUtil.getText("UserEditorRewardPoints"),
+            signatureText: amaf.resxUtil.getText("UserEditorSignature"),
+            updateText: amaf.resxUtil.getText("UserEditorUpdate"),
+            updateBadges: amaf.resxUtil.getText("UserEditorUpdateBadges"),
+            cancelText: amaf.resxUtil.getText("UserEditorCancel"),
+            getUserProfileErrorText: amaf.resxUtil.getText("UserEditorGetProfileError"),
+            updateUserProfileErrorText: amaf.resxUtil.getText("UserEditorUpdateProfileError")
         });
 
         // Split selected posts
