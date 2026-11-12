@@ -18,17 +18,17 @@
 
                 // Construct the form that will be displayed in the standard DNN Dialog
                 var html = "<fieldset style='margin-top:20px;'>";
-                html += "<div class='dnnFormItem'><div class='dnnLabel'><label for='trustLevel'>" + opts.trustLevelText + "</label></div><select id='trustLevel' name='trustLevel'>";
+                html += "<div class='dnnFormItem'><label for='trustLevel'>" + opts.trustLevelText + "</label><select id='trustLevel' name='trustLevel'>";
                 html += "<option value='0'>" + opts.neutralText + "</option>";
                 html += "<option value='1'>" + opts.trustedText + "</option>";
                 html += "<option value='-1'>" + opts.untrustedText + "</option>";
                 html += "</select></div>";
-                html += "<div class='dnnFormItem'><div class='dnnLabel'><label for='userCaption'>" + opts.userCaptionText + "</label></div><input type='text' id='userCaption' name='userCaption' maxlength='255'/></div>";
-                html += "<div class='dnnFormItem'><div class='dnnLabel'><label for='rewardPoints'>" + opts.rewardPointsText + "</label></div><input type='text' id='rewardPoints' name='rewardPoints'/></div>";
-                html += "<div class='dnnFormItem'><div class='dnnLabel'><label for='signature'>" + opts.signatureText + "</label></div><textarea rows='2' cols='20' id='signature' name='signature'/></div>";
+                html += "<div class='dnnFormItem'><label for='userCaption'>" + opts.userCaptionText + "</label><input type='text' id='userCaption' name='userCaption' maxlength='255'/></div>";
+                html += "<div class='dnnFormItem'><label for='rewardPoints'>" + opts.rewardPointsText + "</label><input type='text' id='rewardPoints' name='rewardPoints'/></div>";
+                html += "<div class='dnnFormItem'><label for='signature'>" + opts.signatureText + "</label><textarea rows='2' cols='20' id='signature' name='signature'></textarea></div>";
                 html += "</fieldset>";
-                                
-                editUserDialog = am.UI.CreateDialog('afEditUserDialog', opts.titleText + ' ' + userName, html, { width: 650 });
+
+                editUserDialog = am.UI.CreateDialog('afEditUserDialog', opts.titleText + ' ' + userName, html, { width: 450 });
                 
                 // Numeric Input Only
                 editUserDialog.find("#rewardPoints").keydown(function (event) {
@@ -54,9 +54,9 @@
             editUserDialog = am.UI.CreateDialog('afEditUserDialog', opts.titleText + ' ' + userName, null, {
                 width: 650,
                 buttons: [
-                    { text: opts.updateText, click: updateUser },
-                    { text: opts.updateBadges, click: redirectUpdateBadges },
-                    { text: opts.cancelText, click: function () { am.UI.CloseDialog(editUserDialog); } }
+                    { text: opts.updateText, class: 'dnnSecondaryAction', click: updateUser },
+                    { text: opts.updateBadges, class: 'dnnSecondaryAction', click: redirectUpdateBadges },
+                    { text: opts.cancelText, class: 'dnnTertiaryAction', click: function () { am.UI.CloseDialog(editUserDialog); } }
                 ]
             });
 

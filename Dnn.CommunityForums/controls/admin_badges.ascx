@@ -6,6 +6,7 @@ function renderDG(){
 };
 var badgeOptions = {};
 badgeOptions.modtitle = "[RESX:Badge]";
+badgeOptions.width = "680px";
 function openDialog(row){
 	var badgeid;
 	if (row != undefined){
