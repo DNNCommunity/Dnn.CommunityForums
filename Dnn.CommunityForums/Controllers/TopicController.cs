@@ -40,6 +40,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Social.Notifications;
 
+    using NotificationType = DotNetNuke.Services.Social.Notifications.NotificationType;
+
     internal class TopicController : RepositoryServiceLocatorBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo, ITopicController, TopicController>, ITopicController
     {
         protected override Func<ITopicController> GetFactory()

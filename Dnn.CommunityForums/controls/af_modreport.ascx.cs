@@ -27,6 +27,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Modules.ActiveForums.Enums;
     using DotNetNuke.Services.Social.Notifications;
 
+    using NotificationType = DotNetNuke.Services.Social.Notifications.NotificationType;
+
     public partial class af_modreport : ForumBase
     {
         #region Controls
