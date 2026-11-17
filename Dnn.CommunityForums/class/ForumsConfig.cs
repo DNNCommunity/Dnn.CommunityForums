@@ -39,8 +39,6 @@ namespace DotNetNuke.Modules.ActiveForums
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Social.Notifications;
 
-    using NotificationType = DotNetNuke.Services.Social.Notifications.NotificationType;
-
     public class ForumsConfig
     {
         private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsConfig));

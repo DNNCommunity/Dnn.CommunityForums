@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Enums
 
     /// <summary>Events for which notifications can be selected.</summary>
     [Flags]
-    public enum NotificationType
+    public enum NotificationEvent
     {
         /// <summary>No notification events.</summary>
         None = 0,

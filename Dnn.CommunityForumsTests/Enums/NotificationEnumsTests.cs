@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Enums
     [TestFixture]
     public class NotificationEnumsTests : TestBase
     {
-        [TestCase(typeof(NotificationType), 16)]
+        [TestCase(typeof(NotificationEvent), 16)]
         [TestCase(typeof(NotificationMethod), 4)]
         [TestCase(typeof(NotificationOptions), 3)]
         public void NotificationEnums_HaveIndependentFlags(Type enumType, int expectedFlagCount)
@@ -47,14 +47,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Enums
         [Test]
         public void NotificationSelections_CanCombineAndRestrictFlags()
         {
-            var events = NotificationType.NewTopicInSubscribedForum | NotificationType.MyPostIsLiked;
+            var events = NotificationEvent.NewTopicInSubscribedForum | NotificationEvent.MyPostIsLiked;
             var methods = NotificationMethod.Email | NotificationMethod.DnnNotification;
             var forumOptions = NotificationOptions.Summary | NotificationOptions.Link;
             var userOptions = NotificationOptions.Content | NotificationOptions.Link;
 
-            Assert.That(events.HasFlag(NotificationType.NewTopicInSubscribedForum), Is.True);
-            Assert.That(events.HasFlag(NotificationType.MyPostIsLiked), Is.True);
-            Assert.That(events.HasFlag(NotificationType.SomeoneMentionedMe), Is.False);
+            Assert.That(events.HasFlag(NotificationEvent.NewTopicInSubscribedForum), Is.True);
+            Assert.That(events.HasFlag(NotificationEvent.MyPostIsLiked), Is.True);
+            Assert.That(events.HasFlag(NotificationEvent.SomeoneMentionedMe), Is.False);
             Assert.That(methods.HasFlag(NotificationMethod.Email), Is.True);
             Assert.That(methods.HasFlag(NotificationMethod.DnnNotification), Is.True);
             Assert.That(methods.HasFlag(NotificationMethod.Sms), Is.False);
