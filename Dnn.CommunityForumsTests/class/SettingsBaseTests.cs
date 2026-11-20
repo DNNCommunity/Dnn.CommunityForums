@@ -1,4 +1,4 @@
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var settingsBase = this.CreateSettingsBase(this.DefaultSite, $"{Literals.PageId}=2#2586");
 
             // Act
-            var pageId = settingsBase.PageId;
+            var pageId = settingsBase.PageIdDuringLoad;
 
             // Assert
             Assert.That(pageId, Is.EqualTo(2));
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var settingsBase = this.CreateSettingsBase($"{this.DefaultSite}?{ParamKeys.PageId}=invalid");
 
             // Act
-            var pageId = settingsBase.PageId;
+            var pageId = settingsBase.PageIdDuringLoad;
 
             // Assert
             Assert.That(pageId, Is.EqualTo(1));
@@ -66,14 +66,25 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             var mockApp = this.CreateMockHttpApplication(url);
             HttpContext.Current = mockApp.Object.Context;
 
-            return new TestSettingsBase
+            var settingsBase = new TestSettingsBase
             {
                 Params = @params,
             };
+            var page = new System.Web.UI.Page();
+            page.Controls.Add(settingsBase);
+            page.ProcessRequest(HttpContext.Current);
+
+            return settingsBase;
         }
 
         private sealed class TestSettingsBase : SettingsBase
         {
+            public int PageIdDuringLoad { get; private set; }
+
+            protected override void OnLoad(System.EventArgs e)
+            {
+                this.PageIdDuringLoad = this.PageId;
+            }
         }
     }
 }

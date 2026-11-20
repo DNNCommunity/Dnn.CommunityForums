@@ -30,10 +30,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     internal class RepositoryControllerBase<T>
         where T : class
     {
+        private readonly IRepository<T> _Repository;
+
         private IRepository<T> Repo
         {
             get
             {
+                    if (this._Repository != null)
+                    {
+                        return this._Repository;
+                    }
+
                     try
                     {
                         var ctx = DataContext.Instance();
@@ -54,6 +61,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal RepositoryControllerBase()
         {
+        }
+
+        internal RepositoryControllerBase(IRepository<T> repository)
+        {
+            this._Repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         internal virtual IEnumerable<T> Get()
@@ -114,7 +126,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (!string.IsNullOrEmpty(sqlCondition))
             {
-                this.Repo.Find(sqlCondition, args).ToList().ForEach(_ => this.Repo.Update(sqlCondition, args));
+                var repository = this.Repo;
+                foreach (var item in repository.Find(sqlCondition, args).ToList())
+                {
+                    repository.Update(item);
+                }
             }
         }
 

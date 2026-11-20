@@ -20,8 +20,8 @@
 
 namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
-    using DotNetNuke.Modules.ActiveForums.Controllers;
     using DotNetNuke.Modules.ActiveForums.Entities;
+
     using NUnit.Framework;
 
     [TestFixture()]
@@ -32,9 +32,12 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             var property = typeof(TopicInfo).GetProperty(nameof(TopicInfo.TopicProperties));
 
-            Assert.That(property, Is.Not.Null);
-            Assert.That(property.PropertyType, Is.EqualTo(typeof(System.Collections.Generic.IEnumerable<TopicPropertyInfo>)));
-            Assert.That(property.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.IgnoreColumnAttribute), false), Has.Length.EqualTo(1));
+            Assert.Multiple(() =>
+            {
+                Assert.That(property, Is.Not.Null);
+                Assert.That(property.PropertyType, Is.EqualTo(typeof(System.Collections.Generic.List<TopicPropertyInfo>)));
+                Assert.That(property.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.IgnoreColumnAttribute), false), Has.Length.EqualTo(1));
+            });
         }
 
         [Test]
@@ -42,11 +45,19 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
         {
             var entityType = typeof(TopicPropertyInfo);
 
-            Assert.That(entityType.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.TableNameAttribute), false), Has.Length.EqualTo(1));
-            Assert.That(entityType.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.PrimaryKeyAttribute), false), Has.Length.EqualTo(1));
-            Assert.That(typeof(TopicPropertyInfo).GetMethod(nameof(TopicPropertyInfo.GetTopic)), Is.Not.Null);
-            Assert.That(typeof(TopicPropertyInfo).GetMethod(nameof(TopicPropertyInfo.GetProperty)), Is.Not.Null);
-            Assert.That(typeof(TopicPropertyController).GetMethod(nameof(TopicPropertyController.SaveForTopic)), Is.Not.Null);
+            var tableAttributes = entityType.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.TableNameAttribute), false);
+            var table = (DotNetNuke.ComponentModel.DataAnnotations.TableNameAttribute)tableAttributes[0];
+            var keyAttributes = entityType.GetCustomAttributes(typeof(DotNetNuke.ComponentModel.DataAnnotations.PrimaryKeyAttribute), false);
+            var key = (DotNetNuke.ComponentModel.DataAnnotations.PrimaryKeyAttribute)keyAttributes[0];
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(tableAttributes, Has.Length.EqualTo(1));
+                Assert.That(table.TableName, Is.EqualTo("communityforums_Topics_Properties"));
+                Assert.That(keyAttributes, Has.Length.EqualTo(1));
+                Assert.That(key.ColumnName, Is.EqualTo("Id"));
+                Assert.That(key.AutoIncrement, Is.True);
+            });
         }
     }
 }

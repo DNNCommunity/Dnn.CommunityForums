@@ -20,11 +20,10 @@
 
 namespace DotNetNuke.Modules.ActiveForumsTests.Entities
 {
-    using System.Collections.Generic;
-    using System.Globalization;
-
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs;
+
+    using Moq;
 
     using NUnit.Framework;
 
@@ -137,23 +136,38 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Entities
             Assert.That(averageLikeScore, Is.EqualTo(2.5D));
         }
 
-        [Test]
-        public void GetProperty_ModLink_ReturnsLoginUrlWithModerationReturnUrl()
+        [TestCase(-1)]
+        [TestCase(42)]
+        public void GetProperty_ModLink_ReturnsLoginUrlWithModerationReturnUrl(int loginTabId)
         {
             // Arrange
             var forum = this.ForumsGraph.Find(f => f.ForumID == ForumsObjectGraph.AnnouncementsForumId);
+            forum.PortalSettings.LoginTabId = loginTabId;
+            var forumTabId = forum.GetTabId();
+            const string moderationUrl = "/moderation";
+            const string expectedUrl = "/login";
+            var viewParameter = $"{ParamKeys.ViewType}={Views.ModerateTopics}";
+            var forumParameter = $"{ParamKeys.ForumId}={forum.ForumID}";
+            var loginParameter = loginTabId > 0 ? $"returnUrl={moderationUrl}" : $"ctl=login&returnUrl={moderationUrl}";
+            var loginTargetTabId = loginTabId > 0 ? loginTabId : forumTabId;
             bool propertyNotFound = false;
-            var moderationUrl = Utilities.NavigateURL(forum.GetTabId(), string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forum.ForumID}" });
-            var expectedUrl = forum.PortalSettings.LoginTabId > 0
-                ? Utilities.NavigateURL(forum.PortalSettings.LoginTabId, string.Empty, $"returnUrl={moderationUrl}")
-                : Utilities.NavigateURL(forum.GetTabId(), string.Empty, $"ctl=login&returnUrl={moderationUrl}");
+            var navigationManager = this.SetupNavigationScope();
+
+            navigationManager
+                .Setup(navigation => navigation.NavigateURL(forumTabId, forum.PortalSettings, string.Empty, It.Is<string[]>(parameters => parameters.Length == 2 && parameters[0] == viewParameter && parameters[1] == forumParameter)))
+                .Returns(moderationUrl);
+            navigationManager
+                .Setup(navigation => navigation.NavigateURL(loginTargetTabId, string.Empty, It.Is<string[]>(parameters => parameters.Length == 1 && parameters[0] == loginParameter)))
+                .Returns(expectedUrl);
 
             // Act
-            var actualUrl = forum.GetProperty("modlink", string.Empty, CultureInfo.InvariantCulture, this.User12Info, DotNetNuke.Services.Tokens.Scope.DefaultSettings, ref propertyNotFound);
+            var actualUrl = forum.GetProperty("modlink", string.Empty, System.Globalization.CultureInfo.InvariantCulture, this.User12Info, DotNetNuke.Services.Tokens.Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
             Assert.That(propertyNotFound, Is.False);
             Assert.That(actualUrl, Is.EqualTo(expectedUrl));
+            navigationManager.Verify(navigation => navigation.NavigateURL(forumTabId, forum.PortalSettings, string.Empty, It.Is<string[]>(parameters => parameters.Length == 2 && parameters[0] == viewParameter && parameters[1] == forumParameter)), Times.Once);
+            navigationManager.Verify(navigation => navigation.NavigateURL(loginTargetTabId, string.Empty, It.Is<string[]>(parameters => parameters.Length == 1 && parameters[0] == loginParameter)), Times.Once);
         }
 
         private static void SetTotalLikeCountCache(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, int totalLikeCount)
