@@ -1,4 +1,4 @@
-// Copyright (c) by DNN Community
+﻿// Copyright (c) by DNN Community
 //
 // DNN Community licenses this file to you under the MIT license.
 //
@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
 
     using DotNetNuke.Data;
     using DotNetNuke.Modules.ActiveForums.Controllers;
@@ -32,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     using NUnit.Framework;
 
     [TestFixture]
-    internal class RepositoryControllerBaseTests
+    internal class RepositoryControllerBaseTests : TestBase
     {
         [Test]
         public void Update_ItemWithDateUpdated_SetsUtcTimestampAndPersistsItem()
@@ -73,21 +72,55 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             controller.Update(SqlCondition, 7);
 
             // Assert
+            repository.Verify(r => r.Find(SqlCondition, It.Is<object[]>(args => args.Length == 1 && (int)args[0] == 7)), Times.Once);
+            foreach (var item in items)
+            {
+                repository.Verify(r => r.Update(item), Times.Once);
+            }
+
             repository.Verify(r => r.Update(It.IsAny<TestEntity>()), Times.Exactly(items.Count));
             repository.Verify(r => r.Update(It.IsAny<string>(), It.IsAny<object[]>()), Times.Never);
         }
 
-        private static RepositoryControllerBase<TestEntity> CreateController(Mock<IRepository<TestEntity>> repository)
+        [TestCase(null)]
+        [TestCase("")]
+        public void Update_WithoutSqlCondition_DoesNotAccessRepository(string sqlCondition)
         {
-            var controller = new RepositoryControllerBase<TestEntity>();
-            typeof(RepositoryControllerBase<TestEntity>)
-                .GetField("_repo", BindingFlags.Instance | BindingFlags.NonPublic)
-                .SetValue(controller, repository.Object);
+            var repository = new Mock<IRepository<TestEntity>>(MockBehavior.Strict);
+            var controller = CreateController(repository);
 
-            return controller;
+            controller.Update(sqlCondition, 7);
+
+            repository.VerifyNoOtherCalls();
         }
 
-        private class TestEntity
+        [Test]
+        public void Update_WithSqlConditionAndNoMatches_DoesNotUpdate()
+        {
+            const string SqlCondition = "WHERE (ModuleId = @0)";
+            var repository = new Mock<IRepository<TestEntity>>();
+            repository.Setup(r => r.Find(SqlCondition, It.IsAny<object[]>())).Returns(new List<TestEntity>());
+            var controller = CreateController(repository);
+
+            controller.Update(SqlCondition, 7);
+
+            repository.Verify(r => r.Find(SqlCondition, It.Is<object[]>(args => args.Length == 1 && (int)args[0] == 7)), Times.Once);
+            repository.Verify(r => r.Update(It.IsAny<TestEntity>()), Times.Never);
+            repository.Verify(r => r.Update(It.IsAny<string>(), It.IsAny<object[]>()), Times.Never);
+        }
+
+        [Test]
+        public void Constructor_WithNullRepository_Throws()
+        {
+            Assert.That(() => new RepositoryControllerBase<TestEntity>(null), Throws.ArgumentNullException);
+        }
+
+        internal static RepositoryControllerBase<TestEntity> CreateController(Mock<IRepository<TestEntity>> repository)
+        {
+            return new RepositoryControllerBase<TestEntity>(repository.Object);
+        }
+
+        internal class TestEntity
         {
             public DateTime DateUpdated { get; set; }
         }

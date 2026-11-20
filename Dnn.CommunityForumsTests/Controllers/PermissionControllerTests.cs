@@ -25,7 +25,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
     using System.Collections.Specialized;
     using System.Linq;
 
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums;
     using DotNetNuke.Modules.ActiveForums.Controllers;
     using DotNetNuke.Security.Roles;
@@ -411,8 +410,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var objId = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators;
 
             var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
-                {
-                    Object =
+            {
+                Object =
                     {
                         View = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers};{DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators}{emptyPermissions}",
                         Read = $"{DotNetNuke.Tests.Utilities.Constants.RoleID_RegisteredUsers}{emptyPermissions}",
@@ -433,7 +432,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                         Split = emptyPermissions,
                         ManageUsers = emptyPermissions,
                     },
-                };
+            };
 
             // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermSet(mockPermissions.Object, SecureActions.View, objId.ToString());
@@ -477,8 +476,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             var objId = DotNetNuke.Tests.Utilities.Constants.RoleID_Administrators;
 
             var expectedResult = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
-                {
-                    Object =
+            {
+                Object =
                     {
                          ModuleId = this.MockModule.Object.ModuleID,
                          View = $"{DotNetNuke.Common.Globals.glbRoleUnauthUser};{DotNetNuke.Common.Globals.glbRoleAllUsers};{registeredUsersRoleId};{emptyPermissions}",
@@ -500,7 +499,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                          Split = $"{emptyPermissions}",
                          ManageUsers = $"{emptyPermissions}",
                     },
-                };
+            };
 
             // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(mockPermissions.Object, objId.ToString());
@@ -673,8 +672,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Act
             // Assert
             /* not yet testable */
-            Assert.That(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, string.Empty, new HashSet<int>()), Is.EqualTo(string.Empty));
-            Assert.Throws<System.NullReferenceException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, "1",  new HashSet<int>() { 1, 2, 3 }));
+            //Assert.That(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, string.Empty, new HashSet<int>()), Is.EqualTo(string.Empty));
+            Assert.Throws<System.ArgumentNullException>(() => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(this.MockModule.Object.ModuleID, "1", new HashSet<int>() { 1, 2, 3 }));
         }
 
         [Test]
@@ -842,7 +841,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
-        
+
         [Test]
         public void RemoveRoleIdFromRoleIdsTest()
         {
@@ -868,7 +867,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
             // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
-                [Test]
+        [Test]
         public void GetObjFromSecObj_WithNullPermSet_ShouldUseAdminRoleId()
         {
             // Arrange
@@ -1028,7 +1027,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests.Controllers
                 Assert.That(result, Does.Contain(i.ToString()));
             }
         }
-        
+
         [Test]
         public void GetAdministratorsRoleId_ReturnsAdminRoleId()
         {

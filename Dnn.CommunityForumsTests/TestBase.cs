@@ -25,16 +25,15 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Drawing.Text;
     using System.Linq;
     using System.Reflection;
     using System.Web;
     using System.Web.Hosting;
-    using System.Security.Cryptography;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
@@ -43,13 +42,13 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.ActiveForums;
-    using DotNetNuke.Modules.ActiveForums.ViewModels;
     using DotNetNuke.Modules.ActiveForumsTests.ObjectGraphs;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
+    using DotNetNuke.Services.Url.FriendlyUrl;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -57,7 +56,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests
     using Moq;
 
     using NUnit.Framework;
-    using DotNetNuke.Services.Url.FriendlyUrl;
 
     public class TestBase
     {
@@ -118,8 +116,43 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         internal List<DotNetNuke.Modules.ActiveForums.Entities.TagInfo> TagsGraph;
         internal List<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo> CategoriesGraph;
 
+        private HttpContext _PreviousNavigationHttpContext;
+        private ServiceProvider _NavigationServiceProvider;
+        private IServiceScope _NavigationServiceScope;
+        private bool _NavigationContextInstalled;
+
+        protected virtual INavigationManager CreateNavigationManager() => this.MockNavigationManager.Object;
+
         [SetUp]
         public void SetUp()
+        {
+            this.SetupServiceCollection();
+            this.SetupComponentProvider();
+            this.SetupDnnControllerMocks();
+            this.SetupDnnDefaults();
+            this.SetupForumControllerMocks();
+            this.SetupForumTestData();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.TearDownNavigationScope();
+            DotNetNuke.Entities.Portals.PortalAliasController.ClearInstance();
+            DotNetNuke.Entities.Portals.PortalController.ClearInstance();
+            DotNetNuke.Entities.Modules.ModuleController.ClearInstance();
+            DotNetNuke.Entities.Tabs.TabController.ClearInstance();
+            DotNetNuke.Entities.Users.UserController.ClearInstance();
+            DotNetNuke.Security.Roles.RoleController.ClearInstance();
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.ClearInstance();
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.ClearInstance();
+            DotNetNuke.Modules.ActiveForums.Controllers.TagController.ClearInstance();
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController.ClearInstance();
+            DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.ClearInstance();
+            ComponentFactory.Container = null;
+        }
+
+        private void SetupServiceCollection()
         {
             var serviceCollection = new ServiceCollection();
             var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
@@ -135,17 +168,22 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             serviceCollection.AddSingleton<IPortalAliasService, PortalAliasController>();
             serviceCollection.AddSingleton<IPortalAliasController, PortalAliasController>();
             serviceCollection.AddSingleton<IPortalController, PortalController>();
-
             serviceCollection.AddSingleton<DotNetNuke.Modules.ActiveForums.Controllers.IForumController, DotNetNuke.Modules.ActiveForums.Controllers.ForumController>();
             serviceCollection.AddSingleton<DotNetNuke.Modules.ActiveForums.Controllers.IForumGroupController, DotNetNuke.Modules.ActiveForums.Controllers.IForumGroupController>();
+        }
 
+        private void SetupComponentProvider()
+        {
             ComponentFactory.Container = new SimpleContainer();
             this.mockRoleProvider = MockComponentProvider.CreateRoleProvider();
             this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
 
             // this is needed to mock the TokenProvider when running unit tests
             ComponentFactory.RegisterComponentInstance<TokenProvider>(new ForumsModuleTokenProvider());
+        }
 
+        private void SetupDnnControllerMocks()
+        {
             this.mockHostSettings = new Mock<IHostSettingsService>();
             ComponentFactory.RegisterComponentInstance<IHostSettingsService>(this.mockHostSettings.Object);
 
@@ -155,10 +193,9 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             this.mockLocaleController = new Mock<ILocaleController>();
             ComponentFactory.RegisterComponentInstance<ILocaleController>(this.mockLocaleController.Object);
-            
+
             this.mockFriendlyUrlProvider = new Mock<FriendlyUrlProvider>();
             ComponentFactory.RegisterComponentInstance<FriendlyUrlProvider>(this.mockFriendlyUrlProvider.Object);
-
 
             this.mockPortalAliasController = new Mock<IPortalAliasController>();
             DotNetNuke.Entities.Portals.PortalAliasController.SetTestableInstance(this.mockPortalAliasController.Object);
@@ -178,7 +215,10 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             this.mockTabController = new Mock<ITabController>();
             DotNetNuke.Entities.Tabs.TabController.SetTestableInstance(this.mockTabController.Object);
+        }
 
+        private void SetupDnnDefaults()
+        {
             this.SetupHostSettings();
             this.SetupCachingProvider();
             this.SetupModuleInfo();
@@ -188,15 +228,16 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             this.SetupTabInfo();
             this.SetupPortalSettings();
             this.SetupMockNavigationManager();
-
+            ComponentFactory.RegisterComponentInstance<INavigationManager>(this.CreateNavigationManager());
             this.SetupRoleInfo();
             this.SetupUserRoleInfo();
             this.SetupRoleProvider();
-
             this.SetupMockHttpApplication();
-
             this.MainSettings = new Mock<DotNetNuke.Modules.ActiveForums.ModuleSettings>();
+        }
 
+        private void SetupForumControllerMocks()
+        {
             this.mockForumController = new Mock<DotNetNuke.Modules.ActiveForums.Controllers.IForumController>();
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.SetTestableInstance(this.mockForumController.Object);
 
@@ -211,24 +252,16 @@ namespace DotNetNuke.Modules.ActiveForumsTests
 
             this.mockCategoryController = new Mock<DotNetNuke.Modules.ActiveForums.Controllers.ICategoryController>();
             DotNetNuke.Modules.ActiveForums.Controllers.CategoryController.SetTestableInstance(this.mockCategoryController.Object);
+        }
 
+        private void SetupForumTestData()
+        {
             this.SetupMainSettings();
             this.SetupForumInfo();
             this.SetupForumUserInfo();
             this.SetupTopicReplyInfo();
             this.SetupTagInfo();
             this.SetupCategoryInfo();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            DotNetNuke.Entities.Portals.PortalAliasController.ClearInstance();
-            DotNetNuke.Entities.Portals.PortalController.ClearInstance();
-            DotNetNuke.Entities.Modules.ModuleController.ClearInstance();
-            DotNetNuke.Entities.Users.UserController.ClearInstance();
-            DotNetNuke.Security.Roles.RoleController.ClearInstance();
-            ComponentFactory.Container = null;
         }
 
         private void SetupRoleProvider()
@@ -491,7 +524,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             };
 
             this.mockIPortalInfo = new Mock<IPortalInfo>
-            { Object =
+            {
+                Object =
                 {
                     PortalId = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
                     AdministratorId = DotNetNuke.Tests.Utilities.Constants.UserID_Admin,
@@ -506,7 +540,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             };
 
             this.mockPortalInfo = new Mock<PortalInfo>
-            { Object =
+            {
+                Object =
                 {
                     PortalID = DotNetNuke.Tests.Utilities.Constants.PORTAL_Zero,
                     AdministratorId = DotNetNuke.Tests.Utilities.Constants.UserID_Admin,
@@ -814,6 +849,26 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             this.MockNavigationManager = new Mock<DotNetNuke.Modules.ActiveForums.Services.Tests.NavigationManager>(this.mockPortalController.Object);
         }
 
+        internal Mock<INavigationManager> SetupNavigationScope()
+        {
+            if (this._NavigationContextInstalled || this._NavigationServiceProvider != null)
+            {
+                throw new InvalidOperationException("The navigation scope has already been initialized for this test.");
+            }
+
+            var navigationManager = new Mock<INavigationManager>();
+            this._NavigationServiceProvider = new ServiceCollection()
+                .AddSingleton(navigationManager.Object)
+                .BuildServiceProvider();
+            this._NavigationServiceScope = this._NavigationServiceProvider.CreateScope();
+            this._PreviousNavigationHttpContext = HttpContext.Current;
+            var context = new HttpContext(new HttpRequest(string.Empty, this.DefaultSite + "/", string.Empty), new HttpResponse(new System.IO.StringWriter()));
+            context.SetScope(this._NavigationServiceScope);
+            HttpContext.Current = context;
+            this._NavigationContextInstalled = true;
+            return navigationManager;
+        }
+
         internal void SetupMockHttpApplication()
         {
             this.MockHttpApplication = this.CreateMockHttpApplication(this.DefaultSite);
@@ -838,6 +893,21 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             contextField?.SetValue(app.Object, context);
 
             return app;
+        }
+
+        private void TearDownNavigationScope()
+        {
+            if (this._NavigationContextInstalled)
+            {
+                HttpContext.Current = this._PreviousNavigationHttpContext;
+                this._PreviousNavigationHttpContext = null;
+                this._NavigationContextInstalled = false;
+            }
+
+            this._NavigationServiceScope?.Dispose();
+            this._NavigationServiceScope = null;
+            this._NavigationServiceProvider?.Dispose();
+            this._NavigationServiceProvider = null;
         }
     }
 }

@@ -18,10 +18,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     using System;
@@ -29,12 +25,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using System.Data;
     using System.Globalization;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Web.UI.WebControls;
 
-    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.ActiveForums.Enums;
@@ -42,8 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     using DotNetNuke.Modules.ActiveForums.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Tokens;
-
-    using Newtonsoft.Json;
 
     [TableName("communityforums_Forums")]
     [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
@@ -119,8 +110,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
+                if (this.totalLikeCount != null)
+                {
+                    return (int)this.totalLikeCount;
+                }
+
                 using var ctx = DotNetNuke.Data.DataContext.Instance();
-                return this.totalLikeCount ?? (this.totalLikeCount = ctx.ExecuteQuery<int>(
+                return (this.totalLikeCount = ctx.ExecuteQuery<int>(
                         CommandType.Text,
                         @"SELECT COUNT(1)
                             FROM {databaseOwner}{objectQualifier}communityforums_Likes l
@@ -901,12 +897,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     case "rsslink":
                         return this.FeatureSettings.AllowRSS && Controllers.PermissionController.HasRequiredPerm(this.Security.ReadRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser)) ? PropertyAccess.FormatString(this.RssLink, format) : string.Empty;
                     case "modlink":
-                        var modLink = Utilities.NavigateURL(this.GetTabId(), this.portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={this.ForumID}" });
-                        var loginLink = this.PortalSettings.LoginTabId > 0
-                            ? Utilities.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, $"returnUrl={modLink}")
-                            : Utilities.NavigateURL(this.GetTabId(), string.Empty, $"ctl=login&returnUrl={modLink}");
-                        return PropertyAccess.FormatString(loginLink, format);
-
+                        return PropertyAccess.FormatString(this.GetModLink(new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigationManager()), format);
                     case "subscribe-unsubscribe-label":
                         {
                             var bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(this.Security.SubscribeRoleIds, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetUsersRoleIds(this.PortalSettings, accessingUser));
@@ -934,7 +925,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                     format);
                             }
 
-                            return string.Empty; 
+                            return string.Empty;
                         }
 
                     case "subscribe-unsubscribe-cssclass":
@@ -949,7 +940,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                                     format);
                             }
 
-                            return string.Empty; 
+                            return string.Empty;
                         }
 
                     case "subscribeonclick":
@@ -979,6 +970,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             propertyNotFound = true;
             return string.Empty;
+        }
+
+        private string GetModLink(DotNetNuke.Abstractions.INavigationManager navigationManager)
+        {
+            var modLink = navigationManager.NavigateURL(this.GetTabId(), this.portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={this.ForumID}" });
+            var loginLink = this.PortalSettings.LoginTabId > 0
+                ? navigationManager.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, $"returnUrl={modLink}")
+                : navigationManager.NavigateURL(this.GetTabId(), string.Empty, $"ctl=login&returnUrl={modLink}");
+            return loginLink;
         }
 
         internal int GetTabId()
